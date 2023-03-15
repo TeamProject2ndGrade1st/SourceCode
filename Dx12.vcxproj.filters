@@ -1,0 +1,464 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{3e244b94-f5f1-40bb-a52f-8e0c3de84ee2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{e1d9f433-b152-4751-972e-bd714f8607a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent">
+      <UniqueIdentifier>{1269b737-5d3d-400e-a312-d64a9f903b8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Core">
+      <UniqueIdentifier>{a88ff016-fdc3-444a-9151-9531261ea927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\GameObject">
+      <UniqueIdentifier>{0389bc51-781c-49cf-9ab7-13cd7ba1952d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Graphic">
+      <UniqueIdentifier>{44816fb6-d2af-46bd-a32a-98e007c08f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Input">
+      <UniqueIdentifier>{840927f4-b206-49e4-a0e5-c541bb0e1a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Other">
+      <UniqueIdentifier>{c3599e50-9bf5-4618-bd8e-495ed30ee0a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Scene">
+      <UniqueIdentifier>{ce289dc8-51d3-40af-8790-1d4ca9439eb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Graphic\Dx12">
+      <UniqueIdentifier>{8ce1eee7-fd55-4687-88cd-383efc993bf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{d5fe9055-d4b9-4cf8-9baa-d258a4b6c28e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Loader">
+      <UniqueIdentifier>{df64dc41-6dd9-49fa-9366-60baf68d508b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Resource">
+      <UniqueIdentifier>{d1d4a995-8cc6-4b2a-b7a9-dcc18fdb83a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Component">
+      <UniqueIdentifier>{bec5a5f9-6155-4a63-8910-aa9452963f79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Component\Renderer">
+      <UniqueIdentifier>{74e8ebb6-2552-4bbe-be80-33d0deb1255f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Resource\Effect">
+      <UniqueIdentifier>{07947600-5a4f-4b22-a01f-9a47ed04da15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Resource\Mesh">
+      <UniqueIdentifier>{a7bdd0f0-c6d9-40a1-84bd-01da27e1c015}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Resource\Texture">
+      <UniqueIdentifier>{087c43e5-175a-4b31-9d35-62e28321b90d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Resource\Audio">
+      <UniqueIdentifier>{1291d19a-4be0-42d8-b0c0-dcb44f90f982}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Resource\Manager">
+      <UniqueIdentifier>{b9568431-72de-4789-a5c0-a2329afd3582}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Resource\Shader">
+      <UniqueIdentifier>{d4e64ee0-5ce5-4f5d-9091-568f978cdb5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Resource\Material">
+      <UniqueIdentifier>{75f6fac2-46c1-4bff-9950-3ccfec954218}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_dx12.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_win32.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_tables.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\ImguiCtrl.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinMain.cpp" />
+    <ClCompile Include="Source\Argent\Input\Keyboard.cpp">
+      <Filter>Argent\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Scene\Scene.cpp">
+      <Filter>Argent\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Scene\SceneManager.cpp">
+      <Filter>Argent\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Title.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Loader\FbxLoader.cpp">
+      <Filter>Argent\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Core\ArApp.cpp">
+      <Filter>Argent\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Core\ArRandom.cpp">
+      <Filter>Argent\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Core\ArTimer.cpp">
+      <Filter>Argent\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Core\ArWindow.cpp">
+      <Filter>Argent\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\GameObject\GameObject.cpp">
+      <Filter>Argent\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Graphic\Dx12\ArCommand.cpp">
+      <Filter>Argent\Graphic\Dx12</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Graphic\Dx12\ArDescriptor.cpp">
+      <Filter>Argent\Graphic\Dx12</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Graphic\Dx12\ArDescriptorHeap.cpp">
+      <Filter>Argent\Graphic\Dx12</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Graphic\Dx12\ArPipelineState.cpp">
+      <Filter>Argent\Graphic\Dx12</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Graphic\ArFrameResource.cpp">
+      <Filter>Argent\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Graphic\ArGraphics.cpp">
+      <Filter>Argent\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Graphic\ArRenderingPipeline.cpp">
+      <Filter>Argent\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Graphic\FrameBuffer.cpp">
+      <Filter>Argent\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Other\ArHelper.cpp">
+      <Filter>Argent\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\ArComponent.cpp">
+      <Filter>Argent\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\Camera.cpp">
+      <Filter>Argent\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\Light.cpp">
+      <Filter>Argent\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\Transform.cpp">
+      <Filter>Argent\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\ArMeshRenderer.cpp">
+      <Filter>Argent\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\ArRenderer.cpp">
+      <Filter>Argent\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\ArSkinnedMeshRenderer.cpp">
+      <Filter>Argent\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\ArSpriteRenderer.cpp">
+      <Filter>Argent\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\NoneBoneMeshRenderer.cpp">
+      <Filter>Argent\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\ArEffectRenderer.cpp">
+      <Filter>Argent\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\ArEffect.cpp">
+      <Filter>Argent\Resource\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\ArMesh.cpp">
+      <Filter>Argent\Resource\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\ArStaticMesh.cpp">
+      <Filter>Argent\Resource\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\ArTexture.cpp">
+      <Filter>Argent\Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\ArResourceManager.cpp">
+      <Filter>Argent\Resource\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\ArShader.cpp">
+      <Filter>Argent\Resource\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\ArSprite.cpp">
+      <Filter>Argent\Resource\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\ArMaterial.cpp">
+      <Filter>Argent\Resource\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\ArEffectManager.cpp">
+      <Filter>Argent\Resource\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\ArAudio.cpp">
+      <Filter>Argent\Resource\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\ArAudioManager.cpp">
+      <Filter>Argent\Resource\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\ArAudioPlayer.cpp">
+      <Filter>Argent\Component</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_dx12.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_win32.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\ImguiCtrl.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Input\Keyboard.h">
+      <Filter>Argent\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Scene\Scene.h">
+      <Filter>Argent\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Scene\SceneManager.h">
+      <Filter>Argent\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Title.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Loader\FbxLoader.h">
+      <Filter>Argent\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DemoShaderMacro.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Core\ArApp.h">
+      <Filter>Argent\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Core\ArRandom.h">
+      <Filter>Argent\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Core\ArTimer.h">
+      <Filter>Argent\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Core\ArWindow.h">
+      <Filter>Argent\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\GameObject\GameObject.h">
+      <Filter>Argent\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\Dx12\ArCommand.h">
+      <Filter>Argent\Graphic\Dx12</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\Dx12\ArConstantBuffer.h">
+      <Filter>Argent\Graphic\Dx12</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\Dx12\ArDescriptor.h">
+      <Filter>Argent\Graphic\Dx12</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\Dx12\ArDescriptorHeap.h">
+      <Filter>Argent\Graphic\Dx12</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\Dx12\ArPipelineState.h">
+      <Filter>Argent\Graphic\Dx12</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\ArFrameResource.h">
+      <Filter>Argent\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\ArGraphics.h">
+      <Filter>Argent\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\ArRenderingPipeline.h">
+      <Filter>Argent\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\FrameBuffer.h">
+      <Filter>Argent\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Other\ArHelper.h">
+      <Filter>Argent\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Other\Misc.h">
+      <Filter>Argent\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArResource.h">
+      <Filter>Argent\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\ArComponent.h">
+      <Filter>Argent\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\Camera.h">
+      <Filter>Argent\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\Light.h">
+      <Filter>Argent\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\Transform.h">
+      <Filter>Argent\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\ArSkinnedMeshRenderer.h">
+      <Filter>Argent\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\ArMeshRenderer.h">
+      <Filter>Argent\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\ArRenderer.h">
+      <Filter>Argent\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\ArSpriteRenderer.h">
+      <Filter>Argent\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\Dx12\ArVertexBuffer.h">
+      <Filter>Argent\Graphic\Dx12</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\Dx12\ArIndexBuffer.h">
+      <Filter>Argent\Graphic\Dx12</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\NoneBoneMeshRenderer.h">
+      <Filter>Argent\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\ArEffectRenderer.h">
+      <Filter>Argent\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\ArColor.h">
+      <Filter>Argent\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArEffect.h">
+      <Filter>Argent\Resource\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArMesh.h">
+      <Filter>Argent\Resource\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArStaticMesh.h">
+      <Filter>Argent\Resource\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArTexture.h">
+      <Filter>Argent\Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArResourceManager.h">
+      <Filter>Argent\Resource\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArShader.h">
+      <Filter>Argent\Resource\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArSprite.h">
+      <Filter>Argent\Resource\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArMaterial.h">
+      <Filter>Argent\Resource\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArEffectManager.h">
+      <Filter>Argent\Resource\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArAudio.h">
+      <Filter>Argent\Resource\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArAudioManager.h">
+      <Filter>Argent\Resource\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\ArAudioPlayer.h">
+      <Filter>Argent\Component</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\SpritePrimitiveVertex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\SpritePixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\SpriteVertex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\GeometricPrimitivePixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\GeometricPrimitiveVertex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\PeraPixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\PeraVertex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\Pera2Pixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\SkinnedMeshPixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\SkinnedMeshVertex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\StaticMeshVertex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\StaticMeshPixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Shader\SpritePrimitive.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Source\Shader\Sprite.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Source\Shader\GeometricPrimitive.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Source\Shader\Pera.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Source\Shader\SkinnedMesh.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Source\Shader\StaticMesh.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Source\Shader\SceneConstant.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+</Project>
