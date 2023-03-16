@@ -7,11 +7,10 @@ namespace Argent::Mesh::Sprite
 {
 	ArSprite::ArSprite()
 	{
-		SetIndexCountPerInstance(4);
 		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
 		HRESULT hr{ S_OK };
 
-		std::vector<Vertex> vertices(4);
+		vertices.resize(4);
 		vertices.at(0).position = { -1.f,  1.f, 0.0f };//lt
 		vertices.at(1).position = {  1.f,  1.f, 0.0f };//rt
 		vertices.at(2).position = { -1.f, -1.f, 0.0f };//lb
@@ -22,19 +21,14 @@ namespace Argent::Mesh::Sprite
 		vertices.at(3).texcoord = { 1.0f, 1.0f };
 		vertices.at(0).color = vertices[1].color = vertices[2].color = vertices[3].color = DirectX::XMFLOAT4(1, 1, 1, 1);
 
-		std::vector<uint32_t> indices(4);
+		indices.resize(4);
 		indices.at(0) = 0;
 		indices.at(1) = 1;
 		indices.at(2) = 2;
 		indices.at(3) = 3;
-		//uint32_t index[4]{ 0, 1, 2, 3 };
 
 		vertexBuffer = std::make_unique<Argent::Dx12::ArVertexBuffer<Vertex>>(device, vertices, &vertexMap);
 		indexBuffer = std::make_unique<Argent::Dx12::ArIndexBuffer>(device, indices);
-
-		//vertexView = Argent::Helper::Dx12::Buffer::CreateVertex<Vertex>(device, 4, std::begin(vertices), std::end(vertices), &vertexMap, 
-		//	vertexBuffer.ReleaseAndGetAddressOf(), false);
-		//indexView = Argent::Helper::Dx12::Buffer::CreateIndex(device, 4, std::begin(index), std::end(index), indexBuffer.ReleaseAndGetAddressOf());
 	}
 
 	void ArSprite::UpdateVertexMap(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& scale,

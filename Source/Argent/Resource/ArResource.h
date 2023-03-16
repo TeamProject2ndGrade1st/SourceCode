@@ -11,18 +11,15 @@ namespace Argent::Resource
 
 		enum class ResourceType
 		{
-			rShader,
-			rTexture,
-			rMesh,
-			rSkinnedMesh,
-			rMaterial,
-			rEffect,
+			Shader,
+			Texture,
+			Mesh,
+			SkinnedMesh,
+			Material,
+			Effect,
+			Audio,
 		};
-		ArResource(uint64_t uniqueId, const char* name, ResourceType type):
-			uniqueId(uniqueId)
-		,	name(name)
-		,	type(type)
-		{}
+		ArResource(const char* name, ResourceType type);
 
 		virtual bool CompareName(const char* n)
 		{
@@ -42,8 +39,8 @@ namespace Argent::Resource
 		public ArResource
 	{
 	public:
-		ArImportedResource(uint64_t uniqueId, const char* filePath, ResourceType type):
-			ArResource(uniqueId, Argent::Helper::String::ExtractFileName(filePath, false).c_str(), type)
+		ArImportedResource(const char* filePath, ResourceType type):
+			ArResource(Argent::Helper::String::ExtractFileName(filePath, false).c_str(), type)
 		,	filePath(filePath)
 		{}
 		virtual ~ArImportedResource() = default;

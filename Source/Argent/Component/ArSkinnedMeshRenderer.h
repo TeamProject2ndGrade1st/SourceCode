@@ -151,7 +151,6 @@ namespace Argent::Component::Renderer
 			struct Subset
 			{
 				uint64_t materialUniqueId{};
-
 				uint32_t startIndexLocation{};
 				uint32_t indexCount{};
 			};

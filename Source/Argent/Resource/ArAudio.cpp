@@ -87,7 +87,8 @@ namespace Argent::Resource::Audio
 	}
 
 	ArAudio::ArAudio(const char* filePath):
-		state(State::Stopping)
+		ArResource(Helper::String::ExtractFileName(filePath, false).c_str(), ResourceType::Audio)
+	,	state(State::Stopping)
 	{
 		HRESULT hr{ S_OK };
 

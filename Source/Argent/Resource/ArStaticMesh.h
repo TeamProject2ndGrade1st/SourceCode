@@ -40,14 +40,13 @@ public:
 			//constantMap->materialColor = constant.materialColor;
 		}
 
+		void Render(ID3D12GraphicsCommandList* cmdList) override;
+
 		void Render(ID3D12GraphicsCommandList* cmdList, const DirectX::XMFLOAT4X4& world, const DirectX::XMFLOAT4& color,
 			UINT instanceCount = 1, UINT indexOffset = 0, INT vertexOffset = 0, UINT instanceOffset = 0) const;
 
 	private:
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
-		//Constant* constantMap{};
-		//Microsoft::WRL::ComPtr<ID3D12Resource> constantBuffer;
-		//Descriptor::ArDescriptor* descriptor;
 	};
 
 }

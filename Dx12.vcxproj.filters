@@ -220,6 +220,9 @@
     <ClCompile Include="Source\Argent\Component\ArAudioPlayer.cpp">
       <Filter>Argent\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\ArResource.cpp">
+      <Filter>Argent\Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">

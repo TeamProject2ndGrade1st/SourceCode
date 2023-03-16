@@ -19,21 +19,31 @@ namespace Argent::Mesh
 		ArMesh() = default;
 		virtual ~ArMesh() = default;
 
-		void SetIndexCountPerInstance(UINT i) { indexCountPerInstance = i; }
-		virtual void Render(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot = 0, UINT numVertexViews = 1) const
+		virtual void Render(ID3D12GraphicsCommandList* cmdList)
+		{
+			SetOnCommandList(cmdList);
+			DrawCall(cmdList, indices.size());
+		}
+
+		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot = 0, UINT numVertexViews = 1) const
 		{
 			vertexBuffer->SetOnCommandList(cmdList, vertexStartSlot, numVertexViews);
 			indexBuffer->SetOnCommandList(cmdList);
-			cmdList->DrawIndexedInstanced(indexCountPerInstance, 1, 0, 0, 0);
 		}
 
+		static void DrawCall(ID3D12GraphicsCommandList* cmdList,UINT indexCountPerInstance, UINT instanceCount = 1,
+		                     UINT startIndexLocation = 0, UINT baseVertexLocation = 0, UINT startInstanceLocation = 0)
+		{
+			cmdList->DrawIndexedInstanced(indexCountPerInstance, instanceCount, 
+				startIndexLocation, baseVertexLocation, startInstanceLocation);
+		}
 	protected:
 
 		//hack マルチスレッドの時にunique_ptrでも大丈夫か？
 		std::unique_ptr<Argent::Dx12::ArVertexBuffer<T>> vertexBuffer;
 		std::unique_ptr<Argent::Dx12::ArIndexBuffer> indexBuffer;
-
-		UINT indexCountPerInstance{};
+		std::vector<T> vertices;
+		std::vector<uint32_t> indices;
 	};
 }
 

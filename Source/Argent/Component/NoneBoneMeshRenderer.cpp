@@ -219,9 +219,9 @@ namespace Argent::Component::Renderer
 			FbxMesh* fbxMesh{ fbxNode->GetMesh() };
 
 			NoneBoneMeshRenderer::Mesh& mesh{ meshes.emplace_back() };
-			mesh.uniqueId = fbxMesh->GetNode()->GetUniqueID();
-			mesh.name = fbxMesh->GetNode()->GetName();
-			mesh.nodeIndex = sceneView.IndexOf(mesh.uniqueId);
+			//mesh.uniqueId = fbxMesh->GetNode()->GetUniqueID();
+			//mesh.name = fbxMesh->GetNode()->GetName();
+			//mesh.nodeIndex = sceneView.IndexOf(mesh.uniqueId);
 
 			std::vector<NoneBoneMeshRenderer::Mesh::Subset>& subsets{ mesh.subsets };
 			const int MaterialCount{ fbxMesh->GetNode()->GetMaterialCount() };

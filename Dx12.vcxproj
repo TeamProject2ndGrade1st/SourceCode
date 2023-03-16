@@ -59,6 +59,7 @@
     <ClCompile Include="Source\Argent\Resource\ArEffect.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArMesh.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArMaterial.cpp" />
+    <ClCompile Include="Source\Argent\Resource\ArResource.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArStaticMesh.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArResourceManager.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArShader.cpp" />

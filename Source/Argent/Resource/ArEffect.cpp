@@ -8,7 +8,7 @@
 namespace Argent::Resource::Effect
 {
 	ArEffect::ArEffect(const char* filePath, const char* materialPath):
-		ArImportedResource(Argent::Resource::ArResourceManager::GenerateResourceUniqueId(), filePath, ResourceType::rEffect)
+		ArImportedResource(filePath, ResourceType::Effect)
 	{
 		std::wstring fPath = Helper::String::GetWideStringFromString(filePath);
 		std::wstring mPath = Helper::String::GetWideStringFromString(materialPath);

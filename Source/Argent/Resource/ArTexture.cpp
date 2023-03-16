@@ -9,8 +9,7 @@
 namespace Argent::Texture
 {
 	ArTexture::ArTexture(const char* filepath):
-		Argent::Resource::ArImportedResource(Argent::Resource::ArResourceManager::GenerateResourceUniqueId(),
-			filepath, ResourceType::rTexture)
+		Argent::Resource::ArImportedResource(filepath, ResourceType::Texture)
 	{
 		descriptor = Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor();
 		imDescriptor = Graphics::ArGraphics::Instance()->GetImGuiHeap()->PopDescriptor();

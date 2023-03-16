@@ -3,13 +3,15 @@
 // ReSharper restore CommentTypo
 #pragma once
 #include <xaudio2.h>
+#include "ArResource.h"
 
 namespace Argent::Resource::Audio
 {
 	/**
 	 * \brief 音データを持ってるやつ　
 	 */
-	class ArAudio
+	class ArAudio:
+		public ArResource
 	{
 		enum class State
 		{

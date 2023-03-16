@@ -80,9 +80,8 @@ namespace Argent::Component::Renderer
 			};
 			std::vector<Subset> subsets;
 
-			uint64_t uniqueId{};
-			std::string name;
-			int64_t nodeIndex{};
+			//uint64_t uniqueId{};
+			//std::string name;
 
 			std::vector<Vertex> vertices;
 			std::vector<uint32_t> indices;

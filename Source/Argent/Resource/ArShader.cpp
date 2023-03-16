@@ -7,7 +7,7 @@
 namespace Argent::Shader
 {
 	ArShader::ArShader(const char* filepath):
-		ArResource(Resource::ArResourceManager::GenerateResourceUniqueId(), filepath, ResourceType::rShader)
+		ArResource(filepath, ResourceType::Shader)
 	{
 		data = nullptr;
 		size = 0;
