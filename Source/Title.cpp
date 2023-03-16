@@ -19,7 +19,7 @@ void Title::Initialize()
 
 	AddObject(new GameObject("noneBone", new Argent::Component::Renderer::NoneBoneMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(), "./Resources/Model/HandGun.fbx", true)));
 
-	AddObject(new GameObject("effect", new Argent::Component::Renderer::ArEffectRenderer("./Resources/Effects/10/Parents1.efk ", "./Resources/Effects/10/")));
+	AddObject(new GameObject("effect", new Argent::Component::Renderer::ArEffectRenderer("./Resources/Effects/barel_test.efk ", "./Resources/Effects")));
 
 	AddObject(new GameObject({ new Argent::Component::Renderer::ArSkinnedMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(), "./Resources/Model/nico.fbx"),
 		new Argent::Component::Audio::AudioPlayer("./Resources/Audio/maou.wav") }, "music and nico"));
