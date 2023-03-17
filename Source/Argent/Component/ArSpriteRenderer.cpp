@@ -3,14 +3,13 @@
 #include "Transform.h"
 #include "../GameObject/GameObject.h"
 #include "../Resource/ArMaterial.h"
-#include "../Resource/ArMesh.h"
 
 namespace Argent::Component::Renderer
 {
 	ArSpriteRenderer::ArSpriteRenderer(const char* filePath):
 		ArRenderer("Sprite Renderer")
 	{
-		sprite = std::make_unique<Argent::Mesh::Sprite::ArSprite>();
+		sprite = std::make_unique<Argent::Resource::Mesh::Sprite::ArSprite>();
 		materials.emplace_back(std::make_shared<Material::ArMaterial>(filePath));
 
 

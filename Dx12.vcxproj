@@ -34,6 +34,7 @@
     <ClCompile Include="Source\Argent\Component\ArSkinnedMeshRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\ArSpriteRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\ArAudioPlayer.cpp" />
+    <ClCompile Include="Source\Argent\Component\ArStaticMeshRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\Camera.cpp" />
     <ClCompile Include="Source\Argent\Component\Light.cpp" />
     <ClCompile Include="Source\Argent\Component\NoneBoneMeshRenderer.cpp" />
@@ -90,6 +91,7 @@
     <ClInclude Include="Source\Argent\Component\ArSkinnedMeshRenderer.h" />
     <ClInclude Include="Source\Argent\Component\ArSpriteRenderer.h" />
     <ClInclude Include="Source\Argent\Component\ArAudioPlayer.h" />
+    <ClInclude Include="Source\Argent\Component\ArStaticMeshRenderer.h" />
     <ClInclude Include="Source\Argent\Component\Camera.h" />
     <ClInclude Include="Source\Argent\Component\Light.h" />
     <ClInclude Include="Source\Argent\Component\NoneBoneMeshRenderer.h" />

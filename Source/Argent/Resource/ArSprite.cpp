@@ -3,7 +3,7 @@
 #include "../Graphic/ArGraphics.h"
 #include "../Other/ArHelper.h"
 
-namespace Argent::Mesh::Sprite
+namespace Argent::Resource::Mesh::Sprite
 {
 	ArSprite::ArSprite()
 	{

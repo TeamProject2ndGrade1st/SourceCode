@@ -18,20 +18,20 @@ void GameObject::AddChild(GameObject* obj)
 	childObjects.emplace_back(obj);
 }
 
-GameObject* GameObject::Cube(const std::string& name)
-{
-	return new GameObject({new Argent::Component::Renderer::ArMeshRenderer(Argent::Resource::ArResourceManager::Instance().GetMeshData("Cube")) }, name);
-}
-
-GameObject* GameObject::Sphere(const std::string& name)
-{
-	return new GameObject({ new Argent::Component::Renderer::ArMeshRenderer(Argent::Resource::ArResourceManager::Instance().GetMeshData("Sphere")) }, name);
-}
-
-GameObject* GameObject::Capsule(const std::string& name)
-{
-	return new GameObject({ new Argent::Component::Renderer::ArMeshRenderer(Argent::Resource::ArResourceManager::Instance().GetMeshData("Capsule")) }, name);
-}
+//GameObject* GameObject::Cube(const std::string& name)
+//{
+//	return new GameObject({new Argent::Component::Renderer::ArMeshRenderer(Argent::Resource::ArResourceManager::Instance().GetMeshData("Cube")) }, name);
+//}
+//
+//GameObject* GameObject::Sphere(const std::string& name)
+//{
+//	return new GameObject({ new Argent::Component::Renderer::ArMeshRenderer(Argent::Resource::ArResourceManager::Instance().GetMeshData("Sphere")) }, name);
+//}
+//
+//GameObject* GameObject::Capsule(const std::string& name)
+//{
+//	return new GameObject({ new Argent::Component::Renderer::ArMeshRenderer(Argent::Resource::ArResourceManager::Instance().GetMeshData("Capsule")) }, name);
+//}
 
 GameObject* GameObject::SceneCamera(const std::string& name, bool setSceneCamera)
 {

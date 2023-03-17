@@ -18,7 +18,7 @@ namespace Argent::Component::Renderer
 		public ArRenderer
 	{
 	public:
-		ArMeshRenderer(Argent::Mesh::StaticMesh::ArStaticMesh* data);
+		ArMeshRenderer(Argent::Resource::Mesh::ArStaticMesh* data);
 
 		void Initialize() override;
 		void Finalize() override;
@@ -35,6 +35,6 @@ namespace Argent::Component::Renderer
 	protected:
 		
 		std::vector<Subset> subsets{};
-		Argent::Mesh::StaticMesh::ArStaticMesh* mesh{};
+		Argent::Resource::Mesh::ArStaticMesh* mesh{};
 	};
 }

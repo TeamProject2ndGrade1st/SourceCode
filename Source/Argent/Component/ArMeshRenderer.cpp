@@ -9,7 +9,7 @@
 
 namespace Argent::Component::Renderer
 {
-	ArMeshRenderer::ArMeshRenderer(Argent::Mesh::StaticMesh::ArStaticMesh* data):
+	ArMeshRenderer::ArMeshRenderer(Argent::Resource::Mesh::ArStaticMesh* data):
 		ArRenderer("Mesh Renderer")
 	,	mesh(data)
 	{
@@ -121,8 +121,7 @@ namespace Argent::Component::Renderer
 		ID3D12GraphicsCommandList* cmdList = Argent::Graphics::ArGraphics::Instance()->GetCommandList();
 
 		if(mesh)
-		mesh->Render(cmdList,
-			GetOwner()->GetTransform()->GetWorld(), materials.at(0)->color.color);
+		mesh->Render(cmdList);
 	}
 
 #ifdef _DEBUG

@@ -5,7 +5,7 @@
 #include "ArMaterial.h"
 
 
-namespace Argent::Mesh
+namespace Argent::Resource::Mesh
 {
 	/**
 	 * \brief 頂点バッファとインデックスバッファを持つ

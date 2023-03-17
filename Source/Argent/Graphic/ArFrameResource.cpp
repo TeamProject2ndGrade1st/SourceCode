@@ -97,7 +97,7 @@ namespace Argent::Frame
 
 	void FrameResource::SetSceneConstant(UINT rootParameterIndex)
 	{
-		cmdBundle.at(0)->cmdList->SetDescriptorHeaps(1, cbv->GetDescriptorHeap()->GetHeapDoublePointer());
+		//cmdBundle.at(0)->cmdList->SetDescriptorHeaps(1, cbv->GetDescriptorHeap()->GetHeapDoublePointer());
 		cmdBundle.at(0)->cmdList->SetGraphicsRootDescriptorTable(rootParameterIndex, cbv->GetGPUHandle());
 	}
 
