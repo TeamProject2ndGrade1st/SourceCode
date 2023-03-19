@@ -37,7 +37,6 @@ namespace Argent::Component::Renderer
 			converter.RemoveBadPolygonsFromMeshes(fbxScene);
 		}
 
-
 		SkinnedScene sceneView{};
 		
 		std::function<void(FbxNode* fbxNode)> traverse
@@ -589,7 +588,8 @@ namespace Argent::Component::Renderer
 			 meshColor.color, &keyframe);
 
 	#endif
-		
+
+		if (animationClips.size() == 0) return;
 		static float animationTick{};
 		const Animation& animation{ this->animationClips.at(clipIndex) };
 		frameIndex = static_cast<float>(animationTick* animation.samplingRate);

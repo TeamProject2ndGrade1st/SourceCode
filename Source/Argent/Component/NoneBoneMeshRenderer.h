@@ -143,12 +143,16 @@ namespace Argent::Component::Renderer
 
 
 	public:
-
+		NoneBoneMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<Mesh> meshes,
+			std::unordered_map<uint64_t, Material>& materials);
 		NoneBoneMeshRenderer(ID3D12Device* device, const char* filename, bool triangulate = false);
 		virtual ~NoneBoneMeshRenderer() = default;
 
 		void Render(ID3D12GraphicsCommandList* cmdList,
 			const DirectX::XMFLOAT4X4& world, const DirectX::XMFLOAT4& color) const;
+
+		void CreateRootSignatureAndPipelineState();
+
 
 		void Render() const override;
 		void Update() override;
@@ -157,7 +161,7 @@ namespace Argent::Component::Renderer
 		void DrawDebug() override;
 #endif
 
-		void CreateComObject(ID3D12Device* device, const char* filename);
+		void CreateComObject(ID3D12Device* device);
 
 	private:
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> demoConstBuffer;

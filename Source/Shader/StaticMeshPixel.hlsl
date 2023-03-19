@@ -46,5 +46,8 @@ float4 main(VS_OUT pin) : SV_TARGET
 	float3 specular = CalcPhongSpecular(N, L, lightColor, E, shininess, ks);
 
 
-	return float4(color.rgb * diffuse.rgb + specular.rgb, 1);
+	float4 ret = float4(color.rgb * diffuse.rgb + specular.rgb, 1);
+
+	return ret;
+	//return float4(1 - ret.rgb, 1);
 }

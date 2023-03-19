@@ -15,8 +15,30 @@ namespace Argent::Component::Renderer
 		textures[static_cast<int>(type)] = std::reinterpret_pointer_cast<Argent::Texture::ArTexture>(Argent::Resource::ArResourceManager::Instance().LoadTexture(filePath));
 	}
 
+	NoneBoneMeshRenderer::NoneBoneMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<Mesh> meshes,
+		std::unordered_map<uint64_t, Material>& materials):
+		ArRenderer("NoneBoneMeshRenderer")
+	{
+		size_t size = meshes.size();
+		this->meshes.resize(meshes.size());
+		for(size_t i = 0; i < meshes.size(); ++i)
+		{
+			this->meshes.at(i).vertices = meshes.at(i).vertices;
+			this->meshes.at(i).indices = meshes.at(i).indices;
+			this->meshes.at(i).subsets = meshes.at(i).subsets;
+		}
+		this->meshes;
+		for(auto& m : materials)
+		{
+			this->materials.emplace(m.first, std::move(m.second));
+		}
+		CreateComObject(device);
+		CreateRootSignatureAndPipelineState();
+		//this->materials = materials;
+	}
+
 	NoneBoneMeshRenderer::NoneBoneMeshRenderer(ID3D12Device* device, const char* filename,
-		bool triangulate) :
+	                                           bool triangulate) :
 		ArRenderer("name")
 	{
 		FbxManager* manager{ FbxManager::Create() };
@@ -66,85 +88,11 @@ namespace Argent::Component::Renderer
 
 		manager->Destroy();
 
-		CreateComObject(device, filename);
+		CreateComObject(device);
 
 
 		//ルートパラメータとパイプラインステート
-		{
-			D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
-			D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineStateDesc{};
-			D3D12_DESCRIPTOR_RANGE range[5]{};
-
-			range[0] = Helper::Dx12::DescriptorRange::Generate(0, 1, D3D12_DESCRIPTOR_RANGE_TYPE_CBV);
-			range[1] = Helper::Dx12::DescriptorRange::Generate(1, 1, D3D12_DESCRIPTOR_RANGE_TYPE_CBV);
-			range[2] = Helper::Dx12::DescriptorRange::Generate(2, 1, D3D12_DESCRIPTOR_RANGE_TYPE_CBV);
-			range[3] = Helper::Dx12::DescriptorRange::Generate(0, 1, D3D12_DESCRIPTOR_RANGE_TYPE_SRV);
-			range[4] = Helper::Dx12::DescriptorRange::Generate(1, 1, D3D12_DESCRIPTOR_RANGE_TYPE_SRV);
-
-			D3D12_ROOT_PARAMETER rootParam[5]{};
-			rootParam[static_cast<int>(RootParameterIndex::cbScene)] = Helper::Dx12::RootParameter::Generate(1, &range[0], D3D12_SHADER_VISIBILITY_ALL);
-			rootParam[static_cast<int>(RootParameterIndex::cbObject)] = Helper::Dx12::RootParameter::Generate(1, &range[1], D3D12_SHADER_VISIBILITY_ALL);
-			rootParam[static_cast<int>(RootParameterIndex::cbMaterial)] = Helper::Dx12::RootParameter::Generate(1, &range[2], D3D12_SHADER_VISIBILITY_ALL);
-			rootParam[static_cast<int>(RootParameterIndex::txAlbedo)] = Helper::Dx12::RootParameter::Generate(1, &range[3], D3D12_SHADER_VISIBILITY_PIXEL);
-			rootParam[static_cast<int>(RootParameterIndex::txNormal)] = Helper::Dx12::RootParameter::Generate(1, &range[4], D3D12_SHADER_VISIBILITY_PIXEL);
-
-			D3D12_STATIC_SAMPLER_DESC samplerDesc = Helper::Dx12::Sampler::GenerateSamplerDesc(Helper::Dx12::Sampler::FilterMode::fPoint, Helper::Dx12::Sampler::WrapMode::wRepeat);
-
-
-			rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-			rootSigDesc.NumParameters = 5;
-			rootSigDesc.pParameters = rootParam;
-			rootSigDesc.NumStaticSamplers = 1;
-			rootSigDesc.pStaticSamplers = &samplerDesc;
-
-
-			//パイプライン
-
-			D3D12_BLEND_DESC blendDesc{};
-			blendDesc.AlphaToCoverageEnable = FALSE;
-			blendDesc.IndependentBlendEnable = FALSE;
-			blendDesc.RenderTarget[0] = Helper::Dx12::Blend::GenerateRenderTargetBlendDesc(Helper::Dx12::Blend::BlendMode::bAlpha);
-
-			D3D12_INPUT_ELEMENT_DESC inputElementDesc[]
-			{
-				Helper::Dx12::InputElement::GenerateInputLayoutDesc("POSITION", DXGI_FORMAT_R32G32B32_FLOAT),
-				Helper::Dx12::InputElement::GenerateInputLayoutDesc("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT),
-				Helper::Dx12::InputElement::GenerateInputLayoutDesc("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT),
-			};
-
-			DXGI_SAMPLE_DESC sampleDesc{};
-			sampleDesc.Count = 1;
-			sampleDesc.Quality = 0;
-
-
-			D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-			depthStencilDesc.DepthEnable = TRUE;
-			depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-			depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-
-
-			pipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-
-			pipelineStateDesc.RasterizerState = Helper::Dx12::Rasterizer::Generate();
-			pipelineStateDesc.BlendState = blendDesc;
-			pipelineStateDesc.InputLayout.NumElements = _countof(inputElementDesc);
-			pipelineStateDesc.InputLayout.pInputElementDescs = inputElementDesc;
-			pipelineStateDesc.IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
-			pipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-			pipelineStateDesc.NumRenderTargets = 1;
-			pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-			pipelineStateDesc.SampleDesc = sampleDesc;
-			pipelineStateDesc.DepthStencilState = depthStencilDesc;
-			pipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-
-			renderingPipeline = std::make_shared<Argent::Graphics::RenderingPipeline::ArBaseRenderingPipeline>(
-				"./Resources/Shader/StaticMeshVertex.cso",
-				"./Resources/Shader/StaticMeshPixel.cso",
-				&rootSigDesc,
-				&pipelineStateDesc
-				);
-		}
+		CreateRootSignatureAndPipelineState();
 	}
 
 	void NoneBoneMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList,
@@ -152,9 +100,7 @@ namespace Argent::Component::Renderer
 		const DirectX::XMFLOAT4& color) const
 	{
 		ArRenderer::Render(cmdList);
-
 		Argent::Graphics::ArGraphics::Instance()->SetSceneConstant(static_cast<UINT>(RootParameterIndex::cbScene));
-
 
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -177,6 +123,83 @@ namespace Argent::Component::Renderer
 				cmdList->DrawIndexedInstanced(subset.indexCount, 1, subset.startIndexLocation, 0, 0);
 			}
 		}
+	}
+
+	void NoneBoneMeshRenderer::CreateRootSignatureAndPipelineState()
+	{
+		D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
+		D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineStateDesc{};
+		D3D12_DESCRIPTOR_RANGE range[5]{};
+
+		range[0] = Helper::Dx12::DescriptorRange::Generate(0, 1, D3D12_DESCRIPTOR_RANGE_TYPE_CBV);
+		range[1] = Helper::Dx12::DescriptorRange::Generate(1, 1, D3D12_DESCRIPTOR_RANGE_TYPE_CBV);
+		range[2] = Helper::Dx12::DescriptorRange::Generate(2, 1, D3D12_DESCRIPTOR_RANGE_TYPE_CBV);
+		range[3] = Helper::Dx12::DescriptorRange::Generate(0, 1, D3D12_DESCRIPTOR_RANGE_TYPE_SRV);
+		range[4] = Helper::Dx12::DescriptorRange::Generate(1, 1, D3D12_DESCRIPTOR_RANGE_TYPE_SRV);
+
+		D3D12_ROOT_PARAMETER rootParam[5]{};
+		rootParam[static_cast<int>(RootParameterIndex::cbScene)] = Helper::Dx12::RootParameter::Generate(1, &range[0], D3D12_SHADER_VISIBILITY_ALL);
+		rootParam[static_cast<int>(RootParameterIndex::cbObject)] = Helper::Dx12::RootParameter::Generate(1, &range[1], D3D12_SHADER_VISIBILITY_ALL);
+		rootParam[static_cast<int>(RootParameterIndex::cbMaterial)] = Helper::Dx12::RootParameter::Generate(1, &range[2], D3D12_SHADER_VISIBILITY_ALL);
+		rootParam[static_cast<int>(RootParameterIndex::txAlbedo)] = Helper::Dx12::RootParameter::Generate(1, &range[3], D3D12_SHADER_VISIBILITY_PIXEL);
+		rootParam[static_cast<int>(RootParameterIndex::txNormal)] = Helper::Dx12::RootParameter::Generate(1, &range[4], D3D12_SHADER_VISIBILITY_PIXEL);
+
+		D3D12_STATIC_SAMPLER_DESC samplerDesc = Helper::Dx12::Sampler::GenerateSamplerDesc(Helper::Dx12::Sampler::FilterMode::fPoint, Helper::Dx12::Sampler::WrapMode::wRepeat);
+
+
+		rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+		rootSigDesc.NumParameters = 5;
+		rootSigDesc.pParameters = rootParam;
+		rootSigDesc.NumStaticSamplers = 1;
+		rootSigDesc.pStaticSamplers = &samplerDesc;
+
+
+		//パイプライン
+
+		D3D12_BLEND_DESC blendDesc{};
+		blendDesc.AlphaToCoverageEnable = FALSE;
+		blendDesc.IndependentBlendEnable = FALSE;
+		blendDesc.RenderTarget[0] = Helper::Dx12::Blend::GenerateRenderTargetBlendDesc(Helper::Dx12::Blend::BlendMode::bAlpha);
+
+		D3D12_INPUT_ELEMENT_DESC inputElementDesc[]
+		{
+			Helper::Dx12::InputElement::GenerateInputLayoutDesc("POSITION", DXGI_FORMAT_R32G32B32_FLOAT),
+			Helper::Dx12::InputElement::GenerateInputLayoutDesc("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT),
+			Helper::Dx12::InputElement::GenerateInputLayoutDesc("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT),
+		};
+
+		DXGI_SAMPLE_DESC sampleDesc{};
+		sampleDesc.Count = 1;
+		sampleDesc.Quality = 0;
+
+
+		D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
+		depthStencilDesc.DepthEnable = TRUE;
+		depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+		depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+
+
+		pipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+
+		pipelineStateDesc.RasterizerState = Helper::Dx12::Rasterizer::Generate();
+		pipelineStateDesc.BlendState = blendDesc;
+		pipelineStateDesc.InputLayout.NumElements = _countof(inputElementDesc);
+		pipelineStateDesc.InputLayout.pInputElementDescs = inputElementDesc;
+		pipelineStateDesc.IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
+		pipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		pipelineStateDesc.NumRenderTargets = 1;
+		pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		pipelineStateDesc.SampleDesc = sampleDesc;
+		pipelineStateDesc.DepthStencilState = depthStencilDesc;
+		pipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+
+		renderingPipeline = std::make_shared<Argent::Graphics::RenderingPipeline::ArBaseRenderingPipeline>(
+			"./Resources/Shader/StaticMeshVertex.cso",
+			"./Resources/Shader/StaticMeshPixel.cso",
+			&rootSigDesc,
+			&pipelineStateDesc
+			);
 	}
 
 	void NoneBoneMeshRenderer::Render() const 
@@ -213,6 +236,7 @@ namespace Argent::Component::Renderer
 	{
 		for (const NoneBone::SkinnedScene::Node& node : sceneView.nodes)
 		{
+			
 			if (node.attribute != FbxNodeAttribute::EType::eMesh) continue;
 
 			FbxNode* fbxNode{ fbxScene->FindNodeByName(node.name.c_str()) };
@@ -341,7 +365,8 @@ namespace Argent::Component::Renderer
 						path.replace_filename(tmpFilePath);
 
 						const std::string replacedFilePath = Helper::String::GetStringFromWideString(path.c_str());
-						material.CreateTexture(replacedFilePath.c_str(), NoneBoneMeshRenderer::Material::TextureType::Albedo);
+						material.CreateTexture(path.generic_string().c_str(), NoneBoneMeshRenderer::Material::TextureType::Albedo);
+						//material.CreateTexture(replacedFilePath.c_str(), NoneBoneMeshRenderer::Material::TextureType::Albedo);
 					}
 
 					fbxProp = fbxMaterial->FindProperty(FbxSurfaceMaterial::sSpecular);
@@ -394,7 +419,8 @@ namespace Argent::Component::Renderer
 						path.replace_filename(tmpFilePath);
 
 						const std::string replacedFilePath = Helper::String::GetStringFromWideString(path.c_str());
-						material.CreateTexture(replacedFilePath.c_str(), NoneBoneMeshRenderer::Material::TextureType::Normal);
+						material.CreateTexture(path.generic_string().c_str(), NoneBoneMeshRenderer::Material::TextureType::Normal);
+						//material.CreateTexture(replacedFilePath.c_str(), NoneBoneMeshRenderer::Material::TextureType::Normal);
 					}
 					materials.emplace(materialUniqueId, std::move(material));
 				}
@@ -411,7 +437,7 @@ namespace Argent::Component::Renderer
 		}
 	}
 
-	void NoneBoneMeshRenderer::CreateComObject(ID3D12Device* device, const char* filename)
+	void NoneBoneMeshRenderer::CreateComObject(ID3D12Device* device)
 	{
 		HRESULT hr{ S_OK };
 		for (Mesh& mesh : meshes)

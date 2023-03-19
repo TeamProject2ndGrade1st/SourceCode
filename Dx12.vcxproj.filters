@@ -223,6 +223,7 @@
     <ClCompile Include="Source\Argent\Resource\ArResource.cpp">
       <Filter>Argent\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Argent\Source\Argent\Component\ArStaticMeshRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -399,6 +400,7 @@
     <ClInclude Include="Source\Argent\Component\ArAudioPlayer.h">
       <Filter>Argent\Component</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Argent\Source\Argent\Component\ArStaticMeshRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

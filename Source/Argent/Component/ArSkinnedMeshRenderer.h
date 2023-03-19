@@ -240,7 +240,6 @@ namespace Argent::Component::Renderer
 				}
 			}
 	#endif
-
 		};
 
 

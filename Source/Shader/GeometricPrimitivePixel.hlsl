@@ -14,5 +14,7 @@ float4 main(VsOut pin) : SV_TARGET
 	float g = (pin.color.g + lightColor.g) / 2 * brightness;
 	float b = (pin.color.b + lightColor.b) / 2 * brightness;
 
-	return float4(float3(pin.color.xyz * lightColor.xyz * color.arg) * brightness, 1);
+	float4 ret = float4(float3(pin.color.xyz * lightColor.xyz * color.arg) * brightness, 1);;
+
+	return float4(1 - ret.rgb, 1);
 }

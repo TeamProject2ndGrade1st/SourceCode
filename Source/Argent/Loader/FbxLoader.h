@@ -3,6 +3,13 @@
 #include <fbxsdk.h>
 #include <DirectXMath.h>
 #include <vector>
+#include <memory>
+#include "../Resource/ArTexture.h"
+
+namespace Argent::Component
+{
+	class ArComponent;
+}
 
 namespace Argent::Loader
 {
@@ -10,7 +17,7 @@ namespace Argent::Loader
 	{
 		struct ArFbxScene;
 
-		struct BoneInfluence
+		struct ArBoneInfluence
 		{
 			uint32_t boneIndex;
 			float boneWeight;
@@ -73,7 +80,57 @@ namespace Argent::Loader
 			std::vector<ArKeyframe> sequence;
 		};
 
-		void LoadFbx(const char* fileName, bool triangulate = false);
+		struct SkinnedMeshVertex
+		{
+			DirectX::XMFLOAT3 position;
+			DirectX::XMFLOAT3 normal;
+			DirectX::XMFLOAT2 texcoord;
+			float boneWeights[4]{ 1, 0, 0, 0 };
+			uint32_t boneIndices[4]{ 1, 0, 0, 0 };
+		};
+
+		struct StaticMeshVertex
+		{
+			DirectX::XMFLOAT3 position;
+			DirectX::XMFLOAT3 normal;
+			DirectX::XMFLOAT2 texcoord;
+		};
+
+		struct ArSubset
+		{
+			uint64_t materialUniqueId{};
+			uint32_t startIndexLocation{};
+			uint32_t indexCount{};
+		};
+
+		struct ArMaterial
+		{
+			enum class TextureType
+			{
+				Diffuse,
+				Specular,
+				Ambient,
+				Normal,
+				Height,
+				Max,
+			};
+			struct Constant
+			{
+				DirectX::XMFLOAT4 ka{ 0.2f, 0.2f, 0.2f, 1.0f };
+				DirectX::XMFLOAT4 kd{ 0.2f, 0.2f, 0.2f, 1.0f };
+				DirectX::XMFLOAT4 ks{ 0.2f, 0.2f, 0.2f, 1.0f };
+				float shininess = 128;
+			};
+			std::string name;
+
+			Constant constant{};
+			void CreateTexture(const char* filePath, TextureType type);
+			std::shared_ptr<Argent::Texture::ArTexture> textures[static_cast<int>(TextureType::Max)];
+		};
+
+
+		Argent::Component::ArComponent* LoadFbx(const char* filePath, bool triangulate = false);
+		
 
 	}
 }
