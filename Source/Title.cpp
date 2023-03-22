@@ -4,7 +4,7 @@
 #include "Argent/Component/ArSpriteRenderer.h"
 #include "Argent/Input/Keyboard.h"
 #include "Argent/Component/ArSkinnedMeshRenderer.h"
-#include "Argent/Component/NoneBoneMeshRenderer.h"
+#include "Argent/Component/ArStaticMeshRenderer.h"
 #include "Argent/Graphic/ArGraphics.h"
 #include "Argent/Component/ArEffectRenderer.h"
 #include "Argent/Component/ArAudioPlayer.h"
@@ -18,7 +18,7 @@ void Title::Initialize()
 	//AddObject( new GameObject("obj",new ArSkinnedMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(), "./Resource/DragonBinary.fbx")));
 
 	AddObject(new GameObject("noneBone", Argent::Loader::Fbx::LoadFbx("./Resources/Model/HandGun.fbx", true)));
-	//AddObject(new GameObject("noneBone", new Argent::Component::Renderer::NoneBoneMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(), "./Resources/Model/HandGun.fbx", true)));
+	//AddObject(new GameObject("noneBone", new Argent::Component::Renderer::ArStaticMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(), "./Resources/Model/HandGun.fbx", true)));
 
 	AddObject(new GameObject("effect", new Argent::Component::Renderer::ArEffectRenderer("./Resources/Effects/barel_test.efk ", "./Resources/Effects")));
 

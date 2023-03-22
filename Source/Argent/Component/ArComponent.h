@@ -4,7 +4,7 @@
 
 #include "../../../imgui/imgui.h"
 class GameObject;
-
+//todo orderInUpdateの追加
 
 //コンポーネントクラスの大元
 namespace Argent::Component
@@ -56,27 +56,3 @@ namespace Argent::Component
 	};
 
 }
-
-struct Color
-{
-	Color(DirectX::XMFLOAT4 color):
-		color(color)
-	{}
-
-	void Reset() { color = DirectX::XMFLOAT4(1, 1, 1, 1); }
-
-#ifdef _DEBUG
-	void DrawDebug()
-	{
-		ImGui::ColorEdit4("Color", &color.x,
-				ImGuiColorEditFlags_PickerHueWheel | 
-				ImGuiColorEditFlags_AlphaBar);
-	}
-#endif
-
-	[[nodiscard]] DirectX::XMFLOAT4 GetColor() const { return color; }
-	void SetColor(const DirectX::XMFLOAT4& c) { color = c; }
-
-private:
-	DirectX::XMFLOAT4 color;
-};

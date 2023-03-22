@@ -19,11 +19,11 @@ struct VS_OUT
 cbuffer ObjectConstant : register(b1)
 {
 	row_major float4x4 world;
-	float4 materialColor;
 }
 
 cbuffer MaterialConstant : register(b2)
 {
+	float4 color;
 	float4 ka;
 	float4 kd;
 	float4 ks;

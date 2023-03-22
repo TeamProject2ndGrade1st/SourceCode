@@ -21,7 +21,7 @@ namespace Argent::Component::Renderer
 		void OnPlay() { isPlay = true; }
 	private:
 		bool isPlay;
-		Argent::Color color;
+		Argent::ArColor color;
 
 		std::shared_ptr<Argent::Resource::Effect::ArEffect> effect;
 	};

@@ -22,7 +22,7 @@ namespace Argent::Mesh
 		virtual void Render(ID3D12GraphicsCommandList* cmdList)
 		{
 			SetOnCommandList(cmdList);
-			DrawCall(cmdList, indices.size());
+			DrawCall(cmdList, static_cast<UINT>(indices.size()));
 		}
 
 		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot = 0, UINT numVertexViews = 1) const
@@ -38,7 +38,7 @@ namespace Argent::Mesh
 				startIndexLocation, baseVertexLocation, startInstanceLocation);
 		}
 	protected:
-
+	public:
 		//hack マルチスレッドの時にunique_ptrでも大丈夫か？
 		std::unique_ptr<Argent::Dx12::ArVertexBuffer<T>> vertexBuffer;
 		std::unique_ptr<Argent::Dx12::ArIndexBuffer> indexBuffer;

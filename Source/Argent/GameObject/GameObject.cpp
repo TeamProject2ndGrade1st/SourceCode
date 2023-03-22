@@ -2,7 +2,6 @@
 #include <sstream>
 #include "../Graphic/ArGraphics.h"
 #include "../Component/Camera.h"
-#include "../Component/ArMeshRenderer.h"
 #include "../Resource/ArResourceManager.h"
 
 
@@ -16,21 +15,6 @@ void GameObject::AddChild(GameObject* obj)
 {
 	obj->SetParent(this);
 	childObjects.emplace_back(obj);
-}
-
-GameObject* GameObject::Cube(const std::string& name)
-{
-	return new GameObject({new Argent::Component::Renderer::ArMeshRenderer(Argent::Resource::ArResourceManager::Instance().GetMeshData("Cube")) }, name);
-}
-
-GameObject* GameObject::Sphere(const std::string& name)
-{
-	return new GameObject({ new Argent::Component::Renderer::ArMeshRenderer(Argent::Resource::ArResourceManager::Instance().GetMeshData("Sphere")) }, name);
-}
-
-GameObject* GameObject::Capsule(const std::string& name)
-{
-	return new GameObject({ new Argent::Component::Renderer::ArMeshRenderer(Argent::Resource::ArResourceManager::Instance().GetMeshData("Capsule")) }, name);
 }
 
 GameObject* GameObject::SceneCamera(const std::string& name, bool setSceneCamera)

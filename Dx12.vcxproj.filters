@@ -166,9 +166,6 @@
     <ClCompile Include="Source\Argent\Component\Transform.cpp">
       <Filter>Argent\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\ArMeshRenderer.cpp">
-      <Filter>Argent\Component\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Argent\Component\ArRenderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
@@ -178,7 +175,7 @@
     <ClCompile Include="Source\Argent\Component\ArSpriteRenderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\NoneBoneMeshRenderer.cpp">
+    <ClCompile Include="Source\Argent\Component\ArStaticMeshRenderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Component\ArEffectRenderer.cpp">
@@ -223,7 +220,6 @@
     <ClCompile Include="Source\Argent\Resource\ArResource.cpp">
       <Filter>Argent\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Argent\Source\Argent\Component\ArStaticMeshRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -340,9 +336,6 @@
     <ClInclude Include="Source\Argent\Component\ArSkinnedMeshRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArMeshRenderer.h">
-      <Filter>Argent\Component\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Argent\Component\ArRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
@@ -355,7 +348,7 @@
     <ClInclude Include="Source\Argent\Graphic\Dx12\ArIndexBuffer.h">
       <Filter>Argent\Graphic\Dx12</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\NoneBoneMeshRenderer.h">
+    <ClInclude Include="Source\Argent\Component\ArStaticMeshRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Component\ArEffectRenderer.h">
@@ -400,7 +393,6 @@
     <ClInclude Include="Source\Argent\Component\ArAudioPlayer.h">
       <Filter>Argent\Component</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Argent\Source\Argent\Component\ArStaticMeshRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

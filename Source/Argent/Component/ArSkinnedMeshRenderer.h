@@ -192,7 +192,6 @@ namespace Argent::Component::Renderer
 			D3D12_VERTEX_BUFFER_VIEW vertexView{};
 			D3D12_INDEX_BUFFER_VIEW indexView{};
 
-			friend class FbxResource;
 			Skeleton bindPose;
 		};
 

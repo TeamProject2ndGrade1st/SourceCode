@@ -6,7 +6,7 @@
 
 #include "../Component/ArComponent.h"
 #include "../Component/Transform.h"
-
+// todo orderInUpdate‚Ì’Ç‰Á
 
 class GameObject
 {
@@ -92,9 +92,6 @@ public:
 		}
 	}
 
-	static GameObject* Cube(const std::string& name = "Cube");
-	static GameObject* Sphere(const std::string& name = "Sphere");
-	static GameObject* Capsule(const std::string& name = "Capsule");
 	static GameObject* SceneCamera(const std::string& name = "Sub Camera", bool setSceneCamera = false);
 
 protected:
@@ -104,7 +101,6 @@ protected:
 	std::vector<GameObject*> childObjects;
 	std::string name;
 	GameObject* parent;
-
 };
 
 template <typename T>

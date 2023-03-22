@@ -3,7 +3,7 @@
 #include "../Resource/ArResourceManager.h"
 
 //todo
-#include "../Component/NoneBoneMeshRenderer.h"
+#include "../Component/ArStaticMeshRenderer.h"
 
 namespace Argent
 {
@@ -85,7 +85,7 @@ namespace Argent::Loader::Fbx
 	};
 
 	void FetchMesh(FbxScene* fbxScene,const ArFbxScene& sceneView, std::vector<TmpFbxMesh>& meshes);
-	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Component::Renderer::NoneBoneMeshRenderer::Material>& materials);
+	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Component::Renderer::ArStaticMeshRenderer::Material>& materials);
 	void FetchSkeleton(FbxMesh* fbxMesh, ArSkeleton& bindPose, const ArFbxScene& sceneView);
 	void FetchAnimation(FbxScene* fbxScene, std::vector<ArAnimation>& animationClips, 
 			float samplingRate, const ArFbxScene& sceneView);
@@ -118,36 +118,33 @@ namespace Argent::Loader::Fbx
 		Traverse(fbxScene->GetRootNode(), sceneView);
 
 		std::vector<TmpFbxMesh> tmpMeshes;
-		std::unordered_map<uint64_t, Component::Renderer::NoneBoneMeshRenderer::Material> materials;
+		std::unordered_map<uint64_t, Component::Renderer::ArStaticMeshRenderer::Material> materials;
 
 		FetchMesh(fbxScene, sceneView, tmpMeshes);
 		FetchMaterial(fbxScene, sceneView, filePath, materials);
+
 		
 		std::vector<ArAnimation> animationClips;
 
-		std::vector<Argent::Component::Renderer::NoneBoneMeshRenderer::Mesh> meshes;
+		std::vector<std::shared_ptr<Mesh::StaticMesh::ArStaticMesh>> meshes;
 		meshes.resize(tmpMeshes.size());
 		for(size_t i = 0; i < meshes.size(); ++i)
 		{
 			size_t size = tmpMeshes.at(i).vertices.size();
-			std::vector<Component::Renderer::NoneBoneMeshRenderer::Vertex> vertices(size);
+			std::vector<Argent::Mesh::StaticMesh::Vertex> vertices(size);
 			for(size_t j = 0; j < vertices.size(); ++j)
 			{
 				vertices.at(j).position = tmpMeshes.at(i).vertices.at(j).position;
 				vertices.at(j).normal = tmpMeshes.at(i).vertices.at(j).normal;
 				vertices.at(j).texcoord = tmpMeshes.at(i).vertices.at(j).texcoord;
 			}
-
-			meshes.at(i).vertices = vertices;
-			meshes.at(i).indices = tmpMeshes.at(i).indices;
-			meshes.at(i).subsets = reinterpret_cast<std::vector<Component::Renderer::NoneBoneMeshRenderer::Mesh::Subset>&&>(tmpMeshes.at(i).subsets);
+			meshes.at(i) = std::make_shared<Mesh::StaticMesh::ArStaticMesh>(vertices, tmpMeshes.at(i).indices, reinterpret_cast<std::vector<Argent::Mesh::StaticMesh::ArStaticMesh::Subset>&>(tmpMeshes.at(i).subsets));
 		}
 
-		Component::Renderer::NoneBoneMeshRenderer* ret = new Component::Renderer::NoneBoneMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(),
+		Component::Renderer::ArStaticMeshRenderer* ret = new Component::Renderer::ArStaticMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(),
 		filePath, meshes, materials);
 
 		return ret;
-		return nullptr;
 	}
 
 
@@ -229,7 +226,7 @@ namespace Argent::Loader::Fbx
 							vertex.boneIndices[influenceIndex] = influencesPerControlPoint.at(influenceIndex).boneIndex;
 						}
 					}*/
-
+					
 					if (fbxMesh->GetElementNormalCount() > 0)
 					{
 						FbxVector4 normal;
@@ -254,10 +251,9 @@ namespace Argent::Loader::Fbx
 				}
 			}
 		}
-		meshes;
 	}
 
-	void FetchSurfaceMaterial(const FbxSurfaceMaterial* surfaceMaterial, const char* pName, const char* fbxFilePath, Component::Renderer::NoneBoneMeshRenderer::Material& material)
+	void FetchSurfaceMaterial(const FbxSurfaceMaterial* surfaceMaterial, const char* pName, const char* fbxFilePath, Component::Renderer::ArStaticMeshRenderer::Material& material)
 	{
 		const FbxProperty fbxProp = surfaceMaterial->FindProperty(pName);
 
@@ -278,7 +274,7 @@ namespace Argent::Loader::Fbx
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
 
-				material.CreateTexture(path.generic_string().c_str(), Component::Renderer::NoneBoneMeshRenderer::Material::TextureType::Albedo);
+				material.CreateTexture(path.generic_string().c_str(), Component::Renderer::ArStaticMeshRenderer::Material::TextureType::Diffuse);
 			}
 			if(PName == FbxSurfaceMaterial::sSpecular) 
 			{
@@ -304,12 +300,12 @@ namespace Argent::Loader::Fbx
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
 
-				material.CreateTexture(path.generic_string().c_str(), Component::Renderer::NoneBoneMeshRenderer::Material::TextureType::Normal);
+				material.CreateTexture(path.generic_string().c_str(), Component::Renderer::ArStaticMeshRenderer::Material::TextureType::Normal);
 			}
 		}
 	}
 
-	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Component::Renderer::NoneBoneMeshRenderer::Material>& materials)
+	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Component::Renderer::ArStaticMeshRenderer::Material>& materials)
 	{
 		const size_t nodeCount{ sceneView.nodes.size() };
 		for (size_t nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
@@ -324,7 +320,7 @@ namespace Argent::Loader::Fbx
 				{
 					const FbxSurfaceMaterial* fbxMaterial{ fbxNode->GetMaterial(materialIndex) };
 
-					Component::Renderer::NoneBoneMeshRenderer::Material material;
+					Component::Renderer::ArStaticMeshRenderer::Material material;
 					material.name = fbxMaterial->GetName();
 					UINT64 materialUniqueId = fbxMaterial->GetUniqueID();
 

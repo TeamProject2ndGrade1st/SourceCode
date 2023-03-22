@@ -9,6 +9,6 @@ VS_OUT main(VSIN vin)
 
 	vout.worldNormal = normalize(mul(vin.normal, world));
 	vout.texcoord = vin.texcoord;
-	vout.color = materialColor;
+	vout.color = color;
 	return vout;
 }

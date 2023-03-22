@@ -1,5 +1,6 @@
 #pragma once
 #include "ArComponent.h"
+#include "ArColor.h"
 
 class Light :
     public Argent::Component::ArComponent
@@ -16,10 +17,10 @@ public:
 #ifdef _DEBUG
     void DrawDebug() override;
 #endif
-    [[nodiscard]] Color GetColor() const { return color; }
+    [[nodiscard]] Argent::ArColor GetColor() const { return color; }
 
 
 protected:
-    Color color;
+    Argent::ArColor color;
 };
 

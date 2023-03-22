@@ -17,7 +17,7 @@ namespace Argent::Material
 		~ArBaseMaterial() = default;
 
 	protected:
-		Color color;
+		ArColor color;
 		std::vector<std::shared_ptr<Texture::ArTexture>> textures;
 	};
 
@@ -37,18 +37,10 @@ namespace Argent::Material
 #endif
 
 		std::vector<std::shared_ptr<Texture::ArTexture>> textures;
-		Color color;
+		ArColor color;
 		std::string name;
 		DirectX::XMFLOAT4 ka{ 0.2f, 0.2f, 0.2f, 1.0f };
 		DirectX::XMFLOAT4 kd{ 0.2f, 0.2f, 0.2f, 1.0f };
 		DirectX::XMFLOAT4 ks{ 0.2f, 0.2f, 0.2f, 1.0f };
 	};
-
-	namespace SkinnedMesh
-	{
-		class ArStandardMaterial
-		{
-			
-		};
-	}
 }

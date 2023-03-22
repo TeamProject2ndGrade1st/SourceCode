@@ -17,36 +17,25 @@ namespace Argent::Mesh::StaticMesh
 		public ArMesh<Vertex>
 	{
 	public:
-		struct Constant
+		struct Subset
 		{
-			DirectX::XMFLOAT4X4 world;
-			DirectX::XMFLOAT4 materialColor;
+			uint64_t materialUniqueId{};
+			uint32_t startIndexLocation{};
+			uint32_t indexCount{};
 		};
 public:
 		
 		ArStaticMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
-
-		void UpdateConstant(const DirectX::XMFLOAT4X4& world, const DirectX::XMFLOAT4& color) const
-		{
-			Constant tmp{};
-			tmp.world = world;
-			tmp.materialColor = color;
-			UpdateConstant(tmp);
-		}
-		void UpdateConstant(const Constant& constant) const
-		{
-			constantBuffer->UpdateConstantBuffer(constant);
-			//constantMap->world = constant.world;
-			//constantMap->materialColor = constant.materialColor;
-		}
+		ArStaticMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices,
+			const std::vector<Subset>& subsets);
 
 		void Render(ID3D12GraphicsCommandList* cmdList) override;
 
 		void Render(ID3D12GraphicsCommandList* cmdList, const DirectX::XMFLOAT4X4& world, const DirectX::XMFLOAT4& color,
 			UINT instanceCount = 1, UINT indexOffset = 0, INT vertexOffset = 0, UINT instanceOffset = 0) const;
 
-	private:
-		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
+	public:
+		std::vector<Subset> subsets;
 	};
 
 }

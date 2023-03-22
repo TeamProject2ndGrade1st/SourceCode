@@ -14,13 +14,12 @@ namespace Argent::Dx12
 		ArConstantBuffer(ID3D12Device* device, Descriptor::ArDescriptor* descriptor,const T* fillValue = nullptr);
 		~ArConstantBuffer() = default;
 
-		void UpdateConstantBuffer(const T& t) const
+		void UpdateConstantBuffer(const T& t)
 		{
+			constantBuffer->Map(0, nullptr, reinterpret_cast<void**>(&map));
 			*map = t;
-		}
-		void UpdateConstantBuffer(const T* t) const
-		{
-			*map = *t;
+			//*map = t;
+			constantBuffer->Unmap(0, nullptr);
 		}
 
 		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT rootParameterIndex) const
@@ -65,4 +64,3 @@ namespace Argent::Dx12
 
 	}
 }
-

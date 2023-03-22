@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Argent\Source\Argent\Component\ArStaticMeshRenderer.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\ImguiCtrl.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -30,14 +29,13 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Argent\Component\ArComponent.cpp" />
     <ClCompile Include="Source\Argent\Component\ArEffectRenderer.cpp" />
-    <ClCompile Include="Source\Argent\Component\ArMeshRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\ArRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\ArSkinnedMeshRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\ArSpriteRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\ArAudioPlayer.cpp" />
     <ClCompile Include="Source\Argent\Component\Camera.cpp" />
     <ClCompile Include="Source\Argent\Component\Light.cpp" />
-    <ClCompile Include="Source\Argent\Component\NoneBoneMeshRenderer.cpp" />
+    <ClCompile Include="Source\Argent\Component\ArStaticMeshRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\Transform.cpp" />
     <ClCompile Include="Source\Argent\Core\ArApp.cpp" />
     <ClCompile Include="Source\Argent\Core\ArRandom.cpp" />
@@ -74,7 +72,6 @@
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Argent\Source\Argent\Component\ArStaticMeshRenderer.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\ImguiCtrl.h" />
@@ -87,14 +84,13 @@
     <ClInclude Include="Source\Argent\Component\ArColor.h" />
     <ClInclude Include="Source\Argent\Component\ArComponent.h" />
     <ClInclude Include="Source\Argent\Component\ArEffectRenderer.h" />
-    <ClInclude Include="Source\Argent\Component\ArMeshRenderer.h" />
     <ClInclude Include="Source\Argent\Component\ArRenderer.h" />
     <ClInclude Include="Source\Argent\Component\ArSkinnedMeshRenderer.h" />
     <ClInclude Include="Source\Argent\Component\ArSpriteRenderer.h" />
     <ClInclude Include="Source\Argent\Component\ArAudioPlayer.h" />
     <ClInclude Include="Source\Argent\Component\Camera.h" />
     <ClInclude Include="Source\Argent\Component\Light.h" />
-    <ClInclude Include="Source\Argent\Component\NoneBoneMeshRenderer.h" />
+    <ClInclude Include="Source\Argent\Component\ArStaticMeshRenderer.h" />
     <ClInclude Include="Source\Argent\Component\Transform.h" />
     <ClInclude Include="Source\Argent\Core\ArApp.h" />
     <ClInclude Include="Source\Argent\Core\ArRandom.h" />
