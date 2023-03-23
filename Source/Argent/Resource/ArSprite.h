@@ -3,7 +3,7 @@
 #include "ArMesh.h"
 
 
-namespace Argent::Mesh
+namespace Argent::Resource::Mesh
 {
 	namespace Sprite
 	{

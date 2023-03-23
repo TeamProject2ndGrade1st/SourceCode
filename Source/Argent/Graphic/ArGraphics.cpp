@@ -165,6 +165,12 @@ namespace Argent::Graphics
 		
 		curFrameResource->GetCmdList()->RSSetViewports(1, &viewport);
 		curFrameResource->GetCmdList()->RSSetScissorRects(1, &scissorRect);
+
+		ID3D12DescriptorHeap* setHeap[]
+		{
+			srvCbvHeap->GetHeapPointer(),
+		};
+		curFrameResource->GetCmdList()->SetDescriptorHeaps(_countof(setHeap), setHeap);
 	}
 		
 	void ArGraphics::End()

@@ -12,7 +12,7 @@ namespace Argent::Component::Renderer
 		textures[static_cast<int>(type)] = std::reinterpret_pointer_cast<Argent::Texture::ArTexture>(Argent::Resource::ArResourceManager::Instance().LoadTexture(filePath));
 	}
 
-	ArStaticMeshRenderer::ArStaticMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<std::shared_ptr<Mesh::StaticMesh::ArStaticMesh>> meshes,
+	ArStaticMeshRenderer::ArStaticMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes,
 		std::unordered_map<uint64_t, Material>& materials):
 		ArRenderer("StaticMeshRenderer")
 	{
@@ -41,7 +41,7 @@ namespace Argent::Component::Renderer
 			constantBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbObject));
 
 			mesh->SetOnCommandList(cmdList);
-			for (const Mesh::StaticMesh::ArStaticMesh::Subset& subset : mesh->subsets)
+			for (const Resource::Mesh::ArStaticMesh::Subset& subset : mesh->subsets)
 			{
 				const Material& material{ materials.at(subset.materialUniqueId) };
 				Material::Constant tmpConstant;
@@ -173,7 +173,7 @@ namespace Argent::Component::Renderer
 
 		for (std::unordered_map<uint64_t, Material>::iterator it = materials.begin();
 			it != materials.end(); ++it)
-		{
+{
 			it->second.constantBuffer =
 				std::make_unique<Argent::Dx12::ArConstantBuffer<Material::Constant>>(
 					device,

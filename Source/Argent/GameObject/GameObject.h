@@ -92,6 +92,12 @@ public:
 		}
 	}
 
+//<<<<<<< HEAD
+//=======
+	//static GameObject* Cube(const std::string& name = "Cube");
+	//static GameObject* Sphere(const std::string& name = "Sphere");
+	//static GameObject* Capsule(const std::string& name = "Capsule");
+//>>>>>>> GinNote
 	static GameObject* SceneCamera(const std::string& name = "Sub Camera", bool setSceneCamera = false);
 
 protected:

@@ -32,20 +32,7 @@ namespace Argent::Resource
 		void Begin();
 
 		bool FindTexture(const wchar_t* filepath, ID3D12Resource** ppResource);
-		[[nodiscard]] Argent::Mesh::StaticMesh::ArStaticMesh* GetMeshData(const std::string& meshName) const;
 		//[[nodiscard]] const MeshData* AddMeshData(const std::string& meshName, std::unique_ptr<MeshData> mesh);
-
-		void AddMesh(std::string name, std::unique_ptr<Mesh::StaticMesh::ArStaticMesh> mesh)
-		{
-			for(const auto& data : meshData)
-			{
-				if(data.first == name)
-				{
-					return;
-				}
-			}
-			meshData[name].swap(mesh);
-		}
 
 		/**
 		 * \brief リソース管理用ユニークidを生み出す
@@ -85,11 +72,12 @@ namespace Argent::Resource
 				}
 			}
 
+
 			return nullptr;
 		}
 
 		std::unordered_map<std::wstring, Microsoft::WRL::ComPtr<ID3D12Resource>> textures;
-		std::unordered_map<std::string, std::unique_ptr<Argent::Mesh::StaticMesh::ArStaticMesh>> meshData;
+		std::unordered_map<std::string, std::unique_ptr<Argent::Resource::Mesh::ArStaticMesh>> meshData;
 
 		std::unordered_map<uint64_t, std::weak_ptr<Argent::Resource::ArResource>> resources;
 		//std::unordered_map<uint64_t, std::weak_ptr<Argent::Texture::ArTexture>> textures;

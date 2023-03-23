@@ -4,7 +4,7 @@
 #include <DirectXMath.h>
 #include "../Graphic/Dx12/ArConstantBuffer.h"
 
-namespace Argent::Mesh::StaticMesh
+namespace Argent::Resource::Mesh
 {
 	struct Vertex
 	{
@@ -24,18 +24,22 @@ namespace Argent::Mesh::StaticMesh
 			uint32_t indexCount{};
 		};
 public:
-		
 		ArStaticMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 		ArStaticMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices,
 			const std::vector<Subset>& subsets);
 
 		void Render(ID3D12GraphicsCommandList* cmdList) override;
 
+//<<<<<<< HEAD
 		void Render(ID3D12GraphicsCommandList* cmdList, const DirectX::XMFLOAT4X4& world, const DirectX::XMFLOAT4& color,
 			UINT instanceCount = 1, UINT indexOffset = 0, INT vertexOffset = 0, UINT instanceOffset = 0) const;
 
 	public:
 		std::vector<Subset> subsets;
+//=======
+//	private:
+//		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
+//>>>>>>> GinNote
 	};
 
 }

@@ -3,7 +3,7 @@
 
 
 
-namespace Argent::Mesh::StaticMesh
+namespace Argent::Resource::Mesh
 {
 	ArStaticMesh::ArStaticMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
 	{
@@ -27,7 +27,8 @@ namespace Argent::Mesh::StaticMesh
 
 	void ArStaticMesh::Render(ID3D12GraphicsCommandList* cmdList)
 	{
-		ArMesh<Vertex>::Render(cmdList);
+//<<<<<<< HEAD
+	Mesh::ArMesh<Vertex>::Render(cmdList);
 
 	}
 
@@ -35,7 +36,20 @@ namespace Argent::Mesh::StaticMesh
 	                          const DirectX::XMFLOAT4& color, UINT instanceCount, UINT indexOffset, INT vertexOffset,
 	                          UINT instanceOffset) const
 	{
-		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		ArMesh::SetOnCommandList(cmdList);
+//=======
+	//	constantBuffer->SetOnCommandList(cmdList, 1);
+//>>>>>>> GinNote
+		//cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		//ArMesh<Vertex>::Render(cmdList);
 	}
+
+	//void ArStaticMesh::Render(ID3D12GraphicsCommandList* cmdList, const DirectX::XMFLOAT4X4& world,
+	//                          const DirectX::XMFLOAT4& color, UINT instanceCount, UINT indexOffset, INT vertexOffset,
+	//                          UINT instanceOffset) const
+	//{
+	//	UpdateConstant(world, color);
+	//	constantBuffer->SetOnCommandList(cmdList, 1);
+	//	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//	ArMesh::SetOnCommandList(cmdList);
+	//}
 }

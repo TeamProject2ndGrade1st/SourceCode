@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <d3d12.h>
 #include <wrl.h>
 #include <DirectXMath.h>
@@ -13,12 +12,14 @@
 #include "ArRenderer.h"
 #include "../Graphic/Dx12/ArConstantBuffer.h"
 #include "../Resource/ArTexture.h"
+#include "ArRenderer.h"
 #include "../Resource/ArStaticMesh.h"
 
 namespace Argent::Component::Renderer
 {
 	class ArStaticMeshRenderer:
-		public Argent::Component::Renderer::ArRenderer
+//<<<<<<< HEAD
+		public ArRenderer
 	{
 	public:
 		enum class RootParameterIndex
@@ -88,7 +89,7 @@ namespace Argent::Component::Renderer
 		};
 
 	public:
-		ArStaticMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<std::shared_ptr<Mesh::StaticMesh::ArStaticMesh>> meshes,
+		ArStaticMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes,
 			std::unordered_map<uint64_t, Material>& materials);
 		~ArStaticMeshRenderer() override = default;
 
@@ -111,7 +112,7 @@ namespace Argent::Component::Renderer
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> constantBuffer;
 
 	protected:
-		std::vector<std::shared_ptr<Mesh::StaticMesh::ArStaticMesh>> meshes;
+		std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes;
 		std::unordered_map<uint64_t, Material> materials;
 		
 	public:
@@ -119,3 +120,17 @@ namespace Argent::Component::Renderer
 }
 
 
+//=======
+//		public ArRenderer
+//	{
+//	public:
+//		ArStaticMeshRenderer();
+//		~ArStaticMeshRenderer() override = default;
+//
+//		void Render() const override;
+//
+//	private:
+//		std::shared_ptr<Argent::Resource::Mesh::ArStaticMesh> meshData;
+//	};
+//}
+//>>>>>>> GinNote

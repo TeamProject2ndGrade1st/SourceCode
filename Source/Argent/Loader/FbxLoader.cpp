@@ -126,19 +126,19 @@ namespace Argent::Loader::Fbx
 		
 		std::vector<ArAnimation> animationClips;
 
-		std::vector<std::shared_ptr<Mesh::StaticMesh::ArStaticMesh>> meshes;
+		std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes;
 		meshes.resize(tmpMeshes.size());
 		for(size_t i = 0; i < meshes.size(); ++i)
 		{
 			size_t size = tmpMeshes.at(i).vertices.size();
-			std::vector<Argent::Mesh::StaticMesh::Vertex> vertices(size);
+			std::vector<Argent::Resource::Mesh::Vertex> vertices(size);
 			for(size_t j = 0; j < vertices.size(); ++j)
 			{
 				vertices.at(j).position = tmpMeshes.at(i).vertices.at(j).position;
 				vertices.at(j).normal = tmpMeshes.at(i).vertices.at(j).normal;
 				vertices.at(j).texcoord = tmpMeshes.at(i).vertices.at(j).texcoord;
 			}
-			meshes.at(i) = std::make_shared<Mesh::StaticMesh::ArStaticMesh>(vertices, tmpMeshes.at(i).indices, reinterpret_cast<std::vector<Argent::Mesh::StaticMesh::ArStaticMesh::Subset>&>(tmpMeshes.at(i).subsets));
+			meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices, tmpMeshes.at(i).indices, reinterpret_cast<std::vector<Argent::Resource::Mesh::ArStaticMesh::Subset>&>(tmpMeshes.at(i).subsets));
 		}
 
 		Component::Renderer::ArStaticMeshRenderer* ret = new Component::Renderer::ArStaticMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(),

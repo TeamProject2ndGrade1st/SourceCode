@@ -1,34 +1,40 @@
-#include "ArSpriteRenderer.h"
+#include "ArMeshRenderer.h"
 #include "../Graphic/ArGraphics.h"
-#include "Transform.h"
 #include "../GameObject/GameObject.h"
+#include "Transform.h"
+#include "../Resource/ArStaticMesh.h"
+#include "../Other/ArHelper.h"
 #include "../Resource/ArMaterial.h"
+#include "../Resource/ArStaticMesh.h"
 
 namespace Argent::Component::Renderer
 {
-	ArSpriteRenderer::ArSpriteRenderer(const char* filePath):
-		ArRenderer("Sprite Renderer")
+	ArMeshRenderer::ArMeshRenderer(Argent::Resource::Mesh::ArStaticMesh* data):
+		ArRenderer("Mesh Renderer")
+	,	mesh(data)
 	{
-		sprite = std::make_unique<Argent::Resource::Mesh::Sprite::ArSprite>();
-		materials.emplace_back(std::make_shared<Material::ArMaterial>(filePath));
-
+		ID3D12Device* device = Argent::Graphics::ArGraphics::Instance()->GetDevice();
+		HRESULT hr{ S_OK };
 
 		D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineStateDesc{};
 		
-		
-		D3D12_DESCRIPTOR_RANGE range[1]{};
+		D3D12_DESCRIPTOR_RANGE range[3]{};
 
-		range[0] = Helper::Dx12::DescriptorRange::Generate(0, 1, D3D12_DESCRIPTOR_RANGE_TYPE_SRV);
+		range[0] = Helper::Dx12::DescriptorRange::Generate(0, 1, D3D12_DESCRIPTOR_RANGE_TYPE_CBV);
+		range[1] = Helper::Dx12::DescriptorRange::Generate(1, 1, D3D12_DESCRIPTOR_RANGE_TYPE_CBV);
+		range[2] = Helper::Dx12::DescriptorRange::Generate(0, 1, D3D12_DESCRIPTOR_RANGE_TYPE_SRV);
 																															 
-		D3D12_ROOT_PARAMETER rootParam[1]{};
-		rootParam[0] = Helper::Dx12::RootParameter::Generate(1, &range[0], D3D12_SHADER_VISIBILITY_PIXEL);
+		D3D12_ROOT_PARAMETER rootParam[3]{};
+		rootParam[0] = Helper::Dx12::RootParameter::Generate(1, &range[0], D3D12_SHADER_VISIBILITY_ALL);
+		rootParam[1] = Helper::Dx12::RootParameter::Generate(1, &range[1], D3D12_SHADER_VISIBILITY_ALL);
+		rootParam[2] = Helper::Dx12::RootParameter::Generate(1, &range[2], D3D12_SHADER_VISIBILITY_ALL);
 																														  
-		D3D12_STATIC_SAMPLER_DESC samplerDesc = Helper::Dx12::Sampler::GenerateSamplerDesc(Helper::Dx12::Sampler::FilterMode::fAnisotropic, Helper::Dx12::Sampler::WrapMode::wBorder);
+		D3D12_STATIC_SAMPLER_DESC samplerDesc = Helper::Dx12::Sampler::GenerateSamplerDesc(Helper::Dx12::Sampler::FilterMode::fPoint, Helper::Dx12::Sampler::WrapMode::wRepeat);
 
 
 		rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-		rootSigDesc.NumParameters = 1;
+		rootSigDesc.NumParameters = 3;
 		rootSigDesc.pParameters = rootParam;
 		rootSigDesc.NumStaticSamplers = 1;
 		rootSigDesc.pStaticSamplers = &samplerDesc;
@@ -42,10 +48,10 @@ namespace Argent::Component::Renderer
 		blendDesc.RenderTarget[0] = Helper::Dx12::Blend::GenerateRenderTargetBlendDesc(Helper::Dx12::Blend::BlendMode::bAlpha);
 
 		D3D12_INPUT_ELEMENT_DESC inputElementDesc[]
-		{ 
+		{
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("POSITION", DXGI_FORMAT_R32G32B32_FLOAT),
+			Helper::Dx12::InputElement::GenerateInputLayoutDesc("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT),
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT),
-			Helper::Dx12::InputElement::GenerateInputLayoutDesc("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT)
 		};
 
 		DXGI_SAMPLE_DESC sampleDesc{};
@@ -55,18 +61,13 @@ namespace Argent::Component::Renderer
 
 		D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 		depthStencilDesc.DepthEnable = TRUE;
-		depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_ALWAYS;
 		depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+		depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 
-		D3D12_RASTERIZER_DESC rasterizerDesc{};
-		rasterizerDesc.MultisampleEnable = FALSE;
-		rasterizerDesc.DepthClipEnable = FALSE;
-		rasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
-		rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 
 		pipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 
-		pipelineStateDesc.RasterizerState = rasterizerDesc;
+		pipelineStateDesc.RasterizerState = Helper::Dx12::Rasterizer::Generate();
 		pipelineStateDesc.BlendState = blendDesc;
 		pipelineStateDesc.InputLayout.NumElements = _countof(inputElementDesc);
 		pipelineStateDesc.InputLayout.pInputElementDescs = inputElementDesc;
@@ -80,65 +81,58 @@ namespace Argent::Component::Renderer
 		
 
 		renderingPipeline = std::make_shared<Graphics::RenderingPipeline::ArBaseRenderingPipeline>(
-			"Resources/Shader/SpriteVertex.cso", 
-			"Resources/Shader/SpritePixel.cso",
+			"./Resources/Shader/GeometricPrimitiveVertex.cso",
+			"./Resources/Shader/GeometricPrimitivePixel.cso",
 			&rootSigDesc,
-			&pipelineStateDesc);
-	}
+			&pipelineStateDesc
+			);
+		materials.at(0) = std::make_unique<Argent::Material::ArMaterial>("");
+	} 
 
-
-	ArSpriteRenderer::~ArSpriteRenderer()
-	{
-
-	}
-
-	void ArSpriteRenderer::Initialize()
+	void ArMeshRenderer::Initialize()
 	{
 		ArRenderer::Initialize();
 	}
 
-	void ArSpriteRenderer::Finalize()
+	void ArMeshRenderer::Finalize()
 	{
 		ArRenderer::Finalize();
 	}
 
-	void ArSpriteRenderer::Begin()
+	void ArMeshRenderer::Begin()
 	{
 		ArRenderer::Begin();
 	}
 
-	void ArSpriteRenderer::End()
+	void ArMeshRenderer::End()
 	{
 		ArRenderer::End();
 	}
 
-	void ArSpriteRenderer::Update()
+	void ArMeshRenderer::Update()
 	{
-		ArRenderer::Update();
-		const Transform* transform = GetOwner()->GetTransform();
 
-		//todo Center‚Ì’l‚ð‚Ç‚Á‚©‚Å’è‹`‚·‚é‚±‚Æ
-		sprite->UpdateVertexMap(transform->GetPosition(), transform->GetScale(), DirectX::XMFLOAT2(), transform->GetRotation().z, materials.at(0)->textures.at(0)->GetWidth(), materials.at(0)->textures.at(0)->GetHeight(),
-			materials.at(0)->color.color);
 	}
 
-	void ArSpriteRenderer::Render(ID3D12GraphicsCommandList* cmdList) const
+	void ArMeshRenderer::Render() const
 	{
-		ArRenderer::Render(cmdList);
-		materials.at(0)->Render(cmdList, 0);
-		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-		sprite->Render(cmdList);
+		ArRenderer::Render();
+		Argent::Graphics::ArGraphics::Instance()->SetSceneConstant();
+		ID3D12GraphicsCommandList* cmdList = Argent::Graphics::ArGraphics::Instance()->GetCommandList();
+
+		if(mesh)
+		mesh->Render(cmdList);
 	}
 
 #ifdef _DEBUG
-	void ArSpriteRenderer::DrawDebug()
+	void ArMeshRenderer::DrawDebug()
 	{
 		if(ImGui::TreeNode(GetName().c_str()))
 		{
-			ArRenderer::DrawDebug();
-			materials.at(0)->DrawDebug();
+
 			ImGui::TreePop();
 		}
+		ArRenderer::DrawDebug();
 	}
 #endif
 }
