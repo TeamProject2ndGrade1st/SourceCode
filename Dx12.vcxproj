@@ -52,6 +52,7 @@
     <ClCompile Include="Source\Argent\Graphic\FrameBuffer.cpp" />
     <ClCompile Include="Source\Argent\Input\Keyboard.cpp" />
     <ClCompile Include="Source\Argent\Loader\FbxLoader.cpp" />
+    <ClCompile Include="Source\Argent\Math\MathHelper.cpp" />
     <ClCompile Include="Source\Argent\Other\ArHelper.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArAudio.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArAudioManager.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="Source\Argent\Graphic\FrameBuffer.h" />
     <ClInclude Include="Source\Argent\Input\Keyboard.h" />
     <ClInclude Include="Source\Argent\Loader\FbxLoader.h" />
+    <ClInclude Include="Source\Argent\Math\MathHelper.h" />
     <ClInclude Include="Source\Argent\Other\ArHelper.h" />
     <ClInclude Include="Source\Argent\Other\Misc.h" />
     <ClInclude Include="Source\Argent\Resource\ArAudio.h" />

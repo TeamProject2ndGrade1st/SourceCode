@@ -22,8 +22,8 @@ namespace Argent
 				ImGuiColorEditFlags_AlphaBar);
 		}
 
-		DirectX::XMFLOAT4 GetColor() const { return color;  }
 #endif
+		DirectX::XMFLOAT4 GetColor() const { return color;  }
 		DirectX::XMFLOAT4 color;
 	};
 }
