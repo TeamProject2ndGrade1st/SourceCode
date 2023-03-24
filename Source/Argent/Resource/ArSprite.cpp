@@ -11,6 +11,7 @@ namespace Argent::Resource::Mesh::Sprite
 		HRESULT hr{ S_OK };
 
 		vertices.resize(4);
+
 		vertices.at(0).position = { -1.f,  1.f, 0.0f };//lt
 		vertices.at(1).position = {  1.f,  1.f, 0.0f };//rt
 		vertices.at(2).position = { -1.f, -1.f, 0.0f };//lb
