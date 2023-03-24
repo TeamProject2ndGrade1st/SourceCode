@@ -5,17 +5,6 @@
 //todo
 #include "../Component/ArStaticMeshRenderer.h"
 
-namespace Argent
-{
-	namespace Component
-	{
-		namespace Renderer
-		{
-			struct BoneInfluence;
-		}
-	}
-}
-
 namespace Argent::Loader::Fbx
 {
 	static constexpr int MaxBoneInfluences{ 256 };
@@ -43,6 +32,7 @@ namespace Argent::Loader::Fbx
 			}
 			return -1;
 		}
+		
 	};
 
 	/**
@@ -270,7 +260,7 @@ namespace Argent::Loader::Fbx
 
 				const FbxFileTexture* fbxTexture{ fbxProp.GetSrcObject<FbxFileTexture>() };
 				const char* tmpFilePath = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
-
+				tmpFilePath = "lambert1_Base_color.png";
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
 
@@ -297,6 +287,7 @@ namespace Argent::Loader::Fbx
 				const FbxFileTexture* fbxTexture{ fbxProp.GetSrcObject<FbxFileTexture>() };
 				const char* tmpFilePath = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
 
+				tmpFilePath = "lambert1_Normal_OpenGL.png";
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
 

@@ -134,6 +134,10 @@ namespace Argent::Component::Renderer
 			DirectX::XMFLOAT3 position;
 			DirectX::XMFLOAT3 normal;
 			DirectX::XMFLOAT2 texcoord;
+		};
+
+		struct VertexBone
+		{
 			float boneWeights[MaxBoneInfluences]{1, 0, 0, 0};
 			uint32_t boneIndices[MaxBoneInfluences];
 		};
@@ -182,14 +186,15 @@ namespace Argent::Component::Renderer
 			};
 		
 			std::vector<Vertex> vertices;
+			std::vector<VertexBone> vertexBones;
 			std::vector<uint32_t> indices;
 
 		//private:
-			Microsoft::WRL::ComPtr<ID3D12Resource> vertexBuffer;
+			Microsoft::WRL::ComPtr<ID3D12Resource> vertexBuffer[2];
 			Microsoft::WRL::ComPtr<ID3D12Resource> indexBuffer;
 
 			std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
-			D3D12_VERTEX_BUFFER_VIEW vertexView{};
+			D3D12_VERTEX_BUFFER_VIEW vertexView[2]{};
 			D3D12_INDEX_BUFFER_VIEW indexView{};
 
 			Skeleton bindPose;

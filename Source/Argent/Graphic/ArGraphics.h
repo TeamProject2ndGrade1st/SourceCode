@@ -4,9 +4,8 @@
 #include <dxgi1_6.h>
 #include <wrl.h>
 #include <memory>
-#include <string>
 
-
+ 
 //todo ƒJƒƒ‰‚Æ‚©ƒ‰ƒCƒg‚Æ‚©‚ğˆø”‚É‚µ‚È‚¢‚æ‚¤‚É
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")

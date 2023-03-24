@@ -10,7 +10,6 @@
 
 namespace Argent::Graphics
 {
-
 	ArGraphics* ArGraphics::instance =  nullptr;
 
 	ArGraphics::ArGraphics(HWND hWnd):
@@ -30,9 +29,9 @@ namespace Argent::Graphics
 		GetClientRect(hWnd, &rc);
 		windowWidth = static_cast<float>(rc.right - rc.left);
 		windowHeight = static_cast<float>(rc.bottom - rc.top);
-		clearColor[0] = 0.0f;
-		clearColor[1] = 0.0f;
-		clearColor[2] = 0.0f;
+		clearColor[0] = 0.7f;
+		clearColor[1] = 0.7f;
+		clearColor[2] = 0.7f;
 		clearColor[3] = 1.0f;
 		
 #ifdef _DEBUG
@@ -181,7 +180,6 @@ namespace Argent::Graphics
 		ID3D12CommandList* cmdlists[] { curFrameResource->GetCmdList() };
 		renderingQueue->cmdQueue->ExecuteCommandLists(1, cmdlists);
 		renderingQueue->SetFence(1);
-		
 		mSwapChain->Present(1, 0);
 	}
 
@@ -311,7 +309,7 @@ namespace Argent::Graphics
 		                                     static_cast<UINT>(sizeof(unsigned int) * data.size()));
 		return hr;
 	}
-
+	 
 	HRESULT ArGraphics::CreateNoiseTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
@@ -460,31 +458,4 @@ namespace Argent::Graphics
 
 		return hr;
 	}
-
-
-	//HRESULT ArGraphics::CreateSwapChain(HWND hWnd)
-	//{
-	//	HRESULT hr{ S_OK };
-	//	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
-	//	Microsoft::WRL::ComPtr<IDXGISwapChain1> tempSwapChain;
-	//	swapChainDesc.Width = static_cast<UINT>(windowWidth);
-	//	swapChainDesc.Height = static_cast<UINT>(windowHeight);
-	//	swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	//	swapChainDesc.Stereo = FALSE;
-	//	swapChainDesc.SampleDesc.Count = 1;
-	//	swapChainDesc.SampleDesc.Quality = 0;
-	//	swapChainDesc.BufferUsage = DXGI_USAGE_BACK_BUFFER;
-	//	swapChainDesc.BufferCount = NumBackBuffers;
-	//	swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
-	//	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-	//	swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
-	//	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-	//	hr = mFactory->CreateSwapChainForHwnd(renderingQueue->cmdQueue.Get(), hWnd, &swapChainDesc, 
-	//		nullptr, nullptr, tempSwapChain.ReleaseAndGetAddressOf());
-	//	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
-	//	hr = tempSwapChain->QueryInterface(IID_PPV_ARGS(mSwapChain.GetAddressOf()));
-	//	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
-	//
-	//	return hr;
-	//}
 }

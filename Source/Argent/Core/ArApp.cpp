@@ -8,12 +8,14 @@ namespace Argent::App
 {
 	ArApp::ArApp(HINSTANCE hInstance, LONG width, LONG height, const char* appName, bool isFullScreen)
 	{
-		if(isExistOtherInstance) _ASSERT_EXPR(FALSE, L"Instance is already existed");
-		isExistOtherInstance = true;
+		static bool isInstantiated{ FALSE };
+		if(isInstantiated)_ASSERT_EXPR(FALSE, L"Instance is already existed");
 
 		arWindow = std::make_unique<Window::ArWindow>(hInstance, width, height);
 		arGfx = std::make_unique<Graphics::ArGraphics>(arWindow->GetHandle());
 		effectManager = std::make_unique<Argent::Resource::Effect::ArEffectManager>(arGfx->GetDevice(), arGfx->GetCommandQueue(), arGfx->GetNumBackBuffers());
+
+		isInstantiated = true;
 	}
 
 	void ArApp::Initialize() const

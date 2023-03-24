@@ -35,7 +35,6 @@ namespace Argent
 			void Initialize() const;
 
 		private:
-			bool isExistOtherInstance{ FALSE };	//ArgentAppのInstance数をカウント　> 1ならばアサート
 			std::unique_ptr<Argent::Graphics::ArGraphics> arGfx{};
 			std::unique_ptr<Argent::Window::ArWindow> arWindow{};
 			std::unique_ptr<Argent::Resource::Effect::ArEffectManager> effectManager{};
