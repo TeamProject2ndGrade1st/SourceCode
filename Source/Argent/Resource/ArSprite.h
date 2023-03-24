@@ -25,7 +25,7 @@ namespace Argent::Resource::Mesh
 
 			void Render(ID3D12GraphicsCommandList* cmdList) override
 			{
-				SetOnCommandList(cmdList);
+				SetOnCommandList(cmdList, 0, 1);
 				DrawCall(cmdList, static_cast<UINT>(indices.size()));
 			}
 			/**
