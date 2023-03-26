@@ -17,9 +17,9 @@ namespace Argent::Dx12
 		const ArVertexBuffer& operator=(const ArVertexBuffer&) = delete;
 		const ArVertexBuffer& operator=(const ArVertexBuffer&&) = delete;
 
-		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT startSlot, UINT numViews) const
+		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT startSlot) const
 		{
-			cmdList->IASetVertexBuffers(startSlot, numViews, &view);
+			cmdList->IASetVertexBuffers(startSlot, 1, &view);
 		}
 
 	private:

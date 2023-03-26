@@ -19,7 +19,7 @@ namespace Argent::Resource::Mesh
 		ArMesh() = default;
 		virtual ~ArMesh() = default;
 
-		virtual void Render(ID3D12GraphicsCommandList* cmdList)
+		virtual void SetOnCommandList(ID3D12GraphicsCommandList* cmdList)
 		{
 			SetOnCommandList(cmdList);
 			DrawCall(cmdList, static_cast<UINT>(indices.size()));

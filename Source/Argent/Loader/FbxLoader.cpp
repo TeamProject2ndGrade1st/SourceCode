@@ -4,6 +4,7 @@
 
 //todo
 #include "../Component/ArStaticMeshRenderer.h"
+#include "../Resource/ArSkinnedMesh.h"
 
 namespace Argent::Loader::Fbx
 {
@@ -61,10 +62,10 @@ namespace Argent::Loader::Fbx
 	struct TmpFbxMesh
 	{
 		int64_t nodeIndex;
-		std::vector<SkinnedMeshVertex> vertices;
+		std::vector<Argent::Resource::Mesh::Vertex> vertices;
 		std::vector<uint32_t> indices;
 		std::vector<ArSubset> subsets;
-		ArSkeleton bindPose;
+		Argent::Resource::Mesh::Skeleton bindPose;
 		DirectX::XMFLOAT4X4 defaultGlobalTransform
 		{
 			1, 0, 0, 0,
@@ -76,7 +77,7 @@ namespace Argent::Loader::Fbx
 
 	void FetchMesh(FbxScene* fbxScene,const ArFbxScene& sceneView, std::vector<TmpFbxMesh>& meshes);
 	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Component::Renderer::ArStaticMeshRenderer::Material>& materials);
-	void FetchSkeleton(FbxMesh* fbxMesh, ArSkeleton& bindPose, const ArFbxScene& sceneView);
+	void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const ArFbxScene& sceneView);
 	void FetchAnimation(FbxScene* fbxScene, std::vector<ArAnimation>& animationClips, 
 			float samplingRate, const ArFbxScene& sceneView);
 	void UpdateAnimation(ArAnimation::ArKeyframe& keyframe, const ArFbxScene& sceneView);
@@ -107,12 +108,12 @@ namespace Argent::Loader::Fbx
 
 		Traverse(fbxScene->GetRootNode(), sceneView);
 
+
 		std::vector<TmpFbxMesh> tmpMeshes;
 		std::unordered_map<uint64_t, Component::Renderer::ArStaticMeshRenderer::Material> materials;
 
 		FetchMesh(fbxScene, sceneView, tmpMeshes);
 		FetchMaterial(fbxScene, sceneView, filePath, materials);
-
 		
 		std::vector<ArAnimation> animationClips;
 
@@ -120,18 +121,11 @@ namespace Argent::Loader::Fbx
 		meshes.resize(tmpMeshes.size());
 		for(size_t i = 0; i < meshes.size(); ++i)
 		{
-			size_t size = tmpMeshes.at(i).vertices.size();
-			std::vector<Argent::Resource::Mesh::Vertex> vertices(size);
-			for(size_t j = 0; j < vertices.size(); ++j)
-			{
-				vertices.at(j).position = tmpMeshes.at(i).vertices.at(j).position;
-				vertices.at(j).normal = tmpMeshes.at(i).vertices.at(j).normal;
-				vertices.at(j).texcoord = tmpMeshes.at(i).vertices.at(j).texcoord;
-			}
+			std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
 			meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices, tmpMeshes.at(i).indices, reinterpret_cast<std::vector<Argent::Resource::Mesh::ArStaticMesh::Subset>&>(tmpMeshes.at(i).subsets));
 		}
 
-		Component::Renderer::ArStaticMeshRenderer* ret = new Component::Renderer::ArStaticMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(),
+		auto* ret = new Component::Renderer::ArStaticMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(),
 		filePath, meshes, materials);
 
 		return ret;
@@ -199,7 +193,7 @@ namespace Argent::Loader::Fbx
 				{
 					const int vertexIndex{ polygonIndex * 3 + positionInPolygon };
 
-					SkinnedMeshVertex vertex;
+					Argent::Resource::Mesh::Vertex vertex;
 					const int polygonVertex{ fbxMesh->GetPolygonVertex(polygonIndex, positionInPolygon) };
 					vertex.position.x = static_cast<float>(controlPoints[polygonVertex][0]);
 					vertex.position.y = static_cast<float>(controlPoints[polygonVertex][1]);

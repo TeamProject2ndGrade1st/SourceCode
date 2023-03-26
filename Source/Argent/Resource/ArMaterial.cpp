@@ -30,5 +30,10 @@ namespace Argent::Material
 			ImGui::TreePop();
 		}
 	}
+
+	void ArMeshMaterial::CreateTexture(const char* filePath, TextureType type)
+	{
+		textures[static_cast<int>(type)] = std::reinterpret_pointer_cast<Argent::Texture::ArTexture>(Argent::Resource::ArResourceManager::Instance().LoadTexture(filePath));
+	}
 #endif
 }

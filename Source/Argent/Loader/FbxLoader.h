@@ -23,37 +23,6 @@ namespace Argent::Loader
 			float boneWeight;
 		};
 
-		struct ArSkeleton
-		{
-			struct Bone
-			{
-				uint64_t uniqueId{};
-				std::string name;
-				int64_t parentIndex{ -1 };
-				int64_t nodeIndex{};
-
-				DirectX::XMFLOAT4X4 offsetTransform
-				{
-					1, 0, 0, 0,
-					0, 1, 0, 0,
-					0, 0, 1, 0,
-					0, 0, 0, 1
-				};
-				bool isOrphan() const { return parentIndex < 0; }
-			};
-			std::vector<Bone> bones{};
-			int64_t indexOf(uint64_t uniqueId) const
-			{
-				int64_t index{};
-				for(const Bone& bone : bones)
-				{
-					if(bone.uniqueId == uniqueId) return index;
-					++index;
-				}
-				return -1;
-			}
-		};
-
 		struct ArAnimation
 		{
 			std::string name;
@@ -78,22 +47,6 @@ namespace Argent::Loader
 				std::vector<Node> nodes;
 			};
 			std::vector<ArKeyframe> sequence;
-		};
-
-		struct SkinnedMeshVertex
-		{
-			DirectX::XMFLOAT3 position;
-			DirectX::XMFLOAT3 normal;
-			DirectX::XMFLOAT2 texcoord;
-			float boneWeights[4]{ 1, 0, 0, 0 };
-			uint32_t boneIndices[4]{ 1, 0, 0, 0 };
-		};
-
-		struct StaticMeshVertex
-		{
-			DirectX::XMFLOAT3 position;
-			DirectX::XMFLOAT3 normal;
-			DirectX::XMFLOAT2 texcoord;
 		};
 
 		struct ArSubset

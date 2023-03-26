@@ -1,7 +1,6 @@
 #pragma once
 
 #include <d3d12.h>
-#include <wrl.h>
 #include <DirectXMath.h>
 #include <vector>
 #include <string>
@@ -12,7 +11,6 @@
 #include "ArRenderer.h"
 #include "../Graphic/Dx12/ArConstantBuffer.h"
 #include "../Resource/ArTexture.h"
-#include "ArRenderer.h"
 #include "../Resource/ArStaticMesh.h"
 
 namespace Argent::Component::Renderer
@@ -127,7 +125,7 @@ namespace Argent::Component::Renderer
 //		ArStaticMeshRenderer();
 //		~ArStaticMeshRenderer() override = default;
 //
-//		void Render() const override;
+//		void SetOnCommandList() const override;
 //
 //	private:
 //		std::shared_ptr<Argent::Resource::Mesh::ArStaticMesh> meshData;

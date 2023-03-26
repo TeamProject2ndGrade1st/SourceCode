@@ -221,6 +221,8 @@
     <ClCompile Include="Source\Argent\Component\ArStaticMeshRenderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Argent\Math\MathHelper.cpp" />
+    <ClCompile Include="Source\Argent\Resource\ArSkinnedMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -395,6 +397,8 @@
     <ClInclude Include="Source\Argent\Component\ArStaticMeshRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Argent\Math\MathHelper.h" />
+    <ClInclude Include="Source\Argent\Resource\ArSkinnedMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

@@ -33,7 +33,6 @@ cbuffer MeshConstant : register(b2)
 }
 
 cbuffer MaterialConstant : register(b3)
-
 {
 	float4 ka;
 	float4 kd;

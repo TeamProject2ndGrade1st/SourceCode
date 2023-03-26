@@ -52,7 +52,13 @@ namespace Argent::Resource
 			return ArResource::CompareName(n) || filePath == n;
 		}
 
+		void AddResource(std::shared_ptr<ArResource> res)
+		{
+			childResources.emplace_back(res);
+		}
+
 	protected:
 		std::string filePath;
+		std::vector<std::shared_ptr<ArResource>> childResources{};
 	};
 }

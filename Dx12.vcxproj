@@ -60,6 +60,7 @@
     <ClCompile Include="Source\Argent\Resource\ArMesh.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArMaterial.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArResource.cpp" />
+    <ClCompile Include="Source\Argent\Resource\ArSkinnedMesh.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArStaticMesh.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArResourceManager.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArShader.cpp" />
@@ -119,6 +120,7 @@
     <ClInclude Include="Source\Argent\Resource\ArEffect.h" />
     <ClInclude Include="Source\Argent\Resource\ArMesh.h" />
     <ClInclude Include="Source\Argent\Resource\ArMaterial.h" />
+    <ClInclude Include="Source\Argent\Resource\ArSkinnedMesh.h" />
     <ClInclude Include="Source\Argent\Resource\ArStaticMesh.h" />
     <ClInclude Include="Source\Argent\Resource\ArResource.h" />
     <ClInclude Include="Source\Argent\Resource\ArResourceManager.h" />

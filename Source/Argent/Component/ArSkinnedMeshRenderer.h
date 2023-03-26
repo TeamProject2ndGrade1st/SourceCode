@@ -12,7 +12,7 @@
 #include "ArRenderer.h"
 #include "../Graphic/Dx12/ArConstantBuffer.h"
 #include "../Resource/ArTexture.h"
-
+#include "../Resource/ArSkinnedMesh.h"
 
 
 //todo　ボーンあるいはアニメーションを持っていない場合はレンダリングできないため
@@ -174,7 +174,6 @@ namespace Argent::Component::Renderer
 				};
 			};
 
-			uint64_t uniqueId{};
 			std::string name;
 			int64_t nodeIndex{};
 			DirectX::XMFLOAT4X4 defaultGlobalTransform
@@ -269,10 +268,14 @@ namespace Argent::Component::Renderer
 	private:
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> demoConstBuffer;
 
+
 	protected:
 		SkinnedScene sceneView;
 		std::vector<Mesh> meshes;
 		std::unordered_map<uint64_t, Material> materials;
+
+
+		std::vector<std::shared_ptr<Argent::Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
 
 		int clipIndex{};
 		float frameIndex{};

@@ -2,7 +2,7 @@
 
 //namespace Argent::Mesh
 //{
-//	void ArMesh::Render(ID3D12GraphicsCommandList* cmdList, UINT instanceCount, UINT indexOffset, INT vertexOffset, UINT instanceOffset) const
+//	void ArMesh::SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT instanceCount, UINT indexOffset, INT vertexOffset, UINT instanceOffset) const
 //	{
 //		cmdList->IASetVertexBuffers(0, 1, &vertexView);
 //		cmdList->IASetIndexBuffer(&indexView);

@@ -23,7 +23,7 @@ namespace Argent::Resource::Mesh
 		public:
 			ArSprite();
 
-			void Render(ID3D12GraphicsCommandList* cmdList) override
+			void SetOnCommandList(ID3D12GraphicsCommandList* cmdList) override
 			{
 				SetOnCommandList(cmdList, 0, 1);
 				DrawCall(cmdList, static_cast<UINT>(indices.size()));

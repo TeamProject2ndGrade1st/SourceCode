@@ -269,9 +269,8 @@ namespace Argent::Component::Renderer
 			FbxMesh* fbxMesh{ fbxNode->GetMesh() };
 
 			ArSkinnedMeshRenderer::Mesh& mesh{ meshes.emplace_back() };
-			mesh.uniqueId = fbxMesh->GetNode()->GetUniqueID();
 			mesh.name = fbxMesh->GetNode()->GetName();
-			mesh.nodeIndex = sceneView.IndexOf(mesh.uniqueId);
+			mesh.nodeIndex = sceneView.IndexOf(fbxMesh->GetNode()->GetUniqueID());
 			mesh.defaultGlobalTransform = Argent::Helper::FBX::ToFloat4x4(fbxMesh->GetNode()->EvaluateGlobalTransform());
 
 			std::vector<boneInfluencesPerControlPoint> boneInfluences;
@@ -586,7 +585,7 @@ namespace Argent::Component::Renderer
 		mesh->UpdateAnimation(keyframe);
 	#endif
 
-		mesh->Render(ArGraphics::Instance()->GetCommandList(),
+		mesh->SetOnCommandList(ArGraphics::Instance()->GetCommandList(),
 			meshTransform.GetWorld(ArGraphics::Instance()->CoordinateSystemTransforms[coordinateSystem], 
 				ArGraphics::Instance()->scaleFactor),
 			 meshColor.color, &keyframe);
