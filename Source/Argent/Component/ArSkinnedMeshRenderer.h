@@ -13,6 +13,7 @@
 #include "../Graphic/Dx12/ArConstantBuffer.h"
 #include "../Resource/ArTexture.h"
 #include "../Resource/ArSkinnedMesh.h"
+#include "../Resource/ArMaterial.h"
 
 
 //todo　ボーンあるいはアニメーションを持っていない場合はレンダリングできないため
@@ -147,7 +148,6 @@ namespace Argent::Component::Renderer
 		struct Constants
 		{
 			DirectX::XMFLOAT4X4 world;
-			DirectX::XMFLOAT4 color;
 		};
 
 		struct Mesh
@@ -202,60 +202,25 @@ namespace Argent::Component::Renderer
 			//Skeleton bindPose;
 		};
 
-		struct Material
-		{
-			enum class TextureType
-			{
-				Albedo,
-				Normal,
-			};
-			struct Constant
-			{
-				DirectX::XMFLOAT4 ka{ 0.2f, 0.2f, 0.2f, 1.0f };
-				DirectX::XMFLOAT4 kd{ 0.2f, 0.2f, 0.2f, 1.0f };
-				DirectX::XMFLOAT4 ks{ 0.2f, 0.2f, 0.2f, 1.0f };
-				float shininess = 128;
-			};
-			std::string name;
-
-			static constexpr int NumTextures = 2;
-			std::shared_ptr<Argent::Texture::ArTexture> textures[NumTextures]; 
-			std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
-			Constant constant{};
-			void CreateTexture(const char* filePath, TextureType type);
-			
-
-			void SetOnCommand(ID3D12GraphicsCommandList* cmdList) const
-			{
-				//todo なんとか白
-				constantBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbMaterial));
-				textures[static_cast<int>(TextureType::Albedo)]->Render(cmdList, static_cast<UINT>(RootParameterIndex::txAlbedo));
-				textures[static_cast<int>(TextureType::Normal)]->Render(cmdList, static_cast<UINT>(RootParameterIndex::txNormal));
-			}
-
-	#ifdef _DEBUG
-			void DrawDebug()
-			{
-				if(ImGui::TreeNode(name.c_str()))
-				{
-					ImGui::DragFloat3("Ka", &constant.ka.x, 0.001f, 0, 1.0f);
-					ImGui::DragFloat3("Kd", &constant.kd.x, 0.001f, 0, 1.0f);
-					ImGui::DragFloat3("Ks", &constant.ks.x, 0.001f, 0, 1.0f);
-					ImGui::DragFloat("Shininess", &constant.shininess, 1.0f, 0, FLT_MAX);
-					ImGui::TreePop();
-				}
-			}
-	#endif
-		};
-
-
 	public:
-		
+		ArSkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
+			std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>>& meshes,
+			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
+			std::vector<Animation>& animation);
+
+
+
 		ArSkinnedMeshRenderer(ID3D12Device* device, const char* filename, float samplingRate = 0, bool triangulate = false);
-		virtual ~ArSkinnedMeshRenderer() = default;
+		~ArSkinnedMeshRenderer() override = default;
+
+		ArSkinnedMeshRenderer(const ArSkinnedMeshRenderer&) = delete;
+		ArSkinnedMeshRenderer(const ArSkinnedMeshRenderer&&) = delete;
+		ArSkinnedMeshRenderer operator=(const ArSkinnedMeshRenderer&) = delete;
+		ArSkinnedMeshRenderer operator=(const ArSkinnedMeshRenderer&&) = delete;
+
 
 		void Render(ID3D12GraphicsCommandList* cmdList,
-			const DirectX::XMFLOAT4X4& world, const DirectX::XMFLOAT4& color,
+			const DirectX::XMFLOAT4X4& world,
 			const Animation::Keyframe* keyframe) const;
 
 		void Render() const override;
@@ -266,31 +231,27 @@ namespace Argent::Component::Renderer
 		void DrawDebug() override;
 	#endif
 
-		void CreateComObject(ID3D12Device* device, const char* filename);
+		void CreateComObject(ID3D12Device* device);
 
 	private:
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> demoConstBuffer;
 
-
-	protected:
-		SkinnedScene sceneView;
-		//std::vector<Mesh> meshes;
-		std::unordered_map<uint64_t, Material> materials;
-
-
 		std::vector<std::shared_ptr<Argent::Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
+		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial> materials;
 
 		int clipIndex{};
 		float frameIndex{};
-	public:
 		std::vector<Animation> animationClips;
+		std::vector<Animation>& animation_;
+
+	private:
+		void CreateRootSignatureAndPipelineState();
 	};
 
 	namespace SkinnedMesh
 	{
-		
 		void FetchMesh(FbxScene* fbxScene, std::vector<ArSkinnedMeshRenderer::Mesh>& meshes, const SkinnedScene& sceneView);
-		void FetchMaterial(FbxScene* fbxScene, std::unordered_map<uint64_t, ArSkinnedMeshRenderer::Material>& materials, const SkinnedScene& sceneView, const char* fbxFilePath);
+		void FetchMaterial(FbxScene* fbxScene, std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials, const SkinnedScene& sceneView, const char* fbxFilePath);
 		void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const SkinnedScene& sceneView);
 		void FetchAnimation(FbxScene* fbxScene, std::vector<Animation>& animationClips, 
 			float samplingRate, const SkinnedScene& sceneView);

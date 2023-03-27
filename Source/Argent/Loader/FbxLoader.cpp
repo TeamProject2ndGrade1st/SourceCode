@@ -4,7 +4,9 @@
 
 //todo
 #include "../Component/ArStaticMeshRenderer.h"
+#include "../Component/ArSkinnedMeshRenderer.h"
 #include "../Resource/ArSkinnedMesh.h"
+#include "../Resource/ArMaterial.h"
 
 namespace Argent::Loader::Fbx
 {
@@ -76,7 +78,7 @@ namespace Argent::Loader::Fbx
 	};
 
 	void FetchMesh(FbxScene* fbxScene,const ArFbxScene& sceneView, std::vector<TmpFbxMesh>& meshes);
-	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Component::Renderer::ArStaticMeshRenderer::Material>& materials);
+	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Material::ArMeshMaterial>& materials);
 	void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const ArFbxScene& sceneView);
 	void FetchAnimation(FbxScene* fbxScene, std::vector<ArAnimation>& animationClips, 
 			float samplingRate, const ArFbxScene& sceneView);
@@ -110,7 +112,7 @@ namespace Argent::Loader::Fbx
 
 
 		std::vector<TmpFbxMesh> tmpMeshes;
-		std::unordered_map<uint64_t, Component::Renderer::ArStaticMeshRenderer::Material> materials;
+		std::unordered_map<uint64_t, Material::ArMeshMaterial> materials;
 
 		FetchMesh(fbxScene, sceneView, tmpMeshes);
 		FetchMaterial(fbxScene, sceneView, filePath, materials);
@@ -145,9 +147,9 @@ namespace Argent::Loader::Fbx
 			mesh.nodeIndex = sceneView.IndexOf(fbxMesh->GetNode()->GetUniqueID());
 			mesh.defaultGlobalTransform = Argent::Helper::FBX::ToFloat4x4(fbxMesh->GetNode()->EvaluateGlobalTransform());
 
-			//std::vector<std::vector<ArBoneInfluence>> boneInfluences;
-			//FetchBoneInfluences(fbxMesh, boneInfluences);
-			//FetchSkeleton(fbxMesh, mesh.bindPose, sceneView);
+			std::vector<std::vector<ArBoneInfluence>> boneInfluences;
+			FetchBoneInfluences(fbxMesh, boneInfluences);
+			FetchSkeleton(fbxMesh, mesh.bindPose, sceneView);
 
 			std::vector<ArSubset>& subsets{ mesh.subsets };
 			const int MaterialCount{ fbxMesh->GetNode()->GetMaterialCount() };
@@ -194,6 +196,8 @@ namespace Argent::Loader::Fbx
 					const int vertexIndex{ polygonIndex * 3 + positionInPolygon };
 
 					Argent::Resource::Mesh::Vertex vertex;
+					Argent::Resource::Mesh::VertexBone bone;
+
 					const int polygonVertex{ fbxMesh->GetPolygonVertex(polygonIndex, positionInPolygon) };
 					vertex.position.x = static_cast<float>(controlPoints[polygonVertex][0]);
 					vertex.position.y = static_cast<float>(controlPoints[polygonVertex][1]);
@@ -201,15 +205,15 @@ namespace Argent::Loader::Fbx
 
 
 					//bone
-					/*const auto& influencesPerControlPoint{ boneInfluences.at(polygonVertex) };
+					const auto& influencesPerControlPoint{ boneInfluences.at(polygonVertex) };
 					for (size_t influenceIndex = 0; influenceIndex < influencesPerControlPoint.size(); ++influenceIndex)
 					{
 						if (influenceIndex < MaxBoneInfluences)
 						{
-							vertex.boneWeights[influenceIndex] = influencesPerControlPoint.at(influenceIndex).boneWeight;
-							vertex.boneIndices[influenceIndex] = influencesPerControlPoint.at(influenceIndex).boneIndex;
+							bone.boneWeights[influenceIndex] = influencesPerControlPoint.at(influenceIndex).boneWeight;
+							bone.boneIndices[influenceIndex] = influencesPerControlPoint.at(influenceIndex).boneIndex;
 						}
-					}*/
+					}
 					
 					if (fbxMesh->GetElementNormalCount() > 0)
 					{
@@ -237,7 +241,7 @@ namespace Argent::Loader::Fbx
 		}
 	}
 
-	void FetchSurfaceMaterial(const FbxSurfaceMaterial* surfaceMaterial, const char* pName, const char* fbxFilePath, Component::Renderer::ArStaticMeshRenderer::Material& material)
+	void FetchSurfaceMaterial(const FbxSurfaceMaterial* surfaceMaterial, const char* pName, const char* fbxFilePath, Material::ArMeshMaterial& material)
 	{
 		const FbxProperty fbxProp = surfaceMaterial->FindProperty(pName);
 
@@ -254,11 +258,11 @@ namespace Argent::Loader::Fbx
 
 				const FbxFileTexture* fbxTexture{ fbxProp.GetSrcObject<FbxFileTexture>() };
 				const char* tmpFilePath = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
-				tmpFilePath = "lambert1_Base_color.png";
+				//tmpFilePath = "lambert1_Base_color.png";
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
 
-				material.CreateTexture(path.generic_string().c_str(), Component::Renderer::ArStaticMeshRenderer::Material::TextureType::Diffuse);
+				material.CreateTexture(path.generic_string().c_str(), Material::ArMeshMaterial::TextureType::Diffuse);
 			}
 			if(PName == FbxSurfaceMaterial::sSpecular) 
 			{
@@ -281,16 +285,16 @@ namespace Argent::Loader::Fbx
 				const FbxFileTexture* fbxTexture{ fbxProp.GetSrcObject<FbxFileTexture>() };
 				const char* tmpFilePath = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
 
-				tmpFilePath = "lambert1_Normal_OpenGL.png";
+				//tmpFilePath = "lambert1_Normal_OpenGL.png";
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
 
-				material.CreateTexture(path.generic_string().c_str(), Component::Renderer::ArStaticMeshRenderer::Material::TextureType::Normal);
+				material.CreateTexture(path.generic_string().c_str(), Material::ArMeshMaterial::TextureType::Normal);
 			}
 		}
 	}
 
-	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Component::Renderer::ArStaticMeshRenderer::Material>& materials)
+	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Material::ArMeshMaterial>& materials)
 	{
 		const size_t nodeCount{ sceneView.nodes.size() };
 		for (size_t nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
@@ -305,7 +309,7 @@ namespace Argent::Loader::Fbx
 				{
 					const FbxSurfaceMaterial* fbxMaterial{ fbxNode->GetMaterial(materialIndex) };
 
-					Component::Renderer::ArStaticMeshRenderer::Material material;
+					Material::ArMeshMaterial material;
 					material.name = fbxMaterial->GetName();
 					UINT64 materialUniqueId = fbxMaterial->GetUniqueID();
 
@@ -317,6 +321,63 @@ namespace Argent::Loader::Fbx
 
 					materials.emplace(materialUniqueId, std::move(material));
 				}
+			}
+		}
+	}
+
+	void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<std::vector<ArBoneInfluence>>& boneInfluences)
+	{
+		const int controlPointsCount{ fbxMesh->GetControlPointsCount() };
+		boneInfluences.resize(controlPointsCount);
+
+		const int skinCount{ fbxMesh->GetDeformerCount(FbxDeformer::eSkin) };
+		for (int skinIndex = 0; skinIndex < skinCount; ++skinIndex)
+		{
+			const FbxSkin* fbxSkin{ static_cast<FbxSkin*>(fbxMesh->GetDeformer(skinIndex, FbxDeformer::eSkin)) };
+			const int clusterCount{ fbxSkin->GetClusterCount() };
+			for (int clusterIndex = 0; clusterIndex < clusterCount; ++clusterIndex)
+			{
+				const FbxCluster* fbxCluster{ fbxSkin->GetCluster(clusterIndex) };
+				const int controlPointIndicesCount{ fbxCluster->GetControlPointIndicesCount() };
+				for (int controlPointIndicesIndex = 0; controlPointIndicesIndex < controlPointIndicesCount;
+					++controlPointIndicesIndex)
+				{
+					const int controlPointIndex{ fbxCluster->GetControlPointIndices()[controlPointIndicesIndex] };
+					const double controlPointWeight{ fbxCluster->GetControlPointWeights()[controlPointIndicesIndex] };
+					auto& boneInfluence{ boneInfluences.at(controlPointIndex).emplace_back() };
+					boneInfluence.boneIndex = static_cast<uint32_t>(clusterIndex);
+					boneInfluence.boneWeight = static_cast<float>(controlPointWeight);
+				}
+			}
+		}
+	}
+
+
+
+	void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const ArFbxScene& sceneView)
+	{
+		const int deformerCount = fbxMesh->GetDeformerCount(FbxDeformer::eSkin);
+		for (int deformerIndex = 0; deformerIndex < deformerCount; ++deformerIndex)
+		{
+			FbxSkin* skin = static_cast<FbxSkin*>(fbxMesh->GetDeformer(deformerIndex, FbxDeformer::eSkin));
+			const int clusterCount = skin->GetClusterCount();
+			bindPose.bones.resize(clusterCount);
+			for (int clusterIndex = 0; clusterIndex < clusterCount; ++clusterIndex)
+			{
+				FbxCluster* cluster = skin->GetCluster(clusterIndex);
+
+				auto& bone{ bindPose.bones.at(clusterIndex) };
+				bone.name = cluster->GetLink()->GetName();
+				bone.uniqueId = cluster->GetLink()->GetUniqueID();
+				bone.parentIndex = bindPose.indexOf(cluster->GetLink()->GetParent()->GetUniqueID());
+				bone.nodeIndex = sceneView.IndexOf(bone.uniqueId);
+
+				FbxAMatrix referenceGlobalInitPosition;
+				cluster->GetTransformMatrix(referenceGlobalInitPosition);
+
+				FbxAMatrix clusterGlobalInitPosition;
+				cluster->GetTransformLinkMatrix(clusterGlobalInitPosition);
+				bone.offsetTransform = Argent::Helper::FBX::ToFloat4x4(clusterGlobalInitPosition.Inverse() * referenceGlobalInitPosition);
 			}
 		}
 	}

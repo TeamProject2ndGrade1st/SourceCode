@@ -33,11 +33,9 @@ namespace Argent::Material
 		DirectX::XMFLOAT4 ks{ 0.2f, 0.2f, 0.2f, 1.0f };
 	};
 
-	class ArMeshMaterial
+	struct ArMeshMaterial
 	{
 	public:
-		ArMeshMaterial();
-		~ArMeshMaterial() = default;
 
 		enum class TextureType
 		{

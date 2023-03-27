@@ -7,13 +7,8 @@
 
 namespace Argent::Component::Renderer
 {
-	void ArStaticMeshRenderer::Material::CreateTexture(const char* filePath, TextureType type)
-	{
-		textures[static_cast<int>(type)] = std::reinterpret_pointer_cast<Argent::Texture::ArTexture>(Argent::Resource::ArResourceManager::Instance().LoadTexture(filePath));
-	}
-
 	ArStaticMeshRenderer::ArStaticMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes,
-		std::unordered_map<uint64_t, Material>& materials):
+		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials):
 		ArRenderer("StaticMeshRenderer")
 	{
 		this->meshes = meshes;
@@ -43,12 +38,13 @@ namespace Argent::Component::Renderer
 			mesh->SetOnCommandList(cmdList);
 			for (const Resource::Mesh::ArStaticMesh::Subset& subset : mesh->subsets)
 			{
-				const Material& material{ materials.at(subset.materialUniqueId) };
-				Material::Constant tmpConstant;
+				const auto& material{ materials.at(subset.materialUniqueId) };
+				Argent::Material::ArMeshMaterial::Constant tmpConstant;
 				tmpConstant = material.constant;
 				tmpConstant.color = material.color.GetColor();
 				material.constantBuffer->UpdateConstantBuffer(tmpConstant);
-				material.SetOnCommand(cmdList);
+				material.SetOnCommand(cmdList, static_cast<UINT>(RootParameterIndex::cbMaterial),
+					static_cast<UINT>(RootParameterIndex::txAlbedo), static_cast<UINT>(RootParameterIndex::txNormal));
 				cmdList->DrawIndexedInstanced(subset.indexCount, 1, subset.startIndexLocation, 0, 0);
 			}
 		}
@@ -171,11 +167,11 @@ namespace Argent::Component::Renderer
 		heapDesc.NumDescriptors = static_cast<UINT>(materials.size());
 		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
-		for (std::unordered_map<uint64_t, Material>::iterator it = materials.begin();
+		for (auto it = materials.begin();
 			it != materials.end(); ++it)
 {
 			it->second.constantBuffer =
-				std::make_unique<Argent::Dx12::ArConstantBuffer<Material::Constant>>(
+				std::make_unique<Argent::Dx12::ArConstantBuffer<Material::ArMeshMaterial::Constant>>(
 					device,
 					Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
 					&it->second.constant);

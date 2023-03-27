@@ -10,9 +10,20 @@
 
 namespace Argent::Component::Renderer
 {
-	void ArSkinnedMeshRenderer::Material::CreateTexture(const char* filePath, TextureType type)
+	ArSkinnedMeshRenderer::ArSkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
+		std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>>& meshes,
+		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials, 
+		std::vector<Animation>& animation):
+		ArRenderer("SkinnedMeshRenderer"), animation_(animation)
 	{
-		textures[static_cast<int>(type)] = std::reinterpret_pointer_cast<Argent::Texture::ArTexture>(Argent::Resource::ArResourceManager::Instance().LoadTexture(filePath));
+		this->skinnedMeshes = meshes;
+		for (auto& m : materials)
+		{
+			this->materials.emplace(m.first, std::move(m.second));
+		}
+		this->animationClips = animation;
+		CreateComObject(device);
+		CreateRootSignatureAndPipelineState();
 	}
 
 	ArSkinnedMeshRenderer::ArSkinnedMeshRenderer(ID3D12Device* device, const char* filename, 
@@ -78,7 +89,7 @@ namespace Argent::Component::Renderer
 
 		manager->Destroy();
 
-		CreateComObject(device, filename);
+		CreateComObject(device);
 
 
 		//ルートパラメータとパイプラインステート
@@ -165,7 +176,6 @@ namespace Argent::Component::Renderer
 
 	void ArSkinnedMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList, 
 		const DirectX::XMFLOAT4X4& world,
-		const DirectX::XMFLOAT4& color,
 		const Animation::Keyframe* keyframe) const
 	{
 		ArRenderer::Render(cmdList);
@@ -177,7 +187,7 @@ namespace Argent::Component::Renderer
 
 		Constants constant{};
 		constant.world = world;
-		constant.color = color;
+		//constant.color = color;
 		demoConstBuffer->UpdateConstantBuffer(constant);
 
 		demoConstBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbObject));
@@ -206,9 +216,11 @@ namespace Argent::Component::Renderer
 					m->constantBuffer->UpdateConstantBuffer(meshConstant);
 				}
 
-				const Material& material{ materials.at(s.materialUniqueId) };
+				const auto& material{ materials.at(s.materialUniqueId) };
 				material.constantBuffer->UpdateConstantBuffer(material.constant);
-				material.SetOnCommand(cmdList);
+				material.SetOnCommand(cmdList, static_cast<UINT>(RootParameterIndex::cbMaterial),
+					static_cast<UINT>(RootParameterIndex::txAlbedo), 
+					static_cast<UINT>(RootParameterIndex::txNormal));
 
 				m->constantBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbMesh));
 
@@ -299,13 +311,13 @@ namespace Argent::Component::Renderer
 
 			//todo マテリアルの適用
 			Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), GetOwner()->GetTransform()->GetWorld(),
-				/*material->color.color*/DirectX::XMFLOAT4(1, 1, 1, 1), &keyframe);
+				 &keyframe);
 		}
 		else
 		{
 			Animation::Keyframe key{};
 			Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), GetOwner()->GetTransform()->GetWorld(),
-				/*material->color.color*/DirectX::XMFLOAT4(1, 1, 1, 1), &key);
+			 &key);
 		}
 	}
 
@@ -420,7 +432,7 @@ namespace Argent::Component::Renderer
 		}
 	}
 
-	void SkinnedMesh::FetchMaterial(FbxScene* fbxScene, std::unordered_map<uint64_t, ArSkinnedMeshRenderer::Material>& materials, const SkinnedScene& sceneView, const char* fbxFilePath)
+	void SkinnedMesh::FetchMaterial(FbxScene* fbxScene, std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials, const SkinnedScene& sceneView, const char* fbxFilePath)
 	{
 		const size_t nodeCount{ sceneView.nodes.size() };
 		for(size_t nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
@@ -435,7 +447,7 @@ namespace Argent::Component::Renderer
 				{
 					const FbxSurfaceMaterial* fbxMaterial{ fbxNode->GetMaterial(materialIndex) };
 
-					ArSkinnedMeshRenderer::Material material;
+					Argent::Material::ArMeshMaterial material;
 					material.name = fbxMaterial->GetName();
 					UINT64 materialUniqueId = fbxMaterial->GetUniqueID();
 
@@ -460,7 +472,7 @@ namespace Argent::Component::Renderer
 						path.replace_filename(tmpFilePath);
 
 						const std::string replacedFilePath = Helper::String::GetStringFromWideString(path.c_str());
-						material.CreateTexture(replacedFilePath.c_str(), ArSkinnedMeshRenderer::Material::TextureType::Albedo);
+						material.CreateTexture(replacedFilePath.c_str(), Argent::Material::ArMeshMaterial::TextureType::Diffuse);
 					}
 
 					fbxProp= fbxMaterial->FindProperty(FbxSurfaceMaterial::sSpecular);
@@ -477,7 +489,6 @@ namespace Argent::Component::Renderer
 					}
 
 					fbxProp= fbxMaterial->FindProperty(FbxSurfaceMaterial::sAmbient);
-
 					//todo bump or normal 
 					if(fbxProp.IsValid())
 					{
@@ -501,8 +512,9 @@ namespace Argent::Component::Renderer
 						path.replace_filename(tmpFilePath);
 
 						const std::string replacedFilePath = Helper::String::GetStringFromWideString(path.c_str());
-						material.CreateTexture(replacedFilePath.c_str(), ArSkinnedMeshRenderer::Material::TextureType::Normal);
+						material.CreateTexture(replacedFilePath.c_str(), Argent::Material::ArMeshMaterial::TextureType::Normal);
 					}
+
 					materials.emplace(materialUniqueId, std::move(material));
 				}
 			}
@@ -687,62 +699,9 @@ namespace Argent::Component::Renderer
 	}
 #endif
 
-	void ArSkinnedMeshRenderer::CreateComObject(ID3D12Device* device, const char* filename)
+	void ArSkinnedMeshRenderer::CreateComObject(ID3D12Device* device)
 	{
 		HRESULT hr{ S_OK };
-		//for(Mesh& mesh : meshes)
-		//{
-		//	D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-		//	D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(Vertex) * mesh.vertices.size());
-		//	hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, 
-		//		nullptr, IID_PPV_ARGS(mesh.vertexBuffer[0].ReleaseAndGetAddressOf()));
-		//	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-
-
-		//	resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(VertexBone) * mesh.vertexBones.size());
-		//	hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, 
-		//		nullptr, IID_PPV_ARGS(mesh.vertexBuffer[1].ReleaseAndGetAddressOf()));
-		//	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-
-
-		//	Vertex* vMap{};
-		//	hr = mesh.vertexBuffer[0]->Map(0, nullptr, reinterpret_cast<void**>(&vMap));
-		//	std::copy(mesh.vertices.begin(), mesh.vertices.end(), vMap);
-		//	mesh.vertexBuffer[0]->Unmap(0, nullptr);
-
-		//	VertexBone* vbMap{};
-		//	hr = mesh.vertexBuffer[1]->Map(0, nullptr, reinterpret_cast<void**>(&vbMap));
-		//	std::copy(mesh.vertexBones.begin(), mesh.vertexBones.end(), vbMap);
-		//	mesh.vertexBuffer[1]->Unmap(0, nullptr);
-
-		//	mesh.vertexView[0].SizeInBytes = static_cast<UINT>(mesh.vertices.size() * sizeof(Vertex));
-		//	mesh.vertexView[0].StrideInBytes = sizeof(Vertex);
-		//	mesh.vertexView[0].BufferLocation = mesh.vertexBuffer[0]->GetGPUVirtualAddress();
-
-		//	mesh.vertexView[1].SizeInBytes = static_cast<UINT>(mesh.vertexBones.size() * sizeof(VertexBone));
-		//	mesh.vertexView[1].StrideInBytes = sizeof(VertexBone);
-		//	mesh.vertexView[1].BufferLocation = mesh.vertexBuffer[1]->GetGPUVirtualAddress();
-
-
-		//	resDesc.Width = sizeof(uint32_t) * mesh.indices.size();
-		//	hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ,
-		//		nullptr, IID_PPV_ARGS(mesh.indexBuffer.ReleaseAndGetAddressOf()));
-		//	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-
-		//	uint32_t* iMap{};
-		//	hr = mesh.indexBuffer->Map(0, nullptr, reinterpret_cast<void**>(&iMap));
-		//	std::copy(mesh.indices.begin(), mesh.indices.end(), iMap);
-		//	mesh.indexBuffer->Unmap(0, nullptr);
-
-		//	mesh.indexView.Format = DXGI_FORMAT_R32_UINT;
-		//	mesh.indexView.SizeInBytes = static_cast<UINT>(sizeof(uint32_t) * mesh.indices.size());
-		//	mesh.indexView.BufferLocation = mesh.indexBuffer->GetGPUVirtualAddress();
-
-
-		//	mesh.constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Mesh::Constant>>(device,
-		//		Argent::Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
-		//}
-
 
 		D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};
 		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
@@ -750,16 +709,99 @@ namespace Argent::Component::Renderer
 		heapDesc.NumDescriptors = static_cast<UINT>(materials.size());
 		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
-		for(std::unordered_map<uint64_t, Material>::iterator it = materials.begin(); 
+		for(auto it = materials.begin(); 
 			it != materials.end(); ++it)
 		{
 			it->second.constantBuffer = 
-				std::make_unique<Argent::Dx12::ArConstantBuffer<Material::Constant>>(
+				std::make_unique<Argent::Dx12::ArConstantBuffer<Argent::Material::ArMeshMaterial::Constant>>(
 					device, 
 					Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
 					&it->second.constant);
 		}
 		demoConstBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Constants>>(device, Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+	}
+
+	void ArSkinnedMeshRenderer::CreateRootSignatureAndPipelineState()
+	{
+		{
+			D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
+			D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineStateDesc{};
+			D3D12_DESCRIPTOR_RANGE range[6]{};
+
+			range[0] = Helper::Dx12::DescriptorRange::Generate(0, 1, D3D12_DESCRIPTOR_RANGE_TYPE_CBV);
+			range[1] = Helper::Dx12::DescriptorRange::Generate(1, 1, D3D12_DESCRIPTOR_RANGE_TYPE_CBV);
+			range[2] = Helper::Dx12::DescriptorRange::Generate(2, 1, D3D12_DESCRIPTOR_RANGE_TYPE_CBV);
+			range[3] = Helper::Dx12::DescriptorRange::Generate(3, 1, D3D12_DESCRIPTOR_RANGE_TYPE_CBV);
+			range[4] = Helper::Dx12::DescriptorRange::Generate(0, 1, D3D12_DESCRIPTOR_RANGE_TYPE_SRV);
+			range[5] = Helper::Dx12::DescriptorRange::Generate(1, 1, D3D12_DESCRIPTOR_RANGE_TYPE_SRV);
+
+			D3D12_ROOT_PARAMETER rootParam[6]{};
+			rootParam[static_cast<int>(RootParameterIndex::cbScene)] = Helper::Dx12::RootParameter::Generate(1, &range[0], D3D12_SHADER_VISIBILITY_ALL);
+			rootParam[static_cast<int>(RootParameterIndex::cbObject)] = Helper::Dx12::RootParameter::Generate(1, &range[1], D3D12_SHADER_VISIBILITY_ALL);
+			rootParam[static_cast<int>(RootParameterIndex::cbMesh)] = Helper::Dx12::RootParameter::Generate(1, &range[2], D3D12_SHADER_VISIBILITY_ALL);
+			rootParam[static_cast<int>(RootParameterIndex::cbMaterial)] = Helper::Dx12::RootParameter::Generate(1, &range[3], D3D12_SHADER_VISIBILITY_ALL);
+			rootParam[static_cast<int>(RootParameterIndex::txAlbedo)] = Helper::Dx12::RootParameter::Generate(1, &range[4], D3D12_SHADER_VISIBILITY_PIXEL);
+			rootParam[static_cast<int>(RootParameterIndex::txNormal)] = Helper::Dx12::RootParameter::Generate(1, &range[5], D3D12_SHADER_VISIBILITY_PIXEL);
+
+			D3D12_STATIC_SAMPLER_DESC samplerDesc = Helper::Dx12::Sampler::GenerateSamplerDesc(Helper::Dx12::Sampler::FilterMode::fPoint, Helper::Dx12::Sampler::WrapMode::wRepeat);
+
+
+			rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+			rootSigDesc.NumParameters = 6;
+			rootSigDesc.pParameters = rootParam;
+			rootSigDesc.NumStaticSamplers = 1;
+			rootSigDesc.pStaticSamplers = &samplerDesc;
+
+
+			//パイプライン
+
+			D3D12_BLEND_DESC blendDesc{};
+			blendDesc.AlphaToCoverageEnable = FALSE;
+			blendDesc.IndependentBlendEnable = FALSE;
+			blendDesc.RenderTarget[0] = Helper::Dx12::Blend::GenerateRenderTargetBlendDesc(Helper::Dx12::Blend::BlendMode::bAlpha);
+
+			D3D12_INPUT_ELEMENT_DESC inputElementDesc[]
+			{
+				Helper::Dx12::InputElement::GenerateInputLayoutDesc("POSITION", DXGI_FORMAT_R32G32B32_FLOAT),
+				Helper::Dx12::InputElement::GenerateInputLayoutDesc("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT),
+				Helper::Dx12::InputElement::GenerateInputLayoutDesc("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT),
+				Helper::Dx12::InputElement::GenerateInputLayoutDesc("WEIGHTS", DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 1),
+				Helper::Dx12::InputElement::GenerateInputLayoutDesc("BONES", DXGI_FORMAT_R32G32B32A32_UINT, 0, 1),
+			};
+
+			DXGI_SAMPLE_DESC sampleDesc{};
+			sampleDesc.Count = 1;
+			sampleDesc.Quality = 0;
+
+
+			D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
+			depthStencilDesc.DepthEnable = TRUE;
+			depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+			depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+
+
+			pipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+
+			pipelineStateDesc.RasterizerState = Helper::Dx12::Rasterizer::Generate();
+			pipelineStateDesc.BlendState = blendDesc;
+			pipelineStateDesc.InputLayout.NumElements = _countof(inputElementDesc);
+			pipelineStateDesc.InputLayout.pInputElementDescs = inputElementDesc;
+			pipelineStateDesc.IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
+			pipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+			pipelineStateDesc.NumRenderTargets = 1;
+			pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+			pipelineStateDesc.SampleDesc = sampleDesc;
+			pipelineStateDesc.DepthStencilState = depthStencilDesc;
+			pipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+
+			renderingPipeline = std::make_shared<Argent::Graphics::RenderingPipeline::ArBaseRenderingPipeline>(
+				"./Resources/Shader/SkinnedMeshVertex.cso",
+				"./Resources/Shader/SkinnedMeshPixel.cso",
+				&rootSigDesc,
+				&pipelineStateDesc
+				);
+		}
 	}
 
 	void SkinnedMesh::FetchBoneInfluences(const FbxMesh* fbxMesh, 
