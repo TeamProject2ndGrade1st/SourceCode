@@ -27,7 +27,6 @@ cbuffer ObjectConstant : register(b1)
 }
 cbuffer MeshConstant : register(b2)
 {
-	row_major float4x4 defaultGlobalTransform;
 	row_major float4x4 globalTransform;
 	row_major float4x4 boneTransforms[MaxBones];
 }

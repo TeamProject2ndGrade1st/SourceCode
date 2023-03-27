@@ -23,11 +23,11 @@ namespace Argent::Resource::Mesh
 		public:
 			ArSprite();
 
-			void SetOnCommandList(ID3D12GraphicsCommandList* cmdList) override
+			/*void SetOnCommandList(ID3D12GraphicsCommandList* cmdList) override
 			{
-				SetOnCommandList(cmdList, 0, 1);
+				ArMesh::SetOnCommandList(cmdList, 0, 1);
 				DrawCall(cmdList, static_cast<UINT>(indices.size()));
-			}
+			}*/
 			/**
 				 * \brief 頂点情報の更新用
 				 * \param position 座標(Z値は無視される)

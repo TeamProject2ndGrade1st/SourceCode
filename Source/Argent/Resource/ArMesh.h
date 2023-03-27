@@ -21,13 +21,13 @@ namespace Argent::Resource::Mesh
 
 		virtual void SetOnCommandList(ID3D12GraphicsCommandList* cmdList)
 		{
-			SetOnCommandList(cmdList);
-			DrawCall(cmdList, static_cast<UINT>(indices.size()));
+			SetOnCommandList(cmdList, 0, 1);
+			//DrawCall(cmdList, static_cast<UINT>(indices.size()));
 		}
 
-		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot = 0, UINT numVertexViews = 1) const
+		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot, UINT numVertexViews) const
 		{
-			vertexBuffer->SetOnCommandList(cmdList, vertexStartSlot, numVertexViews);
+			vertexBuffer->SetOnCommandList(cmdList, vertexStartSlot);
 			indexBuffer->SetOnCommandList(cmdList);
 		}
 

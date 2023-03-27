@@ -60,9 +60,21 @@ namespace Argent::Component::Renderer
 
 		traverse(fbxScene->GetRootNode());
 
+		std::vector<Mesh> meshes;
+
+
 		SkinnedMesh::FetchMesh(fbxScene, meshes, sceneView);
 		SkinnedMesh::FetchMaterial(fbxScene, materials, sceneView, filename);
 		SkinnedMesh::FetchAnimation(fbxScene, animationClips, samplingRate, sceneView);
+
+		const size_t numMeshes = meshes.size();
+		skinnedMeshes.resize(numMeshes);
+		for(size_t i = 0; i < numMeshes; ++i)
+		{
+			skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(
+				meshes.at(i).vertices, meshes.at(i).vertexBones, meshes.at(i).indices, 
+				meshes.at(i).subsets, meshes.at(i).bindPose);
+		}
 
 		manager->Destroy();
 
@@ -167,64 +179,102 @@ namespace Argent::Component::Renderer
 		constant.world = world;
 		constant.color = color;
 		demoConstBuffer->UpdateConstantBuffer(constant);
-		for(const Mesh& mesh : meshes)
+
+		demoConstBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbObject));
+		for(const auto& m : skinnedMeshes)
 		{
-
-	#if 0
-			DirectX::XMMATRIX B[3];
-			B[0] = DirectX::XMLoadFloat4x4(&mesh.bindPose.bones.at(0).offsetTransform);
-			B[1] = DirectX::XMLoadFloat4x4(&mesh.bindPose.bones.at(1).offsetTransform);
-			B[2] = DirectX::XMLoadFloat4x4(&mesh.bindPose.bones.at(2).offsetTransform);
-
-			DirectX::XMMATRIX A[3];
-			A[0] = DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(90), 0, 0);
-			A[1] = DirectX::XMMatrixRotationRollPitchYaw(0, 0, DirectX::XMConvertToRadians(45)) * DirectX::XMMatrixTranslation(0, 2, 0);
-			A[2] = DirectX::XMMatrixRotationRollPitchYaw(0, 0, DirectX::XMConvertToRadians(-45)) * DirectX::XMMatrixTranslation(0, 2, 0);
-
-			DirectX::XMStoreFloat4x4(&constantMap->boneTransforms[0], B[0] * A[0]);
-			DirectX::XMStoreFloat4x4(&constantMap->boneTransforms[1], B[1] * A[1] * A[0]);
-			DirectX::XMStoreFloat4x4(&constantMap->boneTransforms[2], B[2] * A[2] * A[1] * A[0]);
-	#endif
-
-
-			demoConstBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbObject));
-
-			cmdList->IASetVertexBuffers(0, 1, &mesh.vertexView[0]);
-			cmdList->IASetVertexBuffers(1, 1, &mesh.vertexView[1]);
-			cmdList->IASetIndexBuffer(&mesh.indexView);
-
-			for(const Mesh::Subset& subset : mesh.subsets)
+			for(const auto& s : m->subsets)
 			{
-				if(animationClips.size() > 0)
+				if (animationClips.size() > 0)
 				{
-					Mesh::Constant meshConstant{};
-					const size_t boneCount{ mesh.bindPose.bones.size() };
-					for(int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
+					Argent::Resource::Mesh::ArSkinnedMesh::Constant meshConstant{};
+					const size_t boneCount{ m->bindPose.bones.size() };
+					for (int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
 					{
-						const Skeleton::Bone& bone{ mesh.bindPose.bones.at(boneIndex) };
+						const auto& bone{ m->bindPose.bones.at(boneIndex) };
 						const Animation::Keyframe::Node& boneNode{ keyframe->nodes.at(bone.nodeIndex) };
 						DirectX::XMStoreFloat4x4(&meshConstant.boneTransforms[boneIndex],
-							DirectX::XMLoadFloat4x4(&bone.offsetTransform) * 
-							DirectX::XMLoadFloat4x4(&boneNode.globalTransform) * 
-							DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&mesh.defaultGlobalTransform))
+							DirectX::XMLoadFloat4x4(&bone.offsetTransform) *
+							DirectX::XMLoadFloat4x4(&boneNode.globalTransform) *
+							DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&m->defaultGlobalTransform))
 						);
 					}
-					const Animation::Keyframe::Node meshNode{ keyframe->nodes.at(mesh.nodeIndex) };
-					
+					const Animation::Keyframe::Node meshNode{ keyframe->nodes.at(m->nodeIndex) };
+
 					meshConstant.globalTransform = meshNode.globalTransform;
-					meshConstant.defaultGlobalTransform = mesh.defaultGlobalTransform;
-					mesh.constantBuffer->UpdateConstantBuffer(meshConstant);
+					//meshConstant.defaultGlobalTransform = m->defaultGlobalTransform;
+					m->constantBuffer->UpdateConstantBuffer(meshConstant);
 				}
-				
-				const Material& material{ materials.at(subset.materialUniqueId) };
+
+				const Material& material{ materials.at(s.materialUniqueId) };
 				material.constantBuffer->UpdateConstantBuffer(material.constant);
 				material.SetOnCommand(cmdList);
 
-				mesh.constantBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbMesh));
+				m->constantBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbMesh));
 
-				cmdList->DrawIndexedInstanced(subset.indexCount, 1, subset.startIndexLocation, 0, 0);
+				m->SetOnCommandList(cmdList);
+				Resource::Mesh::ArSkinnedMesh::DrawCall(cmdList, s.indexCount, 1, s.startIndexLocation, 0, 0);
+				//cmdList->DrawIndexedInstanced(s.indexCount, 1, s.startIndexLocation, 0, 0);
 			}
 		}
+	//	for(const Mesh& mesh : meshes)
+	//	{
+
+	//#if 0
+	//		DirectX::XMMATRIX B[3];
+	//		B[0] = DirectX::XMLoadFloat4x4(&mesh.bindPose.bones.at(0).offsetTransform);
+	//		B[1] = DirectX::XMLoadFloat4x4(&mesh.bindPose.bones.at(1).offsetTransform);
+	//		B[2] = DirectX::XMLoadFloat4x4(&mesh.bindPose.bones.at(2).offsetTransform);
+
+	//		DirectX::XMMATRIX A[3];
+	//		A[0] = DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(90), 0, 0);
+	//		A[1] = DirectX::XMMatrixRotationRollPitchYaw(0, 0, DirectX::XMConvertToRadians(45)) * DirectX::XMMatrixTranslation(0, 2, 0);
+	//		A[2] = DirectX::XMMatrixRotationRollPitchYaw(0, 0, DirectX::XMConvertToRadians(-45)) * DirectX::XMMatrixTranslation(0, 2, 0);
+
+	//		DirectX::XMStoreFloat4x4(&constantMap->boneTransforms[0], B[0] * A[0]);
+	//		DirectX::XMStoreFloat4x4(&constantMap->boneTransforms[1], B[1] * A[1] * A[0]);
+	//		DirectX::XMStoreFloat4x4(&constantMap->boneTransforms[2], B[2] * A[2] * A[1] * A[0]);
+	//#endif
+
+
+	//		demoConstBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbObject));
+
+	//		cmdList->IASetVertexBuffers(0, 1, &mesh.vertexView[0]);
+	//		cmdList->IASetVertexBuffers(1, 1, &mesh.vertexView[1]);
+	//		cmdList->IASetIndexBuffer(&mesh.indexView);
+
+	//		for(const Mesh::Subset& subset : mesh.subsets)
+	//		{
+	//			if(animationClips.size() > 0)
+	//			{
+	//				Mesh::Constant meshConstant{};
+	//				const size_t boneCount{ mesh.bindPose.bones.size() };
+	//				for(int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
+	//				{
+	//					const Skeleton::Bone& bone{ mesh.bindPose.bones.at(boneIndex) };
+	//					const Animation::Keyframe::Node& boneNode{ keyframe->nodes.at(bone.nodeIndex) };
+	//					DirectX::XMStoreFloat4x4(&meshConstant.boneTransforms[boneIndex],
+	//						DirectX::XMLoadFloat4x4(&bone.offsetTransform) * 
+	//						DirectX::XMLoadFloat4x4(&boneNode.globalTransform) * 
+	//						DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&mesh.defaultGlobalTransform))
+	//					);
+	//				}
+	//				const Animation::Keyframe::Node meshNode{ keyframe->nodes.at(mesh.nodeIndex) };
+	//				
+	//				meshConstant.globalTransform = meshNode.globalTransform;
+	//				meshConstant.defaultGlobalTransform = mesh.defaultGlobalTransform;
+	//				mesh.constantBuffer->UpdateConstantBuffer(meshConstant);
+	//			}
+	//			
+	//			const Material& material{ materials.at(subset.materialUniqueId) };
+	//			material.constantBuffer->UpdateConstantBuffer(material.constant);
+	//			material.SetOnCommand(cmdList);
+
+	//			mesh.constantBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbMesh));
+
+	//			cmdList->DrawIndexedInstanced(subset.indexCount, 1, subset.startIndexLocation, 0, 0);
+	//		}
+	//	}
 	}
 
 	void ArSkinnedMeshRenderer::Render() const 
@@ -277,7 +327,7 @@ namespace Argent::Component::Renderer
 			SkinnedMesh::FetchBoneInfluences(fbxMesh, boneInfluences);
 			SkinnedMesh::FetchSkeleton(fbxMesh, mesh.bindPose, sceneView);
 
-			std::vector<ArSkinnedMeshRenderer::Mesh::Subset>& subsets{ mesh.subsets };
+			auto& subsets{ mesh.subsets };
 			const int MaterialCount{ fbxMesh->GetNode()->GetMaterialCount() };
 			subsets.resize(MaterialCount > 0 ? MaterialCount : 1);
 			for(int materialIndex = 0; materialIndex < MaterialCount; ++materialIndex)
@@ -295,7 +345,7 @@ namespace Argent::Component::Renderer
 					subsets.at(materialIndex).indexCount += 3;
 				}
 				uint32_t offset{};
-				for(ArSkinnedMeshRenderer::Mesh::Subset& subset : subsets)
+				for(auto& subset : subsets)
 				{
 					subset.startIndexLocation = offset;
 					offset += subset.indexCount;
@@ -315,15 +365,17 @@ namespace Argent::Component::Renderer
 			{
 				const int materialIndex{ MaterialCount > 0 ? 
 					fbxMesh->GetElementMaterial()->GetIndexArray().GetAt(polygonIndex) : 0 };
-				ArSkinnedMeshRenderer::Mesh::Subset& subset{ subsets.at(materialIndex) };
+				auto& subset{ subsets.at(materialIndex) };
 				const uint32_t offset{ subset.startIndexLocation + subset.indexCount };
 
 				for(int positionInPolygon = 0; positionInPolygon < 3; ++positionInPolygon)
 				{
 					const int vertexIndex{ polygonIndex * 3 + positionInPolygon };
 
-					ArSkinnedMeshRenderer::Vertex vertex;
-					ArSkinnedMeshRenderer::VertexBone bone;
+					//ArSkinnedMeshRenderer::Vertex vertex;
+					//ArSkinnedMeshRenderer::VertexBone bone;
+					Resource::Mesh::Vertex vertex;
+					Resource::Mesh::VertexBone bone;
 					const int polygonVertex{ fbxMesh->GetPolygonVertex(polygonIndex, positionInPolygon) };
 					vertex.position.x = static_cast<float>(controlPoints[polygonVertex][0]);
 					vertex.position.y = static_cast<float>(controlPoints[polygonVertex][1]);
@@ -457,7 +509,7 @@ namespace Argent::Component::Renderer
 		}
 	}
 
-	void SkinnedMesh::FetchSkeleton(FbxMesh* fbxMesh, Skeleton& bindPose, const SkinnedScene& sceneView)
+	void SkinnedMesh::FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const SkinnedScene& sceneView)
 	{
 		const int deformerCount = fbxMesh->GetDeformerCount(FbxDeformer::eSkin);
 		for(int deformerIndex = 0; deformerIndex < deformerCount; ++deformerIndex)
@@ -469,7 +521,7 @@ namespace Argent::Component::Renderer
 			{
 				FbxCluster* cluster = skin->GetCluster(clusterIndex);
 
-				Skeleton::Bone& bone{ bindPose.bones.at(clusterIndex) };
+				auto& bone{ bindPose.bones.at(clusterIndex) };
 				bone.name = cluster->GetLink()->GetName();
 				bone.uniqueId = cluster->GetLink()->GetUniqueID();
 				bone.parentIndex = bindPose.indexOf(cluster->GetLink()->GetParent()->GetUniqueID());
@@ -638,58 +690,58 @@ namespace Argent::Component::Renderer
 	void ArSkinnedMeshRenderer::CreateComObject(ID3D12Device* device, const char* filename)
 	{
 		HRESULT hr{ S_OK };
-		for(Mesh& mesh : meshes)
-		{
-			D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-			D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(Vertex) * mesh.vertices.size());
-			hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, 
-				nullptr, IID_PPV_ARGS(mesh.vertexBuffer[0].ReleaseAndGetAddressOf()));
-			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+		//for(Mesh& mesh : meshes)
+		//{
+		//	D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+		//	D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(Vertex) * mesh.vertices.size());
+		//	hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, 
+		//		nullptr, IID_PPV_ARGS(mesh.vertexBuffer[0].ReleaseAndGetAddressOf()));
+		//	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
 
-			resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(VertexBone) * mesh.vertexBones.size());
-			hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, 
-				nullptr, IID_PPV_ARGS(mesh.vertexBuffer[1].ReleaseAndGetAddressOf()));
-			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+		//	resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(VertexBone) * mesh.vertexBones.size());
+		//	hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, 
+		//		nullptr, IID_PPV_ARGS(mesh.vertexBuffer[1].ReleaseAndGetAddressOf()));
+		//	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
 
-			Vertex* vMap{};
-			hr = mesh.vertexBuffer[0]->Map(0, nullptr, reinterpret_cast<void**>(&vMap));
-			std::copy(mesh.vertices.begin(), mesh.vertices.end(), vMap);
-			mesh.vertexBuffer[0]->Unmap(0, nullptr);
+		//	Vertex* vMap{};
+		//	hr = mesh.vertexBuffer[0]->Map(0, nullptr, reinterpret_cast<void**>(&vMap));
+		//	std::copy(mesh.vertices.begin(), mesh.vertices.end(), vMap);
+		//	mesh.vertexBuffer[0]->Unmap(0, nullptr);
 
-			VertexBone* vbMap{};
-			hr = mesh.vertexBuffer[1]->Map(0, nullptr, reinterpret_cast<void**>(&vbMap));
-			std::copy(mesh.vertexBones.begin(), mesh.vertexBones.end(), vbMap);
-			mesh.vertexBuffer[1]->Unmap(0, nullptr);
+		//	VertexBone* vbMap{};
+		//	hr = mesh.vertexBuffer[1]->Map(0, nullptr, reinterpret_cast<void**>(&vbMap));
+		//	std::copy(mesh.vertexBones.begin(), mesh.vertexBones.end(), vbMap);
+		//	mesh.vertexBuffer[1]->Unmap(0, nullptr);
 
-			mesh.vertexView[0].SizeInBytes = static_cast<UINT>(mesh.vertices.size() * sizeof(Vertex));
-			mesh.vertexView[0].StrideInBytes = sizeof(Vertex);
-			mesh.vertexView[0].BufferLocation = mesh.vertexBuffer[0]->GetGPUVirtualAddress();
+		//	mesh.vertexView[0].SizeInBytes = static_cast<UINT>(mesh.vertices.size() * sizeof(Vertex));
+		//	mesh.vertexView[0].StrideInBytes = sizeof(Vertex);
+		//	mesh.vertexView[0].BufferLocation = mesh.vertexBuffer[0]->GetGPUVirtualAddress();
 
-			mesh.vertexView[1].SizeInBytes = static_cast<UINT>(mesh.vertexBones.size() * sizeof(VertexBone));
-			mesh.vertexView[1].StrideInBytes = sizeof(VertexBone);
-			mesh.vertexView[1].BufferLocation = mesh.vertexBuffer[1]->GetGPUVirtualAddress();
-
-
-			resDesc.Width = sizeof(uint32_t) * mesh.indices.size();
-			hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ,
-				nullptr, IID_PPV_ARGS(mesh.indexBuffer.ReleaseAndGetAddressOf()));
-			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-
-			uint32_t* iMap{};
-			hr = mesh.indexBuffer->Map(0, nullptr, reinterpret_cast<void**>(&iMap));
-			std::copy(mesh.indices.begin(), mesh.indices.end(), iMap);
-			mesh.indexBuffer->Unmap(0, nullptr);
-
-			mesh.indexView.Format = DXGI_FORMAT_R32_UINT;
-			mesh.indexView.SizeInBytes = static_cast<UINT>(sizeof(uint32_t) * mesh.indices.size());
-			mesh.indexView.BufferLocation = mesh.indexBuffer->GetGPUVirtualAddress();
+		//	mesh.vertexView[1].SizeInBytes = static_cast<UINT>(mesh.vertexBones.size() * sizeof(VertexBone));
+		//	mesh.vertexView[1].StrideInBytes = sizeof(VertexBone);
+		//	mesh.vertexView[1].BufferLocation = mesh.vertexBuffer[1]->GetGPUVirtualAddress();
 
 
-			mesh.constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Mesh::Constant>>(device,
-				Argent::Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
-		}
+		//	resDesc.Width = sizeof(uint32_t) * mesh.indices.size();
+		//	hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ,
+		//		nullptr, IID_PPV_ARGS(mesh.indexBuffer.ReleaseAndGetAddressOf()));
+		//	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+
+		//	uint32_t* iMap{};
+		//	hr = mesh.indexBuffer->Map(0, nullptr, reinterpret_cast<void**>(&iMap));
+		//	std::copy(mesh.indices.begin(), mesh.indices.end(), iMap);
+		//	mesh.indexBuffer->Unmap(0, nullptr);
+
+		//	mesh.indexView.Format = DXGI_FORMAT_R32_UINT;
+		//	mesh.indexView.SizeInBytes = static_cast<UINT>(sizeof(uint32_t) * mesh.indices.size());
+		//	mesh.indexView.BufferLocation = mesh.indexBuffer->GetGPUVirtualAddress();
+
+
+		//	mesh.constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Mesh::Constant>>(device,
+		//		Argent::Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+		//}
 
 
 		D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};

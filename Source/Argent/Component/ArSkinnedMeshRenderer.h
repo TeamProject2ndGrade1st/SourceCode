@@ -152,13 +152,13 @@ namespace Argent::Component::Renderer
 
 		struct Mesh
 		{
-			struct Subset
+			/*struct Subset
 			{
 				uint64_t materialUniqueId{};
 				uint32_t startIndexLocation{};
 				uint32_t indexCount{};
-			};
-			std::vector<Subset> subsets;
+			};*/
+			std::vector<Resource::Mesh::ArStaticMesh::Subset> subsets;
 
 			struct Constant
 			{
@@ -184,19 +184,22 @@ namespace Argent::Component::Renderer
 				0, 0, 0, 1,
 			};
 		
-			std::vector<Vertex> vertices;
-			std::vector<VertexBone> vertexBones;
+			//std::vector<Vertex> vertices;
+			std::vector<Argent::Resource::Mesh::Vertex> vertices;
+			std::vector<Resource::Mesh::VertexBone> vertexBones;
+			//std::vector<VertexBone> vertexBones;
 			std::vector<uint32_t> indices;
 
 		//private:
-			Microsoft::WRL::ComPtr<ID3D12Resource> vertexBuffer[2];
-			Microsoft::WRL::ComPtr<ID3D12Resource> indexBuffer;
+			//Microsoft::WRL::ComPtr<ID3D12Resource> vertexBuffer[2];
+			//Microsoft::WRL::ComPtr<ID3D12Resource> indexBuffer;
 
-			std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
+			/*std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
 			D3D12_VERTEX_BUFFER_VIEW vertexView[2]{};
-			D3D12_INDEX_BUFFER_VIEW indexView{};
+			D3D12_INDEX_BUFFER_VIEW indexView{};*/
 
-			Skeleton bindPose;
+			Resource::Mesh::Skeleton bindPose;
+			//Skeleton bindPose;
 		};
 
 		struct Material
@@ -271,7 +274,7 @@ namespace Argent::Component::Renderer
 
 	protected:
 		SkinnedScene sceneView;
-		std::vector<Mesh> meshes;
+		//std::vector<Mesh> meshes;
 		std::unordered_map<uint64_t, Material> materials;
 
 
@@ -288,7 +291,7 @@ namespace Argent::Component::Renderer
 		
 		void FetchMesh(FbxScene* fbxScene, std::vector<ArSkinnedMeshRenderer::Mesh>& meshes, const SkinnedScene& sceneView);
 		void FetchMaterial(FbxScene* fbxScene, std::unordered_map<uint64_t, ArSkinnedMeshRenderer::Material>& materials, const SkinnedScene& sceneView, const char* fbxFilePath);
-		void FetchSkeleton(FbxMesh* fbxMesh, Skeleton& bindPose, const SkinnedScene& sceneView);
+		void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const SkinnedScene& sceneView);
 		void FetchAnimation(FbxScene* fbxScene, std::vector<Animation>& animationClips, 
 			float samplingRate, const SkinnedScene& sceneView);
 		void UpdateAnimation(Animation::Keyframe& keyframe, const SkinnedScene& sceneView);
