@@ -47,10 +47,10 @@ void Title::Render()
 	Scene::Render();
 }
 
+#ifdef _DEBUG
 void Title::DrawDebug()
 {
-#ifdef _DEBUG
 	Scene::DrawDebug();
-#endif
 }
+#endif
 

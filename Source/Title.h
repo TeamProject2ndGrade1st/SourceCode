@@ -14,8 +14,9 @@ public:
 	void Finalize() override;
 	void Update() override;
 	void Render() override;
+#ifdef _DEBUG
 	void DrawDebug() override;
-
+#endif
 private:
 };
 

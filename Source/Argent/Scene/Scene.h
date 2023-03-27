@@ -24,8 +24,9 @@ public:
 	virtual void Update();
 	virtual void Render();
 
+#ifdef _DEBUG
 	virtual void DrawDebug();
-
+#endif
 	const std::string& GetName() const { return sceneName; }
 	void CloseAllDebugWindow() const;
 	void AddObject(GameObject* obj)

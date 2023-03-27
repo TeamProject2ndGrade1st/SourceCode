@@ -37,7 +37,9 @@ namespace Argent::SceneManagement
 		{
 			currentScene->Update();
 			currentScene->Render();
+#ifdef _DEBUG
 			currentScene->DrawDebug();
+#endif
 		}
 	}
 		

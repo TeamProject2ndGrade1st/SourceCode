@@ -74,6 +74,7 @@ void Scene::Render()
 	}
 }
 
+#ifdef _DEBUG
 void Scene::DrawDebug()
 {
 	if(ImGui::TreeNode("Object"))
@@ -89,6 +90,8 @@ void Scene::DrawDebug()
 		object->DrawDebug();
 	}
 }
+
+#endif
 
 void Scene::CloseAllDebugWindow() const
 {
