@@ -114,6 +114,7 @@
     <ClInclude Include="Source\Argent\Loader\FbxLoader.h" />
     <ClInclude Include="Source\Argent\Math\MathHelper.h" />
     <ClInclude Include="Source\Argent\Other\ArHelper.h" />
+    <ClInclude Include="Source\Argent\Other\CerealHelper.h" />
     <ClInclude Include="Source\Argent\Other\Misc.h" />
     <ClInclude Include="Source\Argent\Resource\ArAnimation.h" />
     <ClInclude Include="Source\Argent\Resource\ArAudio.h" />
@@ -296,7 +297,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>.\External\DirectXTex\Include;.\External\FbxSdk\Include;.\External\Effekseer\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\External\DirectXTex\Include;.\External\FbxSdk\Include;.\External\Effekseer\Include;.\External\Cereal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
@@ -323,7 +324,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>.\External\DirectXTex\Include;.\External\FbxSdk\Include;.\External\Effekseer\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\External\DirectXTex\Include;.\External\FbxSdk\Include;.\External\Effekseer\Include;.\External\Cereal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>

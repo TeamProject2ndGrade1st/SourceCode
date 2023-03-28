@@ -28,7 +28,6 @@ float3 CalcPhongSpecular(float3 normal, float3 lightVector, float3 lightColor,
 float4 main(VS_OUT pin) : SV_TARGET
 {
 	float4 color = albedoTex.Sample(smpPoint, pin.texcoord);
-
 	float3 normal = normalTex.Sample(smpPoint, pin.texcoord).rgb;
 
 	float3 T = float3(1.0001, 0, 0);

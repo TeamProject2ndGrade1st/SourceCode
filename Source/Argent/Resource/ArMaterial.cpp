@@ -21,6 +21,7 @@ namespace Argent::Material
 	void ArMeshMaterial::CreateTexture(const char* filePath, TextureType type)
 	{
 		textures[static_cast<UINT>(type)] = Argent::Resource::ArResourceManager::Instance().LoadTexture(filePath);
+		textureNames[static_cast<UINT>(type)] = filePath;
 	}
 
 #ifdef _DEBUG

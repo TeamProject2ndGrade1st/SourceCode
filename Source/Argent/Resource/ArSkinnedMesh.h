@@ -1,5 +1,13 @@
 #pragma once
 #include "ArStaticMesh.h"
+#include "../Other/CerealHelper.h"
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/map.hpp>
+#include <cereal/types/set.hpp>
+
 
 namespace Argent::Resource::Mesh
 {
@@ -7,6 +15,14 @@ namespace Argent::Resource::Mesh
 	{
 		struct Bone
 		{
+			template<class T>
+			void serialize(T& archive)
+			{
+				archive(uniqueId, name, parentIndex, nodeIndex, offsetTransform);
+			}
+
+
+
 			uint64_t uniqueId{};
 			std::string name;
 			int64_t parentIndex{ -1 };
@@ -33,12 +49,24 @@ namespace Argent::Resource::Mesh
 			}
 			return -1;
 		}
+
+		template<class T>
+		void serialize(T& archive)
+		{
+			archive(bones);
+		}
 	};
 	static constexpr int MaxBoneInfluences{ 4 };
 	struct VertexBone
 	{
 		float boneWeights[MaxBoneInfluences]{ 1, 0, 0, 0 };
 		uint32_t boneIndices[MaxBoneInfluences];
+
+		template<class T>
+		void serialize(T& archive)
+		{
+			archive(boneWeights, boneIndices);
+		}
 	};
 	class ArSkinnedMesh final :
 		public ArStaticMesh
@@ -78,5 +106,6 @@ namespace Argent::Resource::Mesh
 		};
 
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
+
 	};
 }

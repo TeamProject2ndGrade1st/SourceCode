@@ -8,6 +8,15 @@
 #include "../Component/ArColor.h"
 #include "../Graphic/Dx12/ArConstantBuffer.h"
 
+#include "../Other/CerealHelper.h"
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/set.hpp>
+#include <cereal/types/map.hpp>
+#include <cereal/types/string.hpp>
+
+
 namespace Argent::Material
 {
 	class ArMaterial
@@ -36,7 +45,11 @@ namespace Argent::Material
 	struct ArMeshMaterial
 	{
 	public:
-
+		template<class T>
+		void serialize(T& archive)
+		{
+			archive(name, textureNames, constant);
+		}
 		enum class TextureType
 		{
 			Diffuse,
@@ -51,11 +64,18 @@ namespace Argent::Material
 			DirectX::XMFLOAT4 kd{ 0.2f, 0.2f, 0.2f, 1.0f };
 			DirectX::XMFLOAT4 ks{ 0.2f, 0.2f, 0.2f, 1.0f };
 			float shininess = 128;
+
+			template<class T>
+			void serialize(T& archive)
+			{
+				archive(color, ka, kd, ks, shininess);
+			}
 		};
 		std::string name;
 
 		static constexpr int NumTextures = static_cast<int>(TextureType::Max);
 		std::shared_ptr<Argent::Texture::ArTexture> textures[NumTextures];
+		std::string textureNames[NumTextures];
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
 		Constant constant{};
 		ArColor color;

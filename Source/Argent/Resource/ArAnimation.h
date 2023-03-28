@@ -1,26 +1,34 @@
 #pragma once
 #include "ArResource.h"
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/map.hpp>
+#include <cereal/types/set.hpp>
+
+
 
 namespace Argent::Resource::Animation
 {
-	class ArAnimation final:
-		public Resource::ArResource
+	class ArAnimation final
+		//public Resource::ArResource
 	{
 	public:
-		ArAnimation():
-			ArResource(ResourceType::Animation)
+		ArAnimation()
+			//ArResource(ResourceType::Animation)
 		{}
 
 	private:
-		ArAnimation(uint64_t uniqueId, const char* name):
-			ArResource(uniqueId, name, ResourceType::Animation)
+		ArAnimation(uint64_t uniqueId, const char* name)
+			//ArResource(uniqueId, name, ResourceType::Animation)
 		{}
 	public:
-		~ArAnimation() override = default;
+		~ArAnimation() = default;
 
 		ArAnimation operator=(const ArAnimation& anim)
 		{
-			ArAnimation ret(anim.GetUniqueId(), anim.GetName());
+			ArAnimation ret{};
 			ret.samplingRate = anim.samplingRate;
 			ret.sequence = anim.sequence;
 
@@ -28,7 +36,7 @@ namespace Argent::Resource::Animation
 		}
 
 		float samplingRate{};
-
+		std::string name;
 		struct Keyframe
 		{
 			struct Node
@@ -44,9 +52,27 @@ namespace Argent::Resource::Animation
 				DirectX::XMFLOAT3 scaling{ 1, 1, 1 };
 				DirectX::XMFLOAT4 rotation{ 0, 0, 0, 1 };
 				DirectX::XMFLOAT3 translation{ 0, 0, 0 };
+
+				template<class T>
+				void serialize(T& archive)
+				{
+					archive(globalTransform, scaling, rotation, translation);
+				}
 			};
 			std::vector<Node> nodes{};
+
+			template<class T>
+			void serialize(T& archive)
+			{
+				archive(nodes);
+			}
 		};
 		std::vector<Keyframe> sequence{};
+
+		template<class T>
+		void serialize(T& archive)
+		{
+			archive(samplingRate, name, sequence);
+		}
 	};
 }

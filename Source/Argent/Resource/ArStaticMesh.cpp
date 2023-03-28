@@ -2,7 +2,6 @@
 #include "../Graphic/ArGraphics.h"
 
 
-
 namespace Argent::Resource::Mesh
 {
 	ArStaticMesh::ArStaticMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices,
@@ -20,10 +19,4 @@ namespace Argent::Resource::Mesh
 	{
 		Mesh::ArMesh<Vertex>::SetOnCommandList(cmdList);
 	}
-
-	//void ArStaticMesh::SetOnCommandList(ID3D12GraphicsCommandList* cmdList, const DirectX::XMFLOAT4X4& world,
-	//                          const DirectX::XMFLOAT4& color, UINT instanceCount, UINT indexOffset, INT vertexOffset,
-	//                          UINT instanceOffset) const
-	//{
-	//}
 }

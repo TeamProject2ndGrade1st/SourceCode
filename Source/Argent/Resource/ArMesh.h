@@ -4,6 +4,12 @@
 #include "../Graphic/Dx12/ArIndexBuffer.h"
 #include "ArMaterial.h"
 
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/map.hpp>
+#include <cereal/types/set.hpp>
 
 namespace Argent::Resource::Mesh
 {
@@ -22,7 +28,6 @@ namespace Argent::Resource::Mesh
 		virtual void SetOnCommandList(ID3D12GraphicsCommandList* cmdList)
 		{
 			SetOnCommandList(cmdList, 0, 1);
-			//DrawCall(cmdList, static_cast<UINT>(indices.size()));
 		}
 
 		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot, UINT numVertexViews) const

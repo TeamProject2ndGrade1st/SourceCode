@@ -414,6 +414,9 @@
     <ClInclude Include="Source\Argent\Math\MathHelper.h">
       <Filter>Argent\Other</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Argent\Other\CerealHelper.h">
+      <Filter>Argent\Other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

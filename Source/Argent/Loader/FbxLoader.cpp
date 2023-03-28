@@ -1,6 +1,7 @@
 #include "FbxLoader.h"
 #include <fbxsdk.h>
 #include "../Resource/ArResourceManager.h"
+#include <fstream>
 
 //todo
 #include "../Component/ArStaticMeshRenderer.h"
@@ -9,34 +10,13 @@
 #include "../Resource/ArMaterial.h"
 #include "../Resource/ArAnimation.h"
 
+
 namespace Argent::Loader::Fbx
 {
 	static constexpr int MaxBoneInfluences{ 256 };
 
 	//データの読み込みとアニメーションのアップデートに使ってる
-	struct ArFbxScene
-	{
-		struct Node
-		{
-			uint64_t id{};
-			std::string name;
-			FbxNodeAttribute::EType attribute{};
-			int64_t parentIndex{ -1 };
-		};
-		std::vector<Node> nodes{};
-
-		//todo 何のやつでしょう？
-		int64_t IndexOf(uint64_t id) const  // NOLINT(modernize-use-nodiscard)
-		{
-			int64_t index{};
-			for(const Node& node : nodes)
-			{
-				if(node.id == id) return index;
-				++index;
-			}
-			return -1;
-		}
-	};
+	
 
 	/**
 	 * \brief すべてのノードを取ってくる
@@ -45,7 +25,7 @@ namespace Argent::Loader::Fbx
 	 */
 	void Traverse(FbxNode* fbxNode, ArFbxScene& sceneView)
 	{
-		ArFbxScene::Node& node{ sceneView.nodes.emplace_back() };
+		auto& node = sceneView.nodes.emplace_back();
 		node.attribute = fbxNode->GetNodeAttribute() ?
 			fbxNode->GetNodeAttribute()->GetAttributeType() :
 			FbxNodeAttribute::EType::eUnknown;
@@ -60,111 +40,160 @@ namespace Argent::Loader::Fbx
 		}
 	}
 
-
-	struct TmpFbxMesh
-	{
-		int64_t nodeIndex;
-		std::vector<Argent::Resource::Mesh::Vertex> vertices;
-		std::vector<Resource::Mesh::VertexBone> vertexBones;
-		std::vector<uint32_t> indices;
-		std::vector<Resource::Mesh::ArStaticMesh::Subset> subsets;
-		Argent::Resource::Mesh::Skeleton bindPose;
-		DirectX::XMFLOAT4X4 defaultGlobalTransform
-		{
-			1, 0, 0, 0,
-			0, 1, 0, 0,
-			0, 0, 1, 0,
-			0, 0, 0, 1,
-		};
-	};
-
 	void FetchMesh(FbxScene* fbxScene,const ArFbxScene& sceneView, std::vector<TmpFbxMesh>& meshes);
 	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Material::ArMeshMaterial>& materials);
 	void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const ArFbxScene& sceneView);
 	void FetchAnimation(FbxScene* fbxScene, std::vector<Resource::Animation::ArAnimation>& animationClips, 
 			float samplingRate, const ArFbxScene& sceneView);
-	void UpdateAnimation(ArAnimation::ArKeyframe& keyframe, const ArFbxScene& sceneView);
 	void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<std::vector<ArBoneInfluence>>& boneInfluences);
 
 
 	Argent::Component::ArComponent* LoadFbx(const char* filePath, bool triangulate)
 	{
-		FbxManager* manager{ FbxManager::Create() };
-		FbxScene* fbxScene{ FbxScene::Create(manager, "") };
-
-		FbxImporter* importer{ FbxImporter::Create(manager, "") };
-		bool importState{ FALSE };
-		importState = importer->Initialize(filePath);
-		_ASSERT_EXPR_A(importState, importer->GetStatus().GetErrorString());
-
-		importState = importer->Import(fbxScene);
-		_ASSERT_EXPR_A(importState, importer->GetStatus().GetErrorString());
-
-		FbxGeometryConverter converter(manager);
-		if (triangulate)
-		{
-			converter.Triangulate(fbxScene, true, false);
-			converter.RemoveBadPolygonsFromMeshes(fbxScene);
-		}
-
 		ArFbxScene sceneView{};
-
-		Traverse(fbxScene->GetRootNode(), sceneView);
-
-
 		std::vector<TmpFbxMesh> tmpMeshes;
 		std::unordered_map<uint64_t, Material::ArMeshMaterial> materials;
+		std::vector<Resource::Animation::ArAnimation> animationClips;
 
-		FetchMesh(fbxScene, sceneView, tmpMeshes);
-		FetchMaterial(fbxScene, sceneView, filePath, materials);
-
-		bool hasBone = false;
-		for(const auto& m : tmpMeshes)
+		Argent::Component::ArComponent* ret{};
+		//シリアライズ
+		std::filesystem::path cerealFileName(filePath);
+		cerealFileName.replace_extension("cereal");
+		if(std::filesystem::exists(cerealFileName.c_str()))
 		{
-			if(m.bindPose.bones.size() > 0)
+			std::ifstream ifs(cerealFileName.c_str(), std::ios::binary);
+			cereal::BinaryInputArchive deserialization(ifs);
+			deserialization(sceneView, tmpMeshes, materials, animationClips);
+
+
+			for(auto& m : materials)
 			{
-				hasBone = true;
+				for(int i = 0; i < Material::ArMeshMaterial::NumTextures; ++i)
+				{
+					m.second.CreateTexture(m.second.textureNames[i].c_str(),static_cast<Material::ArMeshMaterial::TextureType>(i));
+				}
 			}
-		}
 
-		ID3D12Device* device = Argent::Graphics::ArGraphics::Instance()->GetDevice();
-
-		if(!hasBone)
-		{
-			std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes;
-			meshes.resize(tmpMeshes.size());
-			for(size_t i = 0; i < meshes.size(); ++i)
+			bool hasBone = false;
+			for(const auto& m : tmpMeshes)
 			{
-				std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
-				meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices, 
-					tmpMeshes.at(i).indices, 
-					tmpMeshes.at(i).subsets);
+				if(m.bindPose.bones.size() > 0)
+				{
+					hasBone = true;
+				}
 			}
-			auto* ret = new Component::Renderer::ArStaticMeshRenderer(device,
-			filePath, meshes, materials);
 
-			return ret;
+			ID3D12Device* device = Argent::Graphics::ArGraphics::Instance()->GetDevice();
+
+			if(!hasBone)
+			{
+				std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes;
+				meshes.resize(tmpMeshes.size());
+				for(size_t i = 0; i < meshes.size(); ++i)
+				{
+					std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
+					meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices, 
+						tmpMeshes.at(i).indices, 
+						tmpMeshes.at(i).subsets);
+				}
+				ret = new Component::Renderer::ArStaticMeshRenderer(device,
+				filePath, meshes, materials);
+			}
+			else
+			{
+				std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
+				skinnedMeshes.resize(tmpMeshes.size());
+				for(size_t i = 0; i < skinnedMeshes.size(); ++i)
+				{
+					std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
+					skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(vertices,
+						tmpMeshes.at(i).vertexBones, tmpMeshes.at(i).indices,
+						tmpMeshes.at(i).subsets, tmpMeshes.at(i).bindPose);
+				}
+
+				ret = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath, 
+					skinnedMeshes, materials, animationClips);
+			}
+
 		}
 		else
 		{
-			std::vector<Resource::Animation::ArAnimation> animationClips;
+			FbxManager* manager{ FbxManager::Create() };
+			FbxScene* fbxScene{ FbxScene::Create(manager, "") };
 
-			FetchAnimation(fbxScene, animationClips, 0, sceneView);
-			std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
-			skinnedMeshes.resize(tmpMeshes.size());
-			for(size_t i = 0; i < skinnedMeshes.size(); ++i)
+			FbxImporter* importer{ FbxImporter::Create(manager, "") };
+			bool importState{ FALSE };
+			importState = importer->Initialize(filePath);
+			_ASSERT_EXPR_A(importState, importer->GetStatus().GetErrorString());
+
+			importState = importer->Import(fbxScene);
+			_ASSERT_EXPR_A(importState, importer->GetStatus().GetErrorString());
+
+			FbxGeometryConverter converter(manager);
+			if (triangulate)
 			{
-				std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
-				skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(vertices,
-					tmpMeshes.at(i).vertexBones, tmpMeshes.at(i).indices,
-					tmpMeshes.at(i).subsets, tmpMeshes.at(i).bindPose);
+				converter.Triangulate(fbxScene, true, false);
+				converter.RemoveBadPolygonsFromMeshes(fbxScene);
 			}
 
-			auto* ret = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath, 
-				skinnedMeshes, materials, animationClips);
+			Traverse(fbxScene->GetRootNode(), sceneView);
 
-			return ret;
+			FetchMesh(fbxScene, sceneView, tmpMeshes);
+			FetchMaterial(fbxScene, sceneView, filePath, materials);
+			
+
+			FetchAnimation(fbxScene, animationClips, 0, sceneView);
+
+
+
+			manager->Destroy();
+			std::ofstream ofs(cerealFileName.c_str(), std::ios::binary);
+			cereal::BinaryOutputArchive serialization(ofs);
+			serialization(sceneView, tmpMeshes, materials, animationClips);
+
+
+			bool hasBone = false;
+			for(const auto& m : tmpMeshes)
+			{
+				if(m.bindPose.bones.size() > 0)
+				{
+					hasBone = true;
+				}
+			}
+
+			ID3D12Device* device = Argent::Graphics::ArGraphics::Instance()->GetDevice();
+
+			if(!hasBone)
+			{
+				std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes;
+				meshes.resize(tmpMeshes.size());
+				for(size_t i = 0; i < meshes.size(); ++i)
+				{
+					std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
+					meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices, 
+						tmpMeshes.at(i).indices, 
+						tmpMeshes.at(i).subsets);
+				}
+				ret = new Component::Renderer::ArStaticMeshRenderer(device,
+				filePath, meshes, materials);
+			}
+			else
+			{
+				std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
+				skinnedMeshes.resize(tmpMeshes.size());
+				for(size_t i = 0; i < skinnedMeshes.size(); ++i)
+				{
+					std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
+					skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(vertices,
+						tmpMeshes.at(i).vertexBones, tmpMeshes.at(i).indices,
+						tmpMeshes.at(i).subsets, tmpMeshes.at(i).bindPose);
+				}
+
+				ret = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath, 
+					skinnedMeshes, materials, animationClips);
+			}
 		}
+		return ret;
 	}
 
 
@@ -442,9 +471,9 @@ namespace Argent::Loader::Fbx
 			auto& animationClip{ animationClips.emplace_back() };
 			const char* name = 
 			/*animationClip.name =*/ animationStackNames[animationStackIndex]->Buffer();
-			animationClip.SetName(name);
+			animationClip.name = name;
 
-			FbxAnimStack* animationStack{ fbxScene->FindMember<FbxAnimStack>(animationClip.GetName()) };
+			FbxAnimStack* animationStack{ fbxScene->FindMember<FbxAnimStack>(animationClip.name.c_str()) };
 			fbxScene->SetCurrentAnimationStack(animationStack);
 
 			const FbxTime::EMode timeMode{ fbxScene->GetGlobalSettings().GetTimeMode() };
@@ -452,7 +481,7 @@ namespace Argent::Loader::Fbx
 			oneSecond.SetTime(0, 0, 1, 0, 0, timeMode);
 			animationClip.samplingRate = samplingRate > 0 ? samplingRate : static_cast<float>(oneSecond.GetFrameRate(timeMode));
 			const FbxTime samplingInterval{ static_cast<FbxLongLong>(static_cast<float>(oneSecond.Get()) / animationClip.samplingRate) };
-			const FbxTakeInfo* takeInfo{ fbxScene->GetTakeInfo(animationClip.GetName()) };
+			const FbxTakeInfo* takeInfo{ fbxScene->GetTakeInfo(animationClip.name.c_str()) };
 			const FbxTime startTime{ takeInfo->mLocalTimeSpan.GetStart() };
 			const FbxTime stopTime{ takeInfo->mLocalTimeSpan.GetStop() };
 			for(FbxTime time = startTime; time < stopTime; time += samplingInterval)

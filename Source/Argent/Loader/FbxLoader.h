@@ -6,6 +6,18 @@
 #include <memory>
 #include "../Resource/ArTexture.h"
 
+#include "../Resource/ArStaticMesh.h"
+#include "../Resource/ArSkinnedMesh.h"
+
+
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/map.hpp>
+#include <cereal/types/set.hpp>
+
+
 namespace Argent::Component
 {
 	class ArComponent;
@@ -15,73 +27,70 @@ namespace Argent::Loader
 {
 	namespace Fbx
 	{
-		struct ArFbxScene;
-
 		struct ArBoneInfluence
 		{
 			uint32_t boneIndex;
 			float boneWeight;
 		};
 
-		struct ArAnimation
+		struct ArFbxScene
 		{
-			std::string name;
-			float samplingRate{};
-
-			struct ArKeyframe
+			struct Node
 			{
-				struct Node
+				uint64_t id{};
+				std::string name;
+				FbxNodeAttribute::EType attribute{};
+				int64_t parentIndex{ -1 };
+
+				template<class T>
+				void serialize(T& archive)
 				{
-					DirectX::XMFLOAT4X4 globalTransform
-					{
-						1, 0, 0, 0,
-						0, 1, 0, 0,
-						0, 0, 1, 0,
-						0, 0, 0, 1
-					};
-
-					DirectX::XMFLOAT3 scaling{ 1, 1, 1 };
-					DirectX::XMFLOAT4 rotation{ 0, 0, 0, 1 };
-					DirectX::XMFLOAT3 translation{ 0, 0, 0 };
-				};
-				std::vector<Node> nodes;
+					archive(id, name, attribute, parentIndex);
+				}
 			};
-			std::vector<ArKeyframe> sequence;
-		};
+			std::vector<Node> nodes{};
 
-		struct ArSubset
-		{
-			uint64_t materialUniqueId{};
-			uint32_t startIndexLocation{};
-			uint32_t indexCount{};
-		};
-
-		struct ArMaterial
-		{
-			enum class TextureType
+			//todo âΩÇÃÇ‚Ç¬Ç≈ÇµÇÂÇ§ÅH
+			int64_t IndexOf(uint64_t id) const  // NOLINT(modernize-use-nodiscard)
 			{
-				Diffuse,
-				Specular,
-				Ambient,
-				Normal,
-				Height,
-				Max,
-			};
-			struct Constant
-			{
-				DirectX::XMFLOAT4 ka{ 0.2f, 0.2f, 0.2f, 1.0f };
-				DirectX::XMFLOAT4 kd{ 0.2f, 0.2f, 0.2f, 1.0f };
-				DirectX::XMFLOAT4 ks{ 0.2f, 0.2f, 0.2f, 1.0f };
-				float shininess = 128;
-			};
-			std::string name;
+				int64_t index{};
+				for(const Node& node : nodes)
+				{
+					if(node.id == id) return index;
+					++index;
+				}
+				return -1;
+			}
 
-			Constant constant{};
-			void CreateTexture(const char* filePath, TextureType type);
-			std::shared_ptr<Argent::Texture::ArTexture> textures[static_cast<int>(TextureType::Max)];
+			template<class T>
+			void serialize(T& archive)
+			{
+				archive(nodes);
+			}
 		};
 
+		struct TmpFbxMesh
+		{
+			int64_t nodeIndex;
+			std::vector<Argent::Resource::Mesh::Vertex> vertices;
+			std::vector<Resource::Mesh::VertexBone> vertexBones;
+			std::vector<uint32_t> indices;
+			std::vector<Resource::Mesh::ArStaticMesh::Subset> subsets;
+			Argent::Resource::Mesh::Skeleton bindPose;
+			DirectX::XMFLOAT4X4 defaultGlobalTransform
+			{
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1,
+			};
 
+			template<class T>
+			void serialize(T& archive)
+			{
+				archive(nodeIndex, vertices, vertexBones, indices, subsets, bindPose, defaultGlobalTransform);
+			}
+		};
 		Argent::Component::ArComponent* LoadFbx(const char* filePath, bool triangulate = false);
 		
 

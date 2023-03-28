@@ -158,7 +158,7 @@ namespace Argent::Component::Renderer
 			if (animationClips.size() > 0)
 			{
 				ImGui::SliderInt("Animation Clip", &clipIndex, 0, animationClips.size() - 1);
-				ImGui::Text(animationClips.at(clipIndex).GetName());
+				ImGui::Text(animationClips.at(clipIndex).name.c_str());
 			}
 
 			if (ImGui::TreeNode("Material"))
