@@ -184,10 +184,15 @@ namespace Argent::Component::Renderer
 				0, 0, 0, 1,
 			};
 		
+//<<<<<<< HEAD
 			//std::vector<Vertex> vertices;
 			std::vector<Argent::Resource::Mesh::Vertex> vertices;
 			std::vector<Resource::Mesh::VertexBone> vertexBones;
 			//std::vector<VertexBone> vertexBones;
+//=======
+//			std::vector<Vertex> vertices;
+//			std::vector<VertexBone> boneVertices;
+//>>>>>>> GinNote
 			std::vector<uint32_t> indices;
 
 		//private:
@@ -242,7 +247,6 @@ namespace Argent::Component::Renderer
 		int clipIndex{};
 		float frameIndex{};
 		std::vector<Animation> animationClips;
-		std::vector<Animation>& animation_;
 
 	private:
 		void CreateRootSignatureAndPipelineState();

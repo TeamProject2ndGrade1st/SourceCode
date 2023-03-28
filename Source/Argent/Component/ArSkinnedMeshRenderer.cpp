@@ -14,7 +14,7 @@ namespace Argent::Component::Renderer
 		std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>>& meshes,
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials, 
 		std::vector<Animation>& animation):
-		ArRenderer("SkinnedMeshRenderer"), animation_(animation)
+		ArRenderer("SkinnedMeshRenderer")
 	{
 		this->skinnedMeshes = meshes;
 		for (auto& m : materials)
@@ -702,6 +702,62 @@ namespace Argent::Component::Renderer
 	void ArSkinnedMeshRenderer::CreateComObject(ID3D12Device* device)
 	{
 		HRESULT hr{ S_OK };
+//<<<<<<< HEAD
+//=======
+//		for(Mesh& mesh : meshes)
+//		{
+//			D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+//			D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(Vertex) * mesh.vertices.size());
+//			hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, 
+//				nullptr, IID_PPV_ARGS(mesh.vertexBuffer[0].ReleaseAndGetAddressOf()));
+//			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+//
+//
+//			resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(VertexBone) * mesh.boneVertices.size());
+//			hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, 
+//				nullptr, IID_PPV_ARGS(mesh.vertexBuffer[1].ReleaseAndGetAddressOf()));
+//			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+//
+//
+//			Vertex* vMap{};
+//			hr = mesh.vertexBuffer[0]->Map(0, nullptr, reinterpret_cast<void**>(&vMap));
+//			std::copy(mesh.vertices.begin(), mesh.vertices.end(), vMap);
+//			mesh.vertexBuffer[0]->Unmap(0, nullptr);
+//
+//			VertexBone* vbMap{};
+//			hr = mesh.vertexBuffer[1]->Map(0, nullptr, reinterpret_cast<void**>(&vbMap));
+//			std::copy(mesh.boneVertices.begin(), mesh.boneVertices.end(), vbMap);
+//			mesh.vertexBuffer[1]->Unmap(0, nullptr);
+//
+//			mesh.vertexView[0].SizeInBytes = static_cast<UINT>(mesh.vertices.size() * sizeof(Vertex));
+//			mesh.vertexView[0].StrideInBytes = sizeof(Vertex);
+//			mesh.vertexView[0].BufferLocation = mesh.vertexBuffer[0]->GetGPUVirtualAddress();
+//
+//			mesh.vertexView[1].SizeInBytes = static_cast<UINT>(mesh.boneVertices.size() * sizeof(VertexBone));
+//			mesh.vertexView[1].StrideInBytes = sizeof(VertexBone);
+//			mesh.vertexView[1].BufferLocation = mesh.vertexBuffer[1]->GetGPUVirtualAddress();
+//
+//
+//			resDesc.Width = sizeof(uint32_t) * mesh.indices.size();
+//			hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ,
+//				nullptr, IID_PPV_ARGS(mesh.indexBuffer.ReleaseAndGetAddressOf()));
+//			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+//
+//			uint32_t* iMap{};
+//			hr = mesh.indexBuffer->Map(0, nullptr, reinterpret_cast<void**>(&iMap));
+//			std::copy(mesh.indices.begin(), mesh.indices.end(), iMap);
+//			mesh.indexBuffer->Unmap(0, nullptr);
+//
+//			mesh.indexView.Format = DXGI_FORMAT_R32_UINT;
+//			mesh.indexView.SizeInBytes = static_cast<UINT>(sizeof(uint32_t) * mesh.indices.size());
+//			mesh.indexView.BufferLocation = mesh.indexBuffer->GetGPUVirtualAddress();
+//
+//
+//			mesh.constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Mesh::Constant>>(device,
+//				Argent::Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+//		}
+//
+//>>>>>>> GinNote
 
 		D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};
 		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
