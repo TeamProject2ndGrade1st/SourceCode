@@ -323,7 +323,6 @@ namespace Argent::Loader::Fbx
 
 				const FbxFileTexture* fbxTexture{ fbxProp.GetSrcObject<FbxFileTexture>() };
 				const char* tmpFilePath = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
-				//tmpFilePath = "lambert1_Base_color.png";
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
 
@@ -350,7 +349,6 @@ namespace Argent::Loader::Fbx
 				const FbxFileTexture* fbxTexture{ fbxProp.GetSrcObject<FbxFileTexture>() };
 				const char* tmpFilePath = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
 
-				//tmpFilePath = "lambert1_Normal_OpenGL.png";
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
 
@@ -368,6 +366,17 @@ namespace Argent::Loader::Fbx
 
 			//	material.CreateTexture(path.generic_string().c_str(), Material::ArMeshMaterial::TextureType::Normal);
 			//}
+		}
+		else
+		{
+			if(PName == FbxSurfaceMaterial::sDiffuse)
+			{
+				material.CreateTexture("", Material::ArMeshMaterial::TextureType::Diffuse);
+			}
+			if(pName == FbxSurfaceMaterial::sNormalMap)
+			{
+				material.CreateTexture("", Material::ArMeshMaterial::TextureType::Normal);
+			}
 		}
 	}
 
