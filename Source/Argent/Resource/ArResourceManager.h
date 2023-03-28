@@ -56,7 +56,7 @@ namespace Argent::Resource
 		}
 
 
-		std::shared_ptr<Argent::Resource::ArResource> LoadTexture(const char* filePath);
+		std::shared_ptr<Texture::ArTexture> LoadTexture(const char* filePath);
 
 		std::shared_ptr<Argent::Resource::ArResource> LoadFbx(const char* filePath);
 

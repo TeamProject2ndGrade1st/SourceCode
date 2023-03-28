@@ -152,17 +152,10 @@ namespace Argent::Component::Renderer
 
 		struct Mesh
 		{
-			/*struct Subset
-			{
-				uint64_t materialUniqueId{};
-				uint32_t startIndexLocation{};
-				uint32_t indexCount{};
-			};*/
 			std::vector<Resource::Mesh::ArStaticMesh::Subset> subsets;
 
 			struct Constant
 			{
-				DirectX::XMFLOAT4X4 defaultGlobalTransform;
 				DirectX::XMFLOAT4X4 globalTransform;
 				DirectX::XMFLOAT4X4 boneTransforms[MaxBones]
 				{
@@ -184,27 +177,11 @@ namespace Argent::Component::Renderer
 				0, 0, 0, 1,
 			};
 		
-//<<<<<<< HEAD
-			//std::vector<Vertex> vertices;
 			std::vector<Argent::Resource::Mesh::Vertex> vertices;
 			std::vector<Resource::Mesh::VertexBone> vertexBones;
-			//std::vector<VertexBone> vertexBones;
-//=======
-//			std::vector<Vertex> vertices;
-//			std::vector<VertexBone> boneVertices;
-//>>>>>>> GinNote
 			std::vector<uint32_t> indices;
-
-		//private:
-			//Microsoft::WRL::ComPtr<ID3D12Resource> vertexBuffer[2];
-			//Microsoft::WRL::ComPtr<ID3D12Resource> indexBuffer;
-
-			/*std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
-			D3D12_VERTEX_BUFFER_VIEW vertexView[2]{};
-			D3D12_INDEX_BUFFER_VIEW indexView{};*/
-
 			Resource::Mesh::Skeleton bindPose;
-			//Skeleton bindPose;
+
 		};
 
 	public:
@@ -243,7 +220,6 @@ namespace Argent::Component::Renderer
 
 		std::vector<std::shared_ptr<Argent::Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial> materials;
-
 		int clipIndex{};
 		float frameIndex{};
 		std::vector<Animation> animationClips;

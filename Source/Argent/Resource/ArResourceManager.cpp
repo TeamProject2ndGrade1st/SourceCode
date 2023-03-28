@@ -287,17 +287,20 @@ namespace Argent::Resource
 	{
 	}
 
-	std::shared_ptr<Argent::Resource::ArResource> ArResourceManager::LoadTexture(const char* filePath)
+	std::shared_ptr<Texture::ArTexture> ArResourceManager::LoadTexture(const char* filePath)
 	{
 		std::shared_ptr<ArResource> ret = FindResourceFromFilePath(filePath);
 		if(ret) 
-			return ret;
+			return std::reinterpret_pointer_cast<Argent::Texture::ArTexture>(ret);
+
+
+		   
 
 		ret = std::make_shared<Argent::Texture::ArTexture>(filePath);
 
 		resources[ret->GetUniqueId()] = ret;
 
-		return ret;
+		return std::reinterpret_pointer_cast<Argent::Texture::ArTexture>(ret);
 	}
 
 	bool ArResourceManager::FindTexture(const wchar_t* filepath, ID3D12Resource** ppResource)

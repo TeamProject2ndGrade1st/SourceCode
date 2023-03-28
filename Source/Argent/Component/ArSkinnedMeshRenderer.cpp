@@ -226,67 +226,8 @@ namespace Argent::Component::Renderer
 
 				m->SetOnCommandList(cmdList);
 				Resource::Mesh::ArSkinnedMesh::DrawCall(cmdList, s.indexCount, 1, s.startIndexLocation, 0, 0);
-				//cmdList->DrawIndexedInstanced(s.indexCount, 1, s.startIndexLocation, 0, 0);
 			}
 		}
-	//	for(const Mesh& mesh : meshes)
-	//	{
-
-	//#if 0
-	//		DirectX::XMMATRIX B[3];
-	//		B[0] = DirectX::XMLoadFloat4x4(&mesh.bindPose.bones.at(0).offsetTransform);
-	//		B[1] = DirectX::XMLoadFloat4x4(&mesh.bindPose.bones.at(1).offsetTransform);
-	//		B[2] = DirectX::XMLoadFloat4x4(&mesh.bindPose.bones.at(2).offsetTransform);
-
-	//		DirectX::XMMATRIX A[3];
-	//		A[0] = DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(90), 0, 0);
-	//		A[1] = DirectX::XMMatrixRotationRollPitchYaw(0, 0, DirectX::XMConvertToRadians(45)) * DirectX::XMMatrixTranslation(0, 2, 0);
-	//		A[2] = DirectX::XMMatrixRotationRollPitchYaw(0, 0, DirectX::XMConvertToRadians(-45)) * DirectX::XMMatrixTranslation(0, 2, 0);
-
-	//		DirectX::XMStoreFloat4x4(&constantMap->boneTransforms[0], B[0] * A[0]);
-	//		DirectX::XMStoreFloat4x4(&constantMap->boneTransforms[1], B[1] * A[1] * A[0]);
-	//		DirectX::XMStoreFloat4x4(&constantMap->boneTransforms[2], B[2] * A[2] * A[1] * A[0]);
-	//#endif
-
-
-	//		demoConstBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbObject));
-
-	//		cmdList->IASetVertexBuffers(0, 1, &mesh.vertexView[0]);
-	//		cmdList->IASetVertexBuffers(1, 1, &mesh.vertexView[1]);
-	//		cmdList->IASetIndexBuffer(&mesh.indexView);
-
-	//		for(const Mesh::Subset& subset : mesh.subsets)
-	//		{
-	//			if(animationClips.size() > 0)
-	//			{
-	//				Mesh::Constant meshConstant{};
-	//				const size_t boneCount{ mesh.bindPose.bones.size() };
-	//				for(int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
-	//				{
-	//					const Skeleton::Bone& bone{ mesh.bindPose.bones.at(boneIndex) };
-	//					const Animation::Keyframe::Node& boneNode{ keyframe->nodes.at(bone.nodeIndex) };
-	//					DirectX::XMStoreFloat4x4(&meshConstant.boneTransforms[boneIndex],
-	//						DirectX::XMLoadFloat4x4(&bone.offsetTransform) * 
-	//						DirectX::XMLoadFloat4x4(&boneNode.globalTransform) * 
-	//						DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&mesh.defaultGlobalTransform))
-	//					);
-	//				}
-	//				const Animation::Keyframe::Node meshNode{ keyframe->nodes.at(mesh.nodeIndex) };
-	//				
-	//				meshConstant.globalTransform = meshNode.globalTransform;
-	//				meshConstant.defaultGlobalTransform = mesh.defaultGlobalTransform;
-	//				mesh.constantBuffer->UpdateConstantBuffer(meshConstant);
-	//			}
-	//			
-	//			const Material& material{ materials.at(subset.materialUniqueId) };
-	//			material.constantBuffer->UpdateConstantBuffer(material.constant);
-	//			material.SetOnCommand(cmdList);
-
-	//			mesh.constantBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbMesh));
-
-	//			cmdList->DrawIndexedInstanced(subset.indexCount, 1, subset.startIndexLocation, 0, 0);
-	//		}
-	//	}
 	}
 
 	void ArSkinnedMeshRenderer::Render() const 
@@ -296,17 +237,6 @@ namespace Argent::Component::Renderer
 		if(animationClips.size() > 0)
 		{
 			const Animation& animation{ this->animationClips.at(clipIndex) };
-			//frameIndex = static_cast<int>(animationTick* animation.samplingRate);
-			//if(frameIndex > animation.sequence.size() - 1)
-			//{
-			//	frameIndex = 0;
-
-			//	animationTick = 0;
-			//}
-			//else
-			//{
-			//	animationTick += Argent::Timer::ArTimer::Instance().DeltaTime();
-			//}
 			const Animation::Keyframe& keyframe{ animation.sequence.at(static_cast<uint64_t>(frameIndex)) };
 
 			//todo マテリアルの適用
@@ -384,8 +314,6 @@ namespace Argent::Component::Renderer
 				{
 					const int vertexIndex{ polygonIndex * 3 + positionInPolygon };
 
-					//ArSkinnedMeshRenderer::Vertex vertex;
-					//ArSkinnedMeshRenderer::VertexBone bone;
 					Resource::Mesh::Vertex vertex;
 					Resource::Mesh::VertexBone bone;
 					const int polygonVertex{ fbxMesh->GetPolygonVertex(polygonIndex, positionInPolygon) };
@@ -702,62 +630,6 @@ namespace Argent::Component::Renderer
 	void ArSkinnedMeshRenderer::CreateComObject(ID3D12Device* device)
 	{
 		HRESULT hr{ S_OK };
-//<<<<<<< HEAD
-//=======
-//		for(Mesh& mesh : meshes)
-//		{
-//			D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-//			D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(Vertex) * mesh.vertices.size());
-//			hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, 
-//				nullptr, IID_PPV_ARGS(mesh.vertexBuffer[0].ReleaseAndGetAddressOf()));
-//			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-//
-//
-//			resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(VertexBone) * mesh.boneVertices.size());
-//			hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, 
-//				nullptr, IID_PPV_ARGS(mesh.vertexBuffer[1].ReleaseAndGetAddressOf()));
-//			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-//
-//
-//			Vertex* vMap{};
-//			hr = mesh.vertexBuffer[0]->Map(0, nullptr, reinterpret_cast<void**>(&vMap));
-//			std::copy(mesh.vertices.begin(), mesh.vertices.end(), vMap);
-//			mesh.vertexBuffer[0]->Unmap(0, nullptr);
-//
-//			VertexBone* vbMap{};
-//			hr = mesh.vertexBuffer[1]->Map(0, nullptr, reinterpret_cast<void**>(&vbMap));
-//			std::copy(mesh.boneVertices.begin(), mesh.boneVertices.end(), vbMap);
-//			mesh.vertexBuffer[1]->Unmap(0, nullptr);
-//
-//			mesh.vertexView[0].SizeInBytes = static_cast<UINT>(mesh.vertices.size() * sizeof(Vertex));
-//			mesh.vertexView[0].StrideInBytes = sizeof(Vertex);
-//			mesh.vertexView[0].BufferLocation = mesh.vertexBuffer[0]->GetGPUVirtualAddress();
-//
-//			mesh.vertexView[1].SizeInBytes = static_cast<UINT>(mesh.boneVertices.size() * sizeof(VertexBone));
-//			mesh.vertexView[1].StrideInBytes = sizeof(VertexBone);
-//			mesh.vertexView[1].BufferLocation = mesh.vertexBuffer[1]->GetGPUVirtualAddress();
-//
-//
-//			resDesc.Width = sizeof(uint32_t) * mesh.indices.size();
-//			hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ,
-//				nullptr, IID_PPV_ARGS(mesh.indexBuffer.ReleaseAndGetAddressOf()));
-//			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-//
-//			uint32_t* iMap{};
-//			hr = mesh.indexBuffer->Map(0, nullptr, reinterpret_cast<void**>(&iMap));
-//			std::copy(mesh.indices.begin(), mesh.indices.end(), iMap);
-//			mesh.indexBuffer->Unmap(0, nullptr);
-//
-//			mesh.indexView.Format = DXGI_FORMAT_R32_UINT;
-//			mesh.indexView.SizeInBytes = static_cast<UINT>(sizeof(uint32_t) * mesh.indices.size());
-//			mesh.indexView.BufferLocation = mesh.indexBuffer->GetGPUVirtualAddress();
-//
-//
-//			mesh.constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Mesh::Constant>>(device,
-//				Argent::Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
-//		}
-//
-//>>>>>>> GinNote
 
 		D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};
 		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;

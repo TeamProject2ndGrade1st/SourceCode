@@ -65,8 +65,9 @@ namespace Argent::Loader::Fbx
 	{
 		int64_t nodeIndex;
 		std::vector<Argent::Resource::Mesh::Vertex> vertices;
+		std::vector<Resource::Mesh::VertexBone> vertexBones;
 		std::vector<uint32_t> indices;
-		std::vector<ArSubset> subsets;
+		std::vector<Resource::Mesh::ArStaticMesh::Subset> subsets;
 		Argent::Resource::Mesh::Skeleton bindPose;
 		DirectX::XMFLOAT4X4 defaultGlobalTransform
 		{
@@ -80,7 +81,7 @@ namespace Argent::Loader::Fbx
 	void FetchMesh(FbxScene* fbxScene,const ArFbxScene& sceneView, std::vector<TmpFbxMesh>& meshes);
 	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Material::ArMeshMaterial>& materials);
 	void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const ArFbxScene& sceneView);
-	void FetchAnimation(FbxScene* fbxScene, std::vector<ArAnimation>& animationClips, 
+	void FetchAnimation(FbxScene* fbxScene, std::vector<Argent::Component::Renderer::Animation>& animationClips, 
 			float samplingRate, const ArFbxScene& sceneView);
 	void UpdateAnimation(ArAnimation::ArKeyframe& keyframe, const ArFbxScene& sceneView);
 	void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<std::vector<ArBoneInfluence>>& boneInfluences);
@@ -117,20 +118,35 @@ namespace Argent::Loader::Fbx
 		FetchMesh(fbxScene, sceneView, tmpMeshes);
 		FetchMaterial(fbxScene, sceneView, filePath, materials);
 		
-		std::vector<ArAnimation> animationClips;
+		std::vector<Argent::Component::Renderer::Animation> animationClips;
+
+		FetchAnimation(fbxScene, animationClips, 0, sceneView);
 
 		std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes;
+		std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
 		meshes.resize(tmpMeshes.size());
+		skinnedMeshes.resize(tmpMeshes.size());
 		for(size_t i = 0; i < meshes.size(); ++i)
 		{
 			std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
-			meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices, tmpMeshes.at(i).indices, reinterpret_cast<std::vector<Argent::Resource::Mesh::ArStaticMesh::Subset>&>(tmpMeshes.at(i).subsets));
+			meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices, 
+				tmpMeshes.at(i).indices, 
+				tmpMeshes.at(i).subsets);
+			skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(vertices,
+				tmpMeshes.at(i).vertexBones, tmpMeshes.at(i).indices,
+				tmpMeshes.at(i).subsets, tmpMeshes.at(i).bindPose);
 		}
 
-		auto* ret = new Component::Renderer::ArStaticMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(),
-		filePath, meshes, materials);
+		ID3D12Device* device = Argent::Graphics::ArGraphics::Instance()->GetDevice();
+		//auto* ret = new Component::Renderer::ArStaticMeshRenderer(device,
+		//filePath, meshes, materials);
 
-		return ret;
+		auto* ret1 = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath, 
+			skinnedMeshes, materials, animationClips);
+
+		return ret1;
+
+		//return ret;
 	}
 
 
@@ -151,7 +167,7 @@ namespace Argent::Loader::Fbx
 			FetchBoneInfluences(fbxMesh, boneInfluences);
 			FetchSkeleton(fbxMesh, mesh.bindPose, sceneView);
 
-			std::vector<ArSubset>& subsets{ mesh.subsets };
+			auto& subsets{ mesh.subsets };
 			const int MaterialCount{ fbxMesh->GetNode()->GetMaterialCount() };
 			subsets.resize(MaterialCount > 0 ? MaterialCount : 1);
 			for (int materialIndex = 0; materialIndex < MaterialCount; ++materialIndex)
@@ -169,7 +185,7 @@ namespace Argent::Loader::Fbx
 					subsets.at(materialIndex).indexCount += 3;
 				}
 				uint32_t offset{};
-				for (ArSubset& subset : subsets)
+				for (auto& subset : subsets)
 				{
 					subset.startIndexLocation = offset;
 					offset += subset.indexCount;
@@ -180,6 +196,7 @@ namespace Argent::Loader::Fbx
 			const int polygonCount{ fbxMesh->GetPolygonCount() };
 			mesh.vertices.resize(polygonCount * 3LL);
 			mesh.indices.resize(polygonCount * 3LL);
+			mesh.vertexBones.resize(polygonCount * 3LL);
 
 			FbxStringList uvNames;
 			fbxMesh->GetUVSetNames(uvNames);
@@ -188,7 +205,7 @@ namespace Argent::Loader::Fbx
 			{
 				const int materialIndex{ MaterialCount > 0 ?
 					fbxMesh->GetElementMaterial()->GetIndexArray().GetAt(polygonIndex) : 0 };
-				ArSubset& subset{ subsets.at(materialIndex) };
+				auto& subset{ subsets.at(materialIndex) };
 				const uint32_t offset{ subset.startIndexLocation + subset.indexCount };
 
 				for (int positionInPolygon = 0; positionInPolygon < 3; ++positionInPolygon)
@@ -235,6 +252,7 @@ namespace Argent::Loader::Fbx
 
 					mesh.vertices.at(vertexIndex) = std::move(vertex);
 					mesh.indices.at(static_cast<size_t>(offset) + positionInPolygon) = vertexIndex;
+					mesh.vertexBones.at(vertexIndex) = std::move(bone);
 					++subset.indexCount;
 				}
 			}
@@ -280,7 +298,7 @@ namespace Argent::Loader::Fbx
 				material.constant.ka.z = static_cast<float>(color[2]);
 				material.constant.ka.w = 1.0f;
 			}
-			if(PName == FbxSurfaceMaterial::sBump)
+			if(pName == FbxSurfaceMaterial::sNormalMap)
 			{
 				const FbxFileTexture* fbxTexture{ fbxProp.GetSrcObject<FbxFileTexture>() };
 				const char* tmpFilePath = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
@@ -290,7 +308,19 @@ namespace Argent::Loader::Fbx
 				path.replace_filename(tmpFilePath);
 
 				material.CreateTexture(path.generic_string().c_str(), Material::ArMeshMaterial::TextureType::Normal);
+				
 			}
+			//if(PName == FbxSurfaceMaterial::sBump)
+			//{
+			//	const FbxFileTexture* fbxTexture{ fbxProp.GetSrcObject<FbxFileTexture>() };
+			//	const char* tmpFilePath = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
+
+			//	//tmpFilePath = "lambert1_Normal_OpenGL.png";
+			//	std::filesystem::path path(fbxFilePath);
+			//	path.replace_filename(tmpFilePath);
+
+			//	material.CreateTexture(path.generic_string().c_str(), Material::ArMeshMaterial::TextureType::Normal);
+			//}
 		}
 	}
 
@@ -317,6 +347,7 @@ namespace Argent::Loader::Fbx
 					FetchSurfaceMaterial(fbxMaterial, FbxSurfaceMaterial::sDiffuse, fbxFilePath, material);
 					FetchSurfaceMaterial(fbxMaterial, FbxSurfaceMaterial::sSpecular, fbxFilePath, material);
 					FetchSurfaceMaterial(fbxMaterial, FbxSurfaceMaterial::sAmbient, fbxFilePath, material);
+					FetchSurfaceMaterial(fbxMaterial, FbxSurfaceMaterial::sNormalMap, fbxFilePath, material);
 					FetchSurfaceMaterial(fbxMaterial, FbxSurfaceMaterial::sBump, fbxFilePath, material);
 
 					materials.emplace(materialUniqueId, std::move(material));
@@ -382,4 +413,54 @@ namespace Argent::Loader::Fbx
 		}
 	}
 
+	void FetchAnimation(FbxScene* fbxScene, std::vector<Argent::Component::Renderer::Animation>& animationClips,
+		float samplingRate, const ArFbxScene& sceneView)
+	{
+		FbxArray<FbxString*> animationStackNames;
+		fbxScene->FillAnimStackNameArray(animationStackNames);
+		const int animationStackCount{ animationStackNames.GetCount() };
+		for(int animationStackIndex = 0; animationStackIndex < animationStackCount; ++animationStackIndex)
+		{
+			auto& animationClip{ animationClips.emplace_back() };
+			animationClip.name = animationStackNames[animationStackIndex]->Buffer();
+
+			FbxAnimStack* animationStack{ fbxScene->FindMember<FbxAnimStack>(animationClip.name.c_str()) };
+			fbxScene->SetCurrentAnimationStack(animationStack);
+
+			const FbxTime::EMode timeMode{ fbxScene->GetGlobalSettings().GetTimeMode() };
+			FbxTime oneSecond{};
+			oneSecond.SetTime(0, 0, 1, 0, 0, timeMode);
+			animationClip.samplingRate = samplingRate > 0 ? samplingRate : static_cast<float>(oneSecond.GetFrameRate(timeMode));
+			const FbxTime samplingInterval{ static_cast<FbxLongLong>(static_cast<float>(oneSecond.Get()) / animationClip.samplingRate) };
+			const FbxTakeInfo* takeInfo{ fbxScene->GetTakeInfo(animationClip.name.c_str()) };
+			const FbxTime startTime{ takeInfo->mLocalTimeSpan.GetStart() };
+			const FbxTime stopTime{ takeInfo->mLocalTimeSpan.GetStop() };
+			for(FbxTime time = startTime; time < stopTime; time += samplingInterval)
+			{
+				auto& keyframe{ animationClip.sequence.emplace_back() };
+
+				const size_t nodeCount{ sceneView.nodes.size() };
+				keyframe.nodes.resize(nodeCount);
+				for(size_t nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
+				{
+					FbxNode* fbxNode{ fbxScene->FindNodeByName(sceneView.nodes.at(nodeIndex).name.c_str()) };
+					if(fbxNode)
+					{
+						auto& node{ keyframe.nodes.at(nodeIndex) };
+						node.globalTransform = Argent::Helper::FBX::ToFloat4x4(fbxNode->EvaluateGlobalTransform(time));
+
+						const FbxAMatrix& localTransform{ fbxNode->EvaluateLocalTransform(time) };
+						node.scaling = Argent::Helper::FBX::Tofloat3(localTransform.GetS());
+						node.rotation = Argent::Helper::FBX::ToFloat4(localTransform.GetQ());
+						node.translation = Argent::Helper::FBX::Tofloat3(localTransform.GetT());
+
+					}
+				}
+			}
+		}
+		for(int animationStackIndex = 0; animationStackIndex < animationStackCount; ++animationStackIndex)
+		{
+			delete animationStackNames[animationStackIndex];
+		}
+	}
 }
