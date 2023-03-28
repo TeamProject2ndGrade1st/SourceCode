@@ -16,8 +16,6 @@ namespace Argent::Loader::Fbx
 	static constexpr int MaxBoneInfluences{ 256 };
 
 	//データの読み込みとアニメーションのアップデートに使ってる
-	
-
 	/**
 	 * \brief すべてのノードを取ってくる
 	 * \param fbxNode 

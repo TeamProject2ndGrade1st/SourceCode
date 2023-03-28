@@ -71,8 +71,6 @@ namespace Argent::Resource
 					return res.second.lock();
 				}
 			}
-
-
 			return nullptr;
 		}
 

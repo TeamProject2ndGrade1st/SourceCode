@@ -17,7 +17,7 @@ void Title::Initialize()
 	//AddObject(new GameObject("noneBone", Argent::Loader::Fbx::LoadFbx("./Resources/Model/LMG/LMG_low_0324_1.fbx")));
 	AddObject(new GameObject("noneBone", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ExampleStage.fbx", true)));
 
-	AddObject(new GameObject("effect", new Argent::Component::Renderer::ArEffectRenderer("./Resources/Effects/barel_test.efk ", "./Resources/Effects")));
+	//AddObject(new GameObject("effect", new Argent::Component::Renderer::ArEffectRenderer("./Resources/Effects/barel_test.efk ", "./Resources/Effects")));
 
 	AddObject(new GameObject("Nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Mr.Incredible.fbx", false)));
 	//AddObject(new GameObject({ new Argent::Component::Renderer::ArSkinnedMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(), "./Resources/Model/nico.fbx"),
