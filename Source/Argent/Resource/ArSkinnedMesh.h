@@ -22,7 +22,7 @@ namespace Argent::Resource::Mesh
 			bool isOrphan() const { return parentIndex < 0; }
 		};
 
-		std::vector<Bone> bones;
+		std::vector<Bone> bones{};
 		int64_t indexOf(uint64_t uniqueId) const
 		{
 			int64_t index{};

@@ -35,7 +35,6 @@ namespace Argent::Loader::Fbx
 			}
 			return -1;
 		}
-		
 	};
 
 	/**
@@ -117,36 +116,54 @@ namespace Argent::Loader::Fbx
 
 		FetchMesh(fbxScene, sceneView, tmpMeshes);
 		FetchMaterial(fbxScene, sceneView, filePath, materials);
-		
-		std::vector<Argent::Component::Renderer::Animation> animationClips;
 
-		FetchAnimation(fbxScene, animationClips, 0, sceneView);
-
-		std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes;
-		std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
-		meshes.resize(tmpMeshes.size());
-		skinnedMeshes.resize(tmpMeshes.size());
-		for(size_t i = 0; i < meshes.size(); ++i)
+		bool hasBone = false;
+		for(const auto& m : tmpMeshes)
 		{
-			std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
-			meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices, 
-				tmpMeshes.at(i).indices, 
-				tmpMeshes.at(i).subsets);
-			skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(vertices,
-				tmpMeshes.at(i).vertexBones, tmpMeshes.at(i).indices,
-				tmpMeshes.at(i).subsets, tmpMeshes.at(i).bindPose);
+			if(m.bindPose.bones.size() > 0)
+			{
+				hasBone = true;
+			}
 		}
 
 		ID3D12Device* device = Argent::Graphics::ArGraphics::Instance()->GetDevice();
-		//auto* ret = new Component::Renderer::ArStaticMeshRenderer(device,
-		//filePath, meshes, materials);
 
-		auto* ret1 = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath, 
-			skinnedMeshes, materials, animationClips);
+		if(!hasBone)
+		{
+			std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes;
+			meshes.resize(tmpMeshes.size());
+			for(size_t i = 0; i < meshes.size(); ++i)
+			{
+				std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
+				meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices, 
+					tmpMeshes.at(i).indices, 
+					tmpMeshes.at(i).subsets);
+			}
+			auto* ret = new Component::Renderer::ArStaticMeshRenderer(device,
+			filePath, meshes, materials);
 
-		return ret1;
+			return ret;
+		}
+		else
+		{
+			std::vector<Argent::Component::Renderer::Animation> animationClips;
 
-		//return ret;
+			FetchAnimation(fbxScene, animationClips, 0, sceneView);
+			std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
+			skinnedMeshes.resize(tmpMeshes.size());
+			for(size_t i = 0; i < skinnedMeshes.size(); ++i)
+			{
+				std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
+				skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(vertices,
+					tmpMeshes.at(i).vertexBones, tmpMeshes.at(i).indices,
+					tmpMeshes.at(i).subsets, tmpMeshes.at(i).bindPose);
+			}
+
+			auto* ret = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath, 
+				skinnedMeshes, materials, animationClips);
+
+			return ret;
+		}
 	}
 
 
