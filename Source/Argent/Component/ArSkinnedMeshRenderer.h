@@ -186,7 +186,7 @@ namespace Argent::Component::Renderer
 			};
 		
 			std::vector<Vertex> vertices;
-			std::vector<VertexBone> vertexBones;
+			std::vector<VertexBone> boneVertices;
 			std::vector<uint32_t> indices;
 
 		//private:

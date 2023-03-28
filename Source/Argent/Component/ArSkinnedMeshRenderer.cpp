@@ -307,7 +307,7 @@ namespace Argent::Component::Renderer
 			const int polygonCount{ fbxMesh->GetPolygonCount() };
 			mesh.vertices.resize(polygonCount * 3LL);
 			mesh.indices.resize(polygonCount * 3LL);
-			mesh.vertexBones.resize(polygonCount * 3LL);
+			mesh.boneVertices.resize(polygonCount * 3LL);
 
 			FbxStringList uvNames;
 			fbxMesh->GetUVSetNames(uvNames);
@@ -361,7 +361,7 @@ namespace Argent::Component::Renderer
 					}
 
 					mesh.vertices.at(vertexIndex) = std::move(vertex);
-					mesh.vertexBones.at(vertexIndex) = std::move(bone);
+					mesh.boneVertices.at(vertexIndex) = std::move(bone);
 					mesh.indices.at(static_cast<size_t>(offset) + positionInPolygon) = vertexIndex;
 					++subset.indexCount;
 				}
@@ -648,7 +648,7 @@ namespace Argent::Component::Renderer
 			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
 
-			resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(VertexBone) * mesh.vertexBones.size());
+			resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(VertexBone) * mesh.boneVertices.size());
 			hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, 
 				nullptr, IID_PPV_ARGS(mesh.vertexBuffer[1].ReleaseAndGetAddressOf()));
 			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
@@ -661,14 +661,14 @@ namespace Argent::Component::Renderer
 
 			VertexBone* vbMap{};
 			hr = mesh.vertexBuffer[1]->Map(0, nullptr, reinterpret_cast<void**>(&vbMap));
-			std::copy(mesh.vertexBones.begin(), mesh.vertexBones.end(), vbMap);
+			std::copy(mesh.boneVertices.begin(), mesh.boneVertices.end(), vbMap);
 			mesh.vertexBuffer[1]->Unmap(0, nullptr);
 
 			mesh.vertexView[0].SizeInBytes = static_cast<UINT>(mesh.vertices.size() * sizeof(Vertex));
 			mesh.vertexView[0].StrideInBytes = sizeof(Vertex);
 			mesh.vertexView[0].BufferLocation = mesh.vertexBuffer[0]->GetGPUVirtualAddress();
 
-			mesh.vertexView[1].SizeInBytes = static_cast<UINT>(mesh.vertexBones.size() * sizeof(VertexBone));
+			mesh.vertexView[1].SizeInBytes = static_cast<UINT>(mesh.boneVertices.size() * sizeof(VertexBone));
 			mesh.vertexView[1].StrideInBytes = sizeof(VertexBone);
 			mesh.vertexView[1].BufferLocation = mesh.vertexBuffer[1]->GetGPUVirtualAddress();
 

@@ -9,16 +9,15 @@
 #include <memory>
 
 #include <unordered_map>
+
 #include "ArRenderer.h"
 #include "../Graphic/Dx12/ArConstantBuffer.h"
 #include "../Resource/ArTexture.h"
-#include "ArRenderer.h"
 #include "../Resource/ArStaticMesh.h"
 
 namespace Argent::Component::Renderer
 {
 	class ArStaticMeshRenderer:
-//<<<<<<< HEAD
 		public ArRenderer
 	{
 	public:
