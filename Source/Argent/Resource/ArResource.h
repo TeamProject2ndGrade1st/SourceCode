@@ -18,8 +18,19 @@ namespace Argent::Resource
 			Material,
 			Effect,
 			Audio,
+			Animation,
 		};
 		ArResource(const char* name, ResourceType type);
+		ArResource(ResourceType type);
+
+	protected:
+		ArResource(uint64_t uniqueId, const char* name, ResourceType type):
+			uniqueId(uniqueId),
+			name(name),
+			type(type)
+		{}
+	public:
+		virtual ~ArResource() = default;
 
 		virtual bool CompareName(const char* n)
 		{
@@ -28,11 +39,11 @@ namespace Argent::Resource
 
 		uint64_t GetUniqueId() const { return uniqueId; }  // NOLINT(modernize-use-nodiscard)
 		const char* GetName() const { return name.c_str(); }// NOLINT(modernize-use-nodiscard)
-
+		void SetName(const char* n) { name = n; }
 	private:
 		uint64_t uniqueId;
 		std::string name;
-		ResourceType type;
+		const ResourceType type;
 	};
 
 	class ArImportedResource:

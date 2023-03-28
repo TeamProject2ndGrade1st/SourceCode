@@ -3,9 +3,6 @@
 
 #include "Argent/Component/ArSpriteRenderer.h"
 #include "Argent/Input/Keyboard.h"
-#include "Argent/Component/ArSkinnedMeshRenderer.h"
-#include "Argent/Component/ArStaticMeshRenderer.h"
-#include "Argent/Graphic/ArGraphics.h"
 #include "Argent/Component/ArEffectRenderer.h"
 #include "Argent/Component/ArAudioPlayer.h"
 #include "Argent/Loader/FbxLoader.h"

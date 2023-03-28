@@ -115,6 +115,7 @@
     <ClInclude Include="Source\Argent\Math\MathHelper.h" />
     <ClInclude Include="Source\Argent\Other\ArHelper.h" />
     <ClInclude Include="Source\Argent\Other\Misc.h" />
+    <ClInclude Include="Source\Argent\Resource\ArAnimation.h" />
     <ClInclude Include="Source\Argent\Resource\ArAudio.h" />
     <ClInclude Include="Source\Argent\Resource\ArAudioManager.h" />
     <ClInclude Include="Source\Argent\Resource\ArEffect.h" />

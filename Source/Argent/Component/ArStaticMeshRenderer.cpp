@@ -159,17 +159,8 @@ namespace Argent::Component::Renderer
 #endif
 	void ArStaticMeshRenderer::CreateComObject(ID3D12Device* device)
 	{
-		HRESULT hr{ S_OK };
-
-		D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};
-		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-		heapDesc.NodeMask = 0;
-		heapDesc.NumDescriptors = static_cast<UINT>(materials.size());
-		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-
-		for (auto it = materials.begin();
-			it != materials.end(); ++it)
-{
+		for (auto it = materials.begin(); it != materials.end(); ++it)
+		{
 			it->second.constantBuffer =
 				std::make_unique<Argent::Dx12::ArConstantBuffer<Material::ArMeshMaterial::Constant>>(
 					device,

@@ -8,4 +8,10 @@ namespace Argent::Resource
 	,	name(name)
 	,	type(type)
 	{}
+
+	ArResource::ArResource(ResourceType type):
+		uniqueId(ArResourceManager::GenerateResourceUniqueId())
+	,	name("Not Setting")
+	,	type(type)
+	{}
 }

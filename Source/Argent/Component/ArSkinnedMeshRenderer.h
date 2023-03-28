@@ -1,19 +1,19 @@
 #pragma once
 
 #include <d3d12.h>
-#include <wrl.h>
 #include <DirectXMath.h>
 #include <vector>
 #include <string>
 #include <fbxsdk.h>
 #include <memory>
-
 #include <unordered_map>
+
 #include "ArRenderer.h"
 #include "../Graphic/Dx12/ArConstantBuffer.h"
 #include "../Resource/ArTexture.h"
 #include "../Resource/ArSkinnedMesh.h"
 #include "../Resource/ArMaterial.h"
+#include "../Resource/ArAnimation.h"
 
 
 //todo　ボーンあるいはアニメーションを持っていない場合はレンダリングできないため
@@ -27,94 +27,6 @@
 
 namespace Argent::Component::Renderer
 {
-	struct SkinnedScene
-	{
-		struct Node
-		{
-			uint64_t id{};
-			std::string name;
-			FbxNodeAttribute::EType attribute{ FbxNodeAttribute::EType::eUnknown };
-			int64_t parentIndex{ -1 };
-		};
-
-		std::vector<Node> nodes;
-
-		int64_t IndexOf(uint64_t id) const
-		{
-			int64_t index{};
-			for(const Node& node : nodes)
-			{
-				if(node.id == id) return index;
-				++index;
-			}
-			return -1;
-		}
-	};
-
-	struct BoneInfluence
-	{
-		uint32_t boneIndex;
-		float boneWeight;
-	};
-	using boneInfluencesPerControlPoint = std::vector<BoneInfluence>;
-
-	struct Skeleton
-	{
-		struct Bone
-		{
-			uint64_t uniqueId{};
-			std::string name;
-			int64_t parentIndex{ -1 };
-			int64_t nodeIndex{};
-
-			DirectX::XMFLOAT4X4 offsetTransform
-			{
-				1, 0, 0, 0,
-				0, 1, 0, 0,
-				0, 0, 1, 0,
-				0, 0, 0, 1
-			};
-			bool isOrphan() const { return parentIndex < 0; }
-		};
-		std::vector<Bone> bones;
-		int64_t indexOf(uint64_t uniqueId) const
-		{
-			int64_t index{};
-			for(const Bone& bone : bones)
-			{
-				if(bone.uniqueId == uniqueId) return index;
-				++index;
-			}
-			return -1;
-		}
-	};
-
-	struct Animation
-	{
-		std::string name;
-		float samplingRate{};
-
-		struct Keyframe
-		{
-			struct Node
-			{
-				DirectX::XMFLOAT4X4 globalTransform
-				{
-					1, 0, 0, 0,
-					0, 1, 0, 0,
-					0, 0, 1, 0,
-					0, 0, 0, 1
-				};
-
-				DirectX::XMFLOAT3 scaling{ 1, 1, 1 };
-				DirectX::XMFLOAT4 rotation{ 0, 0, 0, 1 };
-				DirectX::XMFLOAT3 translation{ 0, 0, 0 };
-			};
-			std::vector<Node> nodes;
-		};
-		std::vector<Keyframe> sequence;
-	};
-
 	class ArSkinnedMeshRenderer:
 		public Argent::Component::Renderer::ArRenderer
 	{
@@ -140,7 +52,7 @@ namespace Argent::Component::Renderer
 		struct VertexBone
 		{
 			float boneWeights[MaxBoneInfluences]{1, 0, 0, 0};
-			uint32_t boneIndices[MaxBoneInfluences];
+			uint32_t boneIndices[MaxBoneInfluences]{};
 		};
 
 		static const int MaxBones{ 256 };
@@ -150,49 +62,13 @@ namespace Argent::Component::Renderer
 			DirectX::XMFLOAT4X4 world;
 		};
 
-		struct Mesh
-		{
-			std::vector<Resource::Mesh::ArStaticMesh::Subset> subsets;
-
-			struct Constant
-			{
-				DirectX::XMFLOAT4X4 globalTransform;
-				DirectX::XMFLOAT4X4 boneTransforms[MaxBones]
-				{
-					{1, 0, 0, 0,
-						0, 1, 0, 0,
-						0, 0, 1, 0,
-						0, 0, 0, 1
-					}
-				};
-			};
-
-			std::string name;
-			int64_t nodeIndex{};
-			DirectX::XMFLOAT4X4 defaultGlobalTransform
-			{
-				1, 0, 0, 0,
-				0, 1, 0, 0,
-				0, 0, 1, 0,
-				0, 0, 0, 1,
-			};
-		
-			std::vector<Argent::Resource::Mesh::Vertex> vertices;
-			std::vector<Resource::Mesh::VertexBone> vertexBones;
-			std::vector<uint32_t> indices;
-			Resource::Mesh::Skeleton bindPose;
-
-		};
 
 	public:
 		ArSkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
 			std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>>& meshes,
 			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
-			std::vector<Animation>& animation);
+			std::vector<Resource::Animation::ArAnimation>& animation);
 
-
-
-		ArSkinnedMeshRenderer(ID3D12Device* device, const char* filename, float samplingRate = 0, bool triangulate = false);
 		~ArSkinnedMeshRenderer() override = default;
 
 		ArSkinnedMeshRenderer(const ArSkinnedMeshRenderer&) = delete;
@@ -203,7 +79,7 @@ namespace Argent::Component::Renderer
 
 		void Render(ID3D12GraphicsCommandList* cmdList,
 			const DirectX::XMFLOAT4X4& world,
-			const Animation::Keyframe* keyframe) const;
+			const Resource::Animation::ArAnimation::Keyframe* keyframe) const;
 
 		void Render() const override;
 
@@ -216,29 +92,15 @@ namespace Argent::Component::Renderer
 		void CreateComObject(ID3D12Device* device);
 
 	private:
-		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> demoConstBuffer;
-
+		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> objectConstantBuffer;
+		
 		std::vector<std::shared_ptr<Argent::Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial> materials;
 		int clipIndex{};
 		float frameIndex{};
-		std::vector<Animation> animationClips;
+		std::vector<Resource::Animation::ArAnimation> animationClips;
 
 	private:
 		void CreateRootSignatureAndPipelineState();
 	};
-
-	namespace SkinnedMesh
-	{
-		void FetchMesh(FbxScene* fbxScene, std::vector<ArSkinnedMeshRenderer::Mesh>& meshes, const SkinnedScene& sceneView);
-		void FetchMaterial(FbxScene* fbxScene, std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials, const SkinnedScene& sceneView, const char* fbxFilePath);
-		void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const SkinnedScene& sceneView);
-		void FetchAnimation(FbxScene* fbxScene, std::vector<Animation>& animationClips, 
-			float samplingRate, const SkinnedScene& sceneView);
-		void UpdateAnimation(Animation::Keyframe& keyframe, const SkinnedScene& sceneView);
-
-
-		void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<boneInfluencesPerControlPoint>& boneInfluences);
-	}
-	
 }

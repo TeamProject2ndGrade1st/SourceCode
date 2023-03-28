@@ -7,6 +7,7 @@
 #include "../Component/ArSkinnedMeshRenderer.h"
 #include "../Resource/ArSkinnedMesh.h"
 #include "../Resource/ArMaterial.h"
+#include "../Resource/ArAnimation.h"
 
 namespace Argent::Loader::Fbx
 {
@@ -80,7 +81,7 @@ namespace Argent::Loader::Fbx
 	void FetchMesh(FbxScene* fbxScene,const ArFbxScene& sceneView, std::vector<TmpFbxMesh>& meshes);
 	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Material::ArMeshMaterial>& materials);
 	void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const ArFbxScene& sceneView);
-	void FetchAnimation(FbxScene* fbxScene, std::vector<Argent::Component::Renderer::Animation>& animationClips, 
+	void FetchAnimation(FbxScene* fbxScene, std::vector<Resource::Animation::ArAnimation>& animationClips, 
 			float samplingRate, const ArFbxScene& sceneView);
 	void UpdateAnimation(ArAnimation::ArKeyframe& keyframe, const ArFbxScene& sceneView);
 	void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<std::vector<ArBoneInfluence>>& boneInfluences);
@@ -146,7 +147,7 @@ namespace Argent::Loader::Fbx
 		}
 		else
 		{
-			std::vector<Argent::Component::Renderer::Animation> animationClips;
+			std::vector<Resource::Animation::ArAnimation> animationClips;
 
 			FetchAnimation(fbxScene, animationClips, 0, sceneView);
 			std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
@@ -430,7 +431,7 @@ namespace Argent::Loader::Fbx
 		}
 	}
 
-	void FetchAnimation(FbxScene* fbxScene, std::vector<Argent::Component::Renderer::Animation>& animationClips,
+	void FetchAnimation(FbxScene* fbxScene, std::vector<Resource::Animation::ArAnimation>& animationClips,
 		float samplingRate, const ArFbxScene& sceneView)
 	{
 		FbxArray<FbxString*> animationStackNames;
@@ -439,9 +440,11 @@ namespace Argent::Loader::Fbx
 		for(int animationStackIndex = 0; animationStackIndex < animationStackCount; ++animationStackIndex)
 		{
 			auto& animationClip{ animationClips.emplace_back() };
-			animationClip.name = animationStackNames[animationStackIndex]->Buffer();
+			const char* name = 
+			/*animationClip.name =*/ animationStackNames[animationStackIndex]->Buffer();
+			animationClip.SetName(name);
 
-			FbxAnimStack* animationStack{ fbxScene->FindMember<FbxAnimStack>(animationClip.name.c_str()) };
+			FbxAnimStack* animationStack{ fbxScene->FindMember<FbxAnimStack>(animationClip.GetName()) };
 			fbxScene->SetCurrentAnimationStack(animationStack);
 
 			const FbxTime::EMode timeMode{ fbxScene->GetGlobalSettings().GetTimeMode() };
@@ -449,7 +452,7 @@ namespace Argent::Loader::Fbx
 			oneSecond.SetTime(0, 0, 1, 0, 0, timeMode);
 			animationClip.samplingRate = samplingRate > 0 ? samplingRate : static_cast<float>(oneSecond.GetFrameRate(timeMode));
 			const FbxTime samplingInterval{ static_cast<FbxLongLong>(static_cast<float>(oneSecond.Get()) / animationClip.samplingRate) };
-			const FbxTakeInfo* takeInfo{ fbxScene->GetTakeInfo(animationClip.name.c_str()) };
+			const FbxTakeInfo* takeInfo{ fbxScene->GetTakeInfo(animationClip.GetName()) };
 			const FbxTime startTime{ takeInfo->mLocalTimeSpan.GetStart() };
 			const FbxTime stopTime{ takeInfo->mLocalTimeSpan.GetStop() };
 			for(FbxTime time = startTime; time < stopTime; time += samplingInterval)
