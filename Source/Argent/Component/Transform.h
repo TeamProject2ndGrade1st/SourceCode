@@ -62,7 +62,8 @@ public:
 	void SetRotation(const DirectX::XMFLOAT4& rot) { rotation = rot; }
 	Transform AdjustParentTransform() const;
 
-
+	float GetScaleFactor() const { return scaleFactor;  }
+	void SetScaleFactor(float f) { scaleFactor = f;  }
 
 private:
 

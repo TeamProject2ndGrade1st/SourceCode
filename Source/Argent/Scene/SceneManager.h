@@ -12,11 +12,12 @@ namespace Argent::SceneManagement
 		ArSceneManager();
 		~ArSceneManager() = default;
 		
-		void Execute();
+		//void Execute();
 		void Initialize();
 		void Finalize();
 		
-		
+		void Update();
+		void Render();
 		static void SetNextScene(const std::string& s) { nextScene = s; }
 		
 		

@@ -54,6 +54,12 @@ namespace Argent::Resource::Effect
 
 	void Argent::Resource::Effect::ArEffectManager::Update()
 	{
+		
+		efkManager->Update();
+	}
+
+	void Argent::Resource::Effect::ArEffectManager::Render() const
+	{
 		Effekseer::Matrix44 fkViewMat;
 		Effekseer::Matrix44 fkProjMat;
 
@@ -70,11 +76,9 @@ namespace Argent::Resource::Effect
 		}
 		efkRenderer->SetCameraMatrix(fkViewMat);
 		efkRenderer->SetProjectionMatrix(fkProjMat);
-		efkManager->Update();
-	}
 
-	void Argent::Resource::Effect::ArEffectManager::Render() const
-	{
+
+
 		//描画場所を指定　マルチレンダーターゲット場合は一枚目でやること
 		efkMemoryPool->NewFrame();
 		EffekseerRendererDX12::BeginCommandList(efkCmdList, Graphics::ArGraphics::Instance()->GetCommandList());

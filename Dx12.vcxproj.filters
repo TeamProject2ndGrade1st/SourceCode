@@ -67,6 +67,9 @@
     <Filter Include="Argent\Resource\Material">
       <UniqueIdentifier>{75f6fac2-46c1-4bff-9950-3ccfec954218}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Component">
+      <UniqueIdentifier>{3350e01e-579c-495b-9108-7c345e3ba61d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -229,6 +232,7 @@
     <ClCompile Include="Source\Argent\Math\MathHelper.cpp">
       <Filter>Argent\Other</Filter>
     </ClCompile>
+    <ClCompile Include="Source\MrIncredible.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -417,6 +421,7 @@
     <ClInclude Include="Source\Argent\Other\CerealHelper.h">
       <Filter>Argent\Other</Filter>
     </ClInclude>
+    <ClInclude Include="Source\MrIncredible.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

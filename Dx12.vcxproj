@@ -70,6 +70,7 @@
     <ClCompile Include="Source\Argent\Scene\Scene.cpp" />
     <ClCompile Include="Source\Argent\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\MrIncredible.cpp" />
     <ClCompile Include="Source\Title.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
@@ -134,6 +135,7 @@
     <ClInclude Include="Source\Argent\Scene\SceneManager.h" />
     <ClInclude Include="Source\DemoShaderMacro.h" />
     <ClInclude Include="Source\Game.h" />
+    <ClInclude Include="Source\MrIncredible.h" />
     <ClInclude Include="Source\Title.h" />
   </ItemGroup>
   <ItemGroup>

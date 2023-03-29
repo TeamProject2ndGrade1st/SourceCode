@@ -16,6 +16,10 @@ public:
 		AddObject(new GameObject("Light", new Light));
 	}
 	virtual ~Scene() = default;
+	Scene(const Scene&) = delete;
+	Scene(const Scene&&) = delete;
+	Scene& operator=(const Scene&) = delete;
+	Scene& operator=(const Scene&&) = delete;
 
 	virtual void Initialize();
 	virtual void Finalize();

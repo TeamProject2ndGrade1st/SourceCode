@@ -2,6 +2,7 @@
 #include "../Graphic/ArGraphics.h"
 #include "../Input/Keyboard.h"
 #include "../GameObject/GameObject.h"
+#include "../Math/MathHelper.h"
 
 Camera::Camera(bool isSceneCamera, float width, float height, float nearZ, float farZ, 
                float fov, const Transform* target):
@@ -16,7 +17,6 @@ Camera::Camera(bool isSceneCamera, float width, float height, float nearZ, float
 ,	forward(DirectX::XMFLOAT3(0, 0, 1))
 ,	right(DirectX::XMFLOAT3(1, 0, 0))
 ,	up(DirectX::XMFLOAT3(0, 1, 0))
-,	target(target)
 {}
 
 void Camera::Reset()
@@ -37,18 +37,13 @@ void Camera::Update()
 	if(!isSceneCamera) return;
 
 	Transform* transform = GetOwner()->GetTransform();
+
+	if (!transform) _ASSERT_EXPR(FALSE, "Missing Transform Component");
 	DirectX::XMFLOAT4 rotate = transform->GetRotation();
 	const DirectX::XMFLOAT3 pos = transform->GetPosition();
 	DirectX::XMVECTOR focus;
-	if(target)
-	{
-		const DirectX::XMFLOAT3 targetPos = target->GetPosition();
-		focus = DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&targetPos), DirectX::XMLoadFloat3(&pos));
-	}
-	else
-	{
-		focus = DirectX::XMLoadFloat3(&forward);
-	}
+
+	focus = DirectX::XMLoadFloat3(&forward);
 	
 	DirectX::XMVECTOR q = DirectX::XMVector3AngleBetweenVectors(DirectX::XMVector3Normalize(focus), DirectX::XMVector3Normalize(ForwardVec));
 
@@ -128,10 +123,10 @@ void Camera::Update()
 		}
 	}
 
-	transform->SetRotation(rotate);
+	//transform->SetRotation(rotate);
 
 	DirectX::XMStoreFloat3(&forward, DirectX::XMVector3Normalize(DirectX::XMVector3Rotate(ForwardVec, quaternion)));
-	DirectX::XMStoreFloat3(&forward, focus);
+	//DirectX::XMStoreFloat3(&forward, focus);
 	DirectX::XMStoreFloat3(&right, DirectX::XMVector3Normalize(DirectX::XMVector3Rotate(RightVec, quaternion)));
 	DirectX::XMStoreFloat3(&up, DirectX::XMVector3Normalize(DirectX::XMVector3Rotate(UpVec, quaternion)));
 
@@ -162,16 +157,6 @@ void Camera::DrawDebug()
 		ImGui::InputFloat3("Up", &up.x); 
 		ImGui::SliderFloat("Far", &farZ, 1, 10000);
 
-		std::string str;
-		if(target)
-		{
-			str = "Target : " + target->GetOwner()->GetName();
-		}
-		else
-		{
-			str = "Target : None";
-		}
-		ImGui::Text(str.c_str());
 		ImGui::TreePop();
 		ArComponent::DrawDebug();
 	}
@@ -189,20 +174,11 @@ DirectX::XMMATRIX Camera::GetViewMatrix() const
 	const DirectX::XMVECTOR forwardBaseVector = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 
 	DirectX::XMVECTOR focus;
-	if(!target)
-	{
-		focus = DirectX::XMVector3Transform(forwardBaseVector,
-			DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(transform->GetRotation().x),
-				DirectX::XMConvertToRadians(transform->GetRotation().y), 
-				DirectX::XMConvertToRadians(transform->GetRotation().z)));
-	}
-	else
-	{
-		const DirectX::XMFLOAT3 pos = transform->GetPosition();
-		const DirectX::XMFLOAT3 targetPos = target->GetPosition();
-		focus = DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&targetPos), DirectX::XMLoadFloat3(&pos));
-	}
+
 	const DirectX::XMFLOAT3 pos = transform->GetPosition();
+	const DirectX::XMFLOAT3 targetPos = pos + forward;
+	focus = DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&targetPos), DirectX::XMLoadFloat3(&pos));
+
 	const auto eye = DirectX::XMLoadFloat3(&pos);
 
 	DirectX::XMMATRIX Rot = DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(transform->GetRotation().x),

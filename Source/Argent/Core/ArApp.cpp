@@ -34,12 +34,14 @@ namespace Argent::App
 		while (MainLoop(arWindow->GetHandle()))
 		{
 			Argent::Input::Keyboard::Instance().Update();
-			arGfx->Begin();
 
 			ImguiCtrl::Begin("Main Window");
 
+
+			arSceneManager.Update();
 			effectManager->Update();
-			arSceneManager.Execute();
+			arGfx->Begin();
+			arSceneManager.Render();
 			effectManager->Render();
 
 			ImguiCtrl::End(arGfx->GetCommandList(), arGfx->GetGUIHeap());

@@ -32,8 +32,6 @@ public:
 	DirectX::XMFLOAT3 GetRight() { return right; }
 	DirectX::XMFLOAT3 GetUp() { return up; }
 
-	void SetTarget(const Transform* t) { target = t; }
-
 
 private:
 	float width;
@@ -51,7 +49,6 @@ private:
 	static constexpr DirectX::XMVECTOR ForwardVec = { 0, 0, 1 };
 	static constexpr DirectX::XMVECTOR RightVec = { 1, 0, 0 };
 	static constexpr DirectX::XMVECTOR UpVec = { 0, 1, 0 };
-	const Transform* target;
 };
 
 

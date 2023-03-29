@@ -20,29 +20,7 @@ namespace Argent::SceneManagement
 		scenes[s->GetName()] = std::move(s);
 		
 	}
-		
-	void ArSceneManager::Execute()
-	{
-		ChangeScene();
-		
-		if(Input::Keyboard::Instance().IsKeyPressEnter(Input::Keyboard::A))
-		{
-			if(currentScene->GetName() != "Game")
-			{
-				SetNextScene("Game");
-			}
-		}
-		
-		if(currentScene)
-		{
-			currentScene->Update();
-			currentScene->Render();
-#ifdef _DEBUG
-			currentScene->DrawDebug();
-#endif
-		}
-	}
-		
+
 	void ArSceneManager::Initialize()
 	{
 		nextScene = "Title";
@@ -53,7 +31,27 @@ namespace Argent::SceneManagement
 		if(currentScene)
 			currentScene->Finalize();
 	}
-		
+
+	void ArSceneManager::Update()
+	{
+		ChangeScene();
+		if(currentScene)
+		{
+			currentScene->Update();
+		}
+	}
+
+	void ArSceneManager::Render()
+	{
+		if(currentScene)
+		{
+			currentScene->Render();
+#ifdef _DEBUG
+			currentScene->DrawDebug();
+#endif
+		}
+	}
+
 	void ArSceneManager::ChangeScene()
 	{
 		if(!nextScene.empty())
