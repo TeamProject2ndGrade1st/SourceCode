@@ -20,7 +20,7 @@ void Title::Initialize()
 
 	//AddObject(new GameObject("noneBone", Argent::Loader::Fbx::LoadFbx("./Resources/Model/LMG/LMG_low_0324_1.fbx")));
 
-	AddObject(new GameObject("stage01", Argent::Loader::Fbx::LoadFbx("./Resources/Model/map_0330_ver2.fbx", true)));
+	AddObject(new GameObject("stage01", Argent::Loader::Fbx::LoadFbx("./Resources/Model/map_0330_ver1.fbx", true)));
 	//AddObject(new GameObject("stage01", Argent::Loader::Fbx::LoadFbx("./Resources/Model/kaidan_0330_ver1.fbx", true)));
 
 	//AddObject(new GameObject("stageblend", Argent::Loader::Fbx::LoadFbx("./Resources/Model/tmpStages.fbx", false)));

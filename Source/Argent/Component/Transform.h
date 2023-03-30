@@ -36,8 +36,29 @@ public:
 	void Reset() override;
 	void SetWorld(const DirectX::XMFLOAT4X4& w)
 	{
-		position = DirectX::XMFLOAT3(w.m[3][0], w.m[3][1], w.m[3][2]);
+		position = DirectX::XMFLOAT3(-w.m[3][0], w.m[3][1], w.m[3][2]);
 		scale = DirectX::XMFLOAT3(w.m[0][0], w.m[1][1], w.m[2][2]);
+
+		float angleX, angleY, angleZ;
+
+		float threshold = 0.001f;
+		if (abs(w.m[2][1] - 1.0) < threshold) { // R(2,1) = sin(x) = 1‚ÌŽž
+			angleX = DirectX::XM_PI / 2;
+			angleY = 0;
+			angleZ = atan2f(w.m[1][0], w.m[0][0]);
+		}
+		else if (abs(w.m[2][1] + 1.0) < threshold) { // R(2,1) = sin(x) = -1‚ÌŽž
+			angleX = -DirectX::XM_PI / 2;
+			angleY = 0;
+			angleZ = atan2f(w.m[1][0], w.m[0][0]);
+		}
+		else {
+			angleX = asinf(w.m[2][1]);
+			angleY = atan2f(-w.m[2][0], w.m[2][2]);
+			angleZ = atan2f(-w.m[0][1], w.m[1][1]);
+		}
+
+		rotation = DirectX::XMFLOAT4(angleX, angleY, angleZ, 1.0f);
 	}
 
 
