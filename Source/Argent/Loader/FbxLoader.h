@@ -16,7 +16,19 @@
 #include <cereal/types/vector.hpp>
 #include <cereal/types/map.hpp>
 #include <cereal/types/set.hpp>
+#include <cereal/types/unordered_map.hpp>
 
+
+namespace Argent
+{
+	namespace Resource
+	{
+		namespace Animation
+		{
+			class ArAnimation;
+		}
+	}
+}
 
 namespace Argent::Component
 {
@@ -89,6 +101,20 @@ namespace Argent::Loader
 			void serialize(T& archive)
 			{
 				archive(nodeIndex, vertices, vertexBones, indices, subsets, bindPose, defaultGlobalTransform);
+			}
+		};
+
+
+		struct FbxResource
+		{
+			std::vector<TmpFbxMesh> tmpMeshes;
+			std::unordered_map<uint64_t, Material::ArMeshMaterial> materials;
+			std::vector<Resource::Animation::ArAnimation> animationClips;
+
+			template<class T>
+			void serialize(T& archive)
+			{
+				archive(tmpMeshes, materials, animationClips);
 			}
 		};
 		Argent::Component::ArComponent* LoadFbx(const char* filePath, bool triangulate = false);

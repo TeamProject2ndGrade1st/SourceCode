@@ -50,9 +50,7 @@ namespace Argent::Loader::Fbx
 	Argent::Component::ArComponent* LoadFbx(const char* filePath, bool triangulate)
 	{
 		ArFbxScene sceneView{};
-		std::vector<TmpFbxMesh> tmpMeshes;
-		std::unordered_map<uint64_t, Material::ArMeshMaterial> materials;
-		std::vector<Resource::Animation::ArAnimation> animationClips;
+		FbxResource fbxResource;
 
 		Argent::Component::ArComponent* ret{};
 		//シリアライズ
@@ -62,58 +60,15 @@ namespace Argent::Loader::Fbx
 		{
 			std::ifstream ifs(cerealFileName.c_str(), std::ios::binary);
 			cereal::BinaryInputArchive deserialization(ifs);
-			deserialization(sceneView, tmpMeshes, materials, animationClips);
+			deserialization(sceneView, fbxResource);
 
-
-			for(auto& m : materials)
+			for(auto& m : fbxResource.materials)
 			{
 				for(int i = 0; i < Material::ArMeshMaterial::NumTextures; ++i)
 				{
 					m.second.CreateTexture(m.second.textureNames[i].c_str(),static_cast<Material::ArMeshMaterial::TextureType>(i));
 				}
 			}
-
-			bool hasBone = false;
-			for(const auto& m : tmpMeshes)
-			{
-				if(m.bindPose.bones.size() > 0)
-				{
-					hasBone = true;
-				}
-			}
-
-			ID3D12Device* device = Argent::Graphics::ArGraphics::Instance()->GetDevice();
-
-			if(!hasBone)
-			{
-				std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes;
-				meshes.resize(tmpMeshes.size());
-				for(size_t i = 0; i < meshes.size(); ++i)
-				{
-					std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
-					meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices, 
-						tmpMeshes.at(i).indices, 
-						tmpMeshes.at(i).subsets);
-				}
-				ret = new Component::Renderer::ArStaticMeshRenderer(device,
-				filePath, meshes, materials);
-			}
-			else
-			{
-				std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
-				skinnedMeshes.resize(tmpMeshes.size());
-				for(size_t i = 0; i < skinnedMeshes.size(); ++i)
-				{
-					std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
-					skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(vertices,
-						tmpMeshes.at(i).vertexBones, tmpMeshes.at(i).indices,
-						tmpMeshes.at(i).subsets, tmpMeshes.at(i).bindPose);
-				}
-
-				ret = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath, 
-					skinnedMeshes, materials, animationClips);
-			}
-
 		}
 		else
 		{
@@ -137,61 +92,62 @@ namespace Argent::Loader::Fbx
 
 			Traverse(fbxScene->GetRootNode(), sceneView);
 
-			FetchMesh(fbxScene, sceneView, tmpMeshes);
-			FetchMaterial(fbxScene, sceneView, filePath, materials);
+			FetchMesh(fbxScene, sceneView, fbxResource.tmpMeshes);
+			FetchMaterial(fbxScene, sceneView, filePath, fbxResource.materials);
 			
 
-			FetchAnimation(fbxScene, animationClips, 0, sceneView);
+			FetchAnimation(fbxScene, fbxResource.animationClips, 0, sceneView);
 
 
 
 			manager->Destroy();
 			std::ofstream ofs(cerealFileName.c_str(), std::ios::binary);
 			cereal::BinaryOutputArchive serialization(ofs);
-			serialization(sceneView, tmpMeshes, materials, animationClips);
+			serialization(sceneView, fbxResource);
+		}
 
 
-			bool hasBone = false;
-			for(const auto& m : tmpMeshes)
+		bool hasBone = false;
+		for (const auto& m : fbxResource.tmpMeshes)
+		{
+			if (m.bindPose.bones.size() > 0)
 			{
-				if(m.bindPose.bones.size() > 0)
-				{
-					hasBone = true;
-				}
-			}
-
-			ID3D12Device* device = Argent::Graphics::ArGraphics::Instance()->GetDevice();
-
-			if(!hasBone)
-			{
-				std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes;
-				meshes.resize(tmpMeshes.size());
-				for(size_t i = 0; i < meshes.size(); ++i)
-				{
-					std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
-					meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices, 
-						tmpMeshes.at(i).indices, 
-						tmpMeshes.at(i).subsets);
-				}
-				ret = new Component::Renderer::ArStaticMeshRenderer(device,
-				filePath, meshes, materials);
-			}
-			else
-			{
-				std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
-				skinnedMeshes.resize(tmpMeshes.size());
-				for(size_t i = 0; i < skinnedMeshes.size(); ++i)
-				{
-					std::vector<Argent::Resource::Mesh::Vertex> vertices = tmpMeshes.at(i).vertices;
-					skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(vertices,
-						tmpMeshes.at(i).vertexBones, tmpMeshes.at(i).indices,
-						tmpMeshes.at(i).subsets, tmpMeshes.at(i).bindPose);
-				}
-
-				ret = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath, 
-					skinnedMeshes, materials, animationClips);
+				hasBone = true;
 			}
 		}
+
+		ID3D12Device* device = Argent::Graphics::ArGraphics::Instance()->GetDevice();
+
+		if (!hasBone)
+		{
+			std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes;
+			meshes.resize(fbxResource.tmpMeshes.size());
+			for (size_t i = 0; i < meshes.size(); ++i)
+			{
+				std::vector<Argent::Resource::Mesh::Vertex> vertices = fbxResource.tmpMeshes.at(i).vertices;
+				meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices,
+					fbxResource.tmpMeshes.at(i).indices,
+					fbxResource.tmpMeshes.at(i).subsets);
+			}
+			ret = new Component::Renderer::ArStaticMeshRenderer(device,
+				filePath, meshes, fbxResource.materials);
+		}
+		else
+		{
+			std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
+			skinnedMeshes.resize(fbxResource.tmpMeshes.size());
+			for (size_t i = 0; i < skinnedMeshes.size(); ++i)
+			{
+				std::vector<Argent::Resource::Mesh::Vertex> vertices = fbxResource.tmpMeshes.at(i).vertices;
+				skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(vertices,
+					fbxResource.tmpMeshes.at(i).vertexBones, fbxResource.tmpMeshes.at(i).indices,
+					fbxResource.tmpMeshes.at(i).subsets, fbxResource.tmpMeshes.at(i).bindPose);
+			}
+
+			ret = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath,
+				skinnedMeshes, fbxResource.materials, fbxResource.animationClips);
+		}
+
 		return ret;
 	}
 
