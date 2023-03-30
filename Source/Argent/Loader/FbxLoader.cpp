@@ -32,6 +32,7 @@ namespace Argent::Loader::Fbx
 		node.id = fbxNode->GetUniqueID();
 		node.parentIndex = sceneView.IndexOf(fbxNode->GetParent() ?
 			fbxNode->GetParent()->GetUniqueID() : 0);
+
 		for(int childIndex = 0; childIndex < fbxNode->GetChildCount(); ++childIndex)
 		{
 			Traverse(fbxNode->GetChild(childIndex), sceneView);
@@ -201,6 +202,7 @@ namespace Argent::Loader::Fbx
 		{
 			if (node.attribute != FbxNodeAttribute::EType::eMesh) continue;
 
+			
 			FbxNode* fbxNode{ fbxScene->FindNodeByName(node.name.c_str()) };
 			FbxMesh* fbxMesh{ fbxNode->GetMesh() };
 
@@ -302,6 +304,8 @@ namespace Argent::Loader::Fbx
 				}
 			}
 		}
+
+		int a = 0;
 	}
 
 	void FetchSurfaceMaterial(const FbxSurfaceMaterial* surfaceMaterial, const char* pName, const char* fbxFilePath, Material::ArMeshMaterial& material)
