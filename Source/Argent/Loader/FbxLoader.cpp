@@ -202,7 +202,6 @@ namespace Argent::Loader::Fbx
 		{
 			if (node.attribute != FbxNodeAttribute::EType::eMesh) continue;
 
-			
 			FbxNode* fbxNode{ fbxScene->FindNodeByName(node.name.c_str()) };
 			FbxMesh* fbxMesh{ fbxNode->GetMesh() };
 
