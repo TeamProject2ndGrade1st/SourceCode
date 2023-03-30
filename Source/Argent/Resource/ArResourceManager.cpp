@@ -27,9 +27,6 @@ namespace Argent::Resource
 		if(ret) 
 			return std::reinterpret_pointer_cast<Argent::Texture::ArTexture>(ret);
 
-
-		   
-
 		ret = std::make_shared<Argent::Texture::ArTexture>(filePath);
 
 		resources[ret->GetUniqueId()] = ret;

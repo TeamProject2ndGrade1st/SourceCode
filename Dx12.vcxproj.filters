@@ -70,6 +70,12 @@
     <Filter Include="Game\Component">
       <UniqueIdentifier>{3350e01e-579c-495b-9108-7c345e3ba61d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Work In Progress">
+      <UniqueIdentifier>{3988f51d-b8fb-42fb-8614-b3d1763570a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Work In Progress\Component">
+      <UniqueIdentifier>{dbbbd808-ccb1-4e1b-bbc8-c3888859294b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -233,6 +239,7 @@
       <Filter>Argent\Other</Filter>
     </ClCompile>
     <ClCompile Include="Source\MrIncredible.cpp" />
+    <ClCompile Include="Source\Argent\Component\Collider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -422,6 +429,7 @@
       <Filter>Argent\Other</Filter>
     </ClInclude>
     <ClInclude Include="Source\MrIncredible.h" />
+    <ClInclude Include="Source\Argent\Component\Collider.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

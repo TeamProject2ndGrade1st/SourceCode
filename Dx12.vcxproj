@@ -35,6 +35,7 @@
     <ClCompile Include="Source\Argent\Component\ArAudioPlayer.cpp" />
     <ClCompile Include="Source\Argent\Component\ArStaticMeshRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\Camera.cpp" />
+    <ClCompile Include="Source\Argent\Component\Collider.cpp" />
     <ClCompile Include="Source\Argent\Component\Light.cpp" />
     <ClCompile Include="Source\Argent\Component\Transform.cpp" />
     <ClCompile Include="Source\Argent\Core\ArApp.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="Source\Argent\Component\ArAudioPlayer.h" />
     <ClInclude Include="Source\Argent\Component\ArStaticMeshRenderer.h" />
     <ClInclude Include="Source\Argent\Component\Camera.h" />
+    <ClInclude Include="Source\Argent\Component\Collider.h" />
     <ClInclude Include="Source\Argent\Component\Light.h" />
     <ClInclude Include="Source\Argent\Component\Transform.h" />
     <ClInclude Include="Source\Argent\Core\ArApp.h" />
