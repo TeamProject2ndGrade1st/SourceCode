@@ -1,9 +1,9 @@
 #pragma once
-#include "Argent/Component/ArComponent.h"
+#include "Argent/Component/BaseActor.h"
 
 
 class MrIncredible:
-	public Argent::Component::ArComponent
+	public Argent::Component::BaseActor
 {
 public:
 	MrIncredible();
@@ -11,5 +11,13 @@ public:
 
 
 	void Initialize() override;
+	void Update() override;
+	void OnCollision(const Argent::Component::Collider::Collider* collider) override;
+
+#ifdef _DEBUG
+	void DrawDebug() override;
+#endif
+protected:
+	float moveSpeed;
 };
 

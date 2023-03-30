@@ -3,6 +3,7 @@
 #include "../Resource/ArResourceManager.h"
 #include "../Scene/SceneManager.h"
 #include "../Input/Keyboard.h"
+#include "../Component/ArColliderManager.h"
 
 namespace Argent::App
 {
@@ -40,6 +41,9 @@ namespace Argent::App
 
 			arSceneManager.Update();
 			effectManager->Update();
+
+			Argent::Collider::ArColliderManager::Instance().CollisionDetection();
+
 			arGfx->Begin();
 			arSceneManager.Render();
 			effectManager->Render();

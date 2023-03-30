@@ -332,6 +332,41 @@ namespace Argent
 				);
 			}
 		}
+
+		namespace Collider
+		{
+			inline bool IntersectSphereVsSphere(
+				const DirectX::XMFLOAT3& positionA, 
+				float radiusA, 
+				const DirectX::XMFLOAT3& positionB, 
+				float radiusB, 
+				DirectX::XMFLOAT3& outPositionB)
+			{
+				//A→Bの単位ベクトルを算出
+				DirectX::XMVECTOR PositionA = DirectX::XMLoadFloat3(&positionA);	//Aベクトル
+				DirectX::XMVECTOR PositionB = DirectX::XMLoadFloat3(&positionB);	//Bベクトル
+				DirectX::XMVECTOR Vec		= DirectX::XMVectorSubtract(PositionB, PositionA);//ABベクトル
+				DirectX::XMVECTOR VecNormal = DirectX::XMVector3Normalize(Vec);
+				DirectX::XMVECTOR LengthSq	= DirectX::XMVector3Length(Vec);		//ABベクトルの大きさ
+				float lengthSq;
+				DirectX::XMStoreFloat(&lengthSq, LengthSq);
+
+				//距離判定
+				float range = radiusA + radiusB;
+				if(lengthSq > range)
+				{
+					return false;
+				}
+
+				//AがBを押し出す
+				Vec = DirectX::XMVectorScale(VecNormal, range);
+				PositionB = DirectX::XMVectorAdd(Vec, PositionA);
+				DirectX::XMStoreFloat3(&outPositionB, PositionB);
+
+				return true;
+			}
+
+		}
 	};
 }
 

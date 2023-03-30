@@ -238,8 +238,16 @@
     <ClCompile Include="Source\Argent\Math\MathHelper.cpp">
       <Filter>Argent\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MrIncredible.cpp" />
-    <ClCompile Include="Source\Argent\Component\Collider.cpp" />
+    <ClCompile Include="Source\MrIncredible.cpp">
+      <Filter>Work In Progress\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\BaseActor.cpp">
+      <Filter>Work In Progress\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\Collider.cpp">
+      <Filter>Work In Progress\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\ArColliderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -428,8 +436,16 @@
     <ClInclude Include="Source\Argent\Other\CerealHelper.h">
       <Filter>Argent\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MrIncredible.h" />
-    <ClInclude Include="Source\Argent\Component\Collider.h" />
+    <ClInclude Include="Source\MrIncredible.h">
+      <Filter>Work In Progress\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\BaseActor.h">
+      <Filter>Work In Progress\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\Collider.h">
+      <Filter>Work In Progress\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\ArColliderManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

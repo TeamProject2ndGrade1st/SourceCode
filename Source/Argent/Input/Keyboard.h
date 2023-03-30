@@ -392,16 +392,16 @@ namespace Argent::Input
 		}
 
 
-		bool IsKeyPress(Keys key)
+		bool IsKeyPress(Keys key) const
 		{
 			return keyState.find(key)->second == State::PRESS;
 		}
-		bool IsKeyRelease(Keys key)
+		bool IsKeyRelease(Keys key) const
 		{
 			return keyState.find(key)->second == State::RELEASE;
 		}
 
-		bool IsKeyPressEnter(Keys key)
+		bool IsKeyPressEnter(Keys key) const
 		{
 			return keyState.find(key)->second == State::PRESS_ENTER;
 		}
