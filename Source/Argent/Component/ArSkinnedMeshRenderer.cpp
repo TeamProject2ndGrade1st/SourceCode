@@ -23,9 +23,32 @@ namespace Argent::Component::Renderer
 		CreateRootSignatureAndPipelineState();
 	}
 
+	ArSkinnedMeshRenderer::ArSkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
+		std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
+		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
+		std::vector<Resource::Animation::ArAnimation>& animation) :
+		ArRenderer("SkinnedMeshRenderer")
+	{
+		this->skinnedMeshes.emplace_back(meshes);
+		for (auto& m : materials)
+		{
+			this->materials.emplace(m.first, std::move(m.second));
+		}
+		this->animationClips = animation;
+		CreateComObject(device);
+		CreateRootSignatureAndPipelineState();
+	}
+
+
+	void ArSkinnedMeshRenderer::Initialize()
+	{
+		GameObject* g = GetOwner();
+		g->GetTransform()->SetWorld(skinnedMeshes.at(0)->defaultGlobalTransform);
+	}
+
 	void ArSkinnedMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList, 
-		const DirectX::XMFLOAT4X4& world,
-		const Resource::Animation::ArAnimation::Keyframe* keyframe) const
+	                                   const DirectX::XMFLOAT4X4& world,
+	                                   const Resource::Animation::ArAnimation::Keyframe* keyframe) const
 	{
 		ArRenderer::Render(cmdList);
 

@@ -97,13 +97,7 @@ namespace Argent::Resource::Mesh
 		};
 
 		int64_t nodeIndex{};
-		DirectX::XMFLOAT4X4 defaultGlobalTransform
-		{
-			1, 0, 0, 0,
-			0, 1, 0, 0,
-			0, 0, 1, 0,
-			0, 0, 0, 1,
-		};
+		
 
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
 

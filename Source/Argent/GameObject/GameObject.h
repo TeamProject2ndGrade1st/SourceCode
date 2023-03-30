@@ -22,6 +22,17 @@ public:
 		}
 	}
 
+	GameObject(std::string name, std::vector<Argent::Component::ArComponent*> com):
+		isSelected(false)
+	,	name(std::move(name))
+	{
+		AddComponent(new Transform());
+		for(size_t i = 0; i < com.size(); ++i)
+		{
+			AddChild(new GameObject(std::to_string(i), com.at(i)));
+		}
+	}
+
 	GameObject(std::initializer_list<Argent::Component::ArComponent*> components, std::string name = "gameObject"):
 		isSelected(false)
 	,	name(name)
@@ -65,6 +76,7 @@ public:
 	template <typename T> T* GetChild();
 
 	Transform* GetTransform() { return GetComponent<Transform>(); }
+
 
 	void SetParent(GameObject* p) { parent = p; }
 	GameObject* GetParent() const { return parent; }

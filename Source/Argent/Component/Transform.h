@@ -34,6 +34,11 @@ public:
 #endif
 
 	void Reset() override;
+	void SetWorld(const DirectX::XMFLOAT4X4& w)
+	{
+		position = DirectX::XMFLOAT3(w.m[3][0], w.m[3][1], w.m[3][2]);
+		scale = DirectX::XMFLOAT3(w.m[0][0], w.m[1][1], w.m[2][2]);
+	}
 
 
 	[[nodiscard]] DirectX::XMMATRIX GetMatrix() const

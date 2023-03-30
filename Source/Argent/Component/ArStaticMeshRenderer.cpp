@@ -20,8 +20,22 @@ namespace Argent::Component::Renderer
 		CreateRootSignatureAndPipelineState();
 	}
 
+	ArStaticMeshRenderer::ArStaticMeshRenderer(ID3D12Device* device, const char* fileName,
+		std::shared_ptr<Resource::Mesh::ArStaticMesh> meshes,
+		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials) :
+		ArRenderer("StaticMeshRenderer")
+	{
+		this->meshes.emplace_back(meshes);
+		for (auto& m : materials)
+		{
+			this->materials.emplace(m.first, std::move(m.second));
+		}
+		CreateComObject(device);
+		CreateRootSignatureAndPipelineState();
+	}
+
 	void ArStaticMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList,
-		const DirectX::XMFLOAT4X4& world) const
+	                                  const DirectX::XMFLOAT4X4& world) const
 	{
 		ArRenderer::Render(cmdList);
 		Argent::Graphics::ArGraphics::Instance()->SetSceneConstant(static_cast<UINT>(RootParameterIndex::cbScene));
@@ -125,6 +139,13 @@ namespace Argent::Component::Renderer
 			&rootSigDesc,
 			&pipelineStateDesc
 			);
+	}
+
+	void ArStaticMeshRenderer::Initialize()
+	{
+		GameObject* g = GetOwner();
+		g->GetTransform()->SetWorld(meshes.at(0)->defaultGlobalTransform);
+
 	}
 
 	void ArStaticMeshRenderer::Render() const 

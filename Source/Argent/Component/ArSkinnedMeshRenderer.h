@@ -68,6 +68,10 @@ namespace Argent::Component::Renderer
 			std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>>& meshes,
 			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
 			std::vector<Resource::Animation::ArAnimation>& animation);
+		ArSkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
+			std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
+			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
+			std::vector<Resource::Animation::ArAnimation>& animation);
 
 		~ArSkinnedMeshRenderer() override = default;
 
@@ -76,7 +80,7 @@ namespace Argent::Component::Renderer
 		ArSkinnedMeshRenderer operator=(const ArSkinnedMeshRenderer&) = delete;
 		ArSkinnedMeshRenderer operator=(const ArSkinnedMeshRenderer&&) = delete;
 
-
+		void Initialize() override;
 		void Render(ID3D12GraphicsCommandList* cmdList,
 			const DirectX::XMFLOAT4X4& world,
 			const Resource::Animation::ArAnimation::Keyframe* keyframe) const;

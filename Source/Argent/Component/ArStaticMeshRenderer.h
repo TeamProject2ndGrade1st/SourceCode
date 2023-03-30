@@ -36,6 +36,8 @@ namespace Argent::Component::Renderer
 	public:
 		ArStaticMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes,
 			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials);
+		ArStaticMeshRenderer(ID3D12Device* device, const char* fileName, std::shared_ptr<Resource::Mesh::ArStaticMesh> meshes,
+			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials);
 		~ArStaticMeshRenderer() override = default;
 
 		ArStaticMeshRenderer(const ArStaticMeshRenderer&) = delete;
@@ -48,7 +50,7 @@ namespace Argent::Component::Renderer
 
 		void CreateRootSignatureAndPipelineState();
 
-
+		void Initialize() override;
 		void Render() const override;
 		void Update() override;
 

@@ -117,7 +117,7 @@ namespace Argent::Loader
 				archive(tmpMeshes, materials, animationClips);
 			}
 		};
-		Argent::Component::ArComponent* LoadFbx(const char* filePath, bool triangulate = false);
+		std::vector<Component::ArComponent*> LoadFbx(const char* filePath, bool triangulate = false);
 		
 
 	}

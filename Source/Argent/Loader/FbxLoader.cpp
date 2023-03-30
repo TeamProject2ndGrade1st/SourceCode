@@ -47,12 +47,12 @@ namespace Argent::Loader::Fbx
 	void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<std::vector<ArBoneInfluence>>& boneInfluences);
 
 
-	Argent::Component::ArComponent* LoadFbx(const char* filePath, bool triangulate)
+	std::vector<Component::ArComponent*> LoadFbx(const char* filePath, bool triangulate)
 	{
 		ArFbxScene sceneView{};
 		FbxResource fbxResource;
 
-		Argent::Component::ArComponent* ret{};
+		std::vector<Component::ArComponent*> ret{};
 		//シリアライズ
 		std::filesystem::path cerealFileName(filePath);
 		cerealFileName.replace_extension("cereal");
@@ -127,10 +127,18 @@ namespace Argent::Loader::Fbx
 				std::vector<Argent::Resource::Mesh::Vertex> vertices = fbxResource.tmpMeshes.at(i).vertices;
 				meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices,
 					fbxResource.tmpMeshes.at(i).indices,
-					fbxResource.tmpMeshes.at(i).subsets);
+					fbxResource.tmpMeshes.at(i).subsets,
+					fbxResource.tmpMeshes.at(i).defaultGlobalTransform);
 			}
-			ret = new Component::Renderer::ArStaticMeshRenderer(device,
-				filePath, meshes, fbxResource.materials);
+
+			ret.resize(meshes.size());
+			for(size_t i = 0; i < meshes.size(); ++i)
+			{
+				ret.at(i) = new Component::Renderer::ArStaticMeshRenderer(device,
+					filePath, meshes.at(i), fbxResource.materials);
+			}
+			/*ret = new Component::Renderer::ArStaticMeshRenderer(device,
+				filePath, meshes, fbxResource.materials);*/
 		}
 		else
 		{
@@ -144,8 +152,15 @@ namespace Argent::Loader::Fbx
 					fbxResource.tmpMeshes.at(i).subsets, fbxResource.tmpMeshes.at(i).bindPose);
 			}
 
-			ret = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath,
-				skinnedMeshes, fbxResource.materials, fbxResource.animationClips);
+			ret.resize(skinnedMeshes.size());
+			for (size_t i = 0; i < skinnedMeshes.size(); ++i)
+			{
+				ret.at(i) = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath,
+					skinnedMeshes.at(i), fbxResource.materials, fbxResource.animationClips);
+
+			}
+			//ret = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath,
+			//	skinnedMeshes, fbxResource.materials, fbxResource.animationClips);
 		}
 
 		return ret;
