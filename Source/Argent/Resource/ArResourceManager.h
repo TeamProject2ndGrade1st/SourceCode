@@ -55,14 +55,22 @@ namespace Argent::Resource
 			return it->second.lock();
 		}
 
+		std::shared_ptr<Argent::Texture::ArTexture> GetTexture(uint64_t uniqueId) const 
+		{
+			const auto it = resources.find(uniqueId);
+			if (it == resources.end()) _ASSERT_EXPR(FALSE, "missing id");
+			if (it->second.expired()) _ASSERT_EXPR(FALSE, "missing resource");
 
-		std::shared_ptr<Texture::ArTexture> LoadTexture(const char* filePath);
+			return it->second.lock();
+		}
+
+		uint64_t LoadTexture(const char* filePath);
 
 		std::shared_ptr<Argent::Resource::ArResource> LoadFbx(const char* filePath);
 
 	private:
 
-		std::shared_ptr<Argent::Resource::ArResource> FindResourceFromFilePath(const char* filePath) const
+		std::shared_ptr<Argent::Texture::ArTexture> FindResourceFromFilePath(const char* filePath) const
 		{
 			for(auto& res : resources)
 			{
@@ -74,12 +82,9 @@ namespace Argent::Resource
 			return nullptr;
 		}
 
-		std::unordered_map<std::wstring, Microsoft::WRL::ComPtr<ID3D12Resource>> textures;
-		std::unordered_map<std::string, std::unique_ptr<Argent::Resource::Mesh::ArStaticMesh>> meshData;
+		std::unordered_map<uint64_t, std::weak_ptr<Argent::Texture::ArTexture>> resources;
 
-		std::unordered_map<uint64_t, std::weak_ptr<Argent::Resource::ArResource>> resources;
-		//std::unordered_map<uint64_t, std::weak_ptr<Argent::Texture::ArTexture>> textures;
-		 
+		std::vector<std::shared_ptr<Argent::Texture::ArTexture>> rowTextureData;
 	public:
 		static ArResourceManager& Instance()
 		{

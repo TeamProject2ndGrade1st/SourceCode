@@ -74,20 +74,16 @@ namespace Argent::Material
 		std::string name;
 
 		static constexpr int NumTextures = static_cast<int>(TextureType::Max);
-		std::shared_ptr<Argent::Texture::ArTexture> textures[NumTextures];
+		//std::shared_ptr<Argent::Texture::ArTexture> textures[NumTextures];
+		uint64_t textureUniqueId[NumTextures];
 		std::string textureNames[NumTextures];
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
 		Constant constant{};
 		ArColor color;
 		void CreateTexture(const char* filePath, TextureType type);
 
-		void SetOnCommand(ID3D12GraphicsCommandList* cmdList, UINT cbIndex, UINT diffuseIndex, UINT normalIndex) const
-		{
-			//todo ‚È‚ñ‚Æ‚©”’
-			constantBuffer->SetOnCommandList(cmdList, cbIndex);
-			textures[static_cast<int>(TextureType::Diffuse)]->Render(cmdList, diffuseIndex);
-			textures[static_cast<int>(TextureType::Normal)]->Render(cmdList, normalIndex);
-		}
+		void SetOnCommand(ID3D12GraphicsCommandList* cmdList, UINT cbIndex, UINT diffuseIndex, UINT normalIndex) const;
+		
 
 #ifdef _DEBUG
 		void DrawDebug()

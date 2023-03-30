@@ -14,40 +14,42 @@ namespace Argent::Resource
 
 	void ArResourceManager::Clear()
 	{
-		meshData.clear();
+		//meshData.clear();
 	}
 
 	void ArResourceManager::Begin()
 	{
 	}
 
-	std::shared_ptr<Texture::ArTexture> ArResourceManager::LoadTexture(const char* filePath)
+	uint64_t ArResourceManager::LoadTexture(const char* filePath)
 	{
-		std::shared_ptr<ArResource> ret = FindResourceFromFilePath(filePath);
+		std::shared_ptr<Texture::ArTexture> ret = FindResourceFromFilePath(filePath);
 		if(ret) 
-			return std::reinterpret_pointer_cast<Argent::Texture::ArTexture>(ret);
+			return ret->GetUniqueId();
 
 		ret = std::make_shared<Argent::Texture::ArTexture>(filePath);
 
 		resources[ret->GetUniqueId()] = ret;
 
-		return std::reinterpret_pointer_cast<Argent::Texture::ArTexture>(ret);
+		rowTextureData.emplace_back(ret);
+
+		return ret->GetUniqueId();
 	}
 
-	bool ArResourceManager::FindTexture(const wchar_t* filepath, ID3D12Resource** ppResource)
-	{
-		const std::wstring tmp = filepath;
-		const auto it = textures.find(tmp);
+	//bool ArResourceManager::FindTexture(const wchar_t* filepath, ID3D12Resource** ppResource)
+	//{
+	//	const std::wstring tmp = filepath;
+	//	const auto it = textures.find(tmp);
 
-		if (it != textures.end())
-		{
-			*ppResource = (*it).second.Get();
-			(*it).second->AddRef();
-			return true;
-		}
+	//	if (it != textures.end())
+	//	{
+	//		*ppResource = (*it).second.Get();
+	//		(*it).second->AddRef();
+	//		return true;
+	//	}
 
-		*ppResource = nullptr;
-		return false;
-	}
+	//	*ppResource = nullptr;
+	//	return false;
+	//}
 	
 }

@@ -19,7 +19,7 @@ void Title::Initialize()
 	//AddObject( new GameObject("obj",new ArSkinnedMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(), "./Resource/DragonBinary.fbx")));
 
 	//AddObject(new GameObject("noneBone", Argent::Loader::Fbx::LoadFbx("./Resources/Model/LMG/LMG_low_0324_1.fbx")));
-	AddObject(new GameObject("stage01", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StairsBlender.fbx", true)));
+	AddObject(new GameObject("stage01", Argent::Loader::Fbx::LoadFbx("./Resources/Model/HandGun.fbx", true)));
 	//AddObject(new GameObject("stageblend", Argent::Loader::Fbx::LoadFbx("./Resources/Model/tmpStages.fbx", false)));
 
 	//AddObject(new GameObject("effect", new Argent::Component::Renderer::ArEffectRenderer("./Resources/Effects/barel_test.efk ", "./Resources/Effects")));
