@@ -5,7 +5,8 @@
 
 namespace Argent::Resource::Mesh::Sprite
 {
-	ArSprite::ArSprite()
+	ArSprite::ArSprite():
+		ArMesh("Sprite", ResourceType::Texture)
 	{
 		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
 		HRESULT hr{ S_OK };

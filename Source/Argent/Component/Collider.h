@@ -39,7 +39,6 @@ namespace Argent::Component::Collider
 		{}
 		~SphereCollider() override = default;
 
-
 		bool CollisionDetection(Collider* other) override;
 
 #ifdef _DEBUG
@@ -51,5 +50,26 @@ namespace Argent::Component::Collider
 
 	};
 
+	class Capsule:
+		public Collider
+	{
+	public:
+		Capsule(float radius = 1.0f, float height = 1.0f) :
+			Collider("Capsule", ColliderType::Capsule)
+		,	radius(radius)
+		,	height(height)
+		{}
+		~Capsule() override = default;
+
+		bool CollisionDetection(Collider* other) override;
+
+#ifdef _DEBUG
+		void DrawDebug() override;
+#endif
+
+	protected:
+		float radius{};
+		float height{};
+	};
 }
 

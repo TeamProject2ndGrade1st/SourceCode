@@ -90,6 +90,7 @@
     <ClInclude Include="Source\Argent\Component\ArColliderManager.h" />
     <ClInclude Include="Source\Argent\Component\ArColor.h" />
     <ClInclude Include="Source\Argent\Component\ArComponent.h" />
+    <ClInclude Include="Source\Argent\Component\ArComponentName.h" />
     <ClInclude Include="Source\Argent\Component\ArEffectRenderer.h" />
     <ClInclude Include="Source\Argent\Component\ArRenderer.h" />
     <ClInclude Include="Source\Argent\Component\ArSkinnedMeshRenderer.h" />

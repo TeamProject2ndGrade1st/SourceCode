@@ -51,8 +51,8 @@ void Transform::Reset()
 
 Transform Transform::AdjustParentTransform() const
 {
-	Transform tmp{};
-	tmp += *this;
+	Transform tmp = *this;
+	//tmp += *this;
 	if(GetOwner())
 	{
 		if(GetOwner()->GetParent())

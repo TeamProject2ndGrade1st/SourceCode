@@ -40,10 +40,13 @@ namespace Argent::Component::Renderer
 	}
 
 
+		
+
 	void ArSkinnedMeshRenderer::Initialize()
 	{
 		GameObject* g = GetOwner();
 		g->GetTransform()->SetWorld(skinnedMeshes.at(0)->defaultGlobalTransform);
+		g->SetName(skinnedMeshes.at(0)->GetName());
 	}
 
 	void ArSkinnedMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList, 

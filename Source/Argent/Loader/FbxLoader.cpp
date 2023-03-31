@@ -125,7 +125,8 @@ namespace Argent::Loader::Fbx
 			for (size_t i = 0; i < meshes.size(); ++i)
 			{
 				std::vector<Argent::Resource::Mesh::Vertex> vertices = fbxResource.tmpMeshes.at(i).vertices;
-				meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(vertices,
+				meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(
+					fbxResource.tmpMeshes.at(i).name.c_str(), vertices,
 					fbxResource.tmpMeshes.at(i).indices,
 					fbxResource.tmpMeshes.at(i).subsets,
 					fbxResource.tmpMeshes.at(i).defaultGlobalTransform);
@@ -147,7 +148,8 @@ namespace Argent::Loader::Fbx
 			for (size_t i = 0; i < skinnedMeshes.size(); ++i)
 			{
 				std::vector<Argent::Resource::Mesh::Vertex> vertices = fbxResource.tmpMeshes.at(i).vertices;
-				skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(vertices,
+				skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(
+					fbxResource.tmpMeshes.at(i).name.c_str(), vertices,
 					fbxResource.tmpMeshes.at(i).vertexBones, fbxResource.tmpMeshes.at(i).indices,
 					fbxResource.tmpMeshes.at(i).subsets, fbxResource.tmpMeshes.at(i).bindPose);
 			}
@@ -179,6 +181,7 @@ namespace Argent::Loader::Fbx
 			TmpFbxMesh& mesh{ meshes.emplace_back() };
 			mesh.nodeIndex = sceneView.IndexOf(fbxMesh->GetNode()->GetUniqueID());
 			mesh.defaultGlobalTransform = Argent::Helper::FBX::ToFloat4x4(fbxMesh->GetNode()->EvaluateGlobalTransform());
+			mesh.name = fbxNode->GetName();
 
 			std::vector<std::vector<ArBoneInfluence>> boneInfluences;
 			FetchBoneInfluences(fbxMesh, boneInfluences);

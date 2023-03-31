@@ -10,9 +10,7 @@ namespace Argent::Component
 		public ArComponent
 	{
 	public:
-		BaseActor(const char* name) :
-			ArComponent(name)
-		{}
+		BaseActor(const char* name);
 
 		virtual ~BaseActor() override = default;
 

@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx12.h"
+#include "imgui_internal.h"
 
 void ImguiCtrl::Begin(const char* windowName)
 {
@@ -23,7 +24,21 @@ void ImguiCtrl::End(ID3D12GraphicsCommandList* cmdList, ID3D12DescriptorHeap* he
 	ImGui::Render();
 	cmdList->SetDescriptorHeaps(1, &heap);
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), cmdList);
+
+	
+
 #endif
+}
+
+void ImguiCtrl::CallBeforSwap(ID3D12GraphicsCommandList* cmdList)
+{
+	ImGuiIO& io = ImGui::GetIO();// (void)io;
+
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault(NULL, (void*)cmdList);
+	}
 }
 
 void ::ImguiCtrl::Initialize(HWND hWnd, ID3D12Device* device, ID3D12DescriptorHeap* heap)
@@ -31,9 +46,20 @@ void ::ImguiCtrl::Initialize(HWND hWnd, ID3D12Device* device, ID3D12DescriptorHe
 #ifdef _DEBUG
 	IMGUI_CHECKVERSION();
 	if(!ImGui::CreateContext()) assert(0);
-	ImGui::GetIO().Fonts->AddFontFromFileTTF("Resources/Fonts/migu-1m.ttf", 
+
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.Fonts->AddFontFromFileTTF("Resources/Fonts/migu-1m.ttf", 
 		16.0f, nullptr);
 
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+
+	ImGuiStyle& style = ImGui::GetStyle();
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		style.WindowRounding = 0.0f;
+		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+	}
 
 	ImGui_ImplWin32_Init(hWnd);
 	ImGui_ImplDX12_Init(device, 3, DXGI_FORMAT_R8G8B8A8_UNORM, 

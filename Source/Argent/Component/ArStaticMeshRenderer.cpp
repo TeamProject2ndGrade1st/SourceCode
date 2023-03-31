@@ -145,15 +145,14 @@ namespace Argent::Component::Renderer
 	{
 		GameObject* g = GetOwner();
 		g->GetTransform()->SetWorld(meshes.at(0)->defaultGlobalTransform);
-
+		g->SetName(meshes.at(0)->GetName());
 	}
 
 	void ArStaticMeshRenderer::Render() const 
 	{
 		const Transform* t = GetOwner()->GetTransform();
-		const Transform w = t->AdjustParentTransform();
 		Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), 
-			w.GetWorld());
+			t->AdjustParentTransform().GetWorld());
 	}
 
 	void ArStaticMeshRenderer::Update()

@@ -4,7 +4,6 @@
 #include "BaseActor.h"
 #include "../Other/ArHelper.h"
 #include "ArColliderManager.h"
-#include "../../MrIncredible.h"
 #include "../Math/MathHelper.h"
 
 namespace Argent::Component::Collider
@@ -18,9 +17,8 @@ namespace Argent::Component::Collider
 
 	void Collider::OnCollision(const Collider* collider)
 	{
-		MrIncredible* actor = GetOwner()->GetComponent<MrIncredible>();
-		if(actor)
-			actor->OnCollision(collider);
+		BaseActor* actor = GetOwner()->GetActor();
+		if (actor) actor->OnCollision(collider);
 	}
 
 	bool SphereCollider::CollisionDetection(Collider* other)

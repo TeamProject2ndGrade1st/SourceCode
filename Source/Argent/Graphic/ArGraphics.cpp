@@ -7,6 +7,7 @@
 #include "../GameObject/GameObject.h"
 #include "../Other/ArHelper.h"
 #include "../Core/ArRandom.h"
+#include "../../../imgui/ImguiCtrl.h"
 
 namespace Argent::Graphics
 {
@@ -181,6 +182,9 @@ namespace Argent::Graphics
 		ID3D12CommandList* cmdlists[] { curFrameResource->GetCmdList() };
 		renderingQueue->cmdQueue->ExecuteCommandLists(1, cmdlists);
 		renderingQueue->SetFence(1);
+
+		ID3D12GraphicsCommandList* cmdList = curFrameResource->GetCmdList();
+		ImguiCtrl::CallBeforSwap(cmdList);
 		mSwapChain->Present(1, 0);
 	}
 

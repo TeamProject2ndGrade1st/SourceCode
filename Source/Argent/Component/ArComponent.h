@@ -46,7 +46,7 @@ namespace Argent::Component
 		}
 #endif
 
-	protected:
+	public:
 		std::string GetName() const { return name; }
 
 	private:

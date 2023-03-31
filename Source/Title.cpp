@@ -20,14 +20,14 @@ void Title::Initialize()
 
 	//AddObject(new GameObject("noneBone", Argent::Loader::Fbx::LoadFbx("./Resources/Model/LMG/LMG_low_0324_1.fbx")));
 
-	AddObject(new GameObject("stage01", Argent::Loader::Fbx::LoadFbx("./Resources/Model/HG_ver_NomalTest.fbx", true)));
+	AddObject(new GameObject("stage01", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx", false)));
 	//AddObject(new GameObject("stage01", Argent::Loader::Fbx::LoadFbx("./Resources/Model/kaidan_0330_ver1.fbx", true)));
 
 	//AddObject(new GameObject("stageblend", Argent::Loader::Fbx::LoadFbx("./Resources/Model/tmpStages.fbx", false)));
 
 	//AddObject(new GameObject("effect", new Argent::Component::Renderer::ArEffectRenderer("./Resources/Effects/barel_test.efk ", "./Resources/Effects")));
 
-	//AddObject(new GameObject("Nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Mr.Incredible.fbx", false)));
+	//AddObject(new GameObject("Nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
 	//GetGameObject("Nico")->AddComponent(new MrIncredible);
 	//GetGameObject("Nico")->AddComponent(new Argent::Component::Collider::SphereCollider);
 

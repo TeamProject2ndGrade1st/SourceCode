@@ -4,11 +4,11 @@
 namespace
 	Argent::Resource::Mesh
 {
-	ArSkinnedMesh::ArSkinnedMesh(const std::vector<Vertex>& vertices,
+	ArSkinnedMesh::ArSkinnedMesh(const char* name, const std::vector<Vertex>& vertices,
 		std::vector<VertexBone> bones,
 		const std::vector<uint32_t>& indices, const std::vector<Subset>& subsets,
 		const Skeleton& bindPose) :
-		ArStaticMesh(vertices, indices, subsets)
+		ArStaticMesh(name, vertices, indices, subsets)
 	,	bindPose(bindPose)
 	{
 		ID3D12Device* device = Argent::Graphics::ArGraphics::Instance()->GetDevice();

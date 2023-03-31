@@ -6,6 +6,9 @@
 
 #include "../Component/ArComponent.h"
 #include "../Component/Transform.h"
+#include "../Component/ArStaticMeshRenderer.h"
+#include "../Component/ArSkinnedMeshRenderer.h"
+#include "../Component/BaseActor.h"
 // todo orderInUpdate‚Ì’Ç‰Á
 
 class GameObject
@@ -27,6 +30,7 @@ public:
 	,	name(std::move(name))
 	{
 		AddComponent(new Transform());
+
 		for(size_t i = 0; i < com.size(); ++i)
 		{
 			AddChild(new GameObject(std::to_string(i), com.at(i)));
@@ -88,7 +92,6 @@ public:
 	std::vector<GameObject*>::iterator end() { return childObjects.end(); }
 
 	bool GetIsSelected() const { return isSelected; }
-	bool* GetpIsSelected() { return &isSelected; }
 	void SetIsSelected(bool b) { isSelected = b; }
 	void ReverseIsSelected() { isSelected = !isSelected; }
 
@@ -105,6 +108,10 @@ public:
 	}
 	static GameObject* SceneCamera(const std::string& name = "Sub Camera", bool setSceneCamera = false);
 
+	Argent::Component::BaseActor* GetActor() const { return actor;  }
+
+	void SetActor(Argent::Component::BaseActor* a) { actor = a;  }
+
 protected:
 	bool isSelected;
 	std::vector<Argent::Component::ArComponent*> components;
@@ -112,6 +119,8 @@ protected:
 	std::vector<GameObject*> childObjects;
 	std::string name;
 	GameObject* parent;
+
+	Argent::Component::BaseActor* actor{};
 };
 
 template <typename T>

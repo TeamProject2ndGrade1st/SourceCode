@@ -84,6 +84,7 @@ namespace Argent::Loader
 		struct TmpFbxMesh
 		{
 			int64_t nodeIndex;
+			std::string name;
 			std::vector<Argent::Resource::Mesh::Vertex> vertices;
 			std::vector<Resource::Mesh::VertexBone> vertexBones;
 			std::vector<uint32_t> indices;
@@ -100,7 +101,7 @@ namespace Argent::Loader
 			template<class T>
 			void serialize(T& archive)
 			{
-				archive(nodeIndex, vertices, vertexBones, indices, subsets, bindPose, defaultGlobalTransform);
+				archive(nodeIndex, name, vertices, vertexBones, indices, subsets, bindPose, defaultGlobalTransform);
 			}
 		};
 

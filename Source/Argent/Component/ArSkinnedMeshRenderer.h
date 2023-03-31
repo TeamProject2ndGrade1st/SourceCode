@@ -97,7 +97,8 @@ namespace Argent::Component::Renderer
 
 	private:
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> objectConstantBuffer;
-		
+
+		std::shared_ptr<Argent::Resource::Mesh::ArSkinnedMesh> skinnedMesh;
 		std::vector<std::shared_ptr<Argent::Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial> materials;
 		int clipIndex{};

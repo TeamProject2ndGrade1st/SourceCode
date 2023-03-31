@@ -2,6 +2,7 @@
 #include <d3d12.h>
 #include "../Graphic/Dx12/ArVertexBuffer.h"
 #include "../Graphic/Dx12/ArIndexBuffer.h"
+#include "ArResource.h"
 #include "ArMaterial.h"
 
 #include <cereal/archives/binary.hpp>
@@ -19,11 +20,14 @@ namespace Argent::Resource::Mesh
 	 * \tparam T Vertexç\ë¢ëÃÇéwíË
 	 */
 	template<class T>
-	class ArMesh
+	class ArMesh:
+		public ArResource
 	{
 	public:
-		ArMesh() = default;
-		virtual ~ArMesh() = default;
+		ArMesh(const char* name, ResourceType type):
+			ArResource(name, type)
+		{}
+		virtual ~ArMesh() override = default;
 
 		virtual void SetOnCommandList(ID3D12GraphicsCommandList* cmdList)
 		{

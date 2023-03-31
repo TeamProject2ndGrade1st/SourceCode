@@ -4,6 +4,12 @@
 
 namespace Argent::Component
 {
+	BaseActor::BaseActor(const char* name):
+		ArComponent(name)
+	{
+		GetOwner()->SetActor(this);
+	}
+
 	Transform* BaseActor::GetTransform() const
 	{
 		GameObject* obj = GetOwner();

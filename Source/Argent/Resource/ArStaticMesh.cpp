@@ -4,9 +4,10 @@
 
 namespace Argent::Resource::Mesh
 {
-	ArStaticMesh::ArStaticMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices,
-		const std::vector<Subset>& subsets, const DirectX::XMFLOAT4X4 globalTransform):
-		defaultGlobalTransform(globalTransform)
+	ArStaticMesh::ArStaticMesh(const char* name, const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices,
+		const std::vector<Subset>& subsets, const DirectX::XMFLOAT4X4 globalTransform) :
+		ArMesh(name, ResourceType::Mesh)
+	,	defaultGlobalTransform(globalTransform)
 	{
 		this->vertices = vertices;
 		this->indices = indices;
@@ -16,8 +17,9 @@ namespace Argent::Resource::Mesh
 		indexBuffer = std::make_unique<Argent::Dx12::ArIndexBuffer>(device, indices);
 	}
 
-	ArStaticMesh::ArStaticMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices,
-		const std::vector<Subset>& subsets)
+	ArStaticMesh::ArStaticMesh(const char* name, const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices,
+		const std::vector<Subset>& subsets):
+		ArMesh(name, ResourceType::Mesh)
 	{
 		this->vertices = vertices;
 		this->indices = indices;

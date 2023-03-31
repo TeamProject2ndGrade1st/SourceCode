@@ -73,7 +73,7 @@ namespace Argent::Resource::Mesh
 	{
 	public:
 		static const int MaxBones{ 256 };
-		ArSkinnedMesh(const std::vector<Vertex>& vertices, std::vector<VertexBone> bones,  const std::vector<uint32_t>& indices,
+		ArSkinnedMesh(const char* name, const std::vector<Vertex>& vertices, std::vector<VertexBone> bones,  const std::vector<uint32_t>& indices,
 			const std::vector<Subset>& subsets, const Skeleton& bindPose);
 		~ArSkinnedMesh() override = default;
 
@@ -81,7 +81,6 @@ namespace Argent::Resource::Mesh
 
 		std::unique_ptr<Argent::Dx12::ArVertexBuffer<VertexBone>> boneVertexBuffer;
 		Skeleton bindPose;
-
 
 		struct Constant
 		{
@@ -97,9 +96,7 @@ namespace Argent::Resource::Mesh
 		};
 
 		int64_t nodeIndex{};
-		
 
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
-
 	};
 }

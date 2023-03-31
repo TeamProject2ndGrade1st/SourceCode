@@ -446,6 +446,9 @@
       <Filter>Work In Progress\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Component\ArColliderManager.h" />
+    <ClInclude Include="Source\Argent\Component\ArComponentName.h">
+      <Filter>Argent\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
