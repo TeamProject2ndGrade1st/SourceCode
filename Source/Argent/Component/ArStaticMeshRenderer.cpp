@@ -150,8 +150,10 @@ namespace Argent::Component::Renderer
 
 	void ArStaticMeshRenderer::Render() const 
 	{
+		const Transform* t = GetOwner()->GetTransform();
+		const Transform w = t->AdjustParentTransform();
 		Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), 
-			GetOwner()->GetTransform()->GetWorld());
+			w.GetWorld());
 	}
 
 	void ArStaticMeshRenderer::Update()

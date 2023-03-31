@@ -41,7 +41,7 @@ void Transform::Reset()
 	{
 		position = DirectX::XMFLOAT3(0, 0, -10);
 	}
-	else
+	else 
 	{
 		position = DirectX::XMFLOAT3();
 	}
