@@ -1,12 +1,12 @@
 #pragma once
-#include "Argent/Scene/Scene.h"
+#include "Argent/Scene/BaseScene.h"
 
 class Game final:
-    public Scene
+    public Argent::Scene::BaseScene
 {
 public:
     Game(const std::string& sceneName):
-		Scene(sceneName)
+        Argent::Scene::BaseScene(sceneName)
     {}
     ~Game() override = default;
 

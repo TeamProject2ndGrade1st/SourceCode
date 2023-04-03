@@ -27,3 +27,14 @@ inline DirectX::XMFLOAT3 operator*(const DirectX::XMFLOAT3& f1, const DirectX::X
 	ret.z = f1.z * f2.z;
 	return ret;
 }
+
+
+inline DirectX::XMFLOAT3 operator*(const DirectX::XMFLOAT3& f1, float f)
+{
+	DirectX::XMFLOAT3 ret{};
+	ret.x = f1.x * f;
+	ret.y = f1.y * f;
+	ret.z = f1.z * f;
+
+	return ret;
+}

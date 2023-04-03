@@ -30,14 +30,14 @@ namespace Argent::App
 	{
 		Initialize();
 			
-		SceneManagement::ArSceneManager arSceneManager;
+		Scene::ArSceneManager arSceneManager;
 		arSceneManager.Initialize();
 		while (MainLoop(arWindow->GetHandle()))
 		{
 			Argent::Input::Keyboard::Instance().Update();
 
 			ImguiCtrl::Begin("Main Window");
-
+			arSceneManager.Begin();
 
 			arSceneManager.Update();
 			effectManager->Update();
@@ -48,9 +48,11 @@ namespace Argent::App
 			arSceneManager.Render();
 			effectManager->Render();
 
+			arSceneManager.End();
 			ImguiCtrl::End(arGfx->GetCommandList(), arGfx->GetGUIHeap());
 
 			arGfx->End();
+			arSceneManager.DeleteDestroyedObject();
 		}
 		arSceneManager.Finalize();
 		ImguiCtrl::Terminate();

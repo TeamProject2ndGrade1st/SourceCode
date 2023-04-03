@@ -70,8 +70,10 @@
     <ClCompile Include="Source\Argent\Resource\ArSprite.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArTexture.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArEffectManager.cpp" />
-    <ClCompile Include="Source\Argent\Scene\Scene.cpp" />
+    <ClCompile Include="Source\Argent\Scene\BaseScene.cpp" />
     <ClCompile Include="Source\Argent\Scene\SceneManager.cpp" />
+    <ClCompile Include="Source\BaseBullet.cpp" />
+    <ClCompile Include="Source\BaseGun.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\MrIncredible.cpp" />
     <ClCompile Include="Source\Title.cpp" />
@@ -138,8 +140,10 @@
     <ClInclude Include="Source\Argent\Resource\ArSprite.h" />
     <ClInclude Include="Source\Argent\Resource\ArTexture.h" />
     <ClInclude Include="Source\Argent\Resource\ArEffectManager.h" />
-    <ClInclude Include="Source\Argent\Scene\Scene.h" />
+    <ClInclude Include="Source\Argent\Scene\BaseScene.h" />
     <ClInclude Include="Source\Argent\Scene\SceneManager.h" />
+    <ClInclude Include="Source\BaseBullet.h" />
+    <ClInclude Include="Source\BaseGun.h" />
     <ClInclude Include="Source\DemoShaderMacro.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\MrIncredible.h" />

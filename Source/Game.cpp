@@ -2,20 +2,20 @@
 
 void Game::Initialize()
 {
-	Scene::Initialize();
+	BaseScene::Initialize();
 }
 
 void Game::Finalize()
 {
-	Scene::Finalize();
+	BaseScene::Finalize();
 }
 
 void Game::Update()
 {
-	Scene::Update();
+	BaseScene::Update();
 }
 
 void Game::Render()
 {
-	Scene::Render();
+	BaseScene::Render();
 }

@@ -355,6 +355,13 @@ namespace Argent::Loader::Fbx
 		}
 	}
 
+	void SetDummySurfaceMaterial(Material::ArMeshMaterial& material)
+	{
+			material.CreateTexture("", Material::ArMeshMaterial::TextureType::Diffuse);
+			material.CreateTexture("", Material::ArMeshMaterial::TextureType::Normal);
+
+	}
+
 	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Material::ArMeshMaterial>& materials)
 	{
 		const size_t nodeCount{ sceneView.nodes.size() };
@@ -383,6 +390,12 @@ namespace Argent::Loader::Fbx
 
 					materials.emplace(materialUniqueId, std::move(material));
 				}
+			}
+			else
+			{
+				Material::ArMeshMaterial material;
+				SetDummySurfaceMaterial(material);
+				materials.emplace(0, std::move(material));
 			}
 		}
 	}

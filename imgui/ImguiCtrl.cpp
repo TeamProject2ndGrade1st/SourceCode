@@ -32,6 +32,7 @@ void ImguiCtrl::End(ID3D12GraphicsCommandList* cmdList, ID3D12DescriptorHeap* he
 
 void ImguiCtrl::CallBeforSwap(ID3D12GraphicsCommandList* cmdList)
 {
+#ifdef _DEBUG
 	ImGuiIO& io = ImGui::GetIO();// (void)io;
 
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -39,6 +40,7 @@ void ImguiCtrl::CallBeforSwap(ID3D12GraphicsCommandList* cmdList)
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault(NULL, (void*)cmdList);
 	}
+#endif
 }
 
 void ::ImguiCtrl::Initialize(HWND hWnd, ID3D12Device* device, ID3D12DescriptorHeap* heap)

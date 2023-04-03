@@ -48,17 +48,6 @@ public:
 		}
 	}
 
-	template <typename T>
-	void AddComponent()
-	{
-		demoCom.emplace_back(std::make_unique<T>());
-	}
-
-	void AddComponent(std::unique_ptr<Argent::Component::ArComponent> com)
-	{
-		demoCom.emplace_back(std::move(com));
-	}
-
 	virtual ~GameObject();
 	GameObject(const GameObject&) = delete;
 	GameObject(const GameObject&&) = delete;
@@ -74,6 +63,7 @@ public:
 	virtual void DrawDebug();
 
 	void AddComponent(Argent::Component::ArComponent* com);
+	void AddComponent(std::vector<Argent::Component::ArComponent*> com);
 	void AddChild(GameObject* obj);
 
 	template <typename T> T* GetComponent();
@@ -112,10 +102,11 @@ public:
 
 	void SetActor(Argent::Component::BaseActor* a) { actor = a;  }
 
+	static void DestroyGameObject(GameObject* object);
+
 protected:
 	bool isSelected;
 	std::vector<Argent::Component::ArComponent*> components;
-	std::vector<std::unique_ptr<Argent::Component::ArComponent>> demoCom;
 	std::vector<GameObject*> childObjects;
 	std::string name;
 	GameObject* parent;

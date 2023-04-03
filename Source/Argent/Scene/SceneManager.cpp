@@ -5,15 +5,17 @@
 #include "../../Game.h"
 #include "../Input/Keyboard.h"
 
-namespace Argent::SceneManagement
+namespace Argent::Scene
 {
-		
+	ArSceneManager* ArSceneManager::instance = nullptr;
 	std::string ArSceneManager::nextScene;
 		
 	ArSceneManager::ArSceneManager():
 		currentScene(nullptr)
 	{
-		std::unique_ptr<Scene> s = std::make_unique<Title>("Title");
+		if (instance) _ASSERT_EXPR(FALSE, L"Already instantiated");
+		instance = this;
+		std::unique_ptr<BaseScene> s = std::make_unique<Title>("Title");
 		scenes[s->GetName()] = std::move(s);
 		
 		s = std::make_unique<Game>("Game");
@@ -32,6 +34,12 @@ namespace Argent::SceneManagement
 			currentScene->Finalize();
 	}
 
+	void ArSceneManager::Begin()
+	{
+		if (currentScene)
+			currentScene->Begin();
+	}
+
 	void ArSceneManager::Update()
 	{
 		ChangeScene();
@@ -39,6 +47,12 @@ namespace Argent::SceneManagement
 		{
 			currentScene->Update();
 		}
+	}
+
+	void ArSceneManager::End()
+	{
+		if (currentScene)
+			currentScene->End();
 	}
 
 	void ArSceneManager::Render()

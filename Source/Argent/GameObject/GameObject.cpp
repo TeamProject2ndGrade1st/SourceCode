@@ -3,12 +3,24 @@
 #include "../Graphic/ArGraphics.h"
 #include "../Component/Camera.h"
 #include "../Resource/ArResourceManager.h"
+#include "../Scene/SceneManager.h"
+
 
 
 void GameObject::AddComponent(Argent::Component::ArComponent* com)
 {
 	com->SetOwner(this);
 	components.emplace_back(com);
+}
+
+void GameObject::AddComponent(std::vector<Argent::Component::ArComponent*> com)
+{
+	AddComponent(new Transform());
+
+	for (size_t i = 0; i < com.size(); ++i)
+	{
+		AddChild(new GameObject(std::to_string(i), com.at(i)));
+	}
 }
 
 void GameObject::AddChild(GameObject* obj)
@@ -42,6 +54,11 @@ GameObject* GameObject::SceneCamera(const std::string& name, bool setSceneCamera
 			new CameraController
 		},
 		name);
+}
+
+void GameObject::DestroyGameObject(GameObject* object)
+{
+	Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->DestroyGameObject(object);
 }
 
 GameObject::~GameObject()

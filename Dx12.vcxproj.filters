@@ -106,7 +106,7 @@
     <ClCompile Include="Source\Argent\Input\Keyboard.cpp">
       <Filter>Argent\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Scene\Scene.cpp">
+    <ClCompile Include="Source\Argent\Scene\BaseScene.cpp">
       <Filter>Argent\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Scene\SceneManager.cpp">
@@ -247,7 +247,11 @@
     <ClCompile Include="Source\Argent\Component\Collider.cpp">
       <Filter>Work In Progress\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\ArColliderManager.cpp" />
+    <ClCompile Include="Source\Argent\Component\ArColliderManager.cpp">
+      <Filter>Work In Progress</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BaseBullet.cpp" />
+    <ClCompile Include="Source\BaseGun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -280,7 +284,7 @@
     <ClInclude Include="Source\Argent\Input\Keyboard.h">
       <Filter>Argent\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Scene\Scene.h">
+    <ClInclude Include="Source\Argent\Scene\BaseScene.h">
       <Filter>Argent\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Scene\SceneManager.h">
@@ -445,10 +449,14 @@
     <ClInclude Include="Source\Argent\Component\Collider.h">
       <Filter>Work In Progress\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArColliderManager.h" />
     <ClInclude Include="Source\Argent\Component\ArComponentName.h">
       <Filter>Argent\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Argent\Component\ArColliderManager.h">
+      <Filter>Work In Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseBullet.h" />
+    <ClInclude Include="Source\BaseGun.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

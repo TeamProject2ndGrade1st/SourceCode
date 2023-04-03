@@ -57,7 +57,9 @@ Transform Transform::AdjustParentTransform() const
 	{
 		if(GetOwner()->GetParent())
 		{
-			tmp += GetOwner()->GetParent()->GetTransform()->AdjustParentTransform();
+			const Transform t = GetOwner()->GetParent()->GetTransform()->AdjustParentTransform();
+			tmp += t;
+			tmp.scaleFactor *= t.GetScaleFactor();
 		}
 	}
 	return tmp;

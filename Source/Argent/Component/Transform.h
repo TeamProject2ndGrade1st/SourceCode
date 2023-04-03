@@ -37,7 +37,13 @@ public:
 	void SetWorld(const DirectX::XMFLOAT4X4& w)
 	{
 		position = DirectX::XMFLOAT3(-w.m[3][0], w.m[3][1], w.m[3][2]);
-		scale = DirectX::XMFLOAT3(w.m[0][0], w.m[1][1], w.m[2][2]);
+		const DirectX::XMFLOAT3 sX = DirectX::XMFLOAT3(w.m[0][0], w.m[0][1], w.m[0][2]);
+		DirectX::XMStoreFloat(&scale.x, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&sX)));
+		const DirectX::XMFLOAT3 sY = DirectX::XMFLOAT3(w.m[1][0], w.m[1][1], w.m[1][2]);
+		DirectX::XMStoreFloat(&scale.y, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&sY)));
+		const DirectX::XMFLOAT3 sZ = DirectX::XMFLOAT3(w.m[2][0], w.m[2][1], w.m[2][2]);
+		DirectX::XMStoreFloat(&scale.z, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&sZ)));
+	//	scale = DirectX::XMFLOAT3(w.m[0][0], w.m[1][1], w.m[2][2]);
 
 		float angleX, angleY, angleZ;
 
@@ -86,6 +92,14 @@ public:
 	void SetPosition(const DirectX::XMFLOAT3& pos) { position = pos; }
 	void SetScale(const DirectX::XMFLOAT3& scl) { scale = scl; }
 	void SetRotation(const DirectX::XMFLOAT4& rot) { rotation = rot; }
+
+	void AddPosition(const DirectX::XMFLOAT3& pos)
+	{
+		position.x += pos.x;
+		position.y += pos.y;
+		position.z += pos.z;
+	}
+
 	Transform AdjustParentTransform() const;
 
 	float GetScaleFactor() const { return scaleFactor;  }
