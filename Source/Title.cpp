@@ -13,8 +13,8 @@
 
 void Title::Initialize()
 {
-	//AddObject(new GameObject("Demo"));
-//	GetGameObject("Demo")->AddComponent(new Argent::Component::Renderer::ArSpriteRenderer("./Resources/Image/Sample256.png"));
+	AddObject(new GameObject("Demo"));
+	GetGameObject("Demo")->AddComponent(new Argent::Component::Renderer::ArSpriteRenderer("./Resources/Image/Sample256.png"));
 
 	//AddObject(GameObject::Sphere());
 	//AddObject( new GameObject("obj",new ArSkinnedMeshRenderer(Argent::Graphics::ArGraphics::Instance()->GetDevice(), "./Resource/DragonBinary.fbx")));

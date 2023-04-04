@@ -83,6 +83,18 @@ namespace Argent::Loader::Fbx
 			importState = importer->Import(fbxScene);
 			_ASSERT_EXPR_A(importState, importer->GetStatus().GetErrorString());
 
+			auto systemUnit = fbxScene->GetGlobalSettings().GetSystemUnit();
+			auto axisSystem = fbxScene->GetGlobalSettings().GetAxisSystem();
+			if(axisSystem.GetCoorSystem() != FbxAxisSystem::eDirectX)
+			{
+				FbxAxisSystem targetAxisSystem = FbxAxisSystem::eDirectX;
+				targetAxisSystem.ConvertScene(fbxScene);
+			}
+
+
+			/*FbxSystemUnit targetSystemUnit = FbxSystemUnit::cm;
+			targetSystemUnit.ConvertScene(fbxScene);*/
+
 			FbxGeometryConverter converter(manager);
 			if (triangulate)
 			{
