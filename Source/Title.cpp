@@ -1,13 +1,6 @@
 #include "Title.h"
-#include <sstream>
 
-#include "Argent/Component/ArSpriteRenderer.h"
-#include "Argent/Input/Keyboard.h"
-#include "Argent/Component/ArEffectRenderer.h"
-#include "Argent/Component/ArAudioPlayer.h"
-#include "Argent/Loader/FbxLoader.h"
-#include "MrIncredible.h"
-#include "Argent/Component/Collider.h"
+#include "Argent/Argent.h"
 #include "BaseBullet.h"
 
 
@@ -21,7 +14,7 @@ void Title::Initialize()
 
 	//AddObject(new GameObject("noneBone", Argent::Loader::Fbx::LoadFbx("./Resources/Model/LMG/LMG_low_0324_1.fbx")));
 
-	AddObject(new GameObject("stage01", Argent::Loader::Fbx::LoadFbx("./Resources/Model/map_0402_ver5.fbx", false)));
+	AddObject(new GameObject("stage01", Argent::Loader::Fbx::LoadFbx("./Resources/Model/map_0402_ver5_original_blender.fbx", false)));
 
 	AddObject(new GameObject("DestroyDemo", new BaseBullet(DirectX::XMFLOAT3(), 0, 0)));
 	//AddObject(new GameObject("stage01", Argent::Loader::Fbx::LoadFbx("./Resources/Model/kaidan_0330_ver1.fbx", true)));

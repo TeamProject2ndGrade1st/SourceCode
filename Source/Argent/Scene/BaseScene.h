@@ -54,6 +54,7 @@ namespace Argent::Scene
 			gameObject.emplace_back(obj);
 		}
 
+
 		std::string ObjectNameCheck(std::string name, int num = 0, bool isChecked = false)
 		{
 			for(const auto& object : gameObject)

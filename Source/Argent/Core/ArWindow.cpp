@@ -1,6 +1,6 @@
 #include "ArWindow.h"
+#include "../Input/Keyboard.h"
 #include "../Other/Misc.h"
-
 namespace Argent::Window
 {
 	ArWindow::ArWindow(HINSTANCE hInstance, LONG width, LONG height)
@@ -28,5 +28,30 @@ namespace Argent::Window
 		ShowWindow(hWnd, SW_SHOW);
 
 		SetWindowLongPtrW(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+	}
+
+	LRESULT ArWindow::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		//todo Ç«Ç±Ç≈åƒÇ‘Ç◊Ç´ÅH
+		Input::Mouse::Instance().SetIsWheelRotateOff();
+		Input::Mouse::Instance().SetRowWheelRotateValue(0);
+
+		switch (msg)
+		{
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			break;
+
+		case WM_MOUSEWHEEL:
+			Input::Mouse::Instance().SetRowWheelRotateValue(GET_WHEEL_DELTA_WPARAM(wParam));
+			Input::Mouse::Instance().SetIsWheelRotateOn();
+
+			break;
+
+		default:
+			break;
+		}
+		ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
+		return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
 }

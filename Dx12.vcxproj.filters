@@ -457,6 +457,9 @@
     </ClInclude>
     <ClInclude Include="Source\BaseBullet.h" />
     <ClInclude Include="Source\BaseGun.h" />
+    <ClInclude Include="Source\Argent\Argent.h">
+      <Filter>Argent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

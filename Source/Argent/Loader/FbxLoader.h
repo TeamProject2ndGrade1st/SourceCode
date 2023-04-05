@@ -3,8 +3,6 @@
 #include <fbxsdk.h>
 #include <DirectXMath.h>
 #include <vector>
-#include <memory>
-#include "../Resource/ArTexture.h"
 
 #include "../Resource/ArStaticMesh.h"
 #include "../Resource/ArSkinnedMesh.h"
