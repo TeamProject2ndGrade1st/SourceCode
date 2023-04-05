@@ -1,5 +1,4 @@
 #include "BaseScene.h"
-#include "../Graphic/ArGraphics.h"
 #include "../Component/Camera.h"
 
 namespace Argent::Scene

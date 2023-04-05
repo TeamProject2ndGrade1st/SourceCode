@@ -1,5 +1,5 @@
 #include "ArResource.h"
-#include "ArResourceManager.h"
+#include "ResourceManager.h"
 
 namespace Argent::Resource
 {

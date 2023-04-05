@@ -1,7 +1,7 @@
 #include "MrIncredible.h"
 #include "Argent/GameObject/GameObject.h"
 #include "Argent/Input/Keyboard.h"
-#include "Argent/Core/ArTimer.h"
+#include "Argent/Core/Timer.h"
 
 
 

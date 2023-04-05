@@ -1,13 +1,13 @@
 #include "FbxLoader.h"
 #include <fbxsdk.h>
-#include "../Resource/ArResourceManager.h"
+#include "../Resource/ResourceManager.h"
 #include <fstream>
 
 //todo
-#include "../Component/ArStaticMeshRenderer.h"
-#include "../Component/ArSkinnedMeshRenderer.h"
+#include "../Component/StaticMeshRenderer.h"
+#include "../Component/SkinnedMeshRenderer.h"
 #include "../Resource/ArSkinnedMesh.h"
-#include "../Resource/ArMaterial.h"
+#include "../Resource/Material.h"
 #include "../Resource/ArAnimation.h"
 
 

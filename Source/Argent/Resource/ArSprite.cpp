@@ -1,7 +1,7 @@
 #include "ArSprite.h"
 
-#include "../Graphic/ArGraphics.h"
-#include "../Other/ArHelper.h"
+#include "../Graphic/Graphics.h"
+#include "../Other/Helper.h"
 
 namespace Argent::Resource::Mesh::Sprite
 {

@@ -4,10 +4,10 @@
 #include <typeinfo>
 #include <memory>
 
-#include "../Component/ArComponent.h"
+#include "../Component/Component.h"
 #include "../Component/Transform.h"
-#include "../Component/ArStaticMeshRenderer.h"
-#include "../Component/ArSkinnedMeshRenderer.h"
+#include "../Component/StaticMeshRenderer.h"
+#include "../Component/SkinnedMeshRenderer.h"
 #include "../Component/BaseActor.h"
 // todo orderInUpdate‚Ì’Ç‰Á
 

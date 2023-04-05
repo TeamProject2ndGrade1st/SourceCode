@@ -1,5 +1,5 @@
 #include "ArStaticMesh.h"
-#include "../Graphic/ArGraphics.h"
+#include "../Graphic/Graphics.h"
 
 
 namespace Argent::Resource::Mesh

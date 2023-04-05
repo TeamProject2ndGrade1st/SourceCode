@@ -1,9 +1,9 @@
 #pragma once
 #include <d3d12.h>
-#include "../Graphic/Dx12/ArVertexBuffer.h"
-#include "../Graphic/Dx12/ArIndexBuffer.h"
+#include "../Graphic/Dx12/VertexBuffer.h"
+#include "../Graphic/Dx12/IndexBuffer.h"
 #include "ArResource.h"
-#include "ArMaterial.h"
+#include "Material.h"
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/string.hpp>

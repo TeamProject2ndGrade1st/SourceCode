@@ -1,7 +1,7 @@
 #pragma once
 #include <filesystem>
 #include <string>
-#include "../Other/ArHelper.h"
+#include "../Other/Helper.h"
 
 namespace Argent::Resource
 {

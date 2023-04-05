@@ -1,10 +1,10 @@
 #include "ArTexture.h"
 
 #include "ArResource.h"
-#include "../Graphic/ArGraphics.h"
-#include "../Graphic/Dx12/ArDescriptorHeap.h"
-#include "../Other/ArHelper.h"
-#include "../Resource/ArResourceManager.h"
+#include "../Graphic/Graphics.h"
+#include "../Graphic/Dx12/DescriptorHeap.h"
+#include "../Other/Helper.h"
+#include "../Resource/ResourceManager.h"
 
 namespace Argent::Texture
 {

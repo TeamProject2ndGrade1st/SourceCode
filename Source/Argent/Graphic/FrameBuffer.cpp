@@ -2,7 +2,7 @@
 
 #include <cassert>
 #include "d3dx12.h"
-#include "ArGraphics.h"
+#include "Graphics.h"
 
 FrameBuffer::FrameBuffer(ID3D12Device* device, D3D12_RESOURCE_DESC rDesc,
                          float clearColor[4],

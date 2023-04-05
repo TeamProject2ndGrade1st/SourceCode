@@ -1,6 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
-#include "ArComponent.h"
+#include "Component.h"
 #include "Transform.h"
 
 class GameObject;

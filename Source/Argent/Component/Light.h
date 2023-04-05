@@ -1,6 +1,6 @@
 #pragma once
-#include "ArComponent.h"
-#include "ArColor.h"
+#include "Component.h"
+#include "Color.h"
 
 class Light :
     public Argent::Component::ArComponent

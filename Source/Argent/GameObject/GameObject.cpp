@@ -1,8 +1,8 @@
 #include "GameObject.h"
 #include <sstream>
-#include "../Graphic/ArGraphics.h"
+#include "../Graphic/Graphics.h"
 #include "../Component/Camera.h"
-#include "../Resource/ArResourceManager.h"
+#include "../Resource/ResourceManager.h"
 #include "../Scene/SceneManager.h"
 
 

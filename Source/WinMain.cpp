@@ -1,5 +1,5 @@
 #include <Windows.h>
-#include "Argent/Core/ArApp.h"
+#include "Argent/Core/App.h"
 #include <d3d12.h>
 #include "Argent/Other/Misc.h"
 

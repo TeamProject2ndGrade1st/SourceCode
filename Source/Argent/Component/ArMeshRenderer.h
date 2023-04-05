@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "ArRenderer.h"
+#include "Renderer.h"
 #include "../Resource/ArStaticMesh.h"
 namespace Argent::Component::Renderer
 {

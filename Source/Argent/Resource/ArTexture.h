@@ -1,7 +1,7 @@
 #pragma once
 #include <d3d12.h>
 #include <wrl.h>
-#include "../Graphic/Dx12/ArDescriptor.h"
+#include "../Graphic/Dx12/Descriptor.h"
 #include "ArResource.h"
 
 namespace Argent::Texture

@@ -1,25 +1,25 @@
 #pragma once
 
 #include "Core/ArWindow.h"
-#include "Core/ArTimer.h"
-#include "Core/ArRandom.h"
-#include "Core/ArApp.h"
+#include "Core/Timer.h"
+#include "Core/Random.h"
+#include "Core/App.h"
 
 
 #include "Input/Keyboard.h"
 
 
-#include "Component/ArComponent.h"
+#include "Component/Component.h"
 #include "Component/Transform.h"
 #include "Component/Collider.h"
-#include "Component/ArAudioPlayer.h"
+#include "Component/AudioPlayer.h"
 
-#include "Component/ArRenderer.h"
-#include "Component/ArSpriteRenderer.h"
+#include "Component/Renderer.h"
+#include "Component/SpriteRenderer.h"
 #include "Component/ArMeshRenderer.h"
-#include "Component/ArStaticMeshRenderer.h"
-#include "Component/ArSkinnedMeshRenderer.h"
-#include "Component/ArEffectRenderer.h"
+#include "Component/StaticMeshRenderer.h"
+#include "Component/SkinnedMeshRenderer.h"
+#include "Component/EffectRenderer.h"
 
 #include "Component/BaseActor.h"
 

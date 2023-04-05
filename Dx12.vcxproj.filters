@@ -121,13 +121,13 @@
     <ClCompile Include="Source\Argent\Loader\FbxLoader.cpp">
       <Filter>Argent\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Core\ArApp.cpp">
+    <ClCompile Include="Source\Argent\Core\App.cpp">
       <Filter>Argent\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Core\ArRandom.cpp">
+    <ClCompile Include="Source\Argent\Core\Random.cpp">
       <Filter>Argent\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Core\ArTimer.cpp">
+    <ClCompile Include="Source\Argent\Core\Timer.cpp">
       <Filter>Argent\Core</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Core\ArWindow.cpp">
@@ -136,34 +136,34 @@
     <ClCompile Include="Source\Argent\GameObject\GameObject.cpp">
       <Filter>Argent\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Graphic\Dx12\ArCommand.cpp">
+    <ClCompile Include="Source\Argent\Graphic\Dx12\Command.cpp">
       <Filter>Argent\Graphic\Dx12</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Graphic\Dx12\ArDescriptor.cpp">
+    <ClCompile Include="Source\Argent\Graphic\Dx12\Descriptor.cpp">
       <Filter>Argent\Graphic\Dx12</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Graphic\Dx12\ArDescriptorHeap.cpp">
+    <ClCompile Include="Source\Argent\Graphic\Dx12\DescriptorHeap.cpp">
       <Filter>Argent\Graphic\Dx12</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Graphic\Dx12\ArPipelineState.cpp">
+    <ClCompile Include="Source\Argent\Graphic\Dx12\PipelineState.cpp">
       <Filter>Argent\Graphic\Dx12</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Graphic\ArFrameResource.cpp">
+    <ClCompile Include="Source\Argent\Graphic\FrameResource.cpp">
       <Filter>Argent\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Graphic\ArGraphics.cpp">
+    <ClCompile Include="Source\Argent\Graphic\Graphics.cpp">
       <Filter>Argent\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Graphic\ArRenderingPipeline.cpp">
+    <ClCompile Include="Source\Argent\Graphic\RenderingPipeline.cpp">
       <Filter>Argent\Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Graphic\FrameBuffer.cpp">
       <Filter>Argent\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Other\ArHelper.cpp">
+    <ClCompile Include="Source\Argent\Other\Helper.cpp">
       <Filter>Argent\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\ArComponent.cpp">
+    <ClCompile Include="Source\Argent\Component\Component.cpp">
       <Filter>Argent\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Component\Camera.cpp">
@@ -175,19 +175,19 @@
     <ClCompile Include="Source\Argent\Component\Transform.cpp">
       <Filter>Argent\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\ArRenderer.cpp">
+    <ClCompile Include="Source\Argent\Component\Renderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\ArSkinnedMeshRenderer.cpp">
+    <ClCompile Include="Source\Argent\Component\SkinnedMeshRenderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\ArSpriteRenderer.cpp">
+    <ClCompile Include="Source\Argent\Component\SpriteRenderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\ArEffectRenderer.cpp">
+    <ClCompile Include="Source\Argent\Component\EffectRenderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\ArEffect.cpp">
+    <ClCompile Include="Source\Argent\Resource\Effect.cpp">
       <Filter>Argent\Resource\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Resource\ArMesh.cpp">
@@ -199,7 +199,7 @@
     <ClCompile Include="Source\Argent\Resource\ArTexture.cpp">
       <Filter>Argent\Resource\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\ArResourceManager.cpp">
+    <ClCompile Include="Source\Argent\Resource\ResourceManager.cpp">
       <Filter>Argent\Resource\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Resource\ArShader.cpp">
@@ -208,25 +208,25 @@
     <ClCompile Include="Source\Argent\Resource\ArSprite.cpp">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\ArMaterial.cpp">
+    <ClCompile Include="Source\Argent\Resource\Material.cpp">
       <Filter>Argent\Resource\Material</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\ArEffectManager.cpp">
+    <ClCompile Include="Source\Argent\Resource\EffectManager.cpp">
       <Filter>Argent\Resource\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\ArAudio.cpp">
+    <ClCompile Include="Source\Argent\Resource\Audio.cpp">
       <Filter>Argent\Resource\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\ArAudioManager.cpp">
+    <ClCompile Include="Source\Argent\Resource\AudioManager.cpp">
       <Filter>Argent\Resource\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\ArAudioPlayer.cpp">
+    <ClCompile Include="Source\Argent\Component\AudioPlayer.cpp">
       <Filter>Argent\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Resource\ArResource.cpp">
       <Filter>Argent\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\ArStaticMeshRenderer.cpp">
+    <ClCompile Include="Source\Argent\Component\StaticMeshRenderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Component\ArStaticMeshRenderer.cpp">
@@ -302,13 +302,13 @@
     <ClInclude Include="Source\DemoShaderMacro.h">
       <Filter>Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Core\ArApp.h">
+    <ClInclude Include="Source\Argent\Core\App.h">
       <Filter>Argent\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Core\ArRandom.h">
+    <ClInclude Include="Source\Argent\Core\Random.h">
       <Filter>Argent\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Core\ArTimer.h">
+    <ClInclude Include="Source\Argent\Core\Timer.h">
       <Filter>Argent\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Core\ArWindow.h">
@@ -317,34 +317,34 @@
     <ClInclude Include="Source\Argent\GameObject\GameObject.h">
       <Filter>Argent\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Graphic\Dx12\ArCommand.h">
+    <ClInclude Include="Source\Argent\Graphic\Dx12\Command.h">
       <Filter>Argent\Graphic\Dx12</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Graphic\Dx12\ArConstantBuffer.h">
+    <ClInclude Include="Source\Argent\Graphic\Dx12\ConstantBuffer.h">
       <Filter>Argent\Graphic\Dx12</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Graphic\Dx12\ArDescriptor.h">
+    <ClInclude Include="Source\Argent\Graphic\Dx12\Descriptor.h">
       <Filter>Argent\Graphic\Dx12</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Graphic\Dx12\ArDescriptorHeap.h">
+    <ClInclude Include="Source\Argent\Graphic\Dx12\DescriptorHeap.h">
       <Filter>Argent\Graphic\Dx12</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Graphic\Dx12\ArPipelineState.h">
+    <ClInclude Include="Source\Argent\Graphic\Dx12\PipelineState.h">
       <Filter>Argent\Graphic\Dx12</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Graphic\ArFrameResource.h">
+    <ClInclude Include="Source\Argent\Graphic\FrameResource.h">
       <Filter>Argent\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Graphic\ArGraphics.h">
+    <ClInclude Include="Source\Argent\Graphic\Graphics.h">
       <Filter>Argent\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Graphic\ArRenderingPipeline.h">
+    <ClInclude Include="Source\Argent\Graphic\RenderingPipeline.h">
       <Filter>Argent\Graphic</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Graphic\FrameBuffer.h">
       <Filter>Argent\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Other\ArHelper.h">
+    <ClInclude Include="Source\Argent\Other\Helper.h">
       <Filter>Argent\Other</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Other\Misc.h">
@@ -353,7 +353,7 @@
     <ClInclude Include="Source\Argent\Resource\ArResource.h">
       <Filter>Argent\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArComponent.h">
+    <ClInclude Include="Source\Argent\Component\Component.h">
       <Filter>Argent\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Component\Camera.h">
@@ -365,28 +365,28 @@
     <ClInclude Include="Source\Argent\Component\Transform.h">
       <Filter>Argent\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArSkinnedMeshRenderer.h">
+    <ClInclude Include="Source\Argent\Component\SkinnedMeshRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArRenderer.h">
+    <ClInclude Include="Source\Argent\Component\Renderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArSpriteRenderer.h">
+    <ClInclude Include="Source\Argent\Component\SpriteRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Graphic\Dx12\ArVertexBuffer.h">
+    <ClInclude Include="Source\Argent\Graphic\Dx12\VertexBuffer.h">
       <Filter>Argent\Graphic\Dx12</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Graphic\Dx12\ArIndexBuffer.h">
+    <ClInclude Include="Source\Argent\Graphic\Dx12\IndexBuffer.h">
       <Filter>Argent\Graphic\Dx12</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArEffectRenderer.h">
+    <ClInclude Include="Source\Argent\Component\EffectRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArColor.h">
+    <ClInclude Include="Source\Argent\Component\Color.h">
       <Filter>Argent\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArEffect.h">
+    <ClInclude Include="Source\Argent\Resource\Effect.h">
       <Filter>Argent\Resource\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Resource\ArMesh.h">
@@ -398,7 +398,7 @@
     <ClInclude Include="Source\Argent\Resource\ArTexture.h">
       <Filter>Argent\Resource\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArResourceManager.h">
+    <ClInclude Include="Source\Argent\Resource\ResourceManager.h">
       <Filter>Argent\Resource\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Resource\ArShader.h">
@@ -407,22 +407,22 @@
     <ClInclude Include="Source\Argent\Resource\ArSprite.h">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArMaterial.h">
+    <ClInclude Include="Source\Argent\Resource\Material.h">
       <Filter>Argent\Resource\Material</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArEffectManager.h">
+    <ClInclude Include="Source\Argent\Resource\EffectManager.h">
       <Filter>Argent\Resource\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArAudio.h">
+    <ClInclude Include="Source\Argent\Resource\Audio.h">
       <Filter>Argent\Resource\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArAudioManager.h">
+    <ClInclude Include="Source\Argent\Resource\AudioManager.h">
       <Filter>Argent\Resource\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArAudioPlayer.h">
+    <ClInclude Include="Source\Argent\Component\AudioPlayer.h">
       <Filter>Argent\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArStaticMeshRenderer.h">
+    <ClInclude Include="Source\Argent\Component\StaticMeshRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Component\ArStaticMeshRenderer.h">
@@ -430,9 +430,6 @@
     </ClInclude>
     <ClInclude Include="Source\Argent\Resource\ArSkinnedMesh.h">
       <Filter>Argent\Resource\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArAnimation.h">
-      <Filter>Argent\Resource\Shader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Math\MathHelper.h">
       <Filter>Argent\Other</Filter>
@@ -449,9 +446,6 @@
     <ClInclude Include="Source\Argent\Component\Collider.h">
       <Filter>Work In Progress\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArComponentName.h">
-      <Filter>Argent\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Argent\Component\ArColliderManager.h">
       <Filter>Work In Progress</Filter>
     </ClInclude>
@@ -459,6 +453,9 @@
     <ClInclude Include="Source\BaseGun.h" />
     <ClInclude Include="Source\Argent\Argent.h">
       <Filter>Argent</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\ArAnimation.h">
+      <Filter>Argent\Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

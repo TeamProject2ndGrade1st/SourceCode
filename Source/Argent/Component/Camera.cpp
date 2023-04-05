@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "../Graphic/ArGraphics.h"
+#include "../Graphic/Graphics.h"
 #include "../Input/Keyboard.h"
 #include "../GameObject/GameObject.h"
 #include "../Math/MathHelper.h"

@@ -1,5 +1,5 @@
 #pragma once
-#include "ArComponent.h"
+#include "Component.h"
 
 namespace Argent::Component::Collider
 {
