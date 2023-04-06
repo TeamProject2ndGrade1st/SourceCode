@@ -4,7 +4,7 @@
 #include <DirectXMath.h>
 #include <vector>
 
-#include "../Resource/ArStaticMesh.h"
+#include "../Resource/StaticMesh.h"
 #include "../Resource/ArSkinnedMesh.h"
 
 
@@ -30,7 +30,7 @@ namespace Argent
 
 namespace Argent::Component
 {
-	class ArComponent;
+	class BaseComponent;
 }
 
 namespace Argent::Loader
@@ -116,7 +116,7 @@ namespace Argent::Loader
 				archive(tmpMeshes, materials, animationClips);
 			}
 		};
-		std::vector<Component::ArComponent*> LoadFbx(const char* filePath, bool triangulate = false);
+		std::vector<Component::BaseComponent*> LoadFbx(const char* filePath, bool triangulate = false);
 		
 
 	}

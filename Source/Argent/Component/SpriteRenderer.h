@@ -1,19 +1,19 @@
 #pragma once
 #include <memory>
 #include "Renderer.h"
-#include "../Resource/ArSprite.h"
+#include "../Resource/Sprite.h"
 
 namespace Argent::Component::Renderer
 {
 	//スプライト（画像）描画用のクラス
 	//todo 描画に多分texpos とか指定できないようにしてるからスプライトアニメーションが出来ない
-	class ArSpriteRenderer final:
-		public ArRenderer
+	class SpriteRenderer final:
+		public BaseRenderer
 	{
 
 	public:
-		ArSpriteRenderer(const char* filePath);
-		~ArSpriteRenderer() override;
+		SpriteRenderer(const char* filePath);
+		~SpriteRenderer() override;
 
 
 		void Initialize() override;
@@ -31,6 +31,6 @@ namespace Argent::Component::Renderer
 		[[nodiscard]] Material::ArMaterial* GetMaterial() const { return materials.at(0).get();  }
 
 	private:
-		std::unique_ptr<Resource::Mesh::Sprite::ArSprite> sprite;
+		std::unique_ptr<Resource::Sprite::Sprite> sprite;
 	};
 }

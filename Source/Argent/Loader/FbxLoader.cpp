@@ -47,12 +47,12 @@ namespace Argent::Loader::Fbx
 	void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<std::vector<ArBoneInfluence>>& boneInfluences);
 
 
-	std::vector<Component::ArComponent*> LoadFbx(const char* filePath, bool triangulate)
+	std::vector<Component::BaseComponent*> LoadFbx(const char* filePath, bool triangulate)
 	{
 		ArFbxScene sceneView{};
 		FbxResource fbxResource;
 
-		std::vector<Component::ArComponent*> ret{};
+		std::vector<Component::BaseComponent*> ret{};
 		//シリアライズ
 		std::filesystem::path cerealFileName(filePath);
 		cerealFileName.replace_extension("cereal");
@@ -85,11 +85,11 @@ namespace Argent::Loader::Fbx
 
 			auto systemUnit = fbxScene->GetGlobalSettings().GetSystemUnit();
 			auto axisSystem = fbxScene->GetGlobalSettings().GetAxisSystem();
-			if(axisSystem.GetCoorSystem() != FbxAxisSystem::eDirectX)
+			/*if(axisSystem.GetCoorSystem() != FbxAxisSystem::eDirectX)
 			{
 				FbxAxisSystem targetAxisSystem = FbxAxisSystem::eDirectX;
 				targetAxisSystem.ConvertScene(fbxScene);
-			}
+			}*/
 
 
 			/*FbxSystemUnit targetSystemUnit = FbxSystemUnit::cm;
@@ -147,10 +147,10 @@ namespace Argent::Loader::Fbx
 			ret.resize(meshes.size());
 			for(size_t i = 0; i < meshes.size(); ++i)
 			{
-				ret.at(i) = new Component::Renderer::ArStaticMeshRenderer(device,
+				ret.at(i) = new Component::Renderer::StaticMeshRenderer(device,
 					filePath, meshes.at(i), fbxResource.materials);
 			}
-			/*ret = new Component::Renderer::ArStaticMeshRenderer(device,
+			/*ret = new Component::Renderer::StaticMeshRenderer(device,
 				filePath, meshes, fbxResource.materials);*/
 		}
 		else
@@ -169,11 +169,11 @@ namespace Argent::Loader::Fbx
 			ret.resize(skinnedMeshes.size());
 			for (size_t i = 0; i < skinnedMeshes.size(); ++i)
 			{
-				ret.at(i) = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath,
+				ret.at(i) = new Component::Renderer::SkinnedMeshRenderer(device, filePath,
 					skinnedMeshes.at(i), fbxResource.materials, fbxResource.animationClips);
 
 			}
-			//ret = new Component::Renderer::ArSkinnedMeshRenderer(device, filePath,
+			//ret = new Component::Renderer::SkinnedMeshRenderer(device, filePath,
 			//	skinnedMeshes, fbxResource.materials, fbxResource.animationClips);
 		}
 
@@ -342,6 +342,8 @@ namespace Argent::Loader::Fbx
 				material.CreateTexture(path.generic_string().c_str(), Material::ArMeshMaterial::TextureType::Normal);
 				
 			}
+			
+			
 			//if(PName == FbxSurfaceMaterial::sBump)
 			//{
 			//	const FbxFileTexture* fbxTexture{ fbxProp.GetSrcObject<FbxFileTexture>() };
@@ -369,9 +371,8 @@ namespace Argent::Loader::Fbx
 
 	void SetDummySurfaceMaterial(Material::ArMeshMaterial& material)
 	{
-			material.CreateTexture("", Material::ArMeshMaterial::TextureType::Diffuse);
-			material.CreateTexture("", Material::ArMeshMaterial::TextureType::Normal);
-
+		material.CreateTexture("", Material::ArMeshMaterial::TextureType::Diffuse);
+		material.CreateTexture("", Material::ArMeshMaterial::TextureType::Normal);
 	}
 
 	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Material::ArMeshMaterial>& materials)
@@ -405,10 +406,16 @@ namespace Argent::Loader::Fbx
 			}
 			else
 			{
-				Material::ArMeshMaterial material;
-				SetDummySurfaceMaterial(material);
-				materials.emplace(0, std::move(material));
+				
 			}
+		}
+
+		if(materials.size() <= 0)
+		{
+			Material::ArMeshMaterial material;
+			material.name = "Dummy";
+			SetDummySurfaceMaterial(material);
+			materials.emplace(0, std::move(material));
 		}
 	}
 

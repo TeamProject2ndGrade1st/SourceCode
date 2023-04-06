@@ -7,10 +7,10 @@
 
 namespace Argent::Component::Renderer
 {
-	ArSpriteRenderer::ArSpriteRenderer(const char* filePath):
-		ArRenderer("Sprite Renderer")
+	SpriteRenderer::SpriteRenderer(const char* filePath):
+		BaseRenderer("Sprite Renderer")
 	{
-		sprite = std::make_unique<Argent::Resource::Mesh::Sprite::ArSprite>();
+		sprite = std::make_unique<Argent::Resource::Sprite::Sprite>();
 		materials.emplace_back(std::make_shared<Material::ArMaterial>(filePath));
 
 
@@ -80,7 +80,7 @@ namespace Argent::Component::Renderer
 		pipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 		
 
-		renderingPipeline = std::make_shared<Graphics::RenderingPipeline::ArBaseRenderingPipeline>(
+		renderingPipeline = std::make_shared<Graphics::RenderingPipeline::BaseRenderingPipeline>(
 			"Resources/Shader/SpriteVertex.cso", 
 			"Resources/Shader/SpritePixel.cso",
 			&rootSigDesc,
@@ -88,34 +88,34 @@ namespace Argent::Component::Renderer
 	}
 
 
-	ArSpriteRenderer::~ArSpriteRenderer()
+	SpriteRenderer::~SpriteRenderer()
 	{
 
 	}
 
-	void ArSpriteRenderer::Initialize()
+	void SpriteRenderer::Initialize()
 	{
-		ArRenderer::Initialize();
+		BaseRenderer::Initialize();
 	}
 
-	void ArSpriteRenderer::Finalize()
+	void SpriteRenderer::Finalize()
 	{
-		ArRenderer::Finalize();
+		BaseRenderer::Finalize();
 	}
 
-	void ArSpriteRenderer::Begin()
+	void SpriteRenderer::Begin()
 	{
-		ArRenderer::Begin();
+		BaseRenderer::Begin();
 	}
 
-	void ArSpriteRenderer::End()
+	void SpriteRenderer::End()
 	{
-		ArRenderer::End();
+		BaseRenderer::End();
 	}
 
-	void ArSpriteRenderer::Update()
+	void SpriteRenderer::Update()
 	{
-		ArRenderer::Update();
+		BaseRenderer::Update();
 		const Transform* transform = GetOwner()->GetTransform();
 
 		//todo Center‚Ì’l‚ð‚Ç‚Á‚©‚Å’è‹`‚·‚é‚±‚Æ
@@ -123,9 +123,9 @@ namespace Argent::Component::Renderer
 			materials.at(0)->color.color);
 	}
 
-	void ArSpriteRenderer::Render(ID3D12GraphicsCommandList* cmdList) const
+	void SpriteRenderer::Render(ID3D12GraphicsCommandList* cmdList) const
 	{
-		ArRenderer::Render(cmdList);
+		BaseRenderer::Render(cmdList);
 		materials.at(0)->Render(cmdList, 0);
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		sprite->SetOnCommandList(cmdList);
@@ -133,11 +133,11 @@ namespace Argent::Component::Renderer
 	}
 
 #ifdef _DEBUG
-	void ArSpriteRenderer::DrawDebug()
+	void SpriteRenderer::DrawDebug()
 	{
 		if(ImGui::TreeNode(GetName().c_str()))
 		{
-			ArRenderer::DrawDebug();
+			BaseRenderer::DrawDebug();
 			materials.at(0)->DrawDebug();
 			ImGui::TreePop();
 		}

@@ -1,7 +1,7 @@
 #pragma once
-#include "Argent/Component/BaseActor.h"
+#include "Argent/Argent.h"
 
-template<class T>
+
 class BaseGun:
 	public Argent::Component::BaseActor
 {
@@ -9,7 +9,10 @@ public:
 	BaseGun();
 	virtual ~BaseGun() override = default;
 
-
+	virtual void Shot();
+	void Initialize() override;
+	void Update() override;
+	//virtual void Recoil() = 0;
 protected:
 	
 };

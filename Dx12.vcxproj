@@ -64,18 +64,19 @@
     <ClCompile Include="Source\Argent\Resource\Material.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArResource.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArSkinnedMesh.cpp" />
-    <ClCompile Include="Source\Argent\Resource\ArStaticMesh.cpp" />
+    <ClCompile Include="Source\Argent\Resource\StaticMesh.cpp" />
     <ClCompile Include="Source\Argent\Resource\ResourceManager.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArShader.cpp" />
-    <ClCompile Include="Source\Argent\Resource\ArSprite.cpp" />
+    <ClCompile Include="Source\Argent\Resource\Sprite.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArTexture.cpp" />
     <ClCompile Include="Source\Argent\Resource\EffectManager.cpp" />
     <ClCompile Include="Source\Argent\Scene\BaseScene.cpp" />
     <ClCompile Include="Source\Argent\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\BaseBullet.cpp" />
+    <ClCompile Include="Source\BaseBulletManager.cpp" />
     <ClCompile Include="Source\BaseGun.cpp" />
     <ClCompile Include="Source\Game.cpp" />
-    <ClCompile Include="Source\MrIncredible.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Title.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
@@ -133,20 +134,21 @@
     <ClInclude Include="Source\Argent\Resource\ArMesh.h" />
     <ClInclude Include="Source\Argent\Resource\Material.h" />
     <ClInclude Include="Source\Argent\Resource\ArSkinnedMesh.h" />
-    <ClInclude Include="Source\Argent\Resource\ArStaticMesh.h" />
+    <ClInclude Include="Source\Argent\Resource\StaticMesh.h" />
     <ClInclude Include="Source\Argent\Resource\ArResource.h" />
     <ClInclude Include="Source\Argent\Resource\ResourceManager.h" />
     <ClInclude Include="Source\Argent\Resource\ArShader.h" />
-    <ClInclude Include="Source\Argent\Resource\ArSprite.h" />
+    <ClInclude Include="Source\Argent\Resource\Sprite.h" />
     <ClInclude Include="Source\Argent\Resource\ArTexture.h" />
     <ClInclude Include="Source\Argent\Resource\EffectManager.h" />
     <ClInclude Include="Source\Argent\Scene\BaseScene.h" />
     <ClInclude Include="Source\Argent\Scene\SceneManager.h" />
     <ClInclude Include="Source\BaseBullet.h" />
+    <ClInclude Include="Source\BaseBulletManager.h" />
     <ClInclude Include="Source\BaseGun.h" />
     <ClInclude Include="Source\DemoShaderMacro.h" />
     <ClInclude Include="Source\Game.h" />
-    <ClInclude Include="Source\MrIncredible.h" />
+    <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Title.h" />
   </ItemGroup>
   <ItemGroup>

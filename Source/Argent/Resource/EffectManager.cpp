@@ -4,8 +4,8 @@
 
 namespace Argent::Resource::Effect
 {
-	ArEffectManager* ArEffectManager::instance = nullptr;
-	ArEffectManager::ArEffectManager(ID3D12Device* device, ID3D12CommandQueue* cmdQueue, UINT numBackBuffers)
+	EffectManager* EffectManager::instance = nullptr;
+	EffectManager::EffectManager(ID3D12Device* device, ID3D12CommandQueue* cmdQueue, UINT numBackBuffers)
 	{
 		//todo spell miss ?
 		if (instance) _ASSERT_EXPR(FALSE, L"already instanciated");
@@ -52,13 +52,13 @@ namespace Argent::Resource::Effect
 	}
 
 
-	void Argent::Resource::Effect::ArEffectManager::Update()
+	void Argent::Resource::Effect::EffectManager::Update()
 	{
 		
 		efkManager->Update();
 	}
 
-	void Argent::Resource::Effect::ArEffectManager::Render() const
+	void Argent::Resource::Effect::EffectManager::Render() const
 	{
 		Effekseer::Matrix44 fkViewMat;
 		Effekseer::Matrix44 fkProjMat;

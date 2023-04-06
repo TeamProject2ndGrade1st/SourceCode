@@ -4,6 +4,7 @@
 #include "../GameObject/GameObject.h"
 #include "Camera.h"
 #include "Light.h"
+#include "../Math/MathHelper.h"
 
 Transform& Transform::operator+=(const Transform& t)
 {
@@ -14,6 +15,17 @@ Transform& Transform::operator+=(const Transform& t)
 	this->rotation.x += t.rotation.x;
 	this->rotation.y += t.rotation.y;
 	this->rotation.z += t.rotation.z;
+	return *this;
+}
+
+Transform Transform::operator=(const Transform& t)
+{
+	this->position = t.position;
+	this->scale = t.scale;
+	this->rotation = t.rotation;
+
+	this->scaleFactor = t.scaleFactor;
+	this->coordinateSystem = t.coordinateSystem;
 	return *this;
 }
 #ifdef _DEBUG
@@ -30,7 +42,7 @@ void Transform::DrawDebug()
 		ImGui::Text(coordinateSystemName[coordinateSystem].c_str());
 
 
-		ArComponent::DrawDebug();
+		BaseComponent::DrawDebug();
 		ImGui::TreePop();
 	}
 
@@ -122,9 +134,23 @@ Transform Transform::AdjustParentTransform() const
 		{
 			const Transform t = GetOwner()->GetParent()->GetTransform()->AdjustParentTransform();
 			tmp += t;
+			tmp.scale = tmp.scale * t.scale;
 			tmp.scaleFactor *= t.GetScaleFactor();
 			tmp.coordinateSystem = t.coordinateSystem;
 		}
 	}
 	return tmp;
+}
+
+void Transform::SetTransform(const Transform& t)
+{
+	*this = t; 
+}
+
+DirectX::XMFLOAT3 Transform::CalcForward()
+{
+	DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+	DirectX::XMFLOAT3 ret{};
+	DirectX::XMStoreFloat3(&ret, rotationMatrix.r[2]);
+	return ret;
 }

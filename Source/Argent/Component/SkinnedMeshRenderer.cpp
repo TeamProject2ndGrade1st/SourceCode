@@ -7,11 +7,11 @@
 
 namespace Argent::Component::Renderer
 {
-	ArSkinnedMeshRenderer::ArSkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
+	SkinnedMeshRenderer::SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
 		std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>>& meshes,
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials, 
 		std::vector<Resource::Animation::ArAnimation>& animation):
-		ArRenderer("SkinnedMeshRenderer")
+		BaseRenderer("SkinnedMeshRenderer")
 	{
 		this->skinnedMeshes = meshes;
 		for (auto& m : materials)
@@ -23,11 +23,11 @@ namespace Argent::Component::Renderer
 		CreateRootSignatureAndPipelineState();
 	}
 
-	ArSkinnedMeshRenderer::ArSkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
+	SkinnedMeshRenderer::SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
 		std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
 		std::vector<Resource::Animation::ArAnimation>& animation) :
-		ArRenderer("SkinnedMeshRenderer")
+		BaseRenderer("SkinnedMeshRenderer")
 	{
 		this->skinnedMeshes.emplace_back(meshes);
 		for (auto& m : materials)
@@ -42,18 +42,18 @@ namespace Argent::Component::Renderer
 
 		
 
-	void ArSkinnedMeshRenderer::Initialize()
+	void SkinnedMeshRenderer::Initialize()
 	{
 		GameObject* g = GetOwner();
 		g->GetTransform()->SetWorld(skinnedMeshes.at(0)->defaultGlobalTransform);
 		g->SetName(skinnedMeshes.at(0)->GetName());
 	}
 
-	void ArSkinnedMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList, 
+	void SkinnedMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList, 
 	                                   const DirectX::XMFLOAT4X4& world,
 	                                   const Resource::Animation::ArAnimation::Keyframe* keyframe) const
 	{
-		ArRenderer::Render(cmdList);
+		BaseRenderer::Render(cmdList);
 
 		Argent::Graphics::ArGraphics::Instance()->SetSceneConstant(static_cast<UINT>(RootParameterIndex::cbScene));
 
@@ -102,26 +102,27 @@ namespace Argent::Component::Renderer
 		}
 	}
 
-	void ArSkinnedMeshRenderer::Render() const 
+	void SkinnedMeshRenderer::Render() const 
 	{
+		const Transform t = GetOwner()->GetTransform()->AdjustParentTransform();
 		if(animationClips.size() > 0)
 		{
 			const Resource::Animation::ArAnimation& animation{ this->animationClips.at(clipIndex) };
 			const Resource::Animation::ArAnimation::Keyframe& keyframe{ animation.sequence.at(static_cast<uint64_t>(frameIndex)) };
 
 			//todo マテリアルの適用
-			Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), GetOwner()->GetTransform()->GetWorld(),
+			Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), t.GetWorld(),
 				 &keyframe);
 		}
 		else
 		{
 			Resource::Animation::ArAnimation::Keyframe key{};
-			Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), GetOwner()->GetTransform()->GetWorld(),
+			Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), t.GetWorld(),
 			 &key);
 		}
 	}
 
-	void ArSkinnedMeshRenderer::Update()
+	void SkinnedMeshRenderer::Update()
 	{
 	#if 0
 		static int clipIndex{};
@@ -177,13 +178,13 @@ namespace Argent::Component::Renderer
 	}
 
 #ifdef _DEBUG
-	void ArSkinnedMeshRenderer::DrawDebug()
+	void SkinnedMeshRenderer::DrawDebug()
 	{
 		if (ImGui::TreeNode("Skinned Mesh Renderer"))
 		{
 			if (animationClips.size() > 0)
 			{
-				ImGui::SliderInt("Animation Clip", &clipIndex, 0, animationClips.size() - 1);
+				ImGui::SliderInt("Animation Clip", &clipIndex, 0, static_cast<int>(animationClips.size()) - 1);
 				ImGui::Text(animationClips.at(clipIndex).name.c_str());
 			}
 
@@ -196,13 +197,13 @@ namespace Argent::Component::Renderer
 				ImGui::TreePop();
 			}
 
-			ArRenderer::DrawDebug();
+			BaseRenderer::DrawDebug();
 			ImGui::TreePop();
 		}
 	}
 #endif
 
-	void ArSkinnedMeshRenderer::CreateComObject(ID3D12Device* device)
+	void SkinnedMeshRenderer::CreateComObject(ID3D12Device* device)
 	{
 		for(auto it = materials.begin(); it != materials.end(); ++it)
 		{
@@ -215,7 +216,7 @@ namespace Argent::Component::Renderer
 		objectConstantBuffer = std::make_unique<Dx12::ArConstantBuffer<Constants>>(device, Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 	}
 
-	void ArSkinnedMeshRenderer::CreateRootSignatureAndPipelineState()
+	void SkinnedMeshRenderer::CreateRootSignatureAndPipelineState()
 	{
 		{
 			D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
@@ -289,7 +290,7 @@ namespace Argent::Component::Renderer
 			pipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 
-			renderingPipeline = std::make_shared<Argent::Graphics::RenderingPipeline::ArBaseRenderingPipeline>(
+			renderingPipeline = std::make_shared<Argent::Graphics::RenderingPipeline::BaseRenderingPipeline>(
 				"./Resources/Shader/SkinnedMeshVertex.cso",
 				"./Resources/Shader/SkinnedMeshPixel.cso",
 				&rootSigDesc,

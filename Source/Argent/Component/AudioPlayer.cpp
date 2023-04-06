@@ -6,14 +6,14 @@
 namespace Argent::Component::Audio
 {
 	AudioPlayer::AudioPlayer(const char* filePath):
-		ArComponent(Helper::String::ExtractFileName(filePath, false))
+		BaseComponent(Helper::String::ExtractFileName(filePath, false))
 	{
-		audio = std::make_shared<Argent::Resource::Audio::ArAudio>(filePath);
+		audio = std::make_shared<Argent::Resource::Audio::AudioResource>(filePath);
 	}
 
 	void AudioPlayer::Update()
 	{
-		if(Argent::Input::Keyboard::Instance().IsKeyPressEnter(Input::Keyboard::Keys::Space))
+		if(Argent::Input::Keyboard::Instance().GetKeyDown(Input::Keyboard::KeyCode::Space))
 		{
 			audio->Play();
 		}

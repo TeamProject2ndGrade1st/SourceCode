@@ -1,5 +1,5 @@
 #pragma once
-#include "ArStaticMesh.h"
+#include "StaticMesh.h"
 #include "../Other/CerealHelper.h"
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/string.hpp>

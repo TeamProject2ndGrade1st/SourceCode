@@ -10,7 +10,7 @@ namespace Argent
 	{
 		namespace RenderingPipeline
 		{
-			class ArBaseRenderingPipeline
+			class BaseRenderingPipeline
 			{
 			public:
 				/**
@@ -20,7 +20,7 @@ namespace Argent
 				 * \param rootSigDesc 
 				 * \param pipelineStateDesc 各種シェーダーとpRootSignatureは値をセットしなくてもいい
 				 */
-				ArBaseRenderingPipeline(const char* vsFilePath, const char* psFilePath, 
+				BaseRenderingPipeline(const char* vsFilePath, const char* psFilePath, 
 				                   const  D3D12_ROOT_SIGNATURE_DESC* rootSigDesc,
 				                    D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineStateDesc);
 

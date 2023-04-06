@@ -23,22 +23,22 @@
  */
 namespace Argent::Component::Renderer
 {
-	ArRenderer::ArRenderer(const std::string& name):
-		ArComponent(name)
+	BaseRenderer::BaseRenderer(const std::string& name):
+		BaseComponent(name)
 	{}
 
-	ArRenderer::~ArRenderer()
+	BaseRenderer::~BaseRenderer()
 	{
 
 	}
 
 
-	void ArRenderer::Render(ID3D12GraphicsCommandList* cmdList) const
+	void BaseRenderer::Render(ID3D12GraphicsCommandList* cmdList) const
 	{
 		renderingPipeline->SetOnCommandList(cmdList);
 	}
 
-	void ArRenderer::Render() const
+	void BaseRenderer::Render() const
 	{
 		ID3D12GraphicsCommandList* cmdList = Argent::Graphics::ArGraphics::Instance()->GetCommandList();
 		Render(cmdList);

@@ -9,17 +9,17 @@ class GameObject;
 //コンポーネントクラスの大元
 namespace Argent::Component
 {
-	class ArComponent
+	class BaseComponent
 	{
 	public:
-		ArComponent(const std::string& n) :
+		BaseComponent(const std::string& n) :
 			owner(nullptr)
 		{
 			name = n;
 		}
-		virtual  ~ArComponent() = default;
-		ArComponent(const ArComponent& com) = default;
-		ArComponent(const ArComponent&& com) noexcept;
+		virtual  ~BaseComponent() = default;
+		BaseComponent(const BaseComponent& com) = default;
+		BaseComponent(const BaseComponent&& com) noexcept;
 
 		GameObject* GetOwner() const { return owner; }
 		void SetOwner(GameObject* p) { owner = p; }

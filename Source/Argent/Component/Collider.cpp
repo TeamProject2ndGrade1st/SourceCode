@@ -9,7 +9,7 @@
 namespace Argent::Component::Collider
 {
 	Collider::Collider(const char* name, ColliderType type):
-		ArComponent(name)
+		BaseComponent(name)
 		,	type(type)
 	{
 		Argent::Collider::ArColliderManager::Instance().AddCollider(this);

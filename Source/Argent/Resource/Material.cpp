@@ -20,7 +20,7 @@ namespace Argent::Material
 
 	void ArMeshMaterial::CreateTexture(const char* filePath, TextureType type)
 	{
-		textureUniqueId[static_cast<UINT>(type)] = Argent::Resource::ArResourceManager::Instance().LoadTexture(filePath);
+		textureUniqueId[static_cast<UINT>(type)] = Argent::Resource::ResourceManager::Instance().LoadTexture(filePath);
 		textureNames[static_cast<UINT>(type)] = filePath;
 	}
 
@@ -29,8 +29,8 @@ namespace Argent::Material
 	{
 		//todo ‚È‚ñ‚Æ‚©”’
 		constantBuffer->SetOnCommandList(cmdList, cbIndex);
-		auto t1 = Resource::ArResourceManager::Instance().GetTexture(textureUniqueId[static_cast<int>(TextureType::Diffuse)]);
-		auto t2 = Resource::ArResourceManager::Instance().GetTexture(textureUniqueId[static_cast<int>(TextureType::Normal)]);
+		auto t1 = Resource::ResourceManager::Instance().GetTexture(textureUniqueId[static_cast<int>(TextureType::Diffuse)]);
+		auto t2 = Resource::ResourceManager::Instance().GetTexture(textureUniqueId[static_cast<int>(TextureType::Normal)]);
 		t1->Render(cmdList, diffuseIndex);
 		t2->Render(cmdList, normalIndex);
 	}

@@ -7,9 +7,9 @@
 namespace Argent::Component::Renderer
 {
 	EffectRenderer::EffectRenderer(const char* filePath, const char* materialPath):
-		ArComponent(Helper::String::ExtractFileName(filePath, false))
+		BaseComponent(Helper::String::ExtractFileName(filePath, false))
 	{
-		effect = std::make_shared<Argent::Resource::Effect::ArEffect>(filePath, materialPath);
+		effect = std::make_shared<Argent::Resource::Effect::EffectResource>(filePath, materialPath);
 	}
 
 	void EffectRenderer::Update()
@@ -48,7 +48,7 @@ namespace Argent::Component::Renderer
 		if(ImGui::TreeNode(GetName().c_str()))
 		{
 			color.DrawDebug();
-			ArComponent::DrawDebug();
+			BaseComponent::DrawDebug();
 			ImGui::TreePop();
 		}
 	}

@@ -3,7 +3,7 @@
 #include <DirectXMath.h>
 
 class Transform final :
-	public Argent::Component::ArComponent
+	public Argent::Component::BaseComponent
 {
 public:
 	enum class CoordinateSystem
@@ -17,7 +17,7 @@ public:
 
 
 	Transform():
-		ArComponent("Transform")
+		BaseComponent("Transform")
 	,	position(DirectX::XMFLOAT3())
 	,	scale(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f))
 	,	rotation(DirectX::XMFLOAT4())
@@ -28,7 +28,7 @@ public:
 	~Transform() override = default;
 	Transform(const Transform&) = default;
 	Transform& operator+=(const Transform& t);
-
+	Transform operator=(const Transform& t);
 #ifdef _DEBUG
 	void DrawDebug() override;
 #endif
@@ -73,6 +73,12 @@ public:
 	float GetScaleFactor() const { return scaleFactor;  }
 	void SetScaleFactor(float f) { scaleFactor = f;  }
 
+	void SetTransform(const Transform& t);
+
+	/**
+	 * \brief 正規化された前方ベクトルを返す(回転値が(0, 0, 0)の時の前方ベクトルは(0, 0, 1))
+	 */
+	DirectX::XMFLOAT3 CalcForward();
 private:
 
 	DirectX::XMFLOAT3 position;

@@ -23,4 +23,45 @@
 
 #include "Component/BaseActor.h"
 
+
 #include "Loader/FbxLoader.h"
+
+
+#include "GameObject/GameObject.h"
+
+using KeyCode = Argent::Input::Keyboard::KeyCode;
+namespace Argent
+{
+	namespace Input
+	{
+		/**
+		 * \brief ‰Ÿ‚µ‚Ä‚¢‚éŠÔtrue‚ğ•Ô‚·
+		 * \param keyCode 
+		 * \return 
+		 */
+		inline bool GetKey(KeyCode keyCode)
+		{
+			return Keyboard::Instance().GetKey(keyCode);
+		}
+
+		/**
+		 * \brief ‰Ÿ‚µ‚½uŠÔtrue‚ğ•Ô‚·
+		 * \param keyCode 
+		 * \return 
+		 */
+		inline bool GetKeyDown(KeyCode keyCode)
+		{
+			return Keyboard::Instance().GetKeyDown(keyCode);
+		}
+
+		/**
+		 * \brief —£‚µ‚½uŠÔtrue‚ğ•Ô‚·
+		 * \param keyCode 
+		 * \return 
+		 */
+		inline bool GetKeyUp(KeyCode keyCode)
+		{
+			return Keyboard::Instance().GetKeyUp(keyCode);
+		}
+	}
+}

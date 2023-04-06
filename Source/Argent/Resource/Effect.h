@@ -5,12 +5,12 @@
 
 namespace Argent::Resource::Effect
 {
-	class ArEffect:
+	class EffectResource:
 		public Resource::ArImportedResource
 	{
 	public:
-		ArEffect(const char* filePath, const char* materialPath);
-		~ArEffect() override = default;
+		EffectResource(const char* filePath, const char* materialPath);
+		~EffectResource() override = default;
 
 		void Play(const DirectX::XMFLOAT3& position, 
 				const DirectX::XMFLOAT3& scale, 

@@ -5,7 +5,7 @@
 namespace Argent::Component
 {
 	BaseActor::BaseActor(const char* name):
-		ArComponent(name)
+		BaseComponent(name)
 	{
 		GameObject* obj = GetOwner();
 		if(obj)

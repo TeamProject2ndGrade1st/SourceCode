@@ -3,7 +3,7 @@
 #include "ArMesh.h"
 
 
-namespace Argent::Resource::Mesh
+namespace Argent::Resource
 {
 	namespace Sprite
 	{
@@ -17,11 +17,11 @@ namespace Argent::Resource::Mesh
 		//スプライト描画に使う頂点バッファを頂点情報を持ってるクラス
 		//hack　こいつにテクスチャのcenter とかtexpos持たせてもいいかも…
 
-		class ArSprite:
-			public ArMesh<Vertex>
+		class Sprite:
+			public Mesh::ArMesh<Vertex>
 		{
 		public:
-			ArSprite();
+			Sprite();
 
 			/*void SetOnCommandList(ID3D12GraphicsCommandList* cmdList) override
 			{

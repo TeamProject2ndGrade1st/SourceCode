@@ -4,16 +4,54 @@
 #include "../Component/Camera.h"
 #include "../Resource/ResourceManager.h"
 #include "../Scene/SceneManager.h"
+#include "../Scene/SceneManager.h"
 
 
+GameObject::GameObject(std::string name, Argent::Component::BaseComponent* c) :
+	isSelected(false)
+	, name(std::move(name))
+{
+	transform = new Transform();
+	AddComponent(transform);
+	if (c)
+	{
+		AddComponent(c);
+	}
+}
 
-void GameObject::AddComponent(Argent::Component::ArComponent* com)
+GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com) :
+	isSelected(false)
+	, name(std::move(name))
+{
+	transform = new Transform();
+	AddComponent(transform);
+
+	for (size_t i = 0; i < com.size(); ++i)
+	{
+		AddChild(new GameObject(std::to_string(i), com.at(i)));
+	}
+}
+
+GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> components, std::string name) :
+	isSelected(false)
+	, name(name)
+{
+	transform = new Transform();
+	AddComponent(transform);
+	for (auto&& com : components)
+	{
+		AddComponent(com);
+	}
+}
+
+
+void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 {
 	com->SetOwner(this);
 	components.emplace_back(com);
 }
 
-void GameObject::AddComponent(std::vector<Argent::Component::ArComponent*> com)
+void GameObject::AddComponent(std::vector<Argent::Component::BaseComponent*> com)
 {
 	AddComponent(new Transform());
 
@@ -29,24 +67,15 @@ void GameObject::AddChild(GameObject* obj)
 	childObjects.emplace_back(obj);
 }
 
-//<<<<<<< HEAD
-//=======
-//GameObject* GameObject::Cube(const std::string& name)
-//{
-//	return new GameObject({new Argent::Component::Renderer::ArMeshRenderer(Argent::Resource::ArResourceManager::Instance().GetMeshData("Cube")) }, name);
-//}
-//
-//GameObject* GameObject::Sphere(const std::string& name)
-//{
-//	return new GameObject({ new Argent::Component::Renderer::ArMeshRenderer(Argent::Resource::ArResourceManager::Instance().GetMeshData("Sphere")) }, name);
-//}
-//
-//GameObject* GameObject::Capsule(const std::string& name)
-//{
-//	return new GameObject({ new Argent::Component::Renderer::ArMeshRenderer(Argent::Resource::ArResourceManager::Instance().GetMeshData("Capsule")) }, name);
-//}
+void GameObject::CloseAllWindow()
+{
+	CloseWindow();
+	for (const auto& child : childObjects)
+	{
+		child->CloseAllWindow();
+	}
+}
 
-//>>>>>>> GinNote
 GameObject* GameObject::SceneCamera(const std::string& name, bool setSceneCamera)
 {
 	return new GameObject({
@@ -61,9 +90,17 @@ void GameObject::DestroyGameObject(GameObject* object)
 	Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->DestroyGameObject(object);
 }
 
-GameObject::~GameObject()
+GameObject* GameObject::Instantiate(const char* name, Argent::Component::BaseComponent* com)
 {
+	GameObject* ret = new GameObject(name, com);
 
+	Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->AddObject(ret);
+	return ret;
+}
+
+GameObject* GameObject::FindGameObject(const char* name)
+{
+	return Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->GetGameObject(name);
 }
 
 void GameObject::Initialize()

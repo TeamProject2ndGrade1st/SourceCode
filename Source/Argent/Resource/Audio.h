@@ -10,7 +10,7 @@ namespace Argent::Resource::Audio
 	/**
 	 * \brief 音データを持ってるやつ　
 	 */
-	class ArAudio:
+	class AudioResource:
 		public ArResource
 	{
 		enum class State
@@ -21,7 +21,7 @@ namespace Argent::Resource::Audio
 		};
 
 	public:
-		ArAudio(const char* filePath);
+		AudioResource(const char* filePath);
 
 		/**
 		 * \brief 再生開始　すでに再生中だった場合は処理をスキップ

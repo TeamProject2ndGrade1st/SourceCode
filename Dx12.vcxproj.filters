@@ -76,6 +76,12 @@
     <Filter Include="Work In Progress\Component">
       <UniqueIdentifier>{dbbbd808-ccb1-4e1b-bbc8-c3888859294b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Argent\Component\Core">
+      <UniqueIdentifier>{aec5b432-c026-43fc-808d-518d04217b57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Component\Audio">
+      <UniqueIdentifier>{61c2dac6-ada7-4159-ad07-fa82d04002ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -166,15 +172,6 @@
     <ClCompile Include="Source\Argent\Component\Component.cpp">
       <Filter>Argent\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\Camera.cpp">
-      <Filter>Argent\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Argent\Component\Light.cpp">
-      <Filter>Argent\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Argent\Component\Transform.cpp">
-      <Filter>Argent\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Argent\Component\Renderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
@@ -193,7 +190,7 @@
     <ClCompile Include="Source\Argent\Resource\ArMesh.cpp">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\ArStaticMesh.cpp">
+    <ClCompile Include="Source\Argent\Resource\StaticMesh.cpp">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Resource\ArTexture.cpp">
@@ -205,7 +202,7 @@
     <ClCompile Include="Source\Argent\Resource\ArShader.cpp">
       <Filter>Argent\Resource\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\ArSprite.cpp">
+    <ClCompile Include="Source\Argent\Resource\Sprite.cpp">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Resource\Material.cpp">
@@ -220,16 +217,10 @@
     <ClCompile Include="Source\Argent\Resource\AudioManager.cpp">
       <Filter>Argent\Resource\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\AudioPlayer.cpp">
-      <Filter>Argent\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Argent\Resource\ArResource.cpp">
       <Filter>Argent\Resource</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Component\StaticMeshRenderer.cpp">
-      <Filter>Argent\Component\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Argent\Component\ArStaticMeshRenderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Resource\ArSkinnedMesh.cpp">
@@ -237,9 +228,6 @@
     </ClCompile>
     <ClCompile Include="Source\Argent\Math\MathHelper.cpp">
       <Filter>Argent\Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MrIncredible.cpp">
-      <Filter>Work In Progress\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Component\BaseActor.cpp">
       <Filter>Work In Progress\Component</Filter>
@@ -252,6 +240,20 @@
     </ClCompile>
     <ClCompile Include="Source\BaseBullet.cpp" />
     <ClCompile Include="Source\BaseGun.cpp" />
+    <ClCompile Include="Source\Argent\Component\Light.cpp">
+      <Filter>Argent\Component\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\Transform.cpp">
+      <Filter>Argent\Component\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\Camera.cpp">
+      <Filter>Argent\Component\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\AudioPlayer.cpp">
+      <Filter>Argent\Component\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\BaseBulletManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -356,15 +358,6 @@
     <ClInclude Include="Source\Argent\Component\Component.h">
       <Filter>Argent\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\Camera.h">
-      <Filter>Argent\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Argent\Component\Light.h">
-      <Filter>Argent\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Argent\Component\Transform.h">
-      <Filter>Argent\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Argent\Component\SkinnedMeshRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
@@ -392,7 +385,7 @@
     <ClInclude Include="Source\Argent\Resource\ArMesh.h">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArStaticMesh.h">
+    <ClInclude Include="Source\Argent\Resource\StaticMesh.h">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Resource\ArTexture.h">
@@ -404,7 +397,7 @@
     <ClInclude Include="Source\Argent\Resource\ArShader.h">
       <Filter>Argent\Resource\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArSprite.h">
+    <ClInclude Include="Source\Argent\Resource\Sprite.h">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Resource\Material.h">
@@ -419,13 +412,7 @@
     <ClInclude Include="Source\Argent\Resource\AudioManager.h">
       <Filter>Argent\Resource\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\AudioPlayer.h">
-      <Filter>Argent\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Argent\Component\StaticMeshRenderer.h">
-      <Filter>Argent\Component\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArStaticMeshRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Resource\ArSkinnedMesh.h">
@@ -436,9 +423,6 @@
     </ClInclude>
     <ClInclude Include="Source\Argent\Other\CerealHelper.h">
       <Filter>Argent\Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MrIncredible.h">
-      <Filter>Work In Progress\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Component\BaseActor.h">
       <Filter>Work In Progress\Component</Filter>
@@ -457,6 +441,20 @@
     <ClInclude Include="Source\Argent\Resource\ArAnimation.h">
       <Filter>Argent\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Argent\Component\Light.h">
+      <Filter>Argent\Component\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\Transform.h">
+      <Filter>Argent\Component\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\Camera.h">
+      <Filter>Argent\Component\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\AudioPlayer.h">
+      <Filter>Argent\Component\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\BaseBulletManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

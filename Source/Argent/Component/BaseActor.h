@@ -7,7 +7,7 @@
 namespace Argent::Component
 {
 	class BaseActor:
-		public ArComponent
+		public BaseComponent
 	{
 	public:
 		BaseActor(const char* name);

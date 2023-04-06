@@ -3,7 +3,7 @@
 
 namespace Argent::Resource
 {
-	void ArResourceManager::Initialize()
+	void ResourceManager::Initialize()
 	{
 		Clear();
 	
@@ -12,16 +12,16 @@ namespace Argent::Resource
 	//	meshData["Capsule"] = Primitive::CreateCapsule();
 	}
 
-	void ArResourceManager::Clear()
+	void ResourceManager::Clear()
 	{
 		//meshData.clear();
 	}
 
-	void ArResourceManager::Begin()
+	void ResourceManager::Begin()
 	{
 	}
 
-	uint64_t ArResourceManager::LoadTexture(const char* filePath)
+	uint64_t ResourceManager::LoadTexture(const char* filePath)
 	{
 		std::shared_ptr<Texture::ArTexture> ret = FindResourceFromFilePath(filePath);
 		if(ret) 
@@ -36,7 +36,7 @@ namespace Argent::Resource
 		return ret->GetUniqueId();
 	}
 
-	//bool ArResourceManager::FindTexture(const wchar_t* filepath, ID3D12Resource** ppResource)
+	//bool ResourceManager::FindTexture(const wchar_t* filepath, ID3D12Resource** ppResource)
 	//{
 	//	const std::wstring tmp = filepath;
 	//	const auto it = textures.find(tmp);

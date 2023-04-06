@@ -3,8 +3,8 @@
 
 namespace Argent::Resource::Audio
 {
-	ArAudioManager* ArAudioManager::instance = nullptr;
-	ArAudioManager::ArAudioManager()
+	AudioManager* AudioManager::instance = nullptr;
+	AudioManager::AudioManager()
 	{
 		if (instance) _ASSERT_EXPR(FALSE, "already instanciated");
 		instance = this;

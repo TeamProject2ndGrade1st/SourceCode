@@ -3,11 +3,11 @@
 #include "Color.h"
 
 class Light :
-    public Argent::Component::ArComponent
+    public Argent::Component::BaseComponent
 {
 public:
     Light(std::string name = "Light", DirectX::XMFLOAT4 color = DirectX::XMFLOAT4(1, 1, 1, 1)):
-		ArComponent(name)
+		BaseComponent(name)
     ,   color(color)
     {}
     virtual ~Light() = default;

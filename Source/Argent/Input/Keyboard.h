@@ -17,7 +17,7 @@ namespace Argent::Input
 	class Keyboard
 	{
 	public:
-		enum Keys : unsigned char
+		enum KeyCode : unsigned char
 		{
 			None = 0,
 
@@ -211,166 +211,166 @@ namespace Argent::Input
 		
 		Keyboard()
 		{
-			keyState[Keys::None					] = State::NONE;
-			keyState[Keys::Back					] = State::NONE;
-			keyState[Keys::Tab					] = State::NONE;
-			keyState[Keys::Enter				] = State::NONE;
-			keyState[Keys::Pause				] = State::NONE;
-			keyState[Keys::CapsLock				] = State::NONE;
-			keyState[Keys::Kana					] = State::NONE;
-			keyState[Keys::ImeOn				] = State::NONE;
-			keyState[Keys::Kanji				] = State::NONE;
-			keyState[Keys::ImeOff				] = State::NONE;
-			keyState[Keys::Escape				] = State::NONE;
-			keyState[Keys::ImeConvert			] = State::NONE;
-			keyState[Keys::ImeNoConvert			] = State::NONE;
-			keyState[Keys::Space				] = State::NONE;
-			keyState[Keys::PageUp				] = State::NONE;
-			keyState[Keys::PageDown				] = State::NONE;
-			keyState[Keys::End					] = State::NONE;
-			keyState[Keys::Home					] = State::NONE;
-			keyState[Keys::Left					] = State::NONE;
-			keyState[Keys::Up					] = State::NONE;
-			keyState[Keys::Right				] = State::NONE;
-			keyState[Keys::Down					] = State::NONE;
-			keyState[Keys::Select				] = State::NONE;
-			keyState[Keys::Print				] = State::NONE;
-			keyState[Keys::Execute				] = State::NONE;
-			keyState[Keys::PrintScreen			] = State::NONE;
-			keyState[Keys::Insert				] = State::NONE;
-			keyState[Keys::Delete				] = State::NONE;
-			keyState[Keys::Help					] = State::NONE;
-			keyState[Keys::D0					] = State::NONE;
-			keyState[Keys::D1					] = State::NONE;
-			keyState[Keys::D2					] = State::NONE;
-			keyState[Keys::D3					] = State::NONE;
-			keyState[Keys::D4					] = State::NONE;
-			keyState[Keys::D5					] = State::NONE;
-			keyState[Keys::D6					] = State::NONE;
-			keyState[Keys::D7					] = State::NONE;
-			keyState[Keys::D8					] = State::NONE;
-			keyState[Keys::D9					] = State::NONE;
-			keyState[Keys::A					] = State::NONE;
-			keyState[Keys::B					] = State::NONE;
-			keyState[Keys::C					] = State::NONE;
-			keyState[Keys::D					] = State::NONE;
-			keyState[Keys::E					] = State::NONE;
-			keyState[Keys::F					] = State::NONE;
-			keyState[Keys::G					] = State::NONE;
-			keyState[Keys::H					] = State::NONE;
-			keyState[Keys::I					] = State::NONE;
-			keyState[Keys::J					] = State::NONE;
-			keyState[Keys::K					] = State::NONE;
-			keyState[Keys::L					] = State::NONE;
-			keyState[Keys::M					] = State::NONE;
-			keyState[Keys::N					] = State::NONE;
-			keyState[Keys::O					] = State::NONE;
-			keyState[Keys::P					] = State::NONE;
-			keyState[Keys::Q					] = State::NONE;
-			keyState[Keys::R					] = State::NONE;
-			keyState[Keys::S					] = State::NONE;
-			keyState[Keys::T					] = State::NONE;
-			keyState[Keys::U					] = State::NONE;
-			keyState[Keys::V					] = State::NONE;
-			keyState[Keys::W					] = State::NONE;
-			keyState[Keys::X					] = State::NONE;
-			keyState[Keys::Y					] = State::NONE;
-			keyState[Keys::Z					] = State::NONE;
-			keyState[Keys::LeftWindows			] = State::NONE;
-			keyState[Keys::RightWindows			] = State::NONE;
-			keyState[Keys::Apps					] = State::NONE;
-			keyState[Keys::Sleep				] = State::NONE;
-			keyState[Keys::NumPad0				] = State::NONE;
-			keyState[Keys::NumPad1				] = State::NONE;
-			keyState[Keys::NumPad2				] = State::NONE;
-			keyState[Keys::NumPad3				] = State::NONE;
-			keyState[Keys::NumPad4				] = State::NONE;
-			keyState[Keys::NumPad5				] = State::NONE;
-			keyState[Keys::NumPad6				] = State::NONE;
-			keyState[Keys::NumPad7				] = State::NONE;
-			keyState[Keys::NumPad8				] = State::NONE;
-			keyState[Keys::NumPad9				] = State::NONE;
-			keyState[Keys::Multiply				] = State::NONE;
-			keyState[Keys::Add					] = State::NONE;
-			keyState[Keys::Separator			] = State::NONE;
-			keyState[Keys::Subtract				] = State::NONE;
-			keyState[Keys::Decimal				] = State::NONE;
-			keyState[Keys::Divide				] = State::NONE;
-			keyState[Keys::F1					] = State::NONE;
-			keyState[Keys::F2					] = State::NONE;
-			keyState[Keys::F3					] = State::NONE;
-			keyState[Keys::F4					] = State::NONE;
-			keyState[Keys::F5					] = State::NONE;
-			keyState[Keys::F6					] = State::NONE;
-			keyState[Keys::F7					] = State::NONE;
-			keyState[Keys::F8					] = State::NONE;
-			keyState[Keys::F9					] = State::NONE;
-			keyState[Keys::F10					] = State::NONE;
-			keyState[Keys::F11					] = State::NONE;
-			keyState[Keys::F12					] = State::NONE;
-			keyState[Keys::F13					] = State::NONE;
-			keyState[Keys::F14					] = State::NONE;
-			keyState[Keys::F15					] = State::NONE;
-			keyState[Keys::F16					] = State::NONE;
-			keyState[Keys::F17					] = State::NONE;
-			keyState[Keys::F18					] = State::NONE;
-			keyState[Keys::F19					] = State::NONE;
-			keyState[Keys::F20					] = State::NONE;
-			keyState[Keys::F21					] = State::NONE;
-			keyState[Keys::F22					] = State::NONE;
-			keyState[Keys::F23					] = State::NONE;
-			keyState[Keys::F24					] = State::NONE;
-			keyState[Keys::NumLock				] = State::NONE;
-			keyState[Keys::Scroll				] = State::NONE;
-			keyState[Keys::LeftShift			] = State::NONE;
-			keyState[Keys::RightShift			] = State::NONE;
-			keyState[Keys::LeftControl			] = State::NONE;
-			keyState[Keys::RightControl			] = State::NONE;
-			keyState[Keys::LeftAlt				] = State::NONE;
-			keyState[Keys::RightAlt				] = State::NONE;
-			keyState[Keys::BrowserBack			] = State::NONE;
-			keyState[Keys::BrowserForward		] = State::NONE;
-			keyState[Keys::BrowserRefresh		] = State::NONE;
-			keyState[Keys::BrowserStop			] = State::NONE;
-			keyState[Keys::BrowserSearch		] = State::NONE;
-			keyState[Keys::BrowserFavorites		] = State::NONE;
-			keyState[Keys::BrowserHome			] = State::NONE;
-			keyState[Keys::VolumeMute			] = State::NONE;
-			keyState[Keys::VolumeDown			] = State::NONE;
-			keyState[Keys::VolumeUp				] = State::NONE;
-			keyState[Keys::MediaNextTrack		] = State::NONE;
-			keyState[Keys::MediaPreviousTrack	] = State::NONE;
-			keyState[Keys::MediaStop			] = State::NONE;
-			keyState[Keys::MediaPlayPause		] = State::NONE;
-			keyState[Keys::LaunchMail			] = State::NONE;
-			keyState[Keys::SelectMedia			] = State::NONE;
-			keyState[Keys::LaunchApplication1	] = State::NONE;
-			keyState[Keys::LaunchApplication2	] = State::NONE;
-			keyState[Keys::OemSemicolon			] = State::NONE;
-			keyState[Keys::OemPlus				] = State::NONE;
-			keyState[Keys::OemComma				] = State::NONE;
-			keyState[Keys::OemMinus				] = State::NONE;
-			keyState[Keys::OemPeriod			] = State::NONE;
-			keyState[Keys::OemQuestion			] = State::NONE;
-			keyState[Keys::OemTilde				] = State::NONE;
-			keyState[Keys::OemOpenBrackets		] = State::NONE;
-			keyState[Keys::OemPipe				] = State::NONE;
-			keyState[Keys::OemCloseBrackets		] = State::NONE;
-			keyState[Keys::OemQuotes			] = State::NONE;
-			keyState[Keys::Oem8					] = State::NONE;
-			keyState[Keys::OemBackslash			] = State::NONE;
-			keyState[Keys::ProcessKey			] = State::NONE;
-			keyState[Keys::OemCopy				] = State::NONE;
-			keyState[Keys::OemAuto				] = State::NONE;
-			keyState[Keys::OemEnlW				] = State::NONE;
-			keyState[Keys::Attn					] = State::NONE;
-			keyState[Keys::Crsel				] = State::NONE;
-			keyState[Keys::Exsel				] = State::NONE;
-			keyState[Keys::EraseEof				] = State::NONE;
-			keyState[Keys::Play					] = State::NONE;
-			keyState[Keys::Zoom					] = State::NONE;
-			keyState[Keys::Pa1					] = State::NONE;
-			keyState[Keys::OemClear				] = State::NONE;
+			keyState[KeyCode::None					] = State::NONE;
+			keyState[KeyCode::Back					] = State::NONE;
+			keyState[KeyCode::Tab					] = State::NONE;
+			keyState[KeyCode::Enter				] = State::NONE;
+			keyState[KeyCode::Pause				] = State::NONE;
+			keyState[KeyCode::CapsLock				] = State::NONE;
+			keyState[KeyCode::Kana					] = State::NONE;
+			keyState[KeyCode::ImeOn				] = State::NONE;
+			keyState[KeyCode::Kanji				] = State::NONE;
+			keyState[KeyCode::ImeOff				] = State::NONE;
+			keyState[KeyCode::Escape				] = State::NONE;
+			keyState[KeyCode::ImeConvert			] = State::NONE;
+			keyState[KeyCode::ImeNoConvert			] = State::NONE;
+			keyState[KeyCode::Space				] = State::NONE;
+			keyState[KeyCode::PageUp				] = State::NONE;
+			keyState[KeyCode::PageDown				] = State::NONE;
+			keyState[KeyCode::End					] = State::NONE;
+			keyState[KeyCode::Home					] = State::NONE;
+			keyState[KeyCode::Left					] = State::NONE;
+			keyState[KeyCode::Up					] = State::NONE;
+			keyState[KeyCode::Right				] = State::NONE;
+			keyState[KeyCode::Down					] = State::NONE;
+			keyState[KeyCode::Select				] = State::NONE;
+			keyState[KeyCode::Print				] = State::NONE;
+			keyState[KeyCode::Execute				] = State::NONE;
+			keyState[KeyCode::PrintScreen			] = State::NONE;
+			keyState[KeyCode::Insert				] = State::NONE;
+			keyState[KeyCode::Delete				] = State::NONE;
+			keyState[KeyCode::Help					] = State::NONE;
+			keyState[KeyCode::D0					] = State::NONE;
+			keyState[KeyCode::D1					] = State::NONE;
+			keyState[KeyCode::D2					] = State::NONE;
+			keyState[KeyCode::D3					] = State::NONE;
+			keyState[KeyCode::D4					] = State::NONE;
+			keyState[KeyCode::D5					] = State::NONE;
+			keyState[KeyCode::D6					] = State::NONE;
+			keyState[KeyCode::D7					] = State::NONE;
+			keyState[KeyCode::D8					] = State::NONE;
+			keyState[KeyCode::D9					] = State::NONE;
+			keyState[KeyCode::A					] = State::NONE;
+			keyState[KeyCode::B					] = State::NONE;
+			keyState[KeyCode::C					] = State::NONE;
+			keyState[KeyCode::D					] = State::NONE;
+			keyState[KeyCode::E					] = State::NONE;
+			keyState[KeyCode::F					] = State::NONE;
+			keyState[KeyCode::G					] = State::NONE;
+			keyState[KeyCode::H					] = State::NONE;
+			keyState[KeyCode::I					] = State::NONE;
+			keyState[KeyCode::J					] = State::NONE;
+			keyState[KeyCode::K					] = State::NONE;
+			keyState[KeyCode::L					] = State::NONE;
+			keyState[KeyCode::M					] = State::NONE;
+			keyState[KeyCode::N					] = State::NONE;
+			keyState[KeyCode::O					] = State::NONE;
+			keyState[KeyCode::P					] = State::NONE;
+			keyState[KeyCode::Q					] = State::NONE;
+			keyState[KeyCode::R					] = State::NONE;
+			keyState[KeyCode::S					] = State::NONE;
+			keyState[KeyCode::T					] = State::NONE;
+			keyState[KeyCode::U					] = State::NONE;
+			keyState[KeyCode::V					] = State::NONE;
+			keyState[KeyCode::W					] = State::NONE;
+			keyState[KeyCode::X					] = State::NONE;
+			keyState[KeyCode::Y					] = State::NONE;
+			keyState[KeyCode::Z					] = State::NONE;
+			keyState[KeyCode::LeftWindows			] = State::NONE;
+			keyState[KeyCode::RightWindows			] = State::NONE;
+			keyState[KeyCode::Apps					] = State::NONE;
+			keyState[KeyCode::Sleep				] = State::NONE;
+			keyState[KeyCode::NumPad0				] = State::NONE;
+			keyState[KeyCode::NumPad1				] = State::NONE;
+			keyState[KeyCode::NumPad2				] = State::NONE;
+			keyState[KeyCode::NumPad3				] = State::NONE;
+			keyState[KeyCode::NumPad4				] = State::NONE;
+			keyState[KeyCode::NumPad5				] = State::NONE;
+			keyState[KeyCode::NumPad6				] = State::NONE;
+			keyState[KeyCode::NumPad7				] = State::NONE;
+			keyState[KeyCode::NumPad8				] = State::NONE;
+			keyState[KeyCode::NumPad9				] = State::NONE;
+			keyState[KeyCode::Multiply				] = State::NONE;
+			keyState[KeyCode::Add					] = State::NONE;
+			keyState[KeyCode::Separator			] = State::NONE;
+			keyState[KeyCode::Subtract				] = State::NONE;
+			keyState[KeyCode::Decimal				] = State::NONE;
+			keyState[KeyCode::Divide				] = State::NONE;
+			keyState[KeyCode::F1					] = State::NONE;
+			keyState[KeyCode::F2					] = State::NONE;
+			keyState[KeyCode::F3					] = State::NONE;
+			keyState[KeyCode::F4					] = State::NONE;
+			keyState[KeyCode::F5					] = State::NONE;
+			keyState[KeyCode::F6					] = State::NONE;
+			keyState[KeyCode::F7					] = State::NONE;
+			keyState[KeyCode::F8					] = State::NONE;
+			keyState[KeyCode::F9					] = State::NONE;
+			keyState[KeyCode::F10					] = State::NONE;
+			keyState[KeyCode::F11					] = State::NONE;
+			keyState[KeyCode::F12					] = State::NONE;
+			keyState[KeyCode::F13					] = State::NONE;
+			keyState[KeyCode::F14					] = State::NONE;
+			keyState[KeyCode::F15					] = State::NONE;
+			keyState[KeyCode::F16					] = State::NONE;
+			keyState[KeyCode::F17					] = State::NONE;
+			keyState[KeyCode::F18					] = State::NONE;
+			keyState[KeyCode::F19					] = State::NONE;
+			keyState[KeyCode::F20					] = State::NONE;
+			keyState[KeyCode::F21					] = State::NONE;
+			keyState[KeyCode::F22					] = State::NONE;
+			keyState[KeyCode::F23					] = State::NONE;
+			keyState[KeyCode::F24					] = State::NONE;
+			keyState[KeyCode::NumLock				] = State::NONE;
+			keyState[KeyCode::Scroll				] = State::NONE;
+			keyState[KeyCode::LeftShift			] = State::NONE;
+			keyState[KeyCode::RightShift			] = State::NONE;
+			keyState[KeyCode::LeftControl			] = State::NONE;
+			keyState[KeyCode::RightControl			] = State::NONE;
+			keyState[KeyCode::LeftAlt				] = State::NONE;
+			keyState[KeyCode::RightAlt				] = State::NONE;
+			keyState[KeyCode::BrowserBack			] = State::NONE;
+			keyState[KeyCode::BrowserForward		] = State::NONE;
+			keyState[KeyCode::BrowserRefresh		] = State::NONE;
+			keyState[KeyCode::BrowserStop			] = State::NONE;
+			keyState[KeyCode::BrowserSearch		] = State::NONE;
+			keyState[KeyCode::BrowserFavorites		] = State::NONE;
+			keyState[KeyCode::BrowserHome			] = State::NONE;
+			keyState[KeyCode::VolumeMute			] = State::NONE;
+			keyState[KeyCode::VolumeDown			] = State::NONE;
+			keyState[KeyCode::VolumeUp				] = State::NONE;
+			keyState[KeyCode::MediaNextTrack		] = State::NONE;
+			keyState[KeyCode::MediaPreviousTrack	] = State::NONE;
+			keyState[KeyCode::MediaStop			] = State::NONE;
+			keyState[KeyCode::MediaPlayPause		] = State::NONE;
+			keyState[KeyCode::LaunchMail			] = State::NONE;
+			keyState[KeyCode::SelectMedia			] = State::NONE;
+			keyState[KeyCode::LaunchApplication1	] = State::NONE;
+			keyState[KeyCode::LaunchApplication2	] = State::NONE;
+			keyState[KeyCode::OemSemicolon			] = State::NONE;
+			keyState[KeyCode::OemPlus				] = State::NONE;
+			keyState[KeyCode::OemComma				] = State::NONE;
+			keyState[KeyCode::OemMinus				] = State::NONE;
+			keyState[KeyCode::OemPeriod			] = State::NONE;
+			keyState[KeyCode::OemQuestion			] = State::NONE;
+			keyState[KeyCode::OemTilde				] = State::NONE;
+			keyState[KeyCode::OemOpenBrackets		] = State::NONE;
+			keyState[KeyCode::OemPipe				] = State::NONE;
+			keyState[KeyCode::OemCloseBrackets		] = State::NONE;
+			keyState[KeyCode::OemQuotes			] = State::NONE;
+			keyState[KeyCode::Oem8					] = State::NONE;
+			keyState[KeyCode::OemBackslash			] = State::NONE;
+			keyState[KeyCode::ProcessKey			] = State::NONE;
+			keyState[KeyCode::OemCopy				] = State::NONE;
+			keyState[KeyCode::OemAuto				] = State::NONE;
+			keyState[KeyCode::OemEnlW				] = State::NONE;
+			keyState[KeyCode::Attn					] = State::NONE;
+			keyState[KeyCode::Crsel				] = State::NONE;
+			keyState[KeyCode::Exsel				] = State::NONE;
+			keyState[KeyCode::EraseEof				] = State::NONE;
+			keyState[KeyCode::Play					] = State::NONE;
+			keyState[KeyCode::Zoom					] = State::NONE;
+			keyState[KeyCode::Pa1					] = State::NONE;
+			keyState[KeyCode::OemClear				] = State::NONE;
 		}
 			
 		~Keyboard() = default;
@@ -391,26 +391,46 @@ namespace Argent::Input
 			}
 		}
 
-
-		bool IsKeyPress(Keys key) const
+		/**
+		 * \brief ‰Ÿ‚µ‚Ä‚¢‚éŠÔtrue‚ð•Ô‚·
+		 * \param key 
+		 * \return 
+		 */
+		bool GetKey(KeyCode key) const
 		{
 			return keyState.find(key)->second == State::PRESS;
 		}
-		bool IsKeyRelease(Keys key) const
+
+		/**
+		 * \brief —£‚µ‚½uŠÔtrue‚ð•Ô‚·
+		 * \param key 
+		 * \return 
+		 */
+		bool GetKeyUp(KeyCode key) const
 		{
 			return keyState.find(key)->second == State::RELEASE;
 		}
 
-		bool IsKeyPressEnter(Keys key) const
+		/**
+		 * \brief ‰Ÿ‚µ‚½uŠÔtrue‚ð•Ô‚·
+		 * \param key 
+		 * \return 
+		 */
+		bool GetKeyDown(KeyCode key) const
 		{
 			return keyState.find(key)->second == State::PRESS_ENTER;
 		}
+
+	/*	State GetKeyState(KeyCode key) const
+		{
+			return keyState.find(key)->second;
+		}*/
 
 		void UpdateKeyStates()
 		{
 			for(auto it = keyState.begin(); it != keyState.end(); ++it)
 			{
-				const SHORT State = GetKeyState((*it).first);
+				const auto State = GetKeyState((*it).first);
 				if(State & 0x8000)
 				{
 					switch ((*it).second)
@@ -447,7 +467,7 @@ namespace Argent::Input
 			}
 		}
 
-		std::unordered_map<Keys, State> keyState;
+		std::unordered_map<KeyCode, State> keyState;
 	};
 
 	class Mouse

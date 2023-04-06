@@ -6,49 +6,19 @@
 
 #include "../Component/Component.h"
 #include "../Component/Transform.h"
-#include "../Component/StaticMeshRenderer.h"
-#include "../Component/SkinnedMeshRenderer.h"
 #include "../Component/BaseActor.h"
-// todo orderInUpdate‚Ì’Ç‰Á
+
+
+// todo orderInUpdate
 
 class GameObject
 {
 public:
-	GameObject(std::string name = "gameObject", Argent::Component::ArComponent* c = nullptr):
-		isSelected(false)
-	,	name(std::move(name))
-	{
-		AddComponent(new Transform());
-		if(c)
-		{
-			AddComponent(c);
-		}
-	}
+	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);
+	GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com);
+	GameObject(std::initializer_list<Argent::Component::BaseComponent*> components, std::string name = "gameObject");
 
-	GameObject(std::string name, std::vector<Argent::Component::ArComponent*> com):
-		isSelected(false)
-	,	name(std::move(name))
-	{
-		AddComponent(new Transform());
-
-		for(size_t i = 0; i < com.size(); ++i)
-		{
-			AddChild(new GameObject(std::to_string(i), com.at(i)));
-		}
-	}
-
-	GameObject(std::initializer_list<Argent::Component::ArComponent*> components, std::string name = "gameObject"):
-		isSelected(false)
-	,	name(name)
-	{
-		AddComponent(new Transform());
-		for(auto&& com : components)
-		{
-			AddComponent(com);
-		}
-	}
-
-	virtual ~GameObject();
+	virtual ~GameObject() = default;
 	GameObject(const GameObject&) = delete;
 	GameObject(const GameObject&&) = delete;
 	GameObject& operator=(const GameObject&) = delete;
@@ -62,56 +32,58 @@ public:
 	virtual void Render() const;
 	virtual void DrawDebug();
 
-	void AddComponent(Argent::Component::ArComponent* com);
-	void AddComponent(std::vector<Argent::Component::ArComponent*> com);
+	void AddComponent(Argent::Component::BaseComponent* com);
+	void AddComponent(std::vector<Argent::Component::BaseComponent*> com);
 	void AddChild(GameObject* obj);
 
-	template <typename T> T* GetComponent();
+	const std::string& GetName() const				{ return name; }
+	int GetOrderInUpdate() const { return orderInUpdate;  }
+	GameObject* GetParent() const					{ return parent; }
 	template <typename T> T* GetChild();
+	template <typename T> T* GetComponent();
+	Transform* GetTransform() const					{ return transform; }
+	Argent::Component::BaseActor* GetActor() const	{ return actor; }
 
-	Transform* GetTransform() { return GetComponent<Transform>(); }
+	bool GetIsSelected() const { return isSelected; }
+	int GetChildCount() const { return static_cast<int>(childObjects.size()); }
 
-
-	void SetParent(GameObject* p) { parent = p; }
-	GameObject* GetParent() const { return parent; }
-
-	const std::string& GetName() const { return name; }
 	void SetName(std::string s) { name = s; }
+	void SetOrderInUpdate(int i) { orderInUpdate = i;  }
+	void SetParent(GameObject* p) { parent = p; }
+	void SetActor(Argent::Component::BaseActor* a) { actor = a;  }
+
+	void SetIsSelected(bool b) { isSelected = b; }
 
 	std::vector<GameObject*>::iterator begin() { return childObjects.begin(); }
 	std::vector<GameObject*>::iterator end() { return childObjects.end(); }
 
-	bool GetIsSelected() const { return isSelected; }
-	void SetIsSelected(bool b) { isSelected = b; }
 	void ReverseIsSelected() { isSelected = !isSelected; }
 
-	int GetChildCount() const { return static_cast<int>(childObjects.size()); }
-
 	void CloseWindow() { isSelected = false; }
-	void CloseAllWindow()
-	{
-		CloseWindow();
-		for(const auto& child : childObjects)
-		{
-			child->CloseAllWindow();
-		}
-	}
+	void CloseAllWindow();
+	
 	static GameObject* SceneCamera(const std::string& name = "Sub Camera", bool setSceneCamera = false);
-
-	Argent::Component::BaseActor* GetActor() const { return actor;  }
-
-	void SetActor(Argent::Component::BaseActor* a) { actor = a;  }
-
 	static void DestroyGameObject(GameObject* object);
+	static GameObject* Instantiate(const char* name, Argent::Component::BaseComponent* com);
+	static GameObject* FindGameObject(const char* name);
 
 protected:
-	bool isSelected;
-	std::vector<Argent::Component::ArComponent*> components;
-	std::vector<GameObject*> childObjects;
 	std::string name;
+	std::vector<Argent::Component::BaseComponent*> components;
+	std::vector<GameObject*> childObjects;
 	GameObject* parent;
+	Transform* transform;
 
 	Argent::Component::BaseActor* actor{};
+
+	int orderInUpdate = 10;
+
+	bool isSelected;
+public:
+	bool operator<(const GameObject& g) const
+	{
+		return this->orderInUpdate < g.orderInUpdate;
+	}
 };
 
 template <typename T>

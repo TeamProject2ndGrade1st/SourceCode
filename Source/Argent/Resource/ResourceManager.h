@@ -9,19 +9,19 @@
 
 namespace Argent::Resource
 {
-	class ArResourceManager
+	class ResourceManager
 	{
 		static constexpr uint64_t errorUniqueId = 0;
-		ArResourceManager()
+		ResourceManager()
 		{
 			Clear();
 		}
 	public:
-		~ArResourceManager() = default;
-		ArResourceManager(const ArResourceManager&) = delete;
-		ArResourceManager(const ArResourceManager&&) = delete;
-		ArResourceManager operator=(const ArResourceManager&) = delete;
-		ArResourceManager operator=(const ArResourceManager&&) = delete;
+		~ResourceManager() = default;
+		ResourceManager(const ResourceManager&) = delete;
+		ResourceManager(const ResourceManager&&) = delete;
+		ResourceManager operator=(const ResourceManager&) = delete;
+		ResourceManager operator=(const ResourceManager&&) = delete;
 
 		void Initialize();
 		void Clear();
@@ -82,9 +82,9 @@ namespace Argent::Resource
 
 		std::vector<std::shared_ptr<Argent::Texture::ArTexture>> rowTextureData;
 	public:
-		static ArResourceManager& Instance()
+		static ResourceManager& Instance()
 		{
-			static ArResourceManager instance;
+			static ResourceManager instance;
 			return instance;
 		}
 

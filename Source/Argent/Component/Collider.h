@@ -4,7 +4,7 @@
 namespace Argent::Component::Collider
 {
 	class Collider:
-		public ArComponent
+		public BaseComponent
 	{
 	public:
 		enum class ColliderType

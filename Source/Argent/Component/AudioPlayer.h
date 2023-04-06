@@ -8,7 +8,7 @@
 namespace Argent::Component::Audio
 {
 	class AudioPlayer:
-		public ArComponent
+		public BaseComponent
 	{
 	public:
 		AudioPlayer(const char* filePath);
@@ -17,7 +17,7 @@ namespace Argent::Component::Audio
 		void Update() override;
 
 	private:
-		std::shared_ptr<Argent::Resource::Audio::ArAudio> audio;
+		std::shared_ptr<Argent::Resource::Audio::AudioResource> audio;
 
 	};
 }

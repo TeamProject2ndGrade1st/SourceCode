@@ -37,7 +37,7 @@ namespace Argent
 		private:
 			std::unique_ptr<Argent::Graphics::ArGraphics> arGfx{};
 			std::unique_ptr<Argent::Window::ArWindow> arWindow{};
-			std::unique_ptr<Argent::Resource::Effect::ArEffectManager> effectManager{};
+			std::unique_ptr<Argent::Resource::Effect::EffectManager> effectManager{};
 		};
 	}
 

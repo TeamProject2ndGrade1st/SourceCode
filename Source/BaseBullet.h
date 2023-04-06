@@ -22,6 +22,7 @@ public:
 	void Initialize() override;
 	void Update() override;
 
+	static void Shot(BaseBullet* bulletActor, const Transform& t);
 #ifdef _DEBUG
 	void DrawDebug() override;
 #endif

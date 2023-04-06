@@ -14,7 +14,7 @@ namespace Argent::App
 
 		arWindow = std::make_unique<Window::ArWindow>(hInstance, width, height);
 		arGfx = std::make_unique<Graphics::ArGraphics>(arWindow->GetHandle());
-		effectManager = std::make_unique<Argent::Resource::Effect::ArEffectManager>(arGfx->GetDevice(), arGfx->GetCommandQueue(), arGfx->GetNumBackBuffers());
+		effectManager = std::make_unique<Argent::Resource::Effect::EffectManager>(arGfx->GetDevice(), arGfx->GetCommandQueue(), arGfx->GetNumBackBuffers());
 
 		isInstantiated = true;
 	}
@@ -23,7 +23,7 @@ namespace Argent::App
 	{
 		arGfx->Initialize();
 		ImguiCtrl::Initialize(arWindow->GetHandle(), arGfx->GetDevice(), arGfx->GetGUIHeap());
-		Resource::ArResourceManager::Instance().Initialize();
+		Resource::ResourceManager::Instance().Initialize();
 	}
 
 	int ArApp::Execute() const

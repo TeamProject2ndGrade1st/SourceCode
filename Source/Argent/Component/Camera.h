@@ -6,7 +6,7 @@
 class GameObject;
 
 class Camera final:
-	public Argent::Component::ArComponent
+	public Argent::Component::BaseComponent
 {
 public:
 	Camera(bool isSceneCamera, float width, float height, float nearZ = 0.01f, float farZ = 100.0f, float fov = 60.0f,
@@ -53,7 +53,7 @@ private:
 
 
 class CameraController:
-	public Argent::Component::ArComponent
+	public Argent::Component::BaseComponent
 {
 public:
 	CameraController();

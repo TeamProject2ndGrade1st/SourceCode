@@ -11,11 +11,11 @@ namespace Argent::Component
 {
 	namespace Renderer
 	{
-		class ArRenderer : public ArComponent
+		class BaseRenderer : public BaseComponent
 		{
 		public:
-			ArRenderer(const std::string& name);
-			virtual ~ArRenderer() override;
+			BaseRenderer(const std::string& name);
+			virtual ~BaseRenderer() override;
 
 
 			void Initialize() override {}
@@ -32,7 +32,7 @@ namespace Argent::Component
 #endif
 		protected:
 			std::vector<std::shared_ptr<Material::ArMaterial>> materials;
-			std::shared_ptr<Argent::Graphics::RenderingPipeline::ArBaseRenderingPipeline> renderingPipeline;
+			std::shared_ptr<Argent::Graphics::RenderingPipeline::BaseRenderingPipeline> renderingPipeline;
 		};
 	}
 }

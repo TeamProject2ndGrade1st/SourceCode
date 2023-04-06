@@ -6,11 +6,11 @@
 
 namespace Argent::Resource::Audio
 {
-	class ArAudioManager
+	class AudioManager
 	{
 	public:
-		ArAudioManager();
-		virtual ~ArAudioManager() = default;
+		AudioManager();
+		virtual ~AudioManager() = default;
 
 
 		IXAudio2* GetAudioEngine() const { return audioEngine.Get();  }
@@ -20,16 +20,16 @@ namespace Argent::Resource::Audio
 		IXAudio2MasteringVoice* masterVoice{};
 
 	public:
-		static ArAudioManager& Instance()
+		static AudioManager& Instance()
 		{
-			static ArAudioManager ins;
+			static AudioManager ins;
 			return ins;
 		}
 
 	private:
-		static ArAudioManager* instance;
+		static AudioManager* instance;
 	public:
-		//static ArAudioManager* Instance()
+		//static AudioManager* Instance()
 		//{
 		//	return instance;
 		//}

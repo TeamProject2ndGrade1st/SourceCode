@@ -6,7 +6,7 @@
 
 Camera::Camera(bool isSceneCamera, float width, float height, float nearZ, float farZ, 
                float fov, const Transform* target):
-	ArComponent("Camera")
+	BaseComponent("Camera")
 ,	isSceneCamera(isSceneCamera)
 ,	width(width)
 ,	height(height)
@@ -21,7 +21,7 @@ Camera::Camera(bool isSceneCamera, float width, float height, float nearZ, float
 
 void Camera::Reset()
 {
-	Argent::Component::ArComponent::Reset();
+	Argent::Component::BaseComponent::Reset();
 }
 
 void Camera::Initialize()
@@ -29,7 +29,7 @@ void Camera::Initialize()
 	DirectX::XMFLOAT3 pos =  GetOwner()->GetTransform()->GetPosition();
 	pos.z = -10.0f;
 	GetOwner()->GetTransform()->SetPosition(pos);
-	Argent::Component::ArComponent::Initialize();
+	Argent::Component::BaseComponent::Initialize();
 }
 
 void Camera::Update()
@@ -130,7 +130,7 @@ void Camera::Update()
 	DirectX::XMStoreFloat3(&right, DirectX::XMVector3Normalize(DirectX::XMVector3Rotate(RightVec, quaternion)));
 	DirectX::XMStoreFloat3(&up, DirectX::XMVector3Normalize(DirectX::XMVector3Rotate(UpVec, quaternion)));
 
-	ArComponent::Update();
+	BaseComponent::Update();
 }
 
 #ifdef _DEBUG
@@ -158,7 +158,7 @@ void Camera::DrawDebug()
 		ImGui::SliderFloat("Far", &farZ, 1, 10000);
 
 		ImGui::TreePop();
-		ArComponent::DrawDebug();
+		BaseComponent::DrawDebug();
 	}
 }
 #endif
@@ -199,7 +199,7 @@ DirectX::XMMATRIX Camera::GetProjectionMatrix() const
 }
 
 CameraController::CameraController():
-	ArComponent("Camera Controller")
+	BaseComponent("Camera Controller")
 ,	rotationSpeed(0.05f)
 ,	vertAndHorMoveSpeed(0.01f)
 ,	depthMoveSpeed(0.2f)
@@ -277,7 +277,7 @@ void CameraController::DrawDebug()
 		ImGui::DragFloat("Rotate Speed", &rotationSpeed, 0.001f, 0.001f, 1.0f);
 		ImGui::DragFloat("Depth Speed", &depthMoveSpeed, 0.01f, 0.01f, 10.0f);
 
-		ArComponent::DrawDebug();
+		BaseComponent::DrawDebug();
 		ImGui::TreePop();
 	}
 }

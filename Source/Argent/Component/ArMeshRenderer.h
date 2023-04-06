@@ -2,7 +2,9 @@
 #include <vector>
 
 #include "Renderer.h"
-#include "../Resource/ArStaticMesh.h"
+#include "../Resource/StaticMesh.h"
+
+
 namespace Argent::Component::Renderer
 {
 	struct Subset
@@ -15,7 +17,7 @@ namespace Argent::Component::Renderer
 
 
 	class ArMeshRenderer :
-		public ArRenderer
+		public BaseRenderer
 	{
 	public:
 		ArMeshRenderer(Argent::Resource::Mesh::ArStaticMesh* data);

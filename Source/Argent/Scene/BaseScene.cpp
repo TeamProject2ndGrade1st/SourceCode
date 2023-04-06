@@ -1,5 +1,7 @@
 #include "BaseScene.h"
+#include <algorithm>
 #include "../Component/Camera.h"
+#include "../Graphic/Graphics.h"
 
 namespace Argent::Scene
 {
@@ -9,6 +11,8 @@ namespace Argent::Scene
 		Light* l{};
 		for (const auto& object : gameObject)
 		{
+			if (!object) continue;
+
 			object->Initialize();
 			if (!c)
 			{
@@ -29,6 +33,34 @@ namespace Argent::Scene
 				}
 			}
 		}
+		if(!c || !l)
+		{
+			for (const auto& object : addObject)
+			{
+				if (!object) continue;
+
+				object->Initialize();
+				if (!c)
+				{
+					c = object->GetComponent<Camera>();
+					if (!c)
+					{
+						if (object->GetChild<GameObject>())
+							c = object->GetChild<GameObject>()->GetComponent<Camera>();
+					}
+				}
+				if (!l)
+				{
+					l = object->GetComponent<Light>();
+					if (!l)
+					{
+						if (object->GetChild<GameObject>())
+							l = object->GetChild<GameObject>()->GetComponent<Light>();
+					}
+				}
+			}
+			
+		}
 		Argent::Graphics::ArGraphics::Instance()->SetCamera(c);
 		Argent::Graphics::ArGraphics::Instance()->SetLight(l);
 	}
@@ -37,6 +69,8 @@ namespace Argent::Scene
 	{
 		for (const auto& object : gameObject)
 		{
+			if (!object) continue;
+
 			object->Finalize();
 			delete object;
 		}
@@ -45,9 +79,21 @@ namespace Argent::Scene
 
 	void BaseScene::Begin()
 	{
+		//todo resizeしてからのほうが処理軽いかも
+		for(const auto& obj : addObject)
+		{
+			if (obj)
+			{
+				//todo initializeするタイミングは本当にここでいい？
+				obj->Initialize();
+				gameObject.emplace_back(std::move(obj));
+			}
+		}
+		addObject.clear();
 		for (const auto& object : gameObject)
 		{
-
+			if (!object) continue;
+			object->Begin();
 		}
 	}
 
@@ -55,7 +101,8 @@ namespace Argent::Scene
 	{
 		for (const auto& object : gameObject)
 		{
-
+			if (!object) continue;
+			object->End();
 		}
 	}
 
@@ -63,6 +110,7 @@ namespace Argent::Scene
 	{
 		for (const auto& object : gameObject)
 		{
+			if (!object) continue;
 			object->Update();
 		}
 	}
@@ -71,6 +119,7 @@ namespace Argent::Scene
 	{
 		for (const auto& object : gameObject)
 		{
+			if (!object) continue;
 			object->Render();
 		}
 	}
@@ -113,10 +162,17 @@ namespace Argent::Scene
 		}
 	}
 
+	void BaseScene::AddObject(GameObject* obj)
+	{
+		std::string n = ObjectNameCheck(obj->GetName(), 0);
+		obj->SetName(n);
+		addObject.emplace_back(obj);
+	}
+
 	void BaseScene::ImGuiCheckBox(GameObject* obj)
 	{
 #ifdef _DEBUG
-
+		
 		if (ImGui::Button(obj->GetName().c_str()))
 		{
 			CloseAllDebugWindow();

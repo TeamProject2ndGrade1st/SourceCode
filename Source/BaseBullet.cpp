@@ -17,6 +17,8 @@ BaseBullet::BaseBullet(const DirectX::XMFLOAT3& direction,
 
 void BaseBullet::OnCollision(const Argent::Component::Collider::Collider* collider)
 {
+	//todo Á‚¹
+	GetOwner()->DestroyGameObject(GetOwner());
 }
 
 void BaseBullet::Initialize()
@@ -31,12 +33,13 @@ void BaseBullet::Update()
 	DirectX::XMFLOAT3 pos = t->GetPosition();
 	pos = direction * speed;
 	t->AddPosition(pos);
+}
 
-	if(Argent::Input::Keyboard::Instance().IsKeyPress(Argent::Input::Keyboard::X))
-	{
-		GameObject::DestroyGameObject(GetOwner());
-	}
-
+void BaseBullet::Shot(BaseBullet* bulletActor, const Transform& t)
+{
+	const auto g = GameObject::Instantiate("bullet", bulletActor);
+	Transform* tr = g->GetTransform();
+	g->GetTransform()->SetTransform(t);
 }
 
 #ifdef _DEBUG

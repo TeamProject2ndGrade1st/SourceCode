@@ -9,13 +9,13 @@
 
 #include "Renderer.h"
 #include "../Graphic/Dx12/ConstantBuffer.h"
-#include "../Resource/ArStaticMesh.h"
+#include "../Resource/StaticMesh.h"
 #include "../Resource/Material.h"
 
 namespace Argent::Component::Renderer
 {
-	class ArStaticMeshRenderer:
-		public ArRenderer
+	class StaticMeshRenderer:
+		public BaseRenderer
 	{
 	public:
 		enum class RootParameterIndex
@@ -34,16 +34,16 @@ namespace Argent::Component::Renderer
 
 
 	public:
-		ArStaticMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes,
+		StaticMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes,
 			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials);
-		ArStaticMeshRenderer(ID3D12Device* device, const char* fileName, std::shared_ptr<Resource::Mesh::ArStaticMesh> meshes,
+		StaticMeshRenderer(ID3D12Device* device, const char* fileName, std::shared_ptr<Resource::Mesh::ArStaticMesh> meshes,
 			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials);
-		~ArStaticMeshRenderer() override = default;
+		~StaticMeshRenderer() override = default;
 
-		ArStaticMeshRenderer(const ArStaticMeshRenderer&) = delete;
-		ArStaticMeshRenderer(const ArStaticMeshRenderer&&) = delete;
-		ArStaticMeshRenderer operator=(const ArStaticMeshRenderer&) = delete;
-		ArStaticMeshRenderer operator=(const ArStaticMeshRenderer&&) = delete;
+		StaticMeshRenderer(const StaticMeshRenderer&) = delete;
+		StaticMeshRenderer(const StaticMeshRenderer&&) = delete;
+		StaticMeshRenderer operator=(const StaticMeshRenderer&) = delete;
+		StaticMeshRenderer operator=(const StaticMeshRenderer&&) = delete;
 
 		void Render(ID3D12GraphicsCommandList* cmdList,
 			const DirectX::XMFLOAT4X4& world) const;

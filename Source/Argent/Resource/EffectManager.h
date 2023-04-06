@@ -6,15 +6,15 @@
 
 namespace Argent::Resource::Effect
 {
-	class ArEffectManager
+	class EffectManager
 	{
 	public:
 
-		ArEffectManager(ID3D12Device* device, ID3D12CommandQueue* cmdQueue, UINT numBackBuffers);
+		EffectManager(ID3D12Device* device, ID3D12CommandQueue* cmdQueue, UINT numBackBuffers);
 
 
 	public:
-		~ArEffectManager() = default;
+		~EffectManager() = default;
 
 		void Update();
 		void Render() const;
@@ -22,7 +22,7 @@ namespace Argent::Resource::Effect
 		Effekseer::ManagerRef GetManager() const { return efkManager;  }  // NOLINT(modernize-use-nodiscard)
 		EffekseerRenderer::RendererRef GetRenderer() const { return efkRenderer;  }  // NOLINT(modernize-use-nodiscard)
 
-		static ArEffectManager* Instance() { return instance;  }
+		static EffectManager* Instance() { return instance;  }
 		
 	private:
 		EffekseerRenderer::RendererRef efkRenderer{};
@@ -30,6 +30,6 @@ namespace Argent::Resource::Effect
 		Effekseer::RefPtr<EffekseerRenderer::SingleFrameMemoryPool> efkMemoryPool;
 		Effekseer::RefPtr<EffekseerRenderer::CommandList> efkCmdList{};
 
-		static ArEffectManager* instance;
+		static EffectManager* instance;
 	};
 }

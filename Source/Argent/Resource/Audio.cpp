@@ -86,7 +86,7 @@ namespace Argent::Resource::Audio
 	    return hr;
 	}
 
-	ArAudio::ArAudio(const char* filePath):
+	AudioResource::AudioResource(const char* filePath):
 		ArResource(Helper::String::ExtractFileName(filePath, false).c_str(), ResourceType::Audio)
 	,	state(State::Stopping)
 	{
@@ -130,8 +130,8 @@ namespace Argent::Resource::Audio
 		buffer.Flags = XAUDIO2_END_OF_STREAM; //バッファの後ろにはもうデータがないことを明示
 
 		//ソースボイスを作る
-		hr = ArAudioManager::Instance().GetAudioEngine()->CreateSourceVoice(&sourceVoice, reinterpret_cast<WAVEFORMATEX*>(&wfx));
-		//hr = ArAudioManager::Instance()->GetAudioEngine()->CreateSourceVoice(&sourceVoice, reinterpret_cast<WAVEFORMATEX*>(&wfx));
+		hr = AudioManager::Instance().GetAudioEngine()->CreateSourceVoice(&sourceVoice, reinterpret_cast<WAVEFORMATEX*>(&wfx));
+		//hr = AudioManager::Instance()->GetAudioEngine()->CreateSourceVoice(&sourceVoice, reinterpret_cast<WAVEFORMATEX*>(&wfx));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
 
@@ -144,7 +144,7 @@ namespace Argent::Resource::Audio
 		}
 	}
 
-	void ArAudio::Play()
+	void AudioResource::Play()
 	{
 		if(IsPlaying()) return;
 
@@ -164,7 +164,7 @@ namespace Argent::Resource::Audio
 		state = State::Playing;
 	}
 
-	void ArAudio::Stop()
+	void AudioResource::Stop()
 	{
 		if(!IsLastAudioQueue()) return;
 
@@ -178,7 +178,7 @@ namespace Argent::Resource::Audio
 		state = State::Stopping;
 	}
 
-	void ArAudio::Pause()
+	void AudioResource::Pause()
 	{
 		if(!IsLastAudioQueue()) return;
 

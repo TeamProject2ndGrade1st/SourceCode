@@ -24,8 +24,8 @@
 
 namespace Argent::Component::Renderer
 {
-	class ArSkinnedMeshRenderer:
-		public Argent::Component::Renderer::ArRenderer
+	class SkinnedMeshRenderer:
+		public Argent::Component::Renderer::BaseRenderer
 	{
 	public:
 		enum class RootParameterIndex
@@ -61,21 +61,21 @@ namespace Argent::Component::Renderer
 
 
 	public:
-		ArSkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
+		SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
 			std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>>& meshes,
 			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
 			std::vector<Resource::Animation::ArAnimation>& animation);
-		ArSkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
+		SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
 			std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
 			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
 			std::vector<Resource::Animation::ArAnimation>& animation);
 
-		~ArSkinnedMeshRenderer() override = default;
+		~SkinnedMeshRenderer() override = default;
 
-		ArSkinnedMeshRenderer(const ArSkinnedMeshRenderer&) = delete;
-		ArSkinnedMeshRenderer(const ArSkinnedMeshRenderer&&) = delete;
-		ArSkinnedMeshRenderer operator=(const ArSkinnedMeshRenderer&) = delete;
-		ArSkinnedMeshRenderer operator=(const ArSkinnedMeshRenderer&&) = delete;
+		SkinnedMeshRenderer(const SkinnedMeshRenderer&) = delete;
+		SkinnedMeshRenderer(const SkinnedMeshRenderer&&) = delete;
+		SkinnedMeshRenderer operator=(const SkinnedMeshRenderer&) = delete;
+		SkinnedMeshRenderer operator=(const SkinnedMeshRenderer&&) = delete;
 
 		void Initialize() override;
 		void Render(ID3D12GraphicsCommandList* cmdList,

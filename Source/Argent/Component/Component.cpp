@@ -1,6 +1,6 @@
 #include "Component.h"
 
-Argent::Component::ArComponent::ArComponent(const ArComponent&& com) noexcept
+Argent::Component::BaseComponent::BaseComponent(const BaseComponent&& com) noexcept
 {
 	this->name = com.name;
 	this->owner = com.owner;

@@ -8,9 +8,9 @@
 
 namespace Argent::Component::Renderer
 {
-	ArStaticMeshRenderer::ArStaticMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes,
+	StaticMeshRenderer::StaticMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes,
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials):
-		ArRenderer("StaticMeshRenderer")
+		BaseRenderer("StaticMeshRenderer")
 	{
 		this->meshes = meshes;
 		for(auto& m : materials)
@@ -21,10 +21,10 @@ namespace Argent::Component::Renderer
 		CreateRootSignatureAndPipelineState();
 	}
 
-	ArStaticMeshRenderer::ArStaticMeshRenderer(ID3D12Device* device, const char* fileName,
+	StaticMeshRenderer::StaticMeshRenderer(ID3D12Device* device, const char* fileName,
 		std::shared_ptr<Resource::Mesh::ArStaticMesh> meshes,
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials) :
-		ArRenderer("StaticMeshRenderer")
+		BaseRenderer("StaticMeshRenderer")
 	{
 		this->meshes.emplace_back(meshes);
 		for (auto& m : materials)
@@ -35,10 +35,10 @@ namespace Argent::Component::Renderer
 		CreateRootSignatureAndPipelineState();
 	}
 
-	void ArStaticMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList,
+	void StaticMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList,
 	                                  const DirectX::XMFLOAT4X4& world) const
 	{
-		ArRenderer::Render(cmdList);
+		BaseRenderer::Render(cmdList);
 		Argent::Graphics::ArGraphics::Instance()->SetSceneConstant(static_cast<UINT>(RootParameterIndex::cbScene));
 
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -65,7 +65,7 @@ namespace Argent::Component::Renderer
 		}
 	}
 
-	void ArStaticMeshRenderer::CreateRootSignatureAndPipelineState()
+	void StaticMeshRenderer::CreateRootSignatureAndPipelineState()
 	{
 		D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineStateDesc{};
@@ -134,7 +134,7 @@ namespace Argent::Component::Renderer
 		pipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 
-		renderingPipeline = std::make_shared<Argent::Graphics::RenderingPipeline::ArBaseRenderingPipeline>(
+		renderingPipeline = std::make_shared<Argent::Graphics::RenderingPipeline::BaseRenderingPipeline>(
 			"./Resources/Shader/StaticMeshVertex.cso",
 			"./Resources/Shader/StaticMeshPixel.cso",
 			&rootSigDesc,
@@ -142,27 +142,27 @@ namespace Argent::Component::Renderer
 			);
 	}
 
-	void ArStaticMeshRenderer::Initialize()
+	void StaticMeshRenderer::Initialize()
 	{
 		GameObject* g = GetOwner();
 		g->GetTransform()->SetWorld(meshes.at(0)->defaultGlobalTransform);
 		g->SetName(meshes.at(0)->GetName());
 	}
 
-	void ArStaticMeshRenderer::Render() const 
+	void StaticMeshRenderer::Render() const 
 	{
 		const Transform* t = GetOwner()->GetTransform();
 		Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), 
 			t->AdjustParentTransform().GetWorld());
 	}
 
-	void ArStaticMeshRenderer::Update()
+	void StaticMeshRenderer::Update()
 	{
 		
 	}
 
 #ifdef _DEBUG
-	void ArStaticMeshRenderer::DrawDebug()
+	void StaticMeshRenderer::DrawDebug()
 	{
 		if (ImGui::TreeNode(GetName().c_str()))
 		{
@@ -175,12 +175,12 @@ namespace Argent::Component::Renderer
 				ImGui::TreePop();
 			}
 
-			ArRenderer::DrawDebug();
+			BaseRenderer::DrawDebug();
 			ImGui::TreePop();
 		}
 	}
 #endif
-	void ArStaticMeshRenderer::CreateComObject(ID3D12Device* device)
+	void StaticMeshRenderer::CreateComObject(ID3D12Device* device)
 	{
 		for (auto it = materials.begin(); it != materials.end(); ++it)
 		{

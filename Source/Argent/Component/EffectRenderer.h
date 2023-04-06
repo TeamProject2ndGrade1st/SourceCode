@@ -6,7 +6,7 @@
 namespace Argent::Component::Renderer
 {
 	class EffectRenderer:
-		public ArComponent
+		public BaseComponent
 	{
 	public:
 		EffectRenderer(const char* filePath, const char* materialPath);
@@ -23,7 +23,7 @@ namespace Argent::Component::Renderer
 		bool isPlay;
 		Argent::ArColor color;
 
-		std::shared_ptr<Argent::Resource::Effect::ArEffect> effect;
+		std::shared_ptr<Argent::Resource::Effect::EffectResource> effect;
 	};
 	
 }

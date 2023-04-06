@@ -4,13 +4,13 @@
 namespace Argent::Resource
 {
 	ArResource::ArResource(const char* name, ResourceType type):
-		uniqueId(ArResourceManager::GenerateResourceUniqueId())
+		uniqueId(ResourceManager::GenerateResourceUniqueId())
 	,	name(name)
 	,	type(type)
 	{}
 
 	ArResource::ArResource(ResourceType type):
-		uniqueId(ArResourceManager::GenerateResourceUniqueId())
+		uniqueId(ResourceManager::GenerateResourceUniqueId())
 	,	name("Not Setting")
 	,	type(type)
 	{}

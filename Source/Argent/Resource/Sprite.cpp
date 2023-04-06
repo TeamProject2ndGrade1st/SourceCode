@@ -1,12 +1,13 @@
-#include "ArSprite.h"
+#include "Sprite.h"
 
 #include "../Graphic/Graphics.h"
 #include "../Other/Helper.h"
 
-namespace Argent::Resource::Mesh::Sprite
+namespace Argent::Resource::Sprite
 {
-	ArSprite::ArSprite():
-		ArMesh("Sprite", ResourceType::Texture)
+	Sprite::Sprite():
+		Argent::Resource::Mesh::ArMesh<Vertex>
+		("Sprite", ResourceType::Texture)
 	{
 		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
 		HRESULT hr{ S_OK };
@@ -33,7 +34,7 @@ namespace Argent::Resource::Mesh::Sprite
 		indexBuffer = std::make_unique<Argent::Dx12::ArIndexBuffer>(device, indices);
 	}
 
-	void ArSprite::UpdateVertexMap(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& scale,
+	void Sprite::UpdateVertexMap(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& scale,
 	                                   const DirectX::XMFLOAT2& center, float angle, float textureWidth, float textureHeight,
 	                                   const DirectX::XMFLOAT4& color) const
 	{
