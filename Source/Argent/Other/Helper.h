@@ -366,6 +366,11 @@ namespace Argent
 				return true;
 			}
 
+
+			bool IntersectRayVsModel(
+				const DirectX::XMFLOAT3& start,
+				const DirectX::XMFLOAT3& end);
+
 		}
 	};
 }

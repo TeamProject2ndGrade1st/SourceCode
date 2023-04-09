@@ -30,6 +30,7 @@
     <ClCompile Include="Source\Argent\Component\ArColliderManager.cpp" />
     <ClCompile Include="Source\Argent\Component\Component.cpp" />
     <ClCompile Include="Source\Argent\Component\EffectRenderer.cpp" />
+    <ClCompile Include="Source\Argent\Component\RayCast.cpp" />
     <ClCompile Include="Source\Argent\Component\Renderer.cpp" />
     <ClCompile Include="Source\Argent\Component\SkinnedMeshRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\SpriteRenderer.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="Source\Argent\Component\Color.h" />
     <ClInclude Include="Source\Argent\Component\Component.h" />
     <ClInclude Include="Source\Argent\Component\EffectRenderer.h" />
+    <ClInclude Include="Source\Argent\Component\RayCast.h" />
     <ClInclude Include="Source\Argent\Component\Renderer.h" />
     <ClInclude Include="Source\Argent\Component\SkinnedMeshRenderer.h" />
     <ClInclude Include="Source\Argent\Component\SpriteRenderer.h" />

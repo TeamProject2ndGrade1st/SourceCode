@@ -15,12 +15,6 @@ BaseBullet::BaseBullet(const DirectX::XMFLOAT3& direction,
 {
 }
 
-void BaseBullet::OnCollision(const Argent::Component::Collider::Collider* collider)
-{
-	//todo Á‚¹
-	GetOwner()->DestroyGameObject(GetOwner());
-}
-
 void BaseBullet::Initialize()
 {
 	GetOwner()->AddComponent(new Argent::Component::Collider::SphereCollider);
@@ -38,17 +32,26 @@ void BaseBullet::Update()
 void BaseBullet::Shot(BaseBullet* bulletActor, const Transform& t)
 {
 	const auto g = GameObject::Instantiate("bullet", bulletActor);
-	Transform* tr = g->GetTransform();
 	g->GetTransform()->SetTransform(t);
+}
+
+
+void BaseBullet::OnCollision(const Argent::Component::Collider::Collider* collider)
+{
+	//todo Á‚¹
+	GetOwner()->DestroyGameObject(GetOwner());
 }
 
 #ifdef _DEBUG
 void BaseBullet::DrawDebug()
 {
-	if(ImGui::Button("Destroy"))
+	if(ImGui::TreeNode(GetName().c_str()))
 	{
-		GameObject::DestroyGameObject(GetOwner());
+		ImGui::SliderFloat("Damage", &damage, 0, 10.0f);
+		ImGui::SliderFloat("Speed", &speed, 0, 100.0f);
+		ImGui::InputFloat3("Direction", &direction.x);
+		BaseActor::DrawDebug();
+		ImGui::TreePop();
 	}
-	BaseActor::DrawDebug();
 }
 #endif

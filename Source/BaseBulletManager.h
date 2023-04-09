@@ -5,12 +5,15 @@
 
 class BaseBulletManager
 {
+    BaseBulletManager() = default;
 public:
-    BaseBulletManager();
+    static BaseBulletManager& Instance()
+    {
+        static BaseBulletManager instance;
+        return instance;
+    }
     virtual ~BaseBulletManager() = default;
 
-    void Shot(BaseBullet* bulletActor);
 protected:
-    std::vector<GameObject*> bullets;
 };
 

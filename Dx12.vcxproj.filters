@@ -238,8 +238,6 @@
     <ClCompile Include="Source\Argent\Component\ArColliderManager.cpp">
       <Filter>Work In Progress</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BaseBullet.cpp" />
-    <ClCompile Include="Source\BaseGun.cpp" />
     <ClCompile Include="Source\Argent\Component\Light.cpp">
       <Filter>Argent\Component\Core</Filter>
     </ClCompile>
@@ -252,8 +250,19 @@
     <ClCompile Include="Source\Argent\Component\AudioPlayer.cpp">
       <Filter>Argent\Component\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Player.cpp" />
-    <ClCompile Include="Source\BaseBulletManager.cpp" />
+    <ClCompile Include="Source\BaseBullet.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BaseBulletManager.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BaseGun.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\RayCast.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -433,8 +442,6 @@
     <ClInclude Include="Source\Argent\Component\ArColliderManager.h">
       <Filter>Work In Progress</Filter>
     </ClInclude>
-    <ClInclude Include="Source\BaseBullet.h" />
-    <ClInclude Include="Source\BaseGun.h" />
     <ClInclude Include="Source\Argent\Argent.h">
       <Filter>Argent</Filter>
     </ClInclude>
@@ -453,8 +460,19 @@
     <ClInclude Include="Source\Argent\Component\AudioPlayer.h">
       <Filter>Argent\Component\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Player.h" />
-    <ClInclude Include="Source\BaseBulletManager.h" />
+    <ClInclude Include="Source\Player.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseBullet.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseBulletManager.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseGun.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\RayCast.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

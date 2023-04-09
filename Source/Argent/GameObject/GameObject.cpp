@@ -26,9 +26,16 @@ GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComp
 	transform = new Transform();
 	AddComponent(transform);
 
-	for (size_t i = 0; i < com.size(); ++i)
+	if(com.size() == 1)
 	{
-		AddChild(new GameObject(std::to_string(i), com.at(i)));
+		AddComponent(com.at(0));
+	}
+	else
+	{
+		for (size_t i = 0; i < com.size(); ++i)
+		{
+			AddChild(new GameObject(std::to_string(i), com.at(i)));
+		}
 	}
 }
 
@@ -53,11 +60,14 @@ void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 
 void GameObject::AddComponent(std::vector<Argent::Component::BaseComponent*> com)
 {
-	AddComponent(new Transform());
-
 	for (size_t i = 0; i < com.size(); ++i)
 	{
-		AddChild(new GameObject(std::to_string(i), com.at(i)));
+		if(com.size() == 1)
+		{
+			AddComponent(com.at(i));
+		}
+		else
+			AddChild(new GameObject(std::to_string(i), com.at(i)));
 	}
 }
 
@@ -182,7 +192,6 @@ void GameObject::Render() const
 void GameObject::DrawDebug() 
 {
 #ifdef _DEBUG
-
 	if(isSelected)
 	{
 		ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_::ImGuiCond_Once);

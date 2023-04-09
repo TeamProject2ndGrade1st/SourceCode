@@ -1,5 +1,6 @@
 #pragma once
 #include "Collider.h"
+#include "RayCast.h"
 #include <vector>
 
 
@@ -9,11 +10,20 @@ namespace Argent::Collider
 	{
 	public:
 
-		void AddCollider(Argent::Component::Collider::Collider* collider)
+		void RegisterCollider(Argent::Component::Collider::Collider* c)
 		{
-			colliderLists.emplace_back(collider);
+			collider.emplace_back(c);
 		}
 
+		void RegisterRayCastCollider(Argent::Component::Collider::RayCastCollider* c)
+		{
+			rayCastCollider.emplace_back(c);
+		}
+
+		void RegisterRay(Argent::Component::RayCast* ray)
+		{
+			rayCast.emplace_back(ray);
+		}
 
 		void CollisionDetection();
 
@@ -25,10 +35,12 @@ namespace Argent::Collider
 
 
 	private:
-		std::vector<Component::Collider::Collider*> colliderLists{};
+		std::vector<Component::Collider::Collider*> collider{};
+		std::vector<Component::Collider::RayCastCollider*> rayCastCollider{};
+		std::vector<Component::RayCast*> rayCast{};
 		ArColliderManager()
 		{
-			colliderLists.clear();
+			collider.clear();
 		}
 	};
 

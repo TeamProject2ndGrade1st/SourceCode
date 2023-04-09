@@ -50,8 +50,8 @@ namespace Argent::Component
 		std::string GetName() const { return name; }
 
 	private:
-		GameObject* owner;
 		std::string name;
+		GameObject* owner;
 		//std::vector<std::unordered_map<char[], std::set<char>>>* unti;
 	};
 

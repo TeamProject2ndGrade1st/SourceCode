@@ -28,7 +28,7 @@ public:
 	~Transform() override = default;
 	Transform(const Transform&) = default;
 	Transform& operator+=(const Transform& t);
-	Transform operator=(const Transform& t);
+	Transform& operator=(const Transform& t);
 #ifdef _DEBUG
 	void DrawDebug() override;
 #endif

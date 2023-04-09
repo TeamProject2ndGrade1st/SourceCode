@@ -17,11 +17,11 @@ public:
 	BaseBullet(const DirectX::XMFLOAT3& direction, float damage, float speed);
 	virtual ~BaseBullet() override = default;
 
-	void OnCollision(const Argent::Component::Collider::Collider* collider) override;
 
 	void Initialize() override;
 	void Update() override;
 
+	void OnCollision(const Argent::Component::Collider::Collider* collider) override;
 	static void Shot(BaseBullet* bulletActor, const Transform& t);
 #ifdef _DEBUG
 	void DrawDebug() override;

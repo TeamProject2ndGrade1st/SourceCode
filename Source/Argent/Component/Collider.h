@@ -13,6 +13,7 @@ namespace Argent::Component::Collider
 			Sphere,
 			Cylinder,
 			Capsule,
+			RayCast,
 			Max,
 		};
 
