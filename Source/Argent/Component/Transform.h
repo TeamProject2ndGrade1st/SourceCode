@@ -36,15 +36,8 @@ public:
 	void Reset() override;
 	void SetWorld(const DirectX::XMFLOAT4X4& w);
 
-	[[nodiscard]] DirectX::XMMATRIX GetMatrix() const
-	{
-		const DirectX::XMMATRIX C = { DirectX:: XMLoadFloat4x4(&CoordinateSystemTransforms[coordinateSystem]) * 
-			DirectX:: XMMatrixScaling(scaleFactor, scaleFactor, scaleFactor) };
-		const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z)};
-		const DirectX::XMMATRIX R{ DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(rotation.x), DirectX::XMConvertToRadians(rotation.y), DirectX::XMConvertToRadians(rotation.z))};
-		const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(position.x,position.y, position.z)};
-		return C * S * R * T;
-	}
+	[[nodiscard]] DirectX::XMMATRIX GetMatrix() const;
+	
 
 	[[nodiscard]] DirectX::XMFLOAT4X4 GetWorld() const
 	{
@@ -87,6 +80,13 @@ private:
 	float scaleFactor;
 
 	int coordinateSystem;
+	DirectX::XMFLOAT4X4 defaultWorld
+	{
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1
+	};
 
 	const DirectX::XMFLOAT4X4 CoordinateSystemTransforms[static_cast<int>(CoordinateSystem::cNone)]
 	{

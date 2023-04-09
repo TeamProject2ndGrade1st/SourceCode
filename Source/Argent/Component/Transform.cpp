@@ -66,28 +66,18 @@ void Transform::Reset()
 
 void Transform::SetWorld(const DirectX::XMFLOAT4X4& w)
 {
-	position = DirectX::XMFLOAT3(w.m[3][0], w.m[3][1], w.m[3][2]);
-	const DirectX::XMFLOAT3 sX = DirectX::XMFLOAT3(w.m[0][0], w.m[0][1], w.m[0][2]);
-	DirectX::XMStoreFloat(&scale.x, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&sX)));
-	const DirectX::XMFLOAT3 sY = DirectX::XMFLOAT3(w.m[1][0], w.m[1][1], w.m[1][2]);
-	DirectX::XMStoreFloat(&scale.y, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&sY)));
-	const DirectX::XMFLOAT3 sZ = DirectX::XMFLOAT3(w.m[2][0], w.m[2][1], w.m[2][2]);
-	DirectX::XMStoreFloat(&scale.z, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&sZ)));
+	defaultWorld = w;
+}
 
-	float angleX, angleY, angleZ;
-
-	angleY = asinf(w.m[0][2]);
-	if(fabsf(cos(angleY)) < 0.01f)
-	{
-		angleX = atanf(w.m[2][1] / w.m[1][1]);
-		angleZ = 0;
-	}
-	else
-	{
-		angleX = atanf(-w.m[1][2] / w.m[2][2]);
-		angleZ = atanf(-w.m[0][1] / w.m[0][0]);
-	}
-	rotation = DirectX::XMFLOAT4(angleX, angleY, angleZ, 1.0f);
+DirectX::XMMATRIX Transform::GetMatrix() const
+{
+	const DirectX::XMMATRIX C = { DirectX::XMLoadFloat4x4(&CoordinateSystemTransforms[coordinateSystem]) *
+		DirectX::XMMatrixScaling(scaleFactor, scaleFactor, scaleFactor) };
+	const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) };
+	const DirectX::XMMATRIX R{ DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(rotation.x), DirectX::XMConvertToRadians(rotation.y), DirectX::XMConvertToRadians(rotation.z)) };
+	const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(position.x,position.y, position.z) };
+	const DirectX::XMMATRIX Dw = DirectX::XMLoadFloat4x4(&defaultWorld);
+	return  Dw * (C * S * R * T);
 }
 
 Transform Transform::AdjustParentTransform() const
