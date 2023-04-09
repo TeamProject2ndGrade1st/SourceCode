@@ -263,6 +263,8 @@
       <Filter>Game\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Component\RayCast.cpp" />
+    <ClCompile Include="Source\Argent\Component\AnimationPlayer.cpp" />
+    <ClCompile Include="Source\Argent\Resource\FbxResource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -473,6 +475,8 @@
       <Filter>Game\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Component\RayCast.h" />
+    <ClInclude Include="Source\Argent\Component\AnimationPlayer.h" />
+    <ClInclude Include="Source\Argent\Resource\FbxResource.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

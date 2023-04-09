@@ -27,6 +27,7 @@
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Argent\Component\AnimationPlayer.cpp" />
     <ClCompile Include="Source\Argent\Component\ArColliderManager.cpp" />
     <ClCompile Include="Source\Argent\Component\Component.cpp" />
     <ClCompile Include="Source\Argent\Component\EffectRenderer.cpp" />
@@ -62,6 +63,7 @@
     <ClCompile Include="Source\Argent\Resource\AudioManager.cpp" />
     <ClCompile Include="Source\Argent\Resource\Effect.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArMesh.cpp" />
+    <ClCompile Include="Source\Argent\Resource\FbxResource.cpp" />
     <ClCompile Include="Source\Argent\Resource\Material.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArResource.cpp" />
     <ClCompile Include="Source\Argent\Resource\ArSkinnedMesh.cpp" />
@@ -92,6 +94,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Argent\Argent.h" />
+    <ClInclude Include="Source\Argent\Component\AnimationPlayer.h" />
     <ClInclude Include="Source\Argent\Component\ArColliderManager.h" />
     <ClInclude Include="Source\Argent\Component\Color.h" />
     <ClInclude Include="Source\Argent\Component\Component.h" />
@@ -134,6 +137,7 @@
     <ClInclude Include="Source\Argent\Resource\AudioManager.h" />
     <ClInclude Include="Source\Argent\Resource\Effect.h" />
     <ClInclude Include="Source\Argent\Resource\ArMesh.h" />
+    <ClInclude Include="Source\Argent\Resource\FbxResource.h" />
     <ClInclude Include="Source\Argent\Resource\Material.h" />
     <ClInclude Include="Source\Argent\Resource\ArSkinnedMesh.h" />
     <ClInclude Include="Source\Argent\Resource\StaticMesh.h" />

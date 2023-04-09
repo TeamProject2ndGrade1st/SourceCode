@@ -60,14 +60,16 @@ void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 
 void GameObject::AddComponent(std::vector<Argent::Component::BaseComponent*> com)
 {
-	for (size_t i = 0; i < com.size(); ++i)
+	if(com.size() == 1)
 	{
-		if(com.size() == 1)
+		AddComponent(com.at(0));
+	}
+	else
+	{
+		for (size_t i = 0; i < com.size(); ++i)
 		{
-			AddComponent(com.at(i));
-		}
-		else
 			AddChild(new GameObject(std::to_string(i), com.at(i)));
+		}
 	}
 }
 
@@ -145,7 +147,7 @@ void GameObject::Begin()
 {
 	for (const auto& com : components)
 	{
-		com->End();
+		com->Begin();
 	}
 	for (const auto& obj : childObjects)
 	{
@@ -161,7 +163,7 @@ void GameObject::End()
 	}
 	for (const auto& obj : childObjects)
 	{
-		obj->Begin();
+		obj->End();
 	}
 }
 

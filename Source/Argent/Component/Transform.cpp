@@ -46,7 +46,6 @@ void Transform::DrawDebug()
 		BaseComponent::DrawDebug();
 		ImGui::TreePop();
 	}
-
 }
 #endif
 

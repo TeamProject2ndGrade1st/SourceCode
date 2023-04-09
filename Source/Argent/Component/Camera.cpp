@@ -129,8 +129,6 @@ void Camera::Update()
 	//DirectX::XMStoreFloat3(&forward, focus);
 	DirectX::XMStoreFloat3(&right, DirectX::XMVector3Normalize(DirectX::XMVector3Rotate(RightVec, quaternion)));
 	DirectX::XMStoreFloat3(&up, DirectX::XMVector3Normalize(DirectX::XMVector3Rotate(UpVec, quaternion)));
-
-	BaseComponent::Update();
 }
 
 #ifdef _DEBUG

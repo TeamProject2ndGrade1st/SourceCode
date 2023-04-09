@@ -28,6 +28,7 @@ namespace Argent::Component::Renderer
 		public Argent::Component::Renderer::BaseRenderer
 	{
 	public:
+		int numUpdate = 0;
 		enum class RootParameterIndex
 		{
 			cbScene,
@@ -62,10 +63,6 @@ namespace Argent::Component::Renderer
 
 	public:
 		SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
-			std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>>& meshes,
-			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
-			std::vector<Resource::Animation::ArAnimation>& animation);
-		SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
 			std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
 			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
 			std::vector<Resource::Animation::ArAnimation>& animation);
@@ -78,6 +75,10 @@ namespace Argent::Component::Renderer
 		SkinnedMeshRenderer operator=(const SkinnedMeshRenderer&&) = delete;
 
 		void Initialize() override;
+		void Begin() override
+		{
+			numUpdate = 0;
+		}
 		void Render(ID3D12GraphicsCommandList* cmdList,
 			const DirectX::XMFLOAT4X4& world,
 			const Resource::Animation::ArAnimation::Keyframe* keyframe) const;
@@ -96,12 +97,12 @@ namespace Argent::Component::Renderer
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> objectConstantBuffer;
 
 		std::shared_ptr<Argent::Resource::Mesh::ArSkinnedMesh> skinnedMesh;
-		std::vector<std::shared_ptr<Argent::Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial> materials;
 		int clipIndex{};
 		float frameIndex{};
 		std::vector<Resource::Animation::ArAnimation> animationClips;
 
+		float animationTick{};
 	private:
 		void CreateRootSignatureAndPipelineState();
 	};

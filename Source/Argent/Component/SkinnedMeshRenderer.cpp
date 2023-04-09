@@ -8,22 +8,6 @@
 namespace Argent::Component::Renderer
 {
 	SkinnedMeshRenderer::SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
-		std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>>& meshes,
-		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials, 
-		std::vector<Resource::Animation::ArAnimation>& animation):
-		BaseRenderer("SkinnedMeshRenderer")
-	{
-		this->skinnedMeshes = meshes;
-		for (auto& m : materials)
-		{
-			this->materials.emplace(m.first, std::move(m.second));
-		}
-		this->animationClips = animation;
-		CreateComObject(device);
-		CreateRootSignatureAndPipelineState();
-	}
-
-	SkinnedMeshRenderer::SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
 		std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
 		std::vector<Resource::Animation::ArAnimation>& animation) :
@@ -54,7 +38,6 @@ namespace Argent::Component::Renderer
 	                                   const Resource::Animation::ArAnimation::Keyframe* keyframe) const
 	{
 		BaseRenderer::Render(cmdList);
-
 		Argent::Graphics::ArGraphics::Instance()->SetSceneConstant(static_cast<UINT>(RootParameterIndex::cbScene));
 
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -160,9 +143,10 @@ namespace Argent::Component::Renderer
 			 meshColor.color, &keyframe);
 
 	#endif
-
+		if (numUpdate == 1) _ASSERT_EXPR(FALSE, L"update call two times");
+		++numUpdate;
 		if (animationClips.size() == 0) return;
-		static float animationTick{};
+		//static float animationTick{};
 		const Resource::Animation::ArAnimation& animation{ this->animationClips.at(clipIndex) };
 		frameIndex = static_cast<float>(animationTick* animation.samplingRate);
 		if(frameIndex > animation.sequence.size() - 1)

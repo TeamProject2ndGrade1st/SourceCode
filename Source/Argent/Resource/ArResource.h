@@ -19,6 +19,7 @@ namespace Argent::Resource
 			Effect,
 			Audio,
 			Animation,
+			Fbx
 		};
 		ArResource(const char* name, ResourceType type);
 		ArResource(ResourceType type);

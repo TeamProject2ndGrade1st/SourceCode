@@ -115,7 +115,6 @@ namespace Argent::Component::Renderer
 
 	void SpriteRenderer::Update()
 	{
-		BaseRenderer::Update();
 		const Transform* transform = GetOwner()->GetTransform();
 
 		//todo Center‚Ì’l‚ð‚Ç‚Á‚©‚Å’è‹`‚·‚é‚±‚Æ

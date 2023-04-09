@@ -6,7 +6,7 @@
 
 #include "../Resource/StaticMesh.h"
 #include "../Resource/ArSkinnedMesh.h"
-
+#include "../Resource/ArAnimation.h"
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/string.hpp>
@@ -15,18 +15,6 @@
 #include <cereal/types/map.hpp>
 #include <cereal/types/set.hpp>
 #include <cereal/types/unordered_map.hpp>
-
-
-namespace Argent
-{
-	namespace Resource
-	{
-		namespace Animation
-		{
-			class ArAnimation;
-		}
-	}
-}
 
 namespace Argent::Component
 {
