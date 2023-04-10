@@ -13,7 +13,7 @@ namespace Argent::Component::Renderer
 		std::vector<Resource::Animation::ArAnimation>& animation) :
 		BaseRenderer("SkinnedMeshRenderer")
 	{
-		this->skinnedMeshes.emplace_back(meshes);
+		this->skinnedMesh = meshes;
 		for (auto& m : materials)
 		{
 			this->materials.emplace(m.first, std::move(m.second));
@@ -29,8 +29,8 @@ namespace Argent::Component::Renderer
 	void SkinnedMeshRenderer::Initialize()
 	{
 		GameObject* g = GetOwner();
-		g->GetTransform()->SetWorld(skinnedMeshes.at(0)->defaultGlobalTransform);
-		g->SetName(skinnedMeshes.at(0)->GetName());
+		g->GetTransform()->SetWorld(skinnedMesh->defaultGlobalTransform);
+		g->SetName(skinnedMesh->GetName());
 	}
 
 	void SkinnedMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList, 
@@ -47,8 +47,9 @@ namespace Argent::Component::Renderer
 		objectConstantBuffer->UpdateConstantBuffer(constant);
 
 		objectConstantBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbObject));
-		for(const auto& m : skinnedMeshes)
-		{
+		//for(const auto& m : skinnedMesh)
+		//{
+			const auto& m = skinnedMesh;
 			for(const auto& s : m->subsets)
 			{
 				if (animationClips.size() > 0)
@@ -81,7 +82,7 @@ namespace Argent::Component::Renderer
 
 				m->SetOnCommandList(cmdList);
 				Resource::Mesh::ArSkinnedMesh::DrawCall(cmdList, s.indexCount, 1, s.startIndexLocation, 0, 0);
-			}
+			//}
 		}
 	}
 

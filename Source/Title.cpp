@@ -9,9 +9,9 @@ void Title::Initialize()
 	//AddObject(new GameObject("Demo"));
 	//GetGameObject("Demo")->AddComponent(new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png"));
 
-	AddObject(new GameObject("plane", Argent::Loader::Fbx::LoadFbx("./Resources/Model/plane.fbx", true)));
+	//AddObject(new GameObject("plane", Argent::Loader::Fbx::LoadFbx("./Resources/Model/plane.fbx", true)));
 
-	AddObject(new GameObject("enemy_ver03", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver3.fbx", false)));
+	//AddObject(new GameObject("enemy_ver03", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver3.fbx", false)));
 
 	AddObject(new GameObject("DemoGun", new BaseGun()));
 
