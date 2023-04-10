@@ -14,7 +14,6 @@ namespace Argent::Resource::FBX
 
 
 		std::vector<std::shared_ptr<Mesh::ArSkinnedMesh>> meshes;
-		//std::unordered_map<>
 		std::vector<Animation::ArAnimation> animationClips;
 	};
 }

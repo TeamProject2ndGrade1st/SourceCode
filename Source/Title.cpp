@@ -17,7 +17,8 @@ void Title::Initialize()
 
 	AddObject(new GameObject("Nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
 
-	AddObject(new GameObject("Stage", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx")));
+	AddObject(new GameObject("Stage", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
+	AddObject(new GameObject("Stage1", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
 	BaseScene::Initialize();
 }
 
