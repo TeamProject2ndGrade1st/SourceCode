@@ -9,8 +9,10 @@ namespace Argent::Resource::Mesh
 		ArMesh(name, ResourceType::Mesh)
 	,	defaultGlobalTransform(globalTransform)
 	{
-		this->vertices = vertices;
-		this->indices = indices;
+		meshResource.vertices = vertices;
+		meshResource.indices = indices;
+		//this->vertices = vertices;
+		//this->indices = indices;
 		this->subsets = subsets;
 		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
 		vertexBuffer = std::make_unique<Argent::Dx12::ArVertexBuffer<Vertex>>(device, vertices);
@@ -21,8 +23,10 @@ namespace Argent::Resource::Mesh
 		const std::vector<Subset>& subsets):
 		ArMesh(name, ResourceType::Mesh)
 	{
-		this->vertices = vertices;
-		this->indices = indices;
+		meshResource.vertices = vertices;
+		meshResource.indices = indices;
+		//this->vertices = vertices;
+		//this->indices = indices;
 		this->subsets = subsets;
 		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
 		vertexBuffer = std::make_unique<Argent::Dx12::ArVertexBuffer<Vertex>>(device, vertices);
@@ -31,6 +35,6 @@ namespace Argent::Resource::Mesh
 
 	void ArStaticMesh::SetOnCommandList(ID3D12GraphicsCommandList* cmdList)
 	{
-		Mesh::ArMesh<Vertex>::SetOnCommandList(cmdList);
+		Mesh::ArMesh::SetOnCommandList(cmdList);
 	}
 }

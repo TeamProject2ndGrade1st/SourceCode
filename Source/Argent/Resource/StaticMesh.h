@@ -14,21 +14,8 @@
 
 namespace Argent::Resource::Mesh
 {
-	struct Vertex
-	{
-		DirectX::XMFLOAT3 position;
-		DirectX::XMFLOAT3 normal;
-		DirectX::XMFLOAT2 texcoord;
-
-		template<class T>
-		void serialize(T& archive)
-		{
-			archive(position, normal, texcoord);
-		}
-	};
-
 	class ArStaticMesh:
-		public ArMesh<Vertex>
+		public ArMesh
 	{
 	public:
 		struct Subset

@@ -14,12 +14,29 @@
 
 namespace Argent::Resource::Mesh
 {
+	struct Vertex
+	{
+		DirectX::XMFLOAT3 position;
+		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT2 texcoord;
+
+		template<class T>
+		void serialize(T& archive)
+		{
+			archive(position, normal, texcoord);
+		}
+	};
+
+	struct MeshResource
+	{
+		std::vector<Vertex> vertices{};
+		std::vector<uint32_t> indices{};
+	};
+
 	/**
 	 * \brief 頂点バッファとインデックスバッファを持つ
 	 *
-	 * \tparam T Vertex構造体を指定
 	 */
-	template<class T>
 	class ArMesh:
 		public ArResource
 	{
@@ -39,20 +56,12 @@ namespace Argent::Resource::Mesh
 			vertexBuffer->SetOnCommandList(cmdList, vertexStartSlot);
 			indexBuffer->SetOnCommandList(cmdList);
 		}
-
-		static void DrawCall(ID3D12GraphicsCommandList* cmdList,UINT indexCountPerInstance, UINT instanceCount = 1,
-		                     UINT startIndexLocation = 0, UINT baseVertexLocation = 0, UINT startInstanceLocation = 0)
-		{
-			cmdList->DrawIndexedInstanced(indexCountPerInstance, instanceCount, 
-				startIndexLocation, baseVertexLocation, startInstanceLocation);
-		}
-	protected:
 	public:
 		//hack マルチスレッドの時にunique_ptrでも大丈夫か？
-		std::unique_ptr<Argent::Dx12::ArVertexBuffer<T>> vertexBuffer;
-		std::unique_ptr<Argent::Dx12::ArIndexBuffer> indexBuffer;
-		std::vector<T> vertices;
-		std::vector<uint32_t> indices;
+		std::unique_ptr<Argent::Dx12::ArVertexBuffer<Vertex>> vertexBuffer{};
+		std::unique_ptr<Argent::Dx12::ArIndexBuffer> indexBuffer{};
+		MeshResource meshResource;
 	};
+
 }
 

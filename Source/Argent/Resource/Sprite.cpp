@@ -6,8 +6,7 @@
 namespace Argent::Resource::Sprite
 {
 	Sprite::Sprite():
-		Argent::Resource::Mesh::ArMesh<Vertex>
-		("Sprite", ResourceType::Texture)
+		ArResource("Sprite", ResourceType::Texture)
 	{
 		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
 		HRESULT hr{ S_OK };
@@ -24,14 +23,7 @@ namespace Argent::Resource::Sprite
 		vertices.at(3).texcoord = { 1.0f, 1.0f };
 		vertices.at(0).color = vertices[1].color = vertices[2].color = vertices[3].color = DirectX::XMFLOAT4(1, 1, 1, 1);
 
-		indices.resize(4);
-		indices.at(0) = 0;
-		indices.at(1) = 1;
-		indices.at(2) = 2;
-		indices.at(3) = 3;
-
 		vertexBuffer = std::make_unique<Argent::Dx12::ArVertexBuffer<Vertex>>(device, vertices, &vertexMap);
-		indexBuffer = std::make_unique<Argent::Dx12::ArIndexBuffer>(device, indices);
 	}
 
 	void Sprite::UpdateVertexMap(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& scale,

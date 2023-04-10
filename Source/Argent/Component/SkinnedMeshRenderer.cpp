@@ -47,42 +47,39 @@ namespace Argent::Component::Renderer
 		objectConstantBuffer->UpdateConstantBuffer(constant);
 
 		objectConstantBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbObject));
-		//for(const auto& m : skinnedMesh)
-		//{
-			const auto& m = skinnedMesh;
-			for(const auto& s : m->subsets)
+		const auto& m = skinnedMesh;
+		for(const auto& s : m->subsets)
+		{
+			if (animationClips.size() > 0)
 			{
-				if (animationClips.size() > 0)
+				Argent::Resource::Mesh::ArSkinnedMesh::Constant meshConstant{};
+				const size_t boneCount{ m->bindPose.bones.size() };
+				for (int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
 				{
-					Argent::Resource::Mesh::ArSkinnedMesh::Constant meshConstant{};
-					const size_t boneCount{ m->bindPose.bones.size() };
-					for (int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
-					{
-						const auto& bone{ m->bindPose.bones.at(boneIndex) };
-						const Resource::Animation::ArAnimation::Keyframe::Node& boneNode{ keyframe->nodes.at(bone.nodeIndex) };
-						DirectX::XMStoreFloat4x4(&meshConstant.boneTransforms[boneIndex],
-							DirectX::XMLoadFloat4x4(&bone.offsetTransform) *
-							DirectX::XMLoadFloat4x4(&boneNode.globalTransform) *
-							DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&m->defaultGlobalTransform))
-						);
-					}
-					const Resource::Animation::ArAnimation::Keyframe::Node meshNode{ keyframe->nodes.at(m->nodeIndex) };
-
-					meshConstant.globalTransform = meshNode.globalTransform;
-					m->constantBuffer->UpdateConstantBuffer(meshConstant);
+					const auto& bone{ m->bindPose.bones.at(boneIndex) };
+					const Resource::Animation::ArAnimation::Keyframe::Node& boneNode{ keyframe->nodes.at(bone.nodeIndex) };
+					DirectX::XMStoreFloat4x4(&meshConstant.boneTransforms[boneIndex],
+						DirectX::XMLoadFloat4x4(&bone.offsetTransform) *
+						DirectX::XMLoadFloat4x4(&boneNode.globalTransform) *
+						DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&m->defaultGlobalTransform))
+					);
 				}
+				const Resource::Animation::ArAnimation::Keyframe::Node meshNode{ keyframe->nodes.at(m->nodeIndex) };
 
-				const auto& material{ materials.at(s.materialUniqueId) };
-				material.constantBuffer->UpdateConstantBuffer(material.constant);
-				material.SetOnCommand(cmdList, static_cast<UINT>(RootParameterIndex::cbMaterial),
-					static_cast<UINT>(RootParameterIndex::txAlbedo), 
-					static_cast<UINT>(RootParameterIndex::txNormal));
+				meshConstant.globalTransform = meshNode.globalTransform;
+				m->constantBuffer->UpdateConstantBuffer(meshConstant);
+			}
 
-				m->constantBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbMesh));
+			const auto& material{ materials.at(s.materialUniqueId) };
+			material.constantBuffer->UpdateConstantBuffer(material.constant);
+			material.SetOnCommand(cmdList, static_cast<UINT>(RootParameterIndex::cbMaterial),
+				static_cast<UINT>(RootParameterIndex::txAlbedo), 
+				static_cast<UINT>(RootParameterIndex::txNormal));
 
-				m->SetOnCommandList(cmdList);
-				Resource::Mesh::ArSkinnedMesh::DrawCall(cmdList, s.indexCount, 1, s.startIndexLocation, 0, 0);
-			//}
+			m->constantBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbMesh));
+
+			m->SetOnCommandList(cmdList);
+			cmdList->DrawIndexedInstanced(s.indexCount, 1, s.startIndexLocation, 0, 0);
 		}
 	}
 

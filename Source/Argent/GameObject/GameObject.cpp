@@ -56,6 +56,7 @@ void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 {
 	com->SetOwner(this);
 	components.emplace_back(com);
+	int i = 0;
 }
 
 void GameObject::AddComponent(std::vector<Argent::Component::BaseComponent*> com)

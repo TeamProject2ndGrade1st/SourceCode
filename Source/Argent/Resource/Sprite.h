@@ -1,7 +1,9 @@
 #pragma once
 #include <DirectXMath.h>
-#include "ArMesh.h"
-
+#include "../Graphic/Dx12/VertexBuffer.h"
+#include "../Graphic/Dx12/IndexBuffer.h"
+#include "ArResource.h"
+#include "Material.h"
 
 namespace Argent::Resource
 {
@@ -18,7 +20,7 @@ namespace Argent::Resource
 		//hack　こいつにテクスチャのcenter とかtexpos持たせてもいいかも…
 
 		class Sprite:
-			public Mesh::ArMesh<Vertex>
+			public ArResource
 		{
 		public:
 			Sprite();
@@ -40,7 +42,15 @@ namespace Argent::Resource
 				 */
 			void UpdateVertexMap(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& scale, const DirectX::XMFLOAT2& center, float angle, float textureWidth, float textureHeight, const DirectX::XMFLOAT4& color) const;
 
+			void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot = 0) const
+			{
+				vertexBuffer->SetOnCommandList(cmdList, vertexStartSlot);
+			}
+
+
 		private:
+			std::unique_ptr<Argent::Dx12::ArVertexBuffer<Vertex>> vertexBuffer{};
+			std::vector<Vertex> vertices;
 			Vertex* vertexMap{};
 		};
 	}

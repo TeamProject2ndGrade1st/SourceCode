@@ -128,7 +128,8 @@ namespace Argent::Component::Renderer
 		materials.at(0)->Render(cmdList, 0);
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		sprite->SetOnCommandList(cmdList);
-		sprite->DrawCall(cmdList, 4);
+		cmdList->DrawInstanced(4, 1, 0, 0);
+		//sprite->DrawCall(cmdList, 4);
 	}
 
 #ifdef _DEBUG
