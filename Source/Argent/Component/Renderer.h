@@ -32,7 +32,7 @@ namespace Argent::Component
 #endif
 		protected:
 			std::vector<std::shared_ptr<Material::ArMaterial>> materials;
-			std::shared_ptr<Argent::Graphics::RenderingPipeline::BaseRenderingPipeline> renderingPipeline;
+			std::unique_ptr<Argent::Graphics::RenderingPipeline> renderingPipeline;
 		};
 	}
 }

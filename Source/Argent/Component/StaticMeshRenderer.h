@@ -14,19 +14,10 @@
 
 namespace Argent::Component::Renderer
 {
-	class StaticMeshRenderer:
+	class StaticMeshRenderer :
 		public BaseRenderer
 	{
 	public:
-		enum class RootParameterIndex
-		{
-			cbScene,
-			cbObject,
-			cbMaterial,
-			txAlbedo,
-			txNormal,
-		};
-
 		struct Constants
 		{
 			DirectX::XMFLOAT4X4 world;
@@ -34,8 +25,6 @@ namespace Argent::Component::Renderer
 
 
 	public:
-		StaticMeshRenderer(ID3D12Device* device, const char* fileName, std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes,
-			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials);
 		StaticMeshRenderer(ID3D12Device* device, const char* fileName, std::shared_ptr<Resource::Mesh::ArStaticMesh> meshes,
 			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials);
 		~StaticMeshRenderer() override = default;
@@ -48,7 +37,6 @@ namespace Argent::Component::Renderer
 		void Render(ID3D12GraphicsCommandList* cmdList,
 			const DirectX::XMFLOAT4X4& world) const;
 
-		void CreateRootSignatureAndPipelineState();
 
 		void Initialize() override;
 		void Render() const override;
@@ -64,7 +52,7 @@ namespace Argent::Component::Renderer
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> constantBuffer{};
 
 	protected:
-		std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes{};
+		std::shared_ptr<Resource::Mesh::ArStaticMesh> mesh{};
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial> materials{};
 		
 	public:

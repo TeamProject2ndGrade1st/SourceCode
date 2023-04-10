@@ -8,56 +8,59 @@ namespace Argent
 {
 	namespace Graphics
 	{
-		namespace RenderingPipeline
+		class RenderingPipeline
 		{
-			class BaseRenderingPipeline
+		public:
+			/**
+			 * \brief 
+			 * \param vsFilePath 
+			 * \param psFilePath 
+			 * \param rootSigDesc 
+			 * \param pipelineStateDesc 各種シェーダーとpRootSignatureは値をセットしなくてもいい
+			 */
+			RenderingPipeline(const char* vsFilePath, const char* psFilePath, 
+			                   const  D3D12_ROOT_SIGNATURE_DESC* rootSigDesc,
+			                    D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineStateDesc);
+
+			void SetOnCommandList(ID3D12GraphicsCommandList* cmdList) const
 			{
-			public:
-				/**
-				 * \brief 
-				 * \param vsFilePath 
-				 * \param psFilePath 
-				 * \param rootSigDesc 
-				 * \param pipelineStateDesc 各種シェーダーとpRootSignatureは値をセットしなくてもいい
-				 */
-				BaseRenderingPipeline(const char* vsFilePath, const char* psFilePath, 
-				                   const  D3D12_ROOT_SIGNATURE_DESC* rootSigDesc,
-				                    D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineStateDesc);
+				pipelineState->SetOnCommandList(cmdList);
+				rootSignature->SetOnCommandList(cmdList);
+			}
 
-				void SetOnCommandList(ID3D12GraphicsCommandList* cmdList) const
-				{
-					pipelineState->SetOnCommandList(cmdList);
-					rootSignature->SetOnCommandList(cmdList);
-				}
-			private:
-				/**
-				 * \brief 頂点シェーダーとピクセルシェーダー、ルートシグネチャの値は入れなくてもいい
-				 * \param device
-				 * \param pipelineStateDesc 
-				 */
-				void CreatePipelineState(ID3D12Device* device, D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineStateDesc)
-				{
-					if (rootSignature == nullptr) _ASSERT_EXPR(FALSE, "Call CreateRootSignature befor Calling CreatePipelineState");
-					if (!vertexShader || !pixelShader) _ASSERT_EXPR(FALSE, "one or more shader are nullptr");
+			static std::unique_ptr<RenderingPipeline> CreateDefaultSpritePipeLine();
+			static std::unique_ptr<RenderingPipeline> CreateDefaultStaticMeshPipeLine();
+			static std::unique_ptr<RenderingPipeline> CreateDefaultSkinnedMeshPipeLine();
 
-					pipelineStateDesc->pRootSignature = rootSignature->GetpRootSignature();
-					pipelineStateDesc->VS.pShaderBytecode = vertexShader->GetData();
-					pipelineStateDesc->VS.BytecodeLength = vertexShader->GetSize();
-					pipelineStateDesc->PS.pShaderBytecode = pixelShader->GetData();
-					pipelineStateDesc->PS.BytecodeLength = pixelShader->GetSize();
-					pipelineState = std::make_shared<Dx12::ArPipelineState>(device, pipelineStateDesc);
-				}
-				void CreateRootSignature(ID3D12Device* device, const D3D12_ROOT_SIGNATURE_DESC* rootSigDesc)
-				{
-					rootSignature = std::make_shared<Dx12::ArRootSignature>(device, rootSigDesc);
-				}
+		private:
+			/**
+			 * \brief 頂点シェーダーとピクセルシェーダー、ルートシグネチャの値は入れなくてもいい
+			 * \param device
+			 * \param pipelineStateDesc 
+			 */
+			void CreatePipelineState(ID3D12Device* device, D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineStateDesc)
+			{
+				if (rootSignature == nullptr) _ASSERT_EXPR(FALSE, "Call CreateRootSignature befor Calling CreatePipelineState");
+				if (!vertexShader || !pixelShader) _ASSERT_EXPR(FALSE, "one or more shader are nullptr");
 
-				std::shared_ptr<Dx12::ArPipelineState> pipelineState{};
-				std::shared_ptr<Dx12::ArRootSignature> rootSignature{};
-				std::shared_ptr<Shader::ArShader> vertexShader{};
-				std::shared_ptr<Shader::ArShader> pixelShader{};
-			};
-		}
+				pipelineStateDesc->pRootSignature = rootSignature->GetpRootSignature();
+				pipelineStateDesc->VS.pShaderBytecode = vertexShader->GetData();
+				pipelineStateDesc->VS.BytecodeLength = vertexShader->GetSize();
+				pipelineStateDesc->PS.pShaderBytecode = pixelShader->GetData();
+				pipelineStateDesc->PS.BytecodeLength = pixelShader->GetSize();
+				pipelineState = std::make_shared<Dx12::PipelineState>(device, pipelineStateDesc);
+			}
+			void CreateRootSignature(ID3D12Device* device, const D3D12_ROOT_SIGNATURE_DESC* rootSigDesc)
+			{
+				rootSignature = std::make_shared<Dx12::RootSignature>(device, rootSigDesc);
+			}
+
+			std::shared_ptr<Dx12::PipelineState> pipelineState{};
+			std::shared_ptr<Dx12::RootSignature> rootSignature{};
+			std::shared_ptr<Shader::ArShader> vertexShader{};
+			std::shared_ptr<Shader::ArShader> pixelShader{};
+		};
+		
 	}
 }
 

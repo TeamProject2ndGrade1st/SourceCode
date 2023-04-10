@@ -103,7 +103,5 @@ namespace Argent::Component::Renderer
 		std::vector<Resource::Animation::ArAnimation> animationClips;
 
 		float animationTick{};
-	private:
-		void CreateRootSignatureAndPipelineState();
 	};
 }

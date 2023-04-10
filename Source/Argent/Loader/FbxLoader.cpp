@@ -4,6 +4,7 @@
 #include <fstream>
 
 //todo
+#include "../Graphic/Graphics.h"
 #include "../Component/StaticMeshRenderer.h"
 #include "../Component/SkinnedMeshRenderer.h"
 #include "../Resource/ArSkinnedMesh.h"
