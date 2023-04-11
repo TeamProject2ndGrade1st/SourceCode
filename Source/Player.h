@@ -8,12 +8,12 @@ public:
 	Player();
 	virtual ~Player() override = default;
 
-<<<<<<< HEAD
 	void Update() override;
-=======
-	void Update();
-	void Initialize();
+	void Initialize() override;
 
+#ifdef _DEBUG
+	void DrawDebug() override;
+#endif
 private:
 	int state = 0;
 
@@ -22,8 +22,6 @@ private:
 	float movement = 1.0f;
 
 	void MoveCamera();
-
->>>>>>> origin/mameno-to
 protected:
 
 };

@@ -17,7 +17,7 @@ void Title::Initialize()
 
 	
 	AddObject(new GameObject("Nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
-	AddObject(new GameObject("Gun", new BaseGun));
+//	AddObject(new GameObject("Gun", new BaseGun));
 	//AddObject(new GameObject("Stage", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 
 	AddObject(new GameObject("player", new Player));

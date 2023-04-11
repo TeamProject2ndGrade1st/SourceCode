@@ -9,7 +9,7 @@ namespace Argent::Input
 	enum class State
 	{
 		NONE,
-		PRESS_ENTER,
+		ENTER,
 		PRESS,
 		RELEASE,
 	};
@@ -418,7 +418,7 @@ namespace Argent::Input
 		 */
 		bool GetKeyDown(KeyCode key) const
 		{
-			return keyState.find(key)->second == State::PRESS_ENTER;
+			return keyState.find(key)->second == State::ENTER;
 		}
 
 	/*	State GetKeyState(KeyCode key) const
@@ -436,10 +436,10 @@ namespace Argent::Input
 					switch ((*it).second)
 					{
 					case State::NONE:
-						(*it).second = State::PRESS_ENTER;
+						(*it).second = State::ENTER;
 						break;
 
-					case State::PRESS_ENTER:
+					case State::ENTER:
 					case State::PRESS:
 						(*it).second = State::PRESS;
 						break;
@@ -459,7 +459,7 @@ namespace Argent::Input
 						break;
 
 					case State::PRESS:
-					case State::PRESS_ENTER:
+					case State::ENTER:
 						(*it).second = State::RELEASE;
 						break;
 					}

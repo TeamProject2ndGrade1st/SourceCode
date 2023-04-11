@@ -27,10 +27,10 @@ namespace Argent::Input
 				switch (m.second)
 				{
 				case State::NONE:
-					m.second = State::PRESS_ENTER;
+					m.second = State::ENTER;
 					break;
 			
-				case State::PRESS_ENTER:
+				case State::ENTER:
 				case State::PRESS:
 					m.second = State::PRESS;
 					break;
@@ -50,7 +50,7 @@ namespace Argent::Input
 					break;
 			
 				case State::PRESS:
-				case State::PRESS_ENTER:
+				case State::ENTER:
 					m.second = State::RELEASE;
 					break;
 				}
@@ -72,7 +72,7 @@ namespace Argent::Input
 
 	bool Mouse::IsButtonPressEneter(Mouses m)
 	{
-		if(mouseState[m] == State::PRESS_ENTER) return true;
+		if(mouseState[m] == State::ENTER) return true;
 		return false;
 	}
 

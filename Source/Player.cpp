@@ -9,6 +9,16 @@ void Player::Initialize()
 {
 }
 
+void Player::DrawDebug()
+{
+    if(ImGui::TreeNode(GetName().c_str()))
+    {
+        ImGui::SliderFloat("movement", &movement, 0.1f, 10.0);
+		BaseActor::DrawDebug();
+        ImGui::TreePop();
+    }
+}
+
 void Player::Update()
 {
     switch (state)
