@@ -8,6 +8,7 @@ public:
 	Player();
 	virtual ~Player() override = default;
 
+	void Update() override;
 protected:
 
 };

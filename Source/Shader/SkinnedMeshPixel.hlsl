@@ -45,6 +45,5 @@ float4 main(VS_OUT pin) : SV_TARGET
 	float3 diffuse = CalcLambertDiffuse(N, L, lightColor, kd);
 	float3 specular = CalcPhongSpecular(N, L, lightColor, E, shininess, ks);
 
-
 	return float4(color.rgb * diffuse.rgb + specular.rgb, 1);
 }

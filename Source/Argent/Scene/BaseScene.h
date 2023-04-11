@@ -3,7 +3,9 @@
 #include <vector>
 
 #include "../GameObject/GameObject.h"
+#include "../Component/Camera.h"
 #include "../Component/Light.h"
+#include "../Graphic/Graphics.h"
 
 namespace Argent::Scene
 {
@@ -14,7 +16,7 @@ namespace Argent::Scene
 			sceneName(std::move(sceneName))
 		{
 			gameObject.clear();
-			AddObject(GameObject::SceneCamera("Camera", true));
+			AddObject(new GameObject("Camera", new Camera(true, Argent::Graphics::ArGraphics::Instance()->GetWidth(), Argent::Graphics::ArGraphics::Instance()->GetHeight())));
 			AddObject(new GameObject("Light", new Light));
 		}
 		virtual ~BaseScene() = default;
@@ -39,7 +41,6 @@ namespace Argent::Scene
 	#ifdef _DEBUG
 		virtual void DrawDebug();
 	#endif
-
 
 		void DeleteDestroyedObject();
 		void DestroyGameObject(GameObject* object);
@@ -87,7 +88,10 @@ namespace Argent::Scene
 		std::vector<GameObject*> gameObject{};
 		std::vector<GameObject*> destroyedGameObject{};
 
+
+	private:
 		std::vector<GameObject*> addObject{};
+		void AddObjectToGameObject();
 	};
 	
 }

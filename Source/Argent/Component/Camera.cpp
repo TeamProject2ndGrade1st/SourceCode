@@ -17,7 +17,10 @@ Camera::Camera(bool isSceneCamera, float width, float height, float nearZ, float
 ,	forward(DirectX::XMFLOAT3(0, 0, 1))
 ,	right(DirectX::XMFLOAT3(1, 0, 0))
 ,	up(DirectX::XMFLOAT3(0, 1, 0))
-{}
+{
+	/*if(Argent::Graphics::ArGraphics::Instance()->GetCamera() == nullptr)
+		Argent::Graphics::ArGraphics::Instance()->SetCamera(this);*/
+}
 
 void Camera::Reset()
 {
@@ -131,6 +134,15 @@ void Camera::Update()
 	DirectX::XMStoreFloat3(&up, DirectX::XMVector3Normalize(DirectX::XMVector3Rotate(UpVec, quaternion)));
 }
 
+void Camera::End()
+{
+	auto g = Argent::Graphics::ArGraphics::Instance();
+	g->SetCameraPosition(GetOwner()->GetTransform()->GetPosition());
+	g->SetProjectionMatrix(GetProjectionMatrix());
+	g->SetViewMatrix(GetViewMatrix());
+
+}
+
 #ifdef _DEBUG
 void Camera::DrawDebug()
 {
@@ -139,7 +151,6 @@ void Camera::DrawDebug()
 	{
 		if(ImGui::Button("Use Scene Camera"))
 		{
-			Argent::Graphics::ArGraphics::Instance()->SetCamera(this);
 			isSceneCamera = true;
 		}
 

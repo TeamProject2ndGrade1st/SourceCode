@@ -16,6 +16,7 @@ public:
 	void Reset() override;
 	void Initialize() override;
 	void Update() override;
+	void End() override;
 #ifdef _DEBUG
 	void DrawDebug() override;
 #endif

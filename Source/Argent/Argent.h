@@ -28,6 +28,9 @@
 
 #include "GameObject/GameObject.h"
 
+#include "Scene/BaseScene.h"
+#include "Scene/SceneManager.h"
+
 using KeyCode = Argent::Input::Keyboard::KeyCode;
 namespace Argent
 {

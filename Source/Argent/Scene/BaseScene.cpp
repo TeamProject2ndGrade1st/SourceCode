@@ -1,68 +1,12 @@
 #include "BaseScene.h"
 #include <algorithm>
-#include "../Component/Camera.h"
 #include "../Graphic/Graphics.h"
 
 namespace Argent::Scene
 {
 	void BaseScene::Initialize()
 	{
-		Camera* c{};
-		Light* l{};
-		for (const auto& object : gameObject)
-		{
-			if (!object) continue;
-
-			object->Initialize();
-			if (!c)
-			{
-				c = object->GetComponent<Camera>();
-				if (!c)
-				{
-					if (object->GetChild<GameObject>())
-						c = object->GetChild<GameObject>()->GetComponent<Camera>();
-				}
-			}
-			if (!l)
-			{
-				l = object->GetComponent<Light>();
-				if (!l)
-				{
-					if (object->GetChild<GameObject>())
-						l = object->GetChild<GameObject>()->GetComponent<Light>();
-				}
-			}
-		}
-		if(!c || !l)
-		{
-			for (const auto& object : addObject)
-			{
-				if (!object) continue;
-
-				object->Initialize();
-				if (!c)
-				{
-					c = object->GetComponent<Camera>();
-					if (!c)
-					{
-						if (object->GetChild<GameObject>())
-							c = object->GetChild<GameObject>()->GetComponent<Camera>();
-					}
-				}
-				if (!l)
-				{
-					l = object->GetComponent<Light>();
-					if (!l)
-					{
-						if (object->GetChild<GameObject>())
-							l = object->GetChild<GameObject>()->GetComponent<Light>();
-					}
-				}
-			}
-			
-		}
-		Argent::Graphics::ArGraphics::Instance()->SetCamera(c);
-		Argent::Graphics::ArGraphics::Instance()->SetLight(l);
+		AddObjectToGameObject();
 	}
 
 	void BaseScene::Finalize()
@@ -80,16 +24,7 @@ namespace Argent::Scene
 	void BaseScene::Begin()
 	{
 		//todo resizeしてからのほうが処理軽いかも
-		for(const auto& obj : addObject)
-		{
-			if (obj)
-			{
-				//todo initializeするタイミングは本当にここでいい？
-				obj->Initialize();
-				gameObject.emplace_back(std::move(obj));
-			}
-		}
-		addObject.clear();
+		AddObjectToGameObject();
 		for (const auto& object : gameObject)
 		{
 			if (!object) continue;
@@ -151,7 +86,6 @@ namespace Argent::Scene
 			object->DrawDebug();
 		}
 	}
-
 #endif
 
 	void BaseScene::CloseAllDebugWindow() const
@@ -189,6 +123,20 @@ namespace Argent::Scene
 			ImGui::TreePop();
 		}
 #endif
+	}
+
+	void BaseScene::AddObjectToGameObject()
+	{
+		for(const auto& obj : addObject)
+		{
+			if (obj)
+			{
+				//todo initializeするタイミングは本当にここでいい？
+				obj->Initialize();
+				gameObject.emplace_back(std::move(obj));
+			}
+		}
+		addObject.clear();
 	}
 
 	void Argent::Scene::BaseScene::DestroyGameObject(GameObject* object)

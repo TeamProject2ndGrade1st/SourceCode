@@ -1,9 +1,7 @@
 #include "GameObject.h"
 #include <sstream>
 #include "../Graphic/Graphics.h"
-#include "../Component/Camera.h"
 #include "../Resource/ResourceManager.h"
-#include "../Scene/SceneManager.h"
 #include "../Scene/SceneManager.h"
 
 
@@ -55,8 +53,8 @@ GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> 
 void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 {
 	com->SetOwner(this);
-	components.emplace_back(com);
-	int i = 0;
+	addComponents.emplace_back(com);
+	//components.emplace_back(com);
 }
 
 void GameObject::AddComponent(std::vector<Argent::Component::BaseComponent*> com)
@@ -89,15 +87,6 @@ void GameObject::CloseAllWindow()
 	}
 }
 
-GameObject* GameObject::SceneCamera(const std::string& name, bool setSceneCamera)
-{
-	return new GameObject({
-			new Camera(setSceneCamera, Argent::Graphics::ArGraphics::Instance()->GetWidth(), Argent::Graphics::ArGraphics::Instance()->GetHeight()),
-			new CameraController
-		},
-		name);
-}
-
 void GameObject::DestroyGameObject(GameObject* object)
 {
 	Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->DestroyGameObject(object);
@@ -114,6 +103,16 @@ GameObject* GameObject::Instantiate(const char* name, Argent::Component::BaseCom
 GameObject* GameObject::FindGameObject(const char* name)
 {
 	return Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->GetGameObject(name);
+}
+
+void GameObject::AddComToCom()
+{
+	for(auto& a : addComponents)
+	{
+		a->Initialize();
+		components.emplace_back(a);
+	}
+	addComponents.clear();
 }
 
 void GameObject::Initialize()
@@ -146,6 +145,7 @@ void GameObject::Finalize()
 
 void GameObject::Begin()
 {
+	AddComToCom();
 	for (const auto& com : components)
 	{
 		com->Begin();
