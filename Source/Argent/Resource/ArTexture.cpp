@@ -36,7 +36,7 @@ namespace Argent::Texture
 		height = static_cast<float>(shaderResource->GetDesc().Height);
 	}
 
-	void ArTexture::Render(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const
+	void ArTexture::SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const
 	{
 		cmdList->SetDescriptorHeaps(1, descriptor->GetDescriptorHeap()->GetHeapDoublePointer());
 		cmdList->SetGraphicsRootDescriptorTable(RootParameterIndex, descriptor->GetGPUHandle());

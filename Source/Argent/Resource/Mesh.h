@@ -33,6 +33,8 @@ namespace Argent::Resource::Mesh
 		uint32_t startIndexLocation{};
 		uint32_t indexCount{};
 
+		std::shared_ptr<Material::SpriteMaterial> material;
+
 		template<class T>
 		void serialize(T& archive)
 		{

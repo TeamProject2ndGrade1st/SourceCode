@@ -27,10 +27,8 @@ namespace Argent::Component::Renderer
 		void DrawDebug() override;
 #endif
 
-
-		[[nodiscard]] Material::ArMaterial* GetMaterial() const { return materials.at(0).get();  }
-
 	private:
 		std::unique_ptr<Resource::Sprite::Sprite> sprite;
+		std::shared_ptr<Material::SpriteMaterial> material;
 	};
 }

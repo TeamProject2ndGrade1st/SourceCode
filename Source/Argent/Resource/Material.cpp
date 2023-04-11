@@ -4,18 +4,15 @@
 
 namespace Argent::Material
 {
-	ArMaterial::ArMaterial(const char* textureFilepath):
+	SpriteMaterial::SpriteMaterial(const char* textureFilepath):
 		color(DirectX::XMFLOAT4(1, 1, 1, 1))
 	{
-		if(textureFilepath[0] != NULL)
-		{
-			textures.emplace_back(std::make_unique<Texture::ArTexture>(textureFilepath));
-		}
+		texture =std::make_unique<Texture::ArTexture>(textureFilepath);
 	}
 
-	void ArMaterial::Render(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const
+	void SpriteMaterial::Render(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const
 	{
-		textures.at(0)->Render(cmdList, RootParameterIndex);
+		texture->SetOnCommandList(cmdList, RootParameterIndex);
 	}
 
 	void ArMeshMaterial::CreateTexture(const char* filePath, TextureType type)
@@ -31,18 +28,18 @@ namespace Argent::Material
 		constantBuffer->SetOnCommandList(cmdList, cbIndex);
 		auto t1 = Resource::ResourceManager::Instance().GetTexture(textureUniqueId[static_cast<int>(TextureType::Diffuse)]);
 		auto t2 = Resource::ResourceManager::Instance().GetTexture(textureUniqueId[static_cast<int>(TextureType::Normal)]);
-		t1->Render(cmdList, diffuseIndex);
-		t2->Render(cmdList, normalIndex);
+		t1->SetOnCommandList(cmdList, diffuseIndex);
+		t2->SetOnCommandList(cmdList, normalIndex);
 	}
 
 #ifdef _DEBUG
-	void ArMaterial::DrawDebug()
+	void SpriteMaterial::DrawDebug()
 	{
 		if(ImGui::TreeNode("Material"))
 		{
-			ImGui::Text("%f", textures.at(0)->GetWidth());
-			ImGui::Text("%f", textures.at(0)->GetHeight());
-			ImGui::Image(reinterpret_cast<ImTextureID>(textures.at(0)->GetImDescriptor()->GetGPUHandle().ptr), ImVec2(128, 128));
+			ImGui::Text("%f", texture->GetWidth());
+			ImGui::Text("%f", texture->GetHeight());
+			ImGui::Image(reinterpret_cast<ImTextureID>(texture->GetImDescriptor()->GetGPUHandle().ptr), ImVec2(128, 128));
 			color.DrawDebug();
 			ImGui::TreePop();
 		}

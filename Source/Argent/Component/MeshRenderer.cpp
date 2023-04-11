@@ -18,7 +18,6 @@ namespace Argent::Component::Renderer
 		}
 		CreateComObject(device);
 		renderingPipeline = Graphics::RenderingPipeline::CreateDefaultStaticMeshPipeLine();
-		//CreateRootSignatureAndPipelineState();
 	}
 
 	void MeshRenderer::Render(ID3D12GraphicsCommandList* cmdList,

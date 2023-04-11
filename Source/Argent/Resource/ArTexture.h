@@ -12,7 +12,7 @@ namespace Argent::Texture
 	public:
 		ArTexture(const char* filePath);
 
-		void Render(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const;
+		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const;
 		ID3D12Resource* GetTexture() const { return shaderResource.Get(); }
 		float GetWidth() const { return width; }
 		float GetHeight() const { return height; }

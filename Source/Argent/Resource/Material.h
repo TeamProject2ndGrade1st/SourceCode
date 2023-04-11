@@ -19,10 +19,10 @@
 
 namespace Argent::Material
 {
-	class ArMaterial
+	class SpriteMaterial
 	{
 	public:
-		ArMaterial(const char* textureFilepath);
+		SpriteMaterial(const char* textureFilepath);
 
 		/**
 		 * \brief 
@@ -34,12 +34,9 @@ namespace Argent::Material
 		void DrawDebug();
 #endif
 
-		std::vector<std::shared_ptr<Texture::ArTexture>> textures;
+		std::shared_ptr<Texture::ArTexture> texture;
 		ArColor color;
 		std::string name;
-		DirectX::XMFLOAT4 ka{ 0.2f, 0.2f, 0.2f, 1.0f };
-		DirectX::XMFLOAT4 kd{ 0.2f, 0.2f, 0.2f, 1.0f };
-		DirectX::XMFLOAT4 ks{ 0.2f, 0.2f, 0.2f, 1.0f };
 	};
 
 	struct ArMeshMaterial
@@ -74,7 +71,6 @@ namespace Argent::Material
 		std::string name;
 
 		static constexpr int NumTextures = static_cast<int>(TextureType::Max);
-		//std::shared_ptr<Argent::Texture::ArTexture> textures[NumTextures];
 		uint64_t textureUniqueId[NumTextures];
 		std::string textureNames[NumTextures];
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;

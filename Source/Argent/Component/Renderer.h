@@ -31,7 +31,7 @@ namespace Argent::Component
 			void DrawDebug() override{}
 #endif
 		protected:
-			std::vector<std::shared_ptr<Material::ArMaterial>> materials;
+			/*std::vector<std::shared_ptr<Material::SpriteMaterial>> materials;*/
 			std::unique_ptr<Argent::Graphics::RenderingPipeline> renderingPipeline;
 		};
 	}
