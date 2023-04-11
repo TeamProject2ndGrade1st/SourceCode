@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "../Graphic/Graphics.h"
 #include "../Input/Keyboard.h"
+#include "../Input/Mouse.h"
 #include "../GameObject/GameObject.h"
 #include "../Math/MathHelper.h"
 
@@ -222,7 +223,7 @@ void CameraController::Update()
 
 	if(!camera->GetIsSceneCamera()) return;
 
-	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::mMiddleButton))
+	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::MiddleButton))
 	{
 		DirectX::XMFLOAT3 position = transform->GetPosition();
 		if(!camera) return;
@@ -243,7 +244,7 @@ void CameraController::Update()
 	}
 
 	//Rotate
-	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::mRightButton))
+	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::RightButton))
 	{
 		DirectX::XMFLOAT4 rotation = transform->GetRotation();
 

@@ -168,6 +168,90 @@ namespace Argent::Loader::Fbx
 		return ret;
 	}
 
+	void FetchMesh(FbxScene* fbxScene, const ArFbxScene& sceneView, Argent::Resource::Mesh::MeshResource& mResource)
+	{
+		for (const ArFbxScene::Node& node : sceneView.nodes)
+		{
+			if (node.attribute != FbxNodeAttribute::EType::eMesh) continue;
+
+			FbxNode* fbxNode{ fbxScene->FindNodeByName(node.name.c_str()) };
+			FbxMesh* fbxMesh{ fbxNode->GetMesh() };
+
+			const int polygonCount{ fbxMesh->GetPolygonCount() };
+			mResource.vertices.resize(polygonCount * 3LL);
+			mResource.indices.resize(polygonCount * 3LL);
+
+			FbxStringList uvNames;
+			fbxMesh->GetUVSetNames(uvNames);
+			const FbxVector4* controlPoints{ fbxMesh->GetControlPoints() };
+			for (int polygonIndex = 0; polygonIndex < polygonCount; ++polygonIndex)
+			{
+				for (int positionInPolygon = 0; positionInPolygon < 3; ++positionInPolygon)
+				{
+					const int vertexIndex{ polygonIndex * 3 + positionInPolygon };
+
+					Resource::Mesh::Vertex vertex;
+
+					const int polygonVertex{ fbxMesh->GetPolygonVertex(polygonIndex, positionInPolygon) };
+					vertex.position.x = static_cast<float>(controlPoints[polygonVertex][0]);
+					vertex.position.y = static_cast<float>(controlPoints[polygonVertex][2]);
+					vertex.position.z = static_cast<float>(-controlPoints[polygonVertex][1]);
+
+					if (fbxMesh->GetElementNormalCount() > 0)
+					{
+						FbxVector4 normal;
+						fbxMesh->GetPolygonVertexNormal(polygonIndex, positionInPolygon, normal);
+						vertex.normal.x = static_cast<float>(normal[0]);
+						vertex.normal.y = static_cast<float>(normal[2]);
+						vertex.normal.z = -static_cast<float>(normal[1]);
+					}
+					if (fbxMesh->GetElementUVCount() > 0)
+					{
+						FbxVector2 uv;
+						bool unmappedUv;
+						fbxMesh->GetPolygonVertexUV(polygonIndex, positionInPolygon,
+							uvNames[0], uv, unmappedUv);
+						vertex.texcoord.x = static_cast<float>(uv[0]);
+						vertex.texcoord.y = 1.0f - static_cast<float>(uv[1]);
+					}
+					mResource.vertices.at(vertexIndex) = std::move(vertex);
+					mResource.indices.at(vertexIndex) = vertexIndex;
+				}
+			}
+		}
+	}
+
+
+	void LoadDebug(const char* filePath)
+	{
+		//シリアライズ
+		std::filesystem::path cerealFileName(filePath);
+		cerealFileName.replace_extension("cereal");
+
+		ArFbxScene sceneView{};
+		Argent::Resource::Mesh::MeshResource mResource;
+
+		FbxManager* manager{ FbxManager::Create() };
+		FbxScene* fbxScene{ FbxScene::Create(manager, "") };
+
+		FbxImporter* importer{ FbxImporter::Create(manager, "") };
+		bool importState{ FALSE };
+		importState = importer->Initialize(filePath);
+		_ASSERT_EXPR_A(importState, importer->GetStatus().GetErrorString());
+
+		importState = importer->Import(fbxScene);
+		_ASSERT_EXPR_A(importState, importer->GetStatus().GetErrorString());
+
+		Traverse(fbxScene->GetRootNode(), sceneView);
+
+		FetchMesh(fbxScene, sceneView, mResource);
+
+		manager->Destroy();
+		std::ofstream ofs(cerealFileName.c_str(), std::ios::binary);
+		cereal::BinaryOutputArchive serialization(ofs);
+		serialization(mResource);
+	}
+
 
 	void FetchMesh(FbxScene* fbxScene, const ArFbxScene& sceneView, std::vector<TmpFbxMesh>& meshes)
 	{
@@ -277,8 +361,6 @@ namespace Argent::Loader::Fbx
 				}
 			}
 		}
-
-		int a = 0;
 	}
 
 	void FetchSurfaceMaterial(const FbxSurfaceMaterial* surfaceMaterial, const char* pName, const char* fbxFilePath, Material::ArMeshMaterial& material)

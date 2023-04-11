@@ -31,6 +31,7 @@ namespace Argent
 			static std::unique_ptr<RenderingPipeline> CreateDefaultSpritePipeLine();
 			static std::unique_ptr<RenderingPipeline> CreateDefaultStaticMeshPipeLine();
 			static std::unique_ptr<RenderingPipeline> CreateDefaultSkinnedMeshPipeLine();
+			static std::unique_ptr<RenderingPipeline> CreateDebugRendererPipeLine();
 
 		private:
 			/**
