@@ -5,7 +5,7 @@
 
 //todo
 #include "../Graphic/Graphics.h"
-#include "../Component/StaticMeshRenderer.h"
+#include "../Component/MeshRenderer.h"
 #include "../Component/SkinnedMeshRenderer.h"
 #include "../Resource/SkinnedMesh.h"
 #include "../Resource/Material.h"
@@ -136,10 +136,10 @@ namespace Argent::Loader::Fbx
 			ret.resize(meshes.size());
 			for(size_t i = 0; i < meshes.size(); ++i)
 			{
-				ret.at(i) = new Component::Renderer::StaticMeshRenderer(device,
+				ret.at(i) = new Component::Renderer::MeshRenderer(device,
 					filePath, meshes.at(i), fbxResource.materials);
 			}
-			/*ret = new Component::Renderer::StaticMeshRenderer(device,
+			/*ret = new Component::Renderer::MeshRenderer(device,
 				filePath, meshes, fbxResource.materials);*/
 		}
 		else

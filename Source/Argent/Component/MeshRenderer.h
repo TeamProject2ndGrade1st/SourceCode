@@ -14,7 +14,7 @@
 
 namespace Argent::Component::Renderer
 {
-	class StaticMeshRenderer :
+	class MeshRenderer :
 		public BaseRenderer
 	{
 	public:
@@ -25,14 +25,14 @@ namespace Argent::Component::Renderer
 
 
 	public:
-		StaticMeshRenderer(ID3D12Device* device, const char* fileName, std::shared_ptr<Resource::Mesh::ArMesh> meshes,
+		MeshRenderer(ID3D12Device* device, const char* fileName, std::shared_ptr<Resource::Mesh::ArMesh> meshes,
 			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials);
-		~StaticMeshRenderer() override = default;
+		~MeshRenderer() override = default;
 
-		StaticMeshRenderer(const StaticMeshRenderer&) = delete;
-		StaticMeshRenderer(const StaticMeshRenderer&&) = delete;
-		StaticMeshRenderer operator=(const StaticMeshRenderer&) = delete;
-		StaticMeshRenderer operator=(const StaticMeshRenderer&&) = delete;
+		MeshRenderer(const MeshRenderer&) = delete;
+		MeshRenderer(const MeshRenderer&&) = delete;
+		MeshRenderer operator=(const MeshRenderer&) = delete;
+		MeshRenderer operator=(const MeshRenderer&&) = delete;
 
 		void Render(ID3D12GraphicsCommandList* cmdList,
 			const DirectX::XMFLOAT4X4& world) const;

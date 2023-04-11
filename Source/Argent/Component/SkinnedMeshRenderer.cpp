@@ -11,7 +11,7 @@ namespace Argent::Component::Renderer
 		std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
 		std::vector<Resource::Animation::ArAnimation>& animation) :
-		BaseRenderer("SkinnedMeshRenderer")
+		BaseRenderer("SkinnedMesh Renderer")
 	{
 		this->skinnedMesh = meshes;
 		for (auto& m : materials)

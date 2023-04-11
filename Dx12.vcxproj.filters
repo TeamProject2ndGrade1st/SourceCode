@@ -217,7 +217,7 @@
     <ClCompile Include="Source\Argent\Resource\ArResource.cpp">
       <Filter>Argent\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\StaticMeshRenderer.cpp">
+    <ClCompile Include="Source\Argent\Component\MeshRenderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Resource\SkinnedMesh.cpp">
@@ -417,7 +417,7 @@
     <ClInclude Include="Source\Argent\Resource\AudioManager.h">
       <Filter>Argent\Resource\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\StaticMeshRenderer.h">
+    <ClInclude Include="Source\Argent\Component\MeshRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Resource\SkinnedMesh.h">

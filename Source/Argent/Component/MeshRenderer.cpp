@@ -1,6 +1,4 @@
-#include "StaticMeshRenderer.h"
-#include <filesystem>
-#include "../Core/Timer.h"
+#include "MeshRenderer.h"
 #include "../GameObject/GameObject.h"
 #include "../Other/Helper.h"
 #include "../Resource/ResourceManager.h"
@@ -8,25 +6,10 @@
 
 namespace Argent::Component::Renderer
 {
-	//StaticMeshRenderer::StaticMeshRenderer(ID3D12Device* device, const char* fileName,
-	//	std::shared_ptr<Resource::Mesh::armes> meshes,
-	//	std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials) :
-	//	BaseRenderer("StaticMeshRenderer")
-	//{
-	//	this->mesh = meshes;
-	//	for (auto& m : materials)
-	//	{
-	//		this->materials.emplace(m.first, std::move(m.second));
-	//	}
-	//	CreateComObject(device);
-	//	renderingPipeline = Graphics::RenderingPipeline::CreateDefaultStaticMeshPipeLine();
-	//	//CreateRootSignatureAndPipelineState();
-	//}
-
-	StaticMeshRenderer::StaticMeshRenderer(ID3D12Device* device, const char* fileName,
+	MeshRenderer::MeshRenderer(ID3D12Device* device, const char* fileName,
 		std::shared_ptr<Resource::Mesh::ArMesh> meshes,
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials):
-		BaseRenderer("StaticMeshRenderer")
+		BaseRenderer("Mesh Renderer")
 	{
 		this->mesh = meshes;
 		for (auto& m : materials)
@@ -38,7 +21,7 @@ namespace Argent::Component::Renderer
 		//CreateRootSignatureAndPipelineState();
 	}
 
-	void StaticMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList,
+	void MeshRenderer::Render(ID3D12GraphicsCommandList* cmdList,
 	                                const DirectX::XMFLOAT4X4& world) const
 	{
 		BaseRenderer::Render(cmdList);
@@ -66,27 +49,27 @@ namespace Argent::Component::Renderer
 		
 	}
 
-	void StaticMeshRenderer::Initialize()
+	void MeshRenderer::Initialize()
 	{
 		GameObject* g = GetOwner();
 		g->GetTransform()->SetWorld(mesh->globalTransform);
 		g->SetName(mesh->GetName());
 	}
 
-	void StaticMeshRenderer::Render() const 
+	void MeshRenderer::Render() const 
 	{
 		const Transform* t = GetOwner()->GetTransform();
 		Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), 
 			t->AdjustParentTransform().GetWorld());
 	}
 
-	void StaticMeshRenderer::Update()
+	void MeshRenderer::Update()
 	{
 		
 	}
 
 #ifdef _DEBUG
-	void StaticMeshRenderer::DrawDebug()
+	void MeshRenderer::DrawDebug()
 	{
 		if (ImGui::TreeNode(GetName().c_str()))
 		{
@@ -104,7 +87,7 @@ namespace Argent::Component::Renderer
 		}
 	}
 #endif
-	void StaticMeshRenderer::CreateComObject(ID3D12Device* device)
+	void MeshRenderer::CreateComObject(ID3D12Device* device)
 	{
 		for (auto it = materials.begin(); it != materials.end(); ++it)
 		{

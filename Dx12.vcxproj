@@ -36,7 +36,7 @@
     <ClCompile Include="Source\Argent\Component\SkinnedMeshRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\SpriteRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\AudioPlayer.cpp" />
-    <ClCompile Include="Source\Argent\Component\StaticMeshRenderer.cpp" />
+    <ClCompile Include="Source\Argent\Component\MeshRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\BaseActor.cpp" />
     <ClCompile Include="Source\Argent\Component\Camera.cpp" />
     <ClCompile Include="Source\Argent\Component\Collider.cpp" />
@@ -103,7 +103,7 @@
     <ClInclude Include="Source\Argent\Component\SkinnedMeshRenderer.h" />
     <ClInclude Include="Source\Argent\Component\SpriteRenderer.h" />
     <ClInclude Include="Source\Argent\Component\AudioPlayer.h" />
-    <ClInclude Include="Source\Argent\Component\StaticMeshRenderer.h" />
+    <ClInclude Include="Source\Argent\Component\MeshRenderer.h" />
     <ClInclude Include="Source\Argent\Component\BaseActor.h" />
     <ClInclude Include="Source\Argent\Component\Camera.h" />
     <ClInclude Include="Source\Argent\Component\Collider.h" />

@@ -16,7 +16,7 @@
 
 #include "Component/Renderer.h"
 #include "Component/SpriteRenderer.h"
-#include "Component/StaticMeshRenderer.h"
+#include "Component/MeshRenderer.h"
 #include "Component/SkinnedMeshRenderer.h"
 #include "Component/EffectRenderer.h"
 
