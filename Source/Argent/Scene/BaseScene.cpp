@@ -6,17 +6,22 @@ namespace Argent::Scene
 {
 	void BaseScene::Initialize()
 	{
-		AddObjectToGameObject();
+		for(size_t i = 0; i < gameObject.size(); ++i)
+		{
+			if(gameObject.at(i))
+				gameObject.at(i)->Initialize();
+		}
 	}
 
 	void BaseScene::Finalize()
 	{
-		for (const auto& object : gameObject)
+		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
-			if (!object) continue;
-
-			object->Finalize();
-			delete object;
+			if(gameObject.at(i))
+			{
+				gameObject.at(i)->Finalize();
+				delete gameObject.at(i);
+			}
 		}
 		gameObject.clear();
 	}
@@ -24,38 +29,37 @@ namespace Argent::Scene
 	void BaseScene::Begin()
 	{
 		//todo resizeしてからのほうが処理軽いかも
-		AddObjectToGameObject();
-		for (const auto& object : gameObject)
+		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
-			if (!object) continue;
-			object->Begin();
+			if (gameObject.at(i))
+				gameObject.at(i)->Begin();
 		}
 	}
 
 	void BaseScene::End()
 	{
-		for (const auto& object : gameObject)
+		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
-			if (!object) continue;
-			object->End();
+			if (gameObject.at(i))
+				gameObject.at(i)->End();
 		}
 	}
 
 	void BaseScene::Update()
 	{
-		for (const auto& object : gameObject)
+		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
-			if (!object) continue;
-			object->Update();
+			if (gameObject.at(i))
+				gameObject.at(i)->Update();
 		}
 	}
 
 	void BaseScene::Render()
 	{
-		for (const auto& object : gameObject)
+		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
-			if (!object) continue;
-			object->Render();
+			if(gameObject.at(i))
+				gameObject.at(i)->Render();
 		}
 	}
 
@@ -75,24 +79,24 @@ namespace Argent::Scene
 	{
 		if (ImGui::TreeNode("Object"))
 		{
-			for (const auto& object : gameObject)
+			for(size_t i = 0; i < gameObject.size(); ++i)
 			{
-				ImGuiCheckBox(object);
+				ImGuiCheckBox(gameObject.at(i));
 			}
 			ImGui::TreePop();
 		}
-		for (const auto& object : gameObject)
+		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
-			object->DrawDebug();
+			gameObject.at(i)->DrawDebug();
 		}
 	}
 #endif
 
 	void BaseScene::CloseAllDebugWindow() const
 	{
-		for (const auto& obj : gameObject)
+		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
-			obj->CloseAllWindow();
+			gameObject.at(i)->CloseAllWindow();
 		}
 	}
 
@@ -100,7 +104,8 @@ namespace Argent::Scene
 	{
 		std::string n = ObjectNameCheck(obj->GetName(), 0);
 		obj->SetName(n);
-		addObject.emplace_back(obj);
+		obj->Initialize();
+		gameObject.emplace_back(obj);
 	}
 
 	void BaseScene::ImGuiCheckBox(GameObject* obj)
@@ -125,22 +130,9 @@ namespace Argent::Scene
 #endif
 	}
 
-	void BaseScene::AddObjectToGameObject()
+	void BaseScene::DestroyGameObject(GameObject* object)
 	{
-		for(const auto& obj : addObject)
-		{
-			if (obj)
-			{
-				//todo initializeするタイミングは本当にここでいい？
-				obj->Initialize();
-				gameObject.emplace_back(std::move(obj));
-			}
-		}
-		addObject.clear();
-	}
-
-	void Argent::Scene::BaseScene::DestroyGameObject(GameObject* object)
-	{
+		//todo これアップデートとかforぶん回してる途中で読んでも大丈夫なのか？
 		destroyedGameObject.emplace_back(object);
 		for (auto it = gameObject.begin(); it != gameObject.end(); ++it)
 		{

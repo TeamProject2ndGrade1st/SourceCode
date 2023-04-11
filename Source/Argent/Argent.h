@@ -34,6 +34,14 @@
 using KeyCode = Argent::Input::Keyboard::KeyCode;
 namespace Argent
 {
+	namespace Scene
+	{
+		inline BaseScene* GetCurrentScene()
+		{
+			return Scene::ArSceneManager::Instance()->GetCurrentScene();
+		}
+	}
+
 	namespace Input
 	{
 		/**
@@ -64,6 +72,14 @@ namespace Argent
 		inline bool GetKeyUp(KeyCode keyCode)
 		{
 			return Keyboard::Instance().GetKeyUp(keyCode);
+		}
+	}
+
+	namespace Timer
+	{
+		inline float GetDeltaTime()
+		{
+			return ArTimer::Instance().DeltaTime();
 		}
 	}
 }

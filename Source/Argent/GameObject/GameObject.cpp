@@ -49,12 +49,185 @@ GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> 
 	}
 }
 
+//void GameObject::AddComToCom()
+//{
+//	//for(size_t i = 0; i < addComponents.size(); ++i)
+//	//{
+//	//	addComponents.at(i)->Initialize();
+//	//	components.emplace_back(addComponents.at(i));
+//	//}
+//	//for(auto& a : addComponents)
+//	//{
+//	//	a->Initialize();
+//	//	components.emplace_back(a);
+//	//}
+//	//addComponents.clear();
+//}
+
+void GameObject::Initialize()
+{
+	for(size_t i = 0; i < components.size(); ++i)
+	{
+		components.at(i)->Initialize();
+	}
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		childObjects.at(i)->Initialize();
+	}
+}
+
+void GameObject::Finalize()
+{
+	for(size_t i = 0; i < components.size(); ++i)
+	{
+		components.at(i)->Finalize();
+		delete components.at(i);
+	}
+	components.clear();
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		childObjects.at(i)->Finalize();
+		delete childObjects.at(i);
+	}
+	childObjects.clear();
+}
+
+void GameObject::Begin()
+{
+	for(size_t i = 0; i < components.size(); ++i)
+	{
+		components.at(i)->Begin();
+	}
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		childObjects.at(i)->Begin();
+	}
+}
+
+void GameObject::End()
+{
+	for(size_t i = 0; i < components.size(); ++i)
+	{
+		components.at(i)->End();
+	}
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		childObjects.at(i)->End();
+	}
+}
+
+void GameObject::Update()
+{
+	for(size_t i = 0; i < components.size(); ++i)
+	{
+		components.at(i)->Update();
+	}
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		childObjects.at(i)->Update();
+	}
+}
+
+void GameObject::Render() const
+{
+	for(size_t i = 0; i < components.size(); ++i)
+	{
+		components.at(i)->Render();
+	}
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		childObjects.at(i)->Render();
+	}
+}
+
+void GameObject::DrawDebug() 
+{
+#ifdef _DEBUG
+	if(isSelected)
+	{
+		ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_::ImGuiCond_Once);
+		ImGui::SetNextWindowPos(ImVec2( 900, 50), ImGuiCond_::ImGuiCond_Once);
+		ImGui::Begin(name.c_str(),nullptr, ImGuiWindowFlags_MenuBar);
+		if (ImGui::BeginMenuBar()) {
+		    if (ImGui::BeginMenu("Menu"))
+		    {
+		        if (ImGui::MenuItem("Reset"))
+				{
+					Initialize();
+		        }
+
+				if(ImGui::MenuItem("Close"))
+				{
+					SetIsSelected(false);
+				}
+		        ImGui::EndMenu();
+		    }
+		    ImGui::EndMenuBar();
+		}
+		if(parent)
+		{
+			std::ostringstream oss;
+			oss << "Parent Name : " << parent-> GetName();
+			//ImGui::BulletText(oss.str().c_str());
+			if(ImGui::Button(oss.str().c_str()))
+			{
+				parent->SetIsSelected(true);
+				CloseWindow();
+			}
+		}
+		for(size_t i = 0; i < components.size(); ++i)
+		{
+			components.at(i)->DrawDebug();
+		}
+
+		//AddComponent
+		{
+		//static bool addComponent;
+		//if(ImGui::Button("Add CubeComponent", ImVec2(200, 30)))
+		//{
+		//	addComponent = true;
+		//	//AddComponent(new Cube);
+		//}
+
+		//if(addComponent)
+		//{
+		//	ImGui::SetNextWindowPos(ImVec2( ImGui::GetWindowPos().x,
+		//		ImGui::GetWindowPos().y + ImGui::GetWindowSize().y / 2.0f), ImGuiCond_::ImGuiCond_Once);
+		//	ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_::ImGuiCond_Once);
+		//	ImGui::Begin("Component");
+
+		//	if(ImGui::Button("Cube"))
+		//	{
+		//		AddComponent(new Cube);
+		//		addComponent = false;
+		//	}
+		//	if(ImGui::Button("Sphere"))
+		//	{
+		//		AddComponent(new Sphere);
+		//		addComponent = false;
+		//	}
+
+		//	ImGui::End();
+		//}
+
+		}
+		ImGui::End();
+	}
+	
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		childObjects.at(i)->DrawDebug();
+	}
+
+#endif
+	
+}
 
 void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 {
 	com->SetOwner(this);
-	addComponents.emplace_back(com);
-	//components.emplace_back(com);
+	//addComponents.emplace_back(com);
+	components.emplace_back(com);
 }
 
 void GameObject::AddComponent(std::vector<Argent::Component::BaseComponent*> com)
@@ -104,177 +277,6 @@ GameObject* GameObject::FindGameObject(const char* name)
 {
 	return Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->GetGameObject(name);
 }
-
-void GameObject::AddComToCom()
-{
-	for(auto& a : addComponents)
-	{
-		a->Initialize();
-		components.emplace_back(a);
-	}
-	addComponents.clear();
-}
-
-void GameObject::Initialize()
-{
-	for(const auto& com : components)
-	{
-		com->Initialize();
-	}
-	for(const auto& obj : childObjects)
-	{
-		obj->Initialize();
-	}
-}
-
-void GameObject::Finalize()
-{
-	for(const auto& com : components)
-	{
-		com->Finalize();
-		delete com;
-	}
-	components.clear();
-	for(const auto& obj : childObjects)
-	{
-		obj->Finalize();
-		delete obj;
-	}
-	childObjects.clear();
-}
-
-void GameObject::Begin()
-{
-	AddComToCom();
-	for (const auto& com : components)
-	{
-		com->Begin();
-	}
-	for (const auto& obj : childObjects)
-	{
-		obj->Begin();
-	}
-}
-
-void GameObject::End()
-{
-	for (const auto& com : components)
-	{
-		com->End();
-	}
-	for (const auto& obj : childObjects)
-	{
-		obj->End();
-	}
-}
-
-void GameObject::Update()
-{
-	for(const auto& com : components)
-	{
-		com->Update();
-	}
-	for(const auto& obj : childObjects)
-	{
-		obj->Update();
-	}
-}
-
-void GameObject::Render() const
-{
-	for(const auto& com : components)
-	{
-		com->Render();
-	}
-	for(const auto& obj : childObjects)
-	{
-		obj->Render();
-	}
-}
-
-void GameObject::DrawDebug() 
-{
-#ifdef _DEBUG
-	if(isSelected)
-	{
-		ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_::ImGuiCond_Once);
-		ImGui::SetNextWindowPos(ImVec2( 900, 50), ImGuiCond_::ImGuiCond_Once);
-		ImGui::Begin(name.c_str(),nullptr, ImGuiWindowFlags_MenuBar);
-		if (ImGui::BeginMenuBar()) {
-		    if (ImGui::BeginMenu("Menu"))
-		    {
-		        if (ImGui::MenuItem("Reset"))
-				{
-					Initialize();
-		        }
-
-				if(ImGui::MenuItem("Close"))
-				{
-					SetIsSelected(false);
-				}
-		        ImGui::EndMenu();
-		    }
-		    ImGui::EndMenuBar();
-		}
-		if(parent)
-		{
-			std::ostringstream oss;
-			oss << "Parent Name : " << parent-> GetName();
-			//ImGui::BulletText(oss.str().c_str());
-			if(ImGui::Button(oss.str().c_str()))
-			{
-				parent->SetIsSelected(true);
-				CloseWindow();
-			}
-		}
-		for(const auto& com : components)
-		{
-			com->DrawDebug();
-		}
-
-		//AddComponent
-		{
-		//static bool addComponent;
-		//if(ImGui::Button("Add CubeComponent", ImVec2(200, 30)))
-		//{
-		//	addComponent = true;
-		//	//AddComponent(new Cube);
-		//}
-
-		//if(addComponent)
-		//{
-		//	ImGui::SetNextWindowPos(ImVec2( ImGui::GetWindowPos().x,
-		//		ImGui::GetWindowPos().y + ImGui::GetWindowSize().y / 2.0f), ImGuiCond_::ImGuiCond_Once);
-		//	ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_::ImGuiCond_Once);
-		//	ImGui::Begin("Component");
-
-		//	if(ImGui::Button("Cube"))
-		//	{
-		//		AddComponent(new Cube);
-		//		addComponent = false;
-		//	}
-		//	if(ImGui::Button("Sphere"))
-		//	{
-		//		AddComponent(new Sphere);
-		//		addComponent = false;
-		//	}
-
-		//	ImGui::End();
-		//}
-
-		}
-		ImGui::End();
-	}
-	
-	for(const auto& obj : childObjects)
-	{
-		obj->DrawDebug();
-	}
-
-#endif
-	
-}
-
 
 //if(isOpenNewDebugWindow)
 

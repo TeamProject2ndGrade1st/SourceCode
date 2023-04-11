@@ -87,11 +87,7 @@ namespace Argent::Scene
 		const std::string sceneName;
 		std::vector<GameObject*> gameObject{};
 		std::vector<GameObject*> destroyedGameObject{};
-
-
 	private:
-		std::vector<GameObject*> addObject{};
-		void AddObjectToGameObject();
 	};
 	
 }

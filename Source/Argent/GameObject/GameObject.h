@@ -80,8 +80,8 @@ protected:
 	bool isSelected;
 
 private:
-	std::vector<Argent::Component::BaseComponent*> addComponents;
-	void AddComToCom();
+	//std::vector<Argent::Component::BaseComponent*> addComponents;
+	//void AddComToCom();
 public:
 	bool operator<(const GameObject& g) const
 	{

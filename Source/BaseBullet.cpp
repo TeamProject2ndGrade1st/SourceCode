@@ -18,7 +18,7 @@ BaseBullet::BaseBullet(const DirectX::XMFLOAT3& direction,
 void BaseBullet::Initialize()
 {
 	GetOwner()->AddComponent(new Argent::Component::Collider::SphereCollider);
-	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/Sphere.fbx", true));
+	//GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/Sphere.fbx", true));
 }
 
 void BaseBullet::Update()
