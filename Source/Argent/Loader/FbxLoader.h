@@ -4,8 +4,8 @@
 #include <DirectXMath.h>
 #include <vector>
 
-#include "../Resource/StaticMesh.h"
-#include "../Resource/ArSkinnedMesh.h"
+#include "../Resource/Mesh.h"
+#include "../Resource/SkinnedMesh.h"
 #include "../Resource/ArAnimation.h"
 
 #include <cereal/archives/binary.hpp>
@@ -74,7 +74,7 @@ namespace Argent::Loader
 			std::vector<Argent::Resource::Mesh::Vertex> vertices;
 			std::vector<Resource::Mesh::VertexBone> vertexBones;
 			std::vector<uint32_t> indices;
-			std::vector<Resource::Mesh::ArStaticMesh::Subset> subsets;
+			std::vector<Resource::Mesh::Subset> subsets;
 			Argent::Resource::Mesh::Skeleton bindPose;
 			DirectX::XMFLOAT4X4 defaultGlobalTransform
 			{

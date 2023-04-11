@@ -187,10 +187,7 @@
     <ClCompile Include="Source\Argent\Resource\Effect.cpp">
       <Filter>Argent\Resource\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\ArMesh.cpp">
-      <Filter>Argent\Resource\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\StaticMesh.cpp">
+    <ClCompile Include="Source\Argent\Resource\Mesh.cpp">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Resource\ArTexture.cpp">
@@ -223,7 +220,7 @@
     <ClCompile Include="Source\Argent\Component\StaticMeshRenderer.cpp">
       <Filter>Argent\Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\ArSkinnedMesh.cpp">
+    <ClCompile Include="Source\Argent\Resource\SkinnedMesh.cpp">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Math\MathHelper.cpp">
@@ -393,10 +390,7 @@
     <ClInclude Include="Source\Argent\Resource\Effect.h">
       <Filter>Argent\Resource\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArMesh.h">
-      <Filter>Argent\Resource\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\StaticMesh.h">
+    <ClInclude Include="Source\Argent\Resource\Mesh.h">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Resource\ArTexture.h">
@@ -426,7 +420,7 @@
     <ClInclude Include="Source\Argent\Component\StaticMeshRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArSkinnedMesh.h">
+    <ClInclude Include="Source\Argent\Resource\SkinnedMesh.h">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Math\MathHelper.h">

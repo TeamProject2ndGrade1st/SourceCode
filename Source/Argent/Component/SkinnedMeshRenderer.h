@@ -8,7 +8,7 @@
 
 #include "Renderer.h"
 #include "../Graphic/Dx12/ConstantBuffer.h"
-#include "../Resource/ArSkinnedMesh.h"
+#include "../Resource/SkinnedMesh.h"
 #include "../Resource/Material.h"
 #include "../Resource/ArAnimation.h"
 

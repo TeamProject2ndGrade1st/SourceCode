@@ -89,6 +89,7 @@ namespace Argent::Graphics
 				break;
 			case D3D12_DESCRIPTOR_HEAP_TYPE_DSV:
 				heapPointer = dsvHeap.get();
+				break;
 			case D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER:
 				heapPointer = nullptr;
 				break;

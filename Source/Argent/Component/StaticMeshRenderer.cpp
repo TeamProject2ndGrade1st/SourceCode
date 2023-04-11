@@ -8,9 +8,24 @@
 
 namespace Argent::Component::Renderer
 {
+	//StaticMeshRenderer::StaticMeshRenderer(ID3D12Device* device, const char* fileName,
+	//	std::shared_ptr<Resource::Mesh::armes> meshes,
+	//	std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials) :
+	//	BaseRenderer("StaticMeshRenderer")
+	//{
+	//	this->mesh = meshes;
+	//	for (auto& m : materials)
+	//	{
+	//		this->materials.emplace(m.first, std::move(m.second));
+	//	}
+	//	CreateComObject(device);
+	//	renderingPipeline = Graphics::RenderingPipeline::CreateDefaultStaticMeshPipeLine();
+	//	//CreateRootSignatureAndPipelineState();
+	//}
+
 	StaticMeshRenderer::StaticMeshRenderer(ID3D12Device* device, const char* fileName,
-		std::shared_ptr<Resource::Mesh::ArStaticMesh> meshes,
-		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials) :
+		std::shared_ptr<Resource::Mesh::ArMesh> meshes,
+		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials):
 		BaseRenderer("StaticMeshRenderer")
 	{
 		this->mesh = meshes;
@@ -24,7 +39,7 @@ namespace Argent::Component::Renderer
 	}
 
 	void StaticMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList,
-	                                  const DirectX::XMFLOAT4X4& world) const
+	                                const DirectX::XMFLOAT4X4& world) const
 	{
 		BaseRenderer::Render(cmdList);
 		Argent::Graphics::ArGraphics::Instance()->SetSceneConstant(0);
@@ -37,7 +52,7 @@ namespace Argent::Component::Renderer
 		constantBuffer->SetOnCommandList(cmdList, 1);
 
 		mesh->SetOnCommandList(cmdList);
-		for (const Resource::Mesh::ArStaticMesh::Subset& subset : mesh->subsets)
+		for (const auto& subset : mesh->subsets)
 		{
 			const auto& material{ materials.at(subset.materialUniqueId) };
 			Argent::Material::ArMeshMaterial::Constant tmpConstant;
@@ -54,7 +69,7 @@ namespace Argent::Component::Renderer
 	void StaticMeshRenderer::Initialize()
 	{
 		GameObject* g = GetOwner();
-		g->GetTransform()->SetWorld(mesh->defaultGlobalTransform);
+		g->GetTransform()->SetWorld(mesh->globalTransform);
 		g->SetName(mesh->GetName());
 	}
 

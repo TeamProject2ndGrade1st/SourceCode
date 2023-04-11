@@ -1,4 +1,4 @@
-#include "ArSkinnedMesh.h"
+#include "SkinnedMesh.h"
 #include "../Graphic/Graphics.h"
 
 namespace
@@ -8,7 +8,7 @@ namespace
 		std::vector<VertexBone> bones,
 		const std::vector<uint32_t>& indices, const std::vector<Subset>& subsets,
 		const Skeleton& bindPose) :
-		ArStaticMesh(name, vertices, indices, subsets)
+		ArMesh(name, vertices, indices, subsets, DirectX::XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1))
 	,	bindPose(bindPose)
 	{
 		ID3D12Device* device = Argent::Graphics::ArGraphics::Instance()->GetDevice();
@@ -24,6 +24,6 @@ namespace
 	{
 		boneVertexBuffer->SetOnCommandList(cmdList, 1);
 		//constantBuffer->SetOnCommandList(cmdList, 2);
-		ArStaticMesh::SetOnCommandList(cmdList);
+		ArMesh::SetOnCommandList(cmdList);
 	}
 }

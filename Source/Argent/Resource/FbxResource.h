@@ -1,6 +1,6 @@
 #pragma once
 #include "ArResource.h"
-#include "ArSkinnedMesh.h"
+#include "SkinnedMesh.h"
 #include "ArAnimation.h"
 
 namespace Argent::Resource::FBX

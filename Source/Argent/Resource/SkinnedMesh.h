@@ -1,5 +1,5 @@
 #pragma once
-#include "StaticMesh.h"
+#include "Mesh.h"
 #include "../Other/CerealHelper.h"
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/string.hpp>
@@ -69,7 +69,7 @@ namespace Argent::Resource::Mesh
 		}
 	};
 	class ArSkinnedMesh final :
-		public ArStaticMesh
+		public ArMesh
 	{
 	public:
 		static const int MaxBones{ 256 };

@@ -9,7 +9,7 @@
 
 #include "Renderer.h"
 #include "../Graphic/Dx12/ConstantBuffer.h"
-#include "../Resource/StaticMesh.h"
+#include "../Resource/Mesh.h"
 #include "../Resource/Material.h"
 
 namespace Argent::Component::Renderer
@@ -25,7 +25,7 @@ namespace Argent::Component::Renderer
 
 
 	public:
-		StaticMeshRenderer(ID3D12Device* device, const char* fileName, std::shared_ptr<Resource::Mesh::ArStaticMesh> meshes,
+		StaticMeshRenderer(ID3D12Device* device, const char* fileName, std::shared_ptr<Resource::Mesh::ArMesh> meshes,
 			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials);
 		~StaticMeshRenderer() override = default;
 
@@ -52,7 +52,7 @@ namespace Argent::Component::Renderer
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> constantBuffer{};
 
 	protected:
-		std::shared_ptr<Resource::Mesh::ArStaticMesh> mesh{};
+		std::shared_ptr<Resource::Mesh::ArMesh> mesh{};
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial> materials{};
 		
 	public:

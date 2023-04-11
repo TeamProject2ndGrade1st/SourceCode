@@ -7,7 +7,7 @@
 #include "../Graphic/Graphics.h"
 #include "../Component/StaticMeshRenderer.h"
 #include "../Component/SkinnedMeshRenderer.h"
-#include "../Resource/ArSkinnedMesh.h"
+#include "../Resource/SkinnedMesh.h"
 #include "../Resource/Material.h"
 #include "../Resource/ArAnimation.h"
 
@@ -121,12 +121,12 @@ namespace Argent::Loader::Fbx
 
 		if (!hasBone)
 		{
-			std::vector<std::shared_ptr<Resource::Mesh::ArStaticMesh>> meshes;
+			std::vector<std::shared_ptr<Resource::Mesh::ArMesh>> meshes;
 			meshes.resize(fbxResource.tmpMeshes.size());
 			for (size_t i = 0; i < meshes.size(); ++i)
 			{
 				std::vector<Argent::Resource::Mesh::Vertex> vertices = fbxResource.tmpMeshes.at(i).vertices;
-				meshes.at(i) = std::make_shared<Resource::Mesh::ArStaticMesh>(
+				meshes.at(i) = std::make_shared<Resource::Mesh::ArMesh>(
 					fbxResource.tmpMeshes.at(i).name.c_str(), vertices,
 					fbxResource.tmpMeshes.at(i).indices,
 					fbxResource.tmpMeshes.at(i).subsets,

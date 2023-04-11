@@ -1,8 +1,7 @@
 #pragma once
 #include "Component.h"
 #include <memory>
-
-#include "../Resource/StaticMesh.h"
+#include <vector>
 
 //todo raycastColliderにあたった時用の処理は必要？　両方onCollisionではだめですか？
 namespace Argent::Component
@@ -23,8 +22,8 @@ namespace Argent::Component
 
 			~RayCastCollider() override = default;
 
-			std::vector<std::vector<Argent::Resource::Mesh::Vertex>> vertices;
-			std::vector<std::vector<uint32_t>> indices;
+			//std::vector<std::vector<Argent::Resource::Mesh::Vertex>> vertices;
+			//std::vector<std::vector<uint32_t>> indices;
 		};
 	}
 
