@@ -8,6 +8,18 @@ public:
 	Player();
 	virtual ~Player() override = default;
 
+	void Update();
+	void Initialize();
+
+private:
+	int state = 0;
+
+	GameObject* camera;
+
+	float movement = 1.0f;
+
+	void MoveCamera();
+
 protected:
 
 };
