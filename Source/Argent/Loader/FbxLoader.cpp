@@ -125,10 +125,9 @@ namespace Argent::Loader::Fbx
 			meshes.resize(fbxResource.tmpMeshes.size());
 			for (size_t i = 0; i < meshes.size(); ++i)
 			{
-				std::vector<Argent::Resource::Mesh::Vertex> vertices = fbxResource.tmpMeshes.at(i).vertices;
 				meshes.at(i) = std::make_shared<Resource::Mesh::ArMesh>(
-					fbxResource.tmpMeshes.at(i).name.c_str(), vertices,
-					fbxResource.tmpMeshes.at(i).indices,
+					fbxResource.tmpMeshes.at(i).name.c_str(),
+					fbxResource.tmpMeshes.at(i).meshResource,
 					fbxResource.tmpMeshes.at(i).subsets,
 					fbxResource.tmpMeshes.at(i).defaultGlobalTransform);
 			}
@@ -148,10 +147,10 @@ namespace Argent::Loader::Fbx
 			skinnedMeshes.resize(fbxResource.tmpMeshes.size());
 			for (size_t i = 0; i < skinnedMeshes.size(); ++i)
 			{
-				std::vector<Argent::Resource::Mesh::Vertex> vertices = fbxResource.tmpMeshes.at(i).vertices;
+				//std::vector<Argent::Resource::Mesh::Vertex> vertices = fbxResource.tmpMeshes.at(i).vertices;
 				skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(
-					fbxResource.tmpMeshes.at(i).name.c_str(), vertices,
-					fbxResource.tmpMeshes.at(i).vertexBones, fbxResource.tmpMeshes.at(i).indices,
+					fbxResource.tmpMeshes.at(i).name.c_str(), fbxResource.tmpMeshes.at(i).meshResource,
+					fbxResource.tmpMeshes.at(i).vertexBones,
 					fbxResource.tmpMeshes.at(i).subsets, fbxResource.tmpMeshes.at(i).bindPose);
 			}
 
@@ -215,8 +214,8 @@ namespace Argent::Loader::Fbx
 			}
 
 			const int polygonCount{ fbxMesh->GetPolygonCount() };
-			mesh.vertices.resize(polygonCount * 3LL);
-			mesh.indices.resize(polygonCount * 3LL);
+			mesh.meshResource.vertices.resize(polygonCount * 3LL);
+			mesh.meshResource.indices.resize(polygonCount * 3LL);
 			mesh.vertexBones.resize(polygonCount * 3LL);
 
 			FbxStringList uvNames;
@@ -234,7 +233,7 @@ namespace Argent::Loader::Fbx
 					const int vertexIndex{ polygonIndex * 3 + positionInPolygon };
 
 					Argent::Resource::Mesh::Vertex vertex;
-					Argent::Resource::Mesh::VertexBone bone;
+					Argent::Resource::Mesh::BoneVertex bone;
 
 					const int polygonVertex{ fbxMesh->GetPolygonVertex(polygonIndex, positionInPolygon) };
 					vertex.position.x = static_cast<float>(controlPoints[polygonVertex][0]);
@@ -271,8 +270,8 @@ namespace Argent::Loader::Fbx
 						vertex.texcoord.y = 1.0f - static_cast<float>(uv[1]);
 					}
 
-					mesh.vertices.at(vertexIndex) = std::move(vertex);
-					mesh.indices.at(static_cast<size_t>(offset) + positionInPolygon) = vertexIndex;
+					mesh.meshResource.vertices.at(vertexIndex) = std::move(vertex);
+					mesh.meshResource.indices.at(static_cast<size_t>(offset) + positionInPolygon) = vertexIndex;
 					mesh.vertexBones.at(vertexIndex) = std::move(bone);
 					++subset.indexCount;
 				}

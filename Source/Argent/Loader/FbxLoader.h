@@ -71,9 +71,10 @@ namespace Argent::Loader
 		{
 			int64_t nodeIndex;
 			std::string name;
-			std::vector<Argent::Resource::Mesh::Vertex> vertices;
-			std::vector<Resource::Mesh::VertexBone> vertexBones;
-			std::vector<uint32_t> indices;
+			Argent::Resource::Mesh::MeshResource meshResource;
+			//std::vector<Argent::Resource::Mesh::Vertex> vertices;
+			std::vector<Resource::Mesh::BoneVertex> vertexBones;
+			//std::vector<uint32_t> indices;
 			std::vector<Resource::Mesh::Subset> subsets;
 			Argent::Resource::Mesh::Skeleton bindPose;
 			DirectX::XMFLOAT4X4 defaultGlobalTransform
@@ -87,7 +88,7 @@ namespace Argent::Loader
 			template<class T>
 			void serialize(T& archive)
 			{
-				archive(nodeIndex, name, vertices, vertexBones, indices, subsets, bindPose, defaultGlobalTransform);
+				archive(nodeIndex, name, meshResource, vertexBones, subsets, bindPose, defaultGlobalTransform);
 			}
 		};
 

@@ -57,7 +57,7 @@ namespace Argent::Resource::Mesh
 		}
 	};
 	static constexpr int MaxBoneInfluences{ 4 };
-	struct VertexBone
+	struct BoneVertex
 	{
 		float boneWeights[MaxBoneInfluences]{ 1, 0, 0, 0 };
 		uint32_t boneIndices[MaxBoneInfluences];
@@ -68,18 +68,20 @@ namespace Argent::Resource::Mesh
 			archive(boneWeights, boneIndices);
 		}
 	};
+
+
 	class ArSkinnedMesh final :
 		public ArMesh
 	{
 	public:
 		static const int MaxBones{ 256 };
-		ArSkinnedMesh(const char* name, const std::vector<Vertex>& vertices, std::vector<VertexBone> bones,  const std::vector<uint32_t>& indices,
+		ArSkinnedMesh(const char* name, const MeshResource& mResource, std::vector<BoneVertex> bones,
 			const std::vector<Subset>& subsets, const Skeleton& bindPose);
 		~ArSkinnedMesh() override = default;
 
-		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList) override;
+		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot = 0) override;
 
-		std::unique_ptr<Argent::Dx12::ArVertexBuffer<VertexBone>> boneVertexBuffer;
+		std::unique_ptr<Argent::Dx12::ArVertexBuffer<BoneVertex>> boneVertexBuffer;
 		Skeleton bindPose;
 
 		struct Constant
