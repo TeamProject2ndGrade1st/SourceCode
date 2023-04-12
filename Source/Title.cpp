@@ -3,6 +3,7 @@
 #include "Argent/Argent.h"
 #include "BaseBullet.h"
 #include "BaseGun.h"
+#include "BaseEnemy.h"
 
 void Title::Initialize()
 {
@@ -11,6 +12,7 @@ void Title::Initialize()
 	//AddObject(new GameObject("plane", Argent::Loader::Fbx::LoadFbx("./Resources/Model/plane.fbx", true)));
 
 	//AddObject(new GameObject("enemy_ver03", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver3.fbx", false)));
+	AddObject(new GameObject("enemy_ver03", new BaseEnemy()));
 
 	AddObject(new GameObject("DemoGun", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx", false)));
 
