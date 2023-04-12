@@ -13,8 +13,9 @@ public:
 
     void Initialize()override;
     void Begin() override;
-
     void Update()override;
+    void DrawDebug()override;
+
 
 private:
     DirectX::XMFLOAT3 speed = {0,0,0.02f};
