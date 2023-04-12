@@ -31,6 +31,8 @@
 #include "Scene/BaseScene.h"
 #include "Scene/SceneManager.h"
 
+#include "Math/MathHelper.h"
+
 using KeyCode = Argent::Input::Keyboard::KeyCode;
 namespace Argent
 {

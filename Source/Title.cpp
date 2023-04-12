@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
 #include "Argent/Component/RayCast.h"
+#include "RayCastDemo.h"
 
 void Title::Initialize()
 {
@@ -18,11 +19,11 @@ void Title::Initialize()
 	AddObject(new GameObject("DemoGun", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx", false)));
 
 	
-	AddObject(new GameObject("Nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
+	AddObject(new GameObject("Nico", new RayCastDemo()));
 //	AddObject(new GameObject("Gun", new BaseGun));
 	//AddObject(new GameObject("Stage", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 
-	AddObject(new GameObject("player", new Player));
+//	AddObject(new GameObject("player", new Player));
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 	//AddObject(new GameObject("Stage1", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Cube.fbx");

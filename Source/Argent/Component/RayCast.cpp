@@ -62,10 +62,10 @@ namespace Argent::Component
 			if(debugRenderer)
 			{
 				auto t = *(GetOwner()->GetTransform());
-				/*const auto p = t.GetPosition();
+				const auto p = t.GetPosition();
 				t.SetPosition(offset + p);
 				t.SetScale(t.GetScale() * scale);
-				t.SetRotation(t.GetRotation() + rotation);*/
+				t.SetRotation(t.GetRotation() + rotation);
 				debugRenderer->Render(t.GetWorld());
 			}
 		}
@@ -75,6 +75,25 @@ namespace Argent::Component
 			auto t = GetOwner()->GetTransform();
 			t->SetPosition(DirectX::XMFLOAT3(0, 1, 3));
 		}
+
+		DirectX::XMMATRIX RayCastCollider::GetWorldTransform()
+		{
+			return GetOwner()->GetTransform()->GetWorldMatrix();
+		}
+
+#ifdef _DEBUG
+		void RayCastCollider::DrawDebug()
+		{
+			if (ImGui::TreeNode(GetName().c_str()))
+			{
+				ImGui::DragFloat3("Offset", &offset.x);
+				ImGui::DragFloat3("Scale", &scale.x);
+				BaseComponent::DrawDebug();
+				ImGui::TreePop();
+			}
+		}
+#endif
+
 	}
 
 	namespace Collision
@@ -99,9 +118,31 @@ namespace Argent::Component
 			DirectX::XMFLOAT3 end = start + direction * length;
 			HitResult hitResult;
 			if(Helper::Collision::IntersectRayVsModel(start, end, other->GetMeshResource(), 
-				other->GetOwner()->GetTransform()->GetWorldMatrix(), hitResult))
+				other->GetWorldTransform(), hitResult))
 			{
-				GetOwner()->GetTransform()->SetPosition(hitResult.position);
+				//壁までのベクトル
+				DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&start);
+				DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
+				DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
+
+				//壁の法線
+				DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hitResult.normal);
+
+				//入射ベクトルを法線に射影
+				DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(DirectX::XMVectorNegate(Vec), Normal);
+
+				//補正位置の計算　
+				DirectX::XMVECTOR CollectPosition = DirectX::XMVectorMultiplyAdd(Normal, Dot, End);
+				DirectX::XMFLOAT3 collectPosition{};
+				DirectX::XMStoreFloat3(&collectPosition, CollectPosition);
+
+				auto p = GetOwner()->GetTransform()->GetPosition();
+				p.y = hitResult.position.y;
+				p.x = collectPosition.x;
+				p.z = collectPosition.z;
+
+
+				GetOwner()->GetTransform()->SetPosition(p);
 				auto actor = GetOwner()->GetActor();
 				if(actor)
 					actor->OnRayCollision(other);

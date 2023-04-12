@@ -31,8 +31,7 @@ void Player::DrawDebug()
 
 void Player::OnRayCollision(const Argent::Component::Collider::RayCastCollider* other)
 {
-	//GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 0, -10));
-	camera->GetTransform()->SetPosition(GetTransform()->GetPosition());
+    _ASSERT_EXPR(false, L"Succeeded");
 }
 #endif
 
@@ -55,14 +54,11 @@ void Player::Update()
         break;
 
     }
-
     GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
-    auto p = GetTransform()->GetPosition();
-    auto f = GetTransform()->CalcForward();
-    auto l = movement* Argent::Timer::GetDeltaTime();
-    ray->SetRayStartPosition(p);
-    ray->SetRayDirection(f);
-    ray->SetRayLength(l);
+
+    ray->SetRayStartPosition(GetTransform()->GetPosition());
+    ray->SetRayDirection(GetTransform()->CalcForward());
+    ray->SetRayLength(movement * Argent::Timer::GetDeltaTime());
 }
 
 // ƒJƒƒ‰‚ÌˆÚ“®

@@ -48,6 +48,11 @@ namespace Argent::Component
 			void Render() const override;
 			void Initialize() override;
 
+			DirectX::XMMATRIX GetWorldTransform();
+#ifdef _DEBUG
+			void DrawDebug() override;
+#endif
+
 			MeshType type;
 			std::unique_ptr<Debug::DebugRenderer> debugRenderer;
 			DirectX::XMFLOAT3 offset;
