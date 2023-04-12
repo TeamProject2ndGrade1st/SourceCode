@@ -2,13 +2,25 @@
 #include "Component.h"
 #include <memory>
 #include <vector>
+#include "../Resource/Mesh.h"
+#include "../Debug/DebugRenderer.h"
+
+
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/map.hpp>
+#include <cereal/types/set.hpp>
+#include <cereal/types/unordered_map.hpp>
+
 
 //todo raycastColliderにあたった時用の処理は必要？　両方onCollisionではだめですか？
 namespace Argent::Component
 {
 	//前方宣言
 	class RayCast;
-
+	using MeshResource = Resource::Mesh::MeshResource;
 
 	namespace Collider
 	{
@@ -16,15 +28,33 @@ namespace Argent::Component
 			public BaseComponent
 		{
 		public:
-			RayCastCollider():
-				BaseComponent("RayCastCollider")
-			{}
+			enum class MeshType
+			{
+				Cube,
+				Sphere,
+				Cylinder,
+				Max,
+			};
+			RayCastCollider(MeshType type = MeshType::Cylinder,
+				const DirectX::XMFLOAT3& offset = DirectX::XMFLOAT3(),
+					const DirectX::XMFLOAT3& scale = DirectX::XMFLOAT3(1, 1, 1),
+					const DirectX::XMFLOAT4& rotation = DirectX::XMFLOAT4(1, 1, 1, 1));
 
 			~RayCastCollider() override = default;
 
-			//std::vector<std::vector<Argent::Resource::Mesh::Vertex>> vertices;
-			//std::vector<std::vector<uint32_t>> indices;
+			void Render() const override;
+
+			MeshType type;
+			std::unique_ptr<Debug::DebugRenderer> debugRenderer;
+			DirectX::XMFLOAT3 offset;
+			DirectX::XMFLOAT3 scale;
+			DirectX::XMFLOAT4 rotation;
+
+		protected:
+			//MeshResource mResource;
+			static MeshResource mResource[static_cast<int>(MeshType::Max)];
 		};
+		
 	}
 
 

@@ -262,11 +262,21 @@
     <ClCompile Include="Source\Player.cpp">
       <Filter>Game\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\RayCast.cpp" />
-    <ClCompile Include="Source\Argent\Component\AnimationPlayer.cpp" />
-    <ClCompile Include="Source\Argent\Resource\FbxResource.cpp" />
-    <ClCompile Include="Source\Argent\Input\Mouse.cpp" />
-    <ClCompile Include="Source\Argent\Debug\DebugRenderer.cpp" />
+    <ClCompile Include="Source\Argent\Input\Mouse.cpp">
+      <Filter>Argent\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Debug\DebugRenderer.cpp">
+      <Filter>Work In Progress</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\FbxResource.cpp">
+      <Filter>Work In Progress</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\AnimationPlayer.cpp">
+      <Filter>Work In Progress\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\RayCast.cpp">
+      <Filter>Work In Progress\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -473,11 +483,21 @@
     <ClInclude Include="Source\BaseGun.h">
       <Filter>Game\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\RayCast.h" />
-    <ClInclude Include="Source\Argent\Component\AnimationPlayer.h" />
-    <ClInclude Include="Source\Argent\Resource\FbxResource.h" />
-    <ClInclude Include="Source\Argent\Input\Mouse.h" />
-    <ClInclude Include="Source\Argent\Debug\DebugRenderer.h" />
+    <ClInclude Include="Source\Argent\Input\Mouse.h">
+      <Filter>Argent\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Debug\DebugRenderer.h">
+      <Filter>Work In Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\FbxResource.h">
+      <Filter>Work In Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\AnimationPlayer.h">
+      <Filter>Work In Progress\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\RayCast.h">
+      <Filter>Work In Progress\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

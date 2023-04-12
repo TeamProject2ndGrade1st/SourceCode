@@ -20,7 +20,7 @@
 
 #include <fstream>
 
-#include "../GameObject/GameObject.h"
+
 
 //判定用のメッシュ表示用クラス
 namespace Argent::Debug
@@ -73,17 +73,20 @@ namespace Argent::Debug
 		Debug() :
 			BaseComponent("Debug")
 		{
-			std::ifstream ifs("./Resources/Model/Cylinder.cereal", std::ios::binary);
-			cereal::BinaryInputArchive deserialization(ifs);
-			Argent::Resource::Mesh::MeshResource mResource;
-			deserialization(mResource);
-			renderer = std::make_unique<DebugRenderer>(mResource);
-		};
+			const char* fileName = "./Resources/Model/Collision/Cube.cereal";
+			std::ifstream ifs(fileName, std::ios::binary);
 
-		void Render() const override
-		{
-			renderer->Render(GetOwner()->GetTransform()->GetWorld());
+			if(std::filesystem::exists(fileName))
+			{
+				cereal::BinaryInputArchive deserialization(ifs);
+				Argent::Resource::Mesh::MeshResource mResource;
+				deserialization(mResource);
+				renderer = std::make_unique<DebugRenderer>(mResource);
+			}
 		}
+
+		void Render() const override;
+		
 
 		std::unique_ptr<DebugRenderer> renderer;
 	};

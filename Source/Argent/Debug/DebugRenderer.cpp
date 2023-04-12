@@ -1,4 +1,5 @@
 #include "DebugRenderer.h"
+#include "../GameObject/GameObject.h"
 
 namespace Argent::Debug
 {
@@ -19,5 +20,10 @@ namespace Argent::Debug
 		indexBuffer->SetOnCommandList(cmdList);
 		cmdList->DrawIndexedInstanced(meshResource.indices.size(), 1, 0, 0, 0);
 		
+	}
+
+	void Debug::Render() const
+	{
+		renderer->Render(GetOwner()->GetTransform()->GetWorld());
 	}
 }
