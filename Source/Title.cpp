@@ -29,6 +29,7 @@ void Title::Initialize()
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));
 	AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
 
+
 	BaseScene::Initialize();
 }
 

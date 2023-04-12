@@ -20,6 +20,16 @@
 
 namespace Argent
 {
+	namespace Resource::Mesh
+	{
+		struct MeshResource;
+	}
+
+	namespace Component::Collision
+	{
+		struct HitResult;
+	}
+
 	namespace Helper
 	{
 		namespace Sprite
@@ -333,7 +343,7 @@ namespace Argent
 			}
 		}
 
-		namespace Collider
+		namespace Collision
 		{
 			inline bool IntersectSphereVsSphere(
 				const DirectX::XMFLOAT3& positionA, 
@@ -366,10 +376,15 @@ namespace Argent
 				return true;
 			}
 
+			
 
 			bool IntersectRayVsModel(
 				const DirectX::XMFLOAT3& start,
-				const DirectX::XMFLOAT3& end);
+				const DirectX::XMFLOAT3& end,
+				const Argent::Resource::Mesh::MeshResource& meshResource,
+				const DirectX::XMMATRIX& worldTransform,
+				Component::Collision::HitResult& result);
+
 
 		}
 	};

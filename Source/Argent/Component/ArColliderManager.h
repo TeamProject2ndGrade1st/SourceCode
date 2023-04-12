@@ -20,12 +20,12 @@ namespace Argent::Collider
 			rayCastCollider.emplace_back(c);
 		}
 
-		void RegisterRay(Argent::Component::RayCast* ray)
+		void RegisterRay(Argent::Component::Collision::RayCast* ray)
 		{
 			rayCast.emplace_back(ray);
 		}
 
-		void CollisionDetection() const;
+		void CollisionDetection();
 
 		static ArColliderManager& Instance()
 		{
@@ -37,7 +37,7 @@ namespace Argent::Collider
 	private:
 		std::vector<Component::Collider::Collider*> collider{};
 		std::vector<Component::Collider::RayCastCollider*> rayCastCollider{};
-		std::vector<Component::RayCast*> rayCast{};
+		std::vector<Component::Collision::RayCast*> rayCast{};
 		ArColliderManager()
 		{
 			collider.clear();

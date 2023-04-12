@@ -1,17 +1,31 @@
 #include "ArColliderManager.h"
 
-void Argent::Collider::ArColliderManager::CollisionDetection() const
+
+namespace Argent::Collider
 {
-	for(size_t i = 0; i < collider.size(); ++i)
+	void ArColliderManager::CollisionDetection()
 	{
-		for(size_t j = i + 1; j < collider.size(); ++j)
+		for(size_t i = 0; i < collider.size(); ++i)
 		{
-			const auto c1 = collider.at(i);
-			const auto c2 = collider.at(j);
-			if(c1->CollisionDetection(c2))
+			for(size_t j = i + 1; j < collider.size(); ++j)
 			{
-				c1->OnCollision(c2);
-				c2->OnCollision(c1);
+				const auto c1 = collider.at(i);
+				const auto c2 = collider.at(j);
+				if(c1->CollisionDetection(c2))
+				{
+					c1->OnCollision(c2);
+					c2->OnCollision(c1);
+				}
+			}
+		}
+
+		for(size_t i = 0; i < rayCast.size(); ++i)
+		{
+			for(size_t j = 0; j < rayCastCollider.size(); ++j)
+			{
+				Argent::Component::Collision::RayCast* ray = rayCast.at(i);
+				auto collider = rayCastCollider.at(j);
+				ray->CollisionDetection(collider);
 			}
 		}
 	}

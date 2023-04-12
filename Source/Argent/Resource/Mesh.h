@@ -78,7 +78,7 @@ namespace Argent::Resource::Mesh
 		MeshResource meshResource{};
 		std::vector<Subset> subsets{};
 
-		DirectX::XMFLOAT4X4 globalTransform
+		DirectX::XMFLOAT4X4 localTransform
 		{
 			1, 0, 0, 0,
 			0, 1, 0, 0,

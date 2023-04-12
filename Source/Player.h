@@ -14,6 +14,9 @@ public:
 #ifdef _DEBUG
 	void DrawDebug() override;
 #endif
+
+
+	void OnRayCollision(const Argent::Component::Collider::RayCastCollider* other) override;
 private:
 	int state = 0;
 
@@ -22,6 +25,8 @@ private:
 	float movement = 1.0f;
 
 	void MoveCamera();
+
+	Argent::Component::Collision::RayCast* ray;
 protected:
 
 };

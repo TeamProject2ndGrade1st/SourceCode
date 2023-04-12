@@ -277,6 +277,7 @@
     <ClCompile Include="Source\Argent\Component\RayCast.cpp">
       <Filter>Work In Progress\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Source\RayCastDemo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -498,6 +499,7 @@
     <ClInclude Include="Source\Argent\Component\RayCast.h">
       <Filter>Work In Progress\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\RayCastDemo.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
