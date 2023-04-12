@@ -23,7 +23,7 @@ namespace Argent::Component
 			static bool b = false;
 			if(!b)
 			{
-				{
+				/*{
 					const char* filePath = "./Resources/Model/Collision/Cube.cereal";
 
 					_ASSERT_EXPR(std::filesystem::exists(filePath), L"指定されたファイルが無い");
@@ -31,15 +31,15 @@ namespace Argent::Component
 					std::ifstream ifs(filePath, std::ios::binary);
 					cereal::BinaryInputArchive deserialization(ifs);
 					deserialization(mResource[static_cast<int>(MeshType::Cube)]);
-				}
-				{
+				}*/
+				/*{
 					const char* filePath = "./Resources/Model/Collision/Sphere.cereal";
 					_ASSERT_EXPR(std::filesystem::exists(filePath), L"指定されたファイルが無い");
 
 					std::ifstream ifs(filePath, std::ios::binary);
 					cereal::BinaryInputArchive deserialization(ifs);
 					deserialization(mResource[static_cast<int>(MeshType::Sphere)]);
-				}
+				}*/
 				{
 					const char* filePath = "./Resources/Model/Collision/Cylinder.cereal";
 					_ASSERT_EXPR(std::filesystem::exists(filePath), L"指定されたファイルが無い");
