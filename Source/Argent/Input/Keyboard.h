@@ -9,7 +9,7 @@ namespace Argent::Input
 	enum class State
 	{
 		NONE,
-		PRESS_ENTER,
+		ENTER,
 		PRESS,
 		RELEASE,
 	};
@@ -418,7 +418,7 @@ namespace Argent::Input
 		 */
 		bool GetKeyDown(KeyCode key) const
 		{
-			return keyState.find(key)->second == State::PRESS_ENTER;
+			return keyState.find(key)->second == State::ENTER;
 		}
 
 	/*	State GetKeyState(KeyCode key) const
@@ -436,10 +436,10 @@ namespace Argent::Input
 					switch ((*it).second)
 					{
 					case State::NONE:
-						(*it).second = State::PRESS_ENTER;
+						(*it).second = State::ENTER;
 						break;
 
-					case State::PRESS_ENTER:
+					case State::ENTER:
 					case State::PRESS:
 						(*it).second = State::PRESS;
 						break;
@@ -459,7 +459,7 @@ namespace Argent::Input
 						break;
 
 					case State::PRESS:
-					case State::PRESS_ENTER:
+					case State::ENTER:
 						(*it).second = State::RELEASE;
 						break;
 					}
@@ -470,60 +470,4 @@ namespace Argent::Input
 		std::unordered_map<KeyCode, State> keyState;
 	};
 
-	class Mouse
-	{
-	public:
-		enum class Mouses
-		{
-			mLeftButton = 0x01,
-			mRightButton = 0x02,
-			mMiddleButton = 0x04,
-		};
-
-		enum class WheelStates
-		{
-			wNone,
-			wPlus,
-			wMinus
-		};
-
-	private:
-		Mouse();
-		~Mouse() = default;
-
-	public:
-		static Mouse& Instance()
-		{
-			static Mouse instance;
-			return instance;
-		}
-
-
-		void Update();
-		bool IsButtonPress(Mouses m);
-		bool IsButtonPressEneter(Mouses m);
-		bool IsButtomRelease(Mouses m);
-		bool IsMouseWheelRotate() const { return isWheelRotate; }
-	
-		void SetIsWheelRotateOn() { isWheelRotate = true; }
-		void SetIsWheelRotateOff() { isWheelRotate = false; }
-		void SetRowWheelRotateValue(float v) { rowWheelRotateValue = v; }
-
-		[[nodiscard]] DirectX::XMFLOAT2 GetPosition() const { return position; }
-		[[nodiscard]] DirectX::XMFLOAT2 GetMoveVec() const { return moveVec; }
-		[[nodiscard]] DirectX::XMFLOAT2 GetPostPosition() const { return postPosition; }
-		[[nodiscard]] WheelStates GetWheelState() const { return wheelState; }
-
-		float GetRowWheelRotateValue() const { return rowWheelRotateValue; }
-
-		std::unordered_map<Mouses, State> mouseState;
-	private:
-		DirectX::XMFLOAT2 position;
-		DirectX::XMFLOAT2 moveVec;
-		DirectX::XMFLOAT2 postPosition;
-
-		bool isWheelRotate;
-		float rowWheelRotateValue;
-		WheelStates wheelState;
-	};
 }

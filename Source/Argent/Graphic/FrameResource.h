@@ -41,8 +41,7 @@ namespace Argent::Frame
 		DirectX::XMFLOAT4X4 GetSceneProjection() const { return cbScene->projection;  }
 
 		void Begin() const;
-		void UpdateSceneConstant(const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& projection, const DirectX::XMFLOAT4& lightColor,
-		                         const DirectX::XMFLOAT3& lightPosition, const DirectX::XMFLOAT3& cameraPosition) const;
+		void UpdateSceneConstant(const SceneConstant& sceneConstant) const;
 		void SetSceneConstant(UINT rootParameterIndex = 0);
 		void SetBarrier(D3D12_RESOURCE_STATES before, D3D12_RESOURCE_STATES after) const;
 	public:

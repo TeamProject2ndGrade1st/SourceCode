@@ -2,7 +2,6 @@
 
 #include <d3d12.h>
 #include <DirectXMath.h>
-#include <vector>
 #include <memory>
 
 #include <unordered_map>

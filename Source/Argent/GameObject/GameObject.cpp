@@ -1,9 +1,7 @@
 #include "GameObject.h"
 #include <sstream>
 #include "../Graphic/Graphics.h"
-#include "../Component/Camera.h"
 #include "../Resource/ResourceManager.h"
-#include "../Scene/SceneManager.h"
 #include "../Scene/SceneManager.h"
 
 
@@ -51,144 +49,94 @@ GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> 
 	}
 }
 
-
-void GameObject::AddComponent(Argent::Component::BaseComponent* com)
-{
-	com->SetOwner(this);
-	components.emplace_back(com);
-	int i = 0;
-}
-
-void GameObject::AddComponent(std::vector<Argent::Component::BaseComponent*> com)
-{
-	if(com.size() == 1)
-	{
-		AddComponent(com.at(0));
-	}
-	else
-	{
-		for (size_t i = 0; i < com.size(); ++i)
-		{
-			AddChild(new GameObject(std::to_string(i), com.at(i)));
-		}
-	}
-}
-
-void GameObject::AddChild(GameObject* obj)
-{
-	obj->SetParent(this);
-	childObjects.emplace_back(obj);
-}
-
-void GameObject::CloseAllWindow()
-{
-	CloseWindow();
-	for (const auto& child : childObjects)
-	{
-		child->CloseAllWindow();
-	}
-}
-
-GameObject* GameObject::SceneCamera(const std::string& name, bool setSceneCamera)
-{
-	return new GameObject({
-			new Camera(setSceneCamera, Argent::Graphics::ArGraphics::Instance()->GetWidth(), Argent::Graphics::ArGraphics::Instance()->GetHeight()),
-			new CameraController
-		},
-		name);
-}
-
-void GameObject::DestroyGameObject(GameObject* object)
-{
-	Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->DestroyGameObject(object);
-}
-
-GameObject* GameObject::Instantiate(const char* name, Argent::Component::BaseComponent* com)
-{
-	GameObject* ret = new GameObject(name, com);
-
-	Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->AddObject(ret);
-	return ret;
-}
-
-GameObject* GameObject::FindGameObject(const char* name)
-{
-	return Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->GetGameObject(name);
-}
+//void GameObject::AddComToCom()
+//{
+//	//for(size_t i = 0; i < addComponents.size(); ++i)
+//	//{
+//	//	addComponents.at(i)->Initialize();
+//	//	components.emplace_back(addComponents.at(i));
+//	//}
+//	//for(auto& a : addComponents)
+//	//{
+//	//	a->Initialize();
+//	//	components.emplace_back(a);
+//	//}
+//	//addComponents.clear();
+//}
 
 void GameObject::Initialize()
 {
-	for(const auto& com : components)
+	for(size_t i = 0; i < components.size(); ++i)
 	{
-		com->Initialize();
+		components.at(i)->Initialize();
 	}
-	for(const auto& obj : childObjects)
+	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		obj->Initialize();
+		childObjects.at(i)->Initialize();
 	}
 }
 
 void GameObject::Finalize()
 {
-	for(const auto& com : components)
+	for(size_t i = 0; i < components.size(); ++i)
 	{
-		com->Finalize();
-		delete com;
+		components.at(i)->Finalize();
+		delete components.at(i);
 	}
 	components.clear();
-	for(const auto& obj : childObjects)
+	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		obj->Finalize();
-		delete obj;
+		childObjects.at(i)->Finalize();
+		delete childObjects.at(i);
 	}
 	childObjects.clear();
 }
 
 void GameObject::Begin()
 {
-	for (const auto& com : components)
+	for(size_t i = 0; i < components.size(); ++i)
 	{
-		com->Begin();
+		components.at(i)->Begin();
 	}
-	for (const auto& obj : childObjects)
+	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		obj->Begin();
+		childObjects.at(i)->Begin();
 	}
 }
 
 void GameObject::End()
 {
-	for (const auto& com : components)
+	for(size_t i = 0; i < components.size(); ++i)
 	{
-		com->End();
+		components.at(i)->End();
 	}
-	for (const auto& obj : childObjects)
+	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		obj->End();
+		childObjects.at(i)->End();
 	}
 }
 
 void GameObject::Update()
 {
-	for(const auto& com : components)
+	for(size_t i = 0; i < components.size(); ++i)
 	{
-		com->Update();
+		components.at(i)->Update();
 	}
-	for(const auto& obj : childObjects)
+	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		obj->Update();
+		childObjects.at(i)->Update();
 	}
 }
 
 void GameObject::Render() const
 {
-	for(const auto& com : components)
+	for(size_t i = 0; i < components.size(); ++i)
 	{
-		com->Render();
+		components.at(i)->Render();
 	}
-	for(const auto& obj : childObjects)
+	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		obj->Render();
+		childObjects.at(i)->Render();
 	}
 }
 
@@ -227,9 +175,9 @@ void GameObject::DrawDebug()
 				CloseWindow();
 			}
 		}
-		for(const auto& com : components)
+		for(size_t i = 0; i < components.size(); ++i)
 		{
-			com->DrawDebug();
+			components.at(i)->DrawDebug();
 		}
 
 		//AddComponent
@@ -266,15 +214,69 @@ void GameObject::DrawDebug()
 		ImGui::End();
 	}
 	
-	for(const auto& obj : childObjects)
+	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		obj->DrawDebug();
+		childObjects.at(i)->DrawDebug();
 	}
 
 #endif
 	
 }
 
+void GameObject::AddComponent(Argent::Component::BaseComponent* com)
+{
+	com->SetOwner(this);
+	//addComponents.emplace_back(com);
+	components.emplace_back(com);
+}
+
+void GameObject::AddComponent(std::vector<Argent::Component::BaseComponent*> com)
+{
+	if(com.size() == 1)
+	{
+		AddComponent(com.at(0));
+	}
+	else
+	{
+		for (size_t i = 0; i < com.size(); ++i)
+		{
+			AddChild(new GameObject(std::to_string(i), com.at(i)));
+		}
+	}
+}
+
+void GameObject::AddChild(GameObject* obj)
+{
+	obj->SetParent(this);
+	childObjects.emplace_back(obj);
+}
+
+void GameObject::CloseAllWindow()
+{
+	CloseWindow();
+	for (const auto& child : childObjects)
+	{
+		child->CloseAllWindow();
+	}
+}
+
+void GameObject::DestroyGameObject(GameObject* object)
+{
+	Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->DestroyGameObject(object);
+}
+
+GameObject* GameObject::Instantiate(const char* name, Argent::Component::BaseComponent* com)
+{
+	GameObject* ret = new GameObject(name, com);
+
+	Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->AddObject(ret);
+	return ret;
+}
+
+GameObject* GameObject::FindGameObject(const char* name)
+{
+	return Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->GetGameObject(name);
+}
 
 //if(isOpenNewDebugWindow)
 

@@ -84,16 +84,11 @@ namespace Argent::Frame
 		depthStencilResource->SetName(L"DepthStencilResource");
 	}
 
-	void FrameResource::UpdateSceneConstant(const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& projection,
-		const DirectX::XMFLOAT4& lightColor, const DirectX::XMFLOAT3& lightPosition,
-		const DirectX::XMFLOAT3& cameraPosition) const
+	void FrameResource::UpdateSceneConstant(const SceneConstant& sceneConstant) const
 	{
-		DirectX::XMStoreFloat4x4(&cbScene->view, view);
-		DirectX::XMStoreFloat4x4(&cbScene->projection, projection);
-		cbScene->cameraPosition = cameraPosition;
-		cbScene->lightColor = lightColor;
-		cbScene->lightPosition = lightPosition;
+		*cbScene = sceneConstant;
 	}
+
 
 	void FrameResource::SetSceneConstant(UINT rootParameterIndex)
 	{

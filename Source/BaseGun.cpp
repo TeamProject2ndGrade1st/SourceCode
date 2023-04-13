@@ -5,6 +5,7 @@
 BaseGun::BaseGun():
 	BaseActor("BaseGun")
 {
+		
 }
 
 void BaseGun::Shot()
@@ -19,7 +20,9 @@ void BaseGun::Shot()
 
 void BaseGun::Initialize()
 {
+	GetOwner()->AddComponent(new BaseBullet(DirectX::XMFLOAT3(), 0, 0));
 	BaseActor::Initialize();
+
 }
 
 void BaseGun::Update()

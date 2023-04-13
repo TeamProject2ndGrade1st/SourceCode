@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "../Graphic/Graphics.h"
 #include "../Input/Keyboard.h"
+#include "../Input/Mouse.h"
 #include "../GameObject/GameObject.h"
 #include "../Math/MathHelper.h"
 
@@ -17,7 +18,10 @@ Camera::Camera(bool isSceneCamera, float width, float height, float nearZ, float
 ,	forward(DirectX::XMFLOAT3(0, 0, 1))
 ,	right(DirectX::XMFLOAT3(1, 0, 0))
 ,	up(DirectX::XMFLOAT3(0, 1, 0))
-{}
+{
+	/*if(Argent::Graphics::ArGraphics::Instance()->GetCamera() == nullptr)
+		Argent::Graphics::ArGraphics::Instance()->SetCamera(this);*/
+}
 
 void Camera::Reset()
 {
@@ -131,6 +135,15 @@ void Camera::Update()
 	DirectX::XMStoreFloat3(&up, DirectX::XMVector3Normalize(DirectX::XMVector3Rotate(UpVec, quaternion)));
 }
 
+void Camera::End()
+{
+	auto g = Argent::Graphics::ArGraphics::Instance();
+	g->SetCameraPosition(GetOwner()->GetTransform()->GetPosition());
+	g->SetProjectionMatrix(GetProjectionMatrix());
+	g->SetViewMatrix(GetViewMatrix());
+
+}
+
 #ifdef _DEBUG
 void Camera::DrawDebug()
 {
@@ -139,7 +152,6 @@ void Camera::DrawDebug()
 	{
 		if(ImGui::Button("Use Scene Camera"))
 		{
-			Argent::Graphics::ArGraphics::Instance()->SetCamera(this);
 			isSceneCamera = true;
 		}
 
@@ -211,7 +223,7 @@ void CameraController::Update()
 
 	if(!camera->GetIsSceneCamera()) return;
 
-	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::mMiddleButton))
+	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::MiddleButton))
 	{
 		DirectX::XMFLOAT3 position = transform->GetPosition();
 		if(!camera) return;
@@ -232,7 +244,7 @@ void CameraController::Update()
 	}
 
 	//Rotate
-	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::mRightButton))
+	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::RightButton))
 	{
 		DirectX::XMFLOAT4 rotation = transform->GetRotation();
 

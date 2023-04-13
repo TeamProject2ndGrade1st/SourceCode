@@ -3,7 +3,13 @@
 #include "Argent/Argent.h"
 #include "BaseBullet.h"
 #include "BaseGun.h"
+//<<<<<<< HEAD
 #include "BaseEnemy.h"
+//=======
+#include "Player.h"
+#include "Argent/Debug/DebugRenderer.h"
+#include "Argent/Component/RayCast.h"
+//>>>>>>> origin/GinNote
 
 void Title::Initialize()
 {
@@ -16,11 +22,24 @@ void Title::Initialize()
 
 	AddObject(new GameObject("DemoGun", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx", false)));
 
+	
 	AddObject(new GameObject("Nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
-
+//	AddObject(new GameObject("Gun", new BaseGun));
 	//AddObject(new GameObject("Stage", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
+
+	AddObject(new GameObject("player", new Player));
+	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 	//AddObject(new GameObject("Stage1", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
+	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Cube.fbx");
+	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));
+	AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
+
 	BaseScene::Initialize();
+}
+
+void Title::Begin()
+{
+	BaseScene::Begin();
 }
 
 void Title::Finalize()
@@ -28,13 +47,15 @@ void Title::Finalize()
 	BaseScene::Finalize();
 }
 
+
+
 void Title::Update()
 {
 	BaseScene::Update();
 
-	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::mLeftButton))
+	if(Argent::Input::GetKeyDown(KeyCode::P))
 	{
-		//SceneManager::SetNextScene("Game");
+		Argent::Scene::ArSceneManager::SetNextScene("Game");
 	}
 }
 

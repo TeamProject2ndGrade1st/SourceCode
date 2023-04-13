@@ -82,6 +82,9 @@
     <Filter Include="Argent\Component\Audio">
       <UniqueIdentifier>{61c2dac6-ada7-4159-ad07-fa82d04002ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Argent\Debug">
+      <UniqueIdentifier>{33bf81a7-64f4-41cd-9131-5e14791e2c99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -259,9 +262,24 @@
     <ClCompile Include="Source\Player.cpp">
       <Filter>Game\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\RayCast.cpp" />
-    <ClCompile Include="Source\Argent\Component\AnimationPlayer.cpp" />
-    <ClCompile Include="Source\Argent\Resource\FbxResource.cpp" />
+    <ClCompile Include="Source\Argent\Input\Mouse.cpp">
+      <Filter>Argent\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Debug\DebugRenderer.cpp">
+      <Filter>Work In Progress</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Resource\FbxResource.cpp">
+      <Filter>Work In Progress</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\AnimationPlayer.cpp">
+      <Filter>Work In Progress\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\RayCast.cpp">
+      <Filter>Work In Progress\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BaseEnemy.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -468,9 +486,24 @@
     <ClInclude Include="Source\BaseGun.h">
       <Filter>Game\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\RayCast.h" />
-    <ClInclude Include="Source\Argent\Component\AnimationPlayer.h" />
-    <ClInclude Include="Source\Argent\Resource\FbxResource.h" />
+    <ClInclude Include="Source\Argent\Input\Mouse.h">
+      <Filter>Argent\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Debug\DebugRenderer.h">
+      <Filter>Work In Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Resource\FbxResource.h">
+      <Filter>Work In Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\AnimationPlayer.h">
+      <Filter>Work In Progress\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\RayCast.h">
+      <Filter>Work In Progress\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseEnemy.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
@@ -512,6 +545,12 @@
     <FxCompile Include="Source\Shader\StaticMeshPixel.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Source\Shader\DebugMeshVertex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\DebugMeshPixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shader\SpritePrimitive.hlsli">
@@ -533,6 +572,9 @@
       <Filter>Shader</Filter>
     </None>
     <None Include="Source\Shader\SceneConstant.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Source\Shader\DebugMesh.hlsli">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>

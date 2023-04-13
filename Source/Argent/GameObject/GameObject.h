@@ -61,8 +61,7 @@ public:
 
 	void CloseWindow() { isSelected = false; }
 	void CloseAllWindow();
-	
-	static GameObject* SceneCamera(const std::string& name = "Sub Camera", bool setSceneCamera = false);
+
 	static void DestroyGameObject(GameObject* object);
 	static GameObject* Instantiate(const char* name, Argent::Component::BaseComponent* com);
 	static GameObject* FindGameObject(const char* name);
@@ -79,6 +78,10 @@ protected:
 	int orderInUpdate = 10;
 
 	bool isSelected;
+
+private:
+	//std::vector<Argent::Component::BaseComponent*> addComponents;
+	//void AddComToCom();
 public:
 	bool operator<(const GameObject& g) const
 	{

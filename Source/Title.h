@@ -11,6 +11,7 @@ public:
 	~Title() override = default;
 		
 	void Initialize() override;
+	void Begin() override;
 	void Finalize() override;
 	void Update() override;
 	void Render() override;

@@ -1,8 +1,6 @@
 #include "Graphics.h"
 #include <DirectXTex.h>
 #include <vector>
-#include <string>
-#include <d3dx12.h>
 #include "../Other/Misc.h"
 #include "../GameObject/GameObject.h"
 #include "../Other/Helper.h"
@@ -14,10 +12,7 @@ namespace Argent::Graphics
 	ArGraphics* ArGraphics::instance =  nullptr;
 
 	ArGraphics::ArGraphics(HWND hWnd):
-		camera(nullptr)
-		,	light(nullptr)
-		,	nextCamera(nullptr)
-		,	curFrameResource(nullptr)
+		curFrameResource(nullptr)
 		,	renderingQueue(nullptr)
 		,	resourceQueue(nullptr)
 	{
@@ -133,23 +128,26 @@ namespace Argent::Graphics
 		const UINT backBufferIndex = mSwapChain->GetCurrentBackBufferIndex();
 		curFrameResource = frameResources.at(backBufferIndex).get();
 		curFrameResource->Begin();
-		if(nextCamera)
-		{
-			if(camera)
-				camera->OffSceneCamera();
-			camera = nextCamera;
-			camera->OnSceneCamera();
-			nextCamera = nullptr;
-		}
+		//if(nextCamera)
+		//{
+		//	if(camera)
+		//		camera->OffSceneCamera();
+		//	camera = nextCamera;
+		//	camera->OnSceneCamera();
+		//	nextCamera = nullptr;
+		//}
+
+		curFrameResource->UpdateSceneConstant(sceneConstant);
 		
-		if(camera && light)
-		{
-			curFrameResource->UpdateSceneConstant(camera->GetViewMatrix(),
-				camera->GetProjectionMatrix(), light->GetColor().GetColor(),
-			                                      light->GetOwner()->GetTransform()->GetPosition(),
-			                                      camera->GetOwner()->GetTransform()->GetPosition()
-			);
-		}
+		//if(camera && light)
+		//{
+		//	auto t = camera->GetOwner()->GetTransform();
+		//	curFrameResource->UpdateSceneConstant(camera->GetViewMatrix(),
+		//		camera->GetProjectionMatrix(), light->GetColor().GetColor(),
+		//	                                      light->GetOwner()->GetTransform()->GetPosition(),
+		//	                                      t->GetPosition()
+		//	);
+		//}
 			
 		
 		const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();

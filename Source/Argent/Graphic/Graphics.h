@@ -65,12 +65,6 @@ namespace Argent::Graphics
 		
 		[[nodiscard]] ID3D12DescriptorHeap* GetGUIHeap() const { return imGuiHeap->GetHeapPointer(); }
 
-		
-		void SetCamera(Camera* c) { nextCamera = c; }
-		[[nodiscard]] Camera* GetCamera() const { return camera; }
-		void SetLight(Light* l) { light = l; }
-		[[nodiscard]] Light* GetLight() const { return light; }
-		
 		[[nodiscard]] D3D12_VIEWPORT GetViewport() const { return viewport; }
 		[[nodiscard]] D3D12_RECT GetRect() const { return scissorRect; }
 
@@ -110,6 +104,12 @@ namespace Argent::Graphics
 
 		static int GetNumBackBuffers() { return NumBackBuffers;  }
 
+
+		void SetViewMatrix(const DirectX::XMMATRIX& m){ DirectX::XMStoreFloat4x4(&sceneConstant.view, m); }
+		void SetProjectionMatrix(const DirectX::XMMATRIX& m) { DirectX::XMStoreFloat4x4(&sceneConstant.projection, m); }
+		void SetCameraPosition(const DirectX::XMFLOAT3& p) { sceneConstant.cameraPosition = p; }
+		void SetLightPosition(const DirectX::XMFLOAT3& f) { sceneConstant.lightPosition = f; }
+		void SetLightColor(const DirectX::XMFLOAT4& f) { sceneConstant.lightColor = f; }
 	private:
 		static ArGraphics* instance;
 		static constexpr int NumBackBuffers = 2;
@@ -136,13 +136,12 @@ namespace Argent::Graphics
 		float clearColor[4];
 		float windowWidth;
 		float windowHeight;
-
-		Camera* camera;
-		Camera* nextCamera;
-		Light* light;
-
+		Frame::SceneConstant sceneConstant;
+	
 	public:
 		std::unique_ptr<FrameBuffer> frameBuffer[8];
+
+
 	};
 
 	HRESULT CreateDevice(IDXGIFactory6* factory, ID3D12Device** device);

@@ -25,7 +25,7 @@ namespace Argent::Collider
 			rayCast.emplace_back(ray);
 		}
 
-		void CollisionDetection();
+		void CollisionDetection() const;
 
 		static ArColliderManager& Instance()
 		{
