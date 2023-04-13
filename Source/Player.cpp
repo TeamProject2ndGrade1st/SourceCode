@@ -28,11 +28,6 @@ void Player::DrawDebug()
         ImGui::TreePop();
     }
 }
-
-void Player::OnRayCollision(const Argent::Component::Collider::RayCastCollider* other)
-{
-    _ASSERT_EXPR(false, L"Succeeded");
-}
 #endif
 
 void Player::Update()

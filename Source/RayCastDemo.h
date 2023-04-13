@@ -11,10 +11,10 @@ public:
 
 	void Initialize() override;
 
-	void OnRayCollision(const Argent::Component::Collider::RayCastCollider* other) override;
 	void Update() override;
+#ifdef _DEBUG
 	void DrawDebug() override;
-
+#endif
 	Argent::Component::Collision::RayCast* ray;
 	float moveSpeed;
 };

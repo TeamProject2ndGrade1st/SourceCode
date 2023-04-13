@@ -79,6 +79,8 @@ protected:
 
 	bool isSelected;
 	bool isInitialized;
+	bool willDestroy;
+	bool isUsed;
 
 private:
 	//std::vector<Argent::Component::BaseComponent*> addComponents;

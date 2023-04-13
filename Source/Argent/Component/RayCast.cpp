@@ -104,15 +104,6 @@ namespace Argent::Component
 			//Argent::Collider::ArColliderManager::Instance().RegisterRay(this);
 		}
 
-		void RayCast::OnCollision(Collider::RayCastCollider* other)
-		{
-			GameObject* obj = GetOwner();
-			if(obj)
-			{
-				obj->GetActor()->OnRayCollision(other);
-			}
-		}
-
 		bool RayCast::CollisionDetection(Collider::RayCastCollider* other, HitResult& hitResult) const
 		{
 			bool ret = false;
@@ -156,7 +147,7 @@ namespace Argent::Component
 			}
 			return ret;
 		}
-
+#ifdef _DEBUG
 		void RayCast::DrawDebug()
 		{
 			if(ImGui::TreeNode(GetName().c_str()))
@@ -167,5 +158,6 @@ namespace Argent::Component
 				ImGui::TreePop();
 			}
 		}
+#endif
 	}
 }

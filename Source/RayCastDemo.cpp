@@ -10,51 +10,40 @@ void RayCastDemo::Initialize()
 		GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false));
 }
 
-void RayCastDemo::OnRayCollision(const Argent::Component::Collider::RayCastCollider* other)
-{
-	BaseActor::OnRayCollision(other);
-}
-
 void RayCastDemo::Update()
 {
 	BaseActor::Update();
 
 	if (Argent::Input::GetKey(KeyCode::I))
 	{
-		auto p = GetTransform()->GetPosition();
-		p = p + GetTransform()->CalcForward() * moveSpeed * Argent::Timer::GetDeltaTime();
-		ray->SetRayStartPosition(GetTransform()->GetPosition());
-		ray->SetRayDirection(GetTransform()->CalcForward());
-		ray->SetRayLength(moveSpeed * Argent::Timer::GetDeltaTime());
+		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcForward(), moveSpeed * Argent::Timer::GetDeltaTime());
 		HitResult hitResult;
 		if(Argent::Collider::ArColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
 		{
 			GetTransform()->SetPosition(hitResult.position);
 		}
 		else
+		{
+			const auto p = GetTransform()->GetPosition() + GetTransform()->CalcForward() * moveSpeed * Argent::Timer::GetDeltaTime();
 			GetTransform()->SetPosition(p);
+		}
 	}
 	if (Argent::Input::GetKey(KeyCode::K))
 	{
-		auto p = GetTransform()->GetPosition();
-		p = p + GetTransform()->CalcForward() * -moveSpeed * Argent::Timer::GetDeltaTime();
-		ray->SetRayStartPosition(p);
-		ray->SetRayDirection(GetTransform()->CalcForward());
-		ray->SetRayLength(moveSpeed * Argent::Timer::GetDeltaTime());
+		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcForward(), moveSpeed * Argent::Timer::GetDeltaTime());
 		HitResult hitResult;
 		if (Argent::Collider::ArColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
 		{
 			GetTransform()->SetPosition(hitResult.position);
 		}
 		else
+		{
+			const auto p = GetTransform()->GetPosition() * -moveSpeed * Argent::Timer::GetDeltaTime();
 			GetTransform()->SetPosition(p);
+		}
 	}
-
-	//ray->SetRayStartPosition(GetTransform()->GetPosition());
-	//ray->SetRayDirection(GetTransform()->CalcForward());
-	//ray->SetRayLength(moveSpeed * Argent::Timer::GetDeltaTime());
 }
-
+#ifdef _DEBUG
 void RayCastDemo::DrawDebug()
 {
 	if (ImGui::TreeNode(GetName().c_str()))
@@ -64,3 +53,4 @@ void RayCastDemo::DrawDebug()
 		ImGui::TreePop();
 	}
 }
+#endif
