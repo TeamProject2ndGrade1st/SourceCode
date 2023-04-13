@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Argent/Argent.h"
+#include "Argent/Graphic/Graphics.h"
 
 Player::Player() :BaseActor("player")
 {
@@ -7,8 +8,17 @@ Player::Player() :BaseActor("player")
 
 void Player::Initialize()
 {
+    static bool b = false;
+    if(!b)
+    {
+	    ray = new Argent::Component::Collision::RayCast();
+	    auto g = GetOwner();
+	    g->AddComponent(ray);
+        b = true;
+    }
 }
 
+#ifdef _DEBUG
 void Player::DrawDebug()
 {
     if(ImGui::TreeNode(GetName().c_str()))
@@ -18,6 +28,12 @@ void Player::DrawDebug()
         ImGui::TreePop();
     }
 }
+
+void Player::OnRayCollision(const Argent::Component::Collider::RayCastCollider* other)
+{
+    _ASSERT_EXPR(false, L"Succeeded");
+}
+#endif
 
 void Player::Update()
 {
@@ -38,6 +54,11 @@ void Player::Update()
         break;
 
     }
+    GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
+
+    ray->SetRayStartPosition(GetTransform()->GetPosition());
+    ray->SetRayDirection(GetTransform()->CalcForward());
+    ray->SetRayLength(movement * Argent::Timer::GetDeltaTime());
 }
 
 // ƒJƒƒ‰‚ÌˆÚ“®

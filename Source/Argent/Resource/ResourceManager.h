@@ -27,9 +27,6 @@ namespace Argent::Resource
 		void Clear();
 		void Begin();
 
-		bool FindTexture(const wchar_t* filepath, ID3D12Resource** ppResource);
-		//[[nodiscard]] const MeshData* AddMeshData(const std::string& meshName, std::unique_ptr<MeshData> mesh);
-
 		/**
 		 * \brief リソース管理用ユニークidを生み出す
 		 * \return 
@@ -62,8 +59,6 @@ namespace Argent::Resource
 
 		uint64_t LoadTexture(const char* filePath);
 
-		std::shared_ptr<Argent::Resource::ArResource> LoadFbx(const char* filePath);
-
 	private:
 
 		std::shared_ptr<Argent::Texture::ArTexture> FindResourceFromFilePath(const char* filePath) const
@@ -78,7 +73,7 @@ namespace Argent::Resource
 			return nullptr;
 		}
 
-		std::unordered_map<uint64_t, std::weak_ptr<Argent::Texture::ArTexture>> resources;
+		std::unordered_map<uint64_t, std::weak_ptr<Texture::ArTexture>> resources;
 
 		std::vector<std::shared_ptr<Argent::Texture::ArTexture>> rowTextureData;
 	public:
@@ -87,6 +82,5 @@ namespace Argent::Resource
 			static ResourceManager instance;
 			return instance;
 		}
-
 	};
 }

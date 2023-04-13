@@ -32,7 +32,7 @@ namespace Argent::Component::Collider
 		SphereCollider* collider = static_cast<SphereCollider*>(other);
 
 		DirectX::XMFLOAT3 outPosition{};
-		bool ret = Helper::Collider::IntersectSphereVsSphere(
+		bool ret = Helper::Collision::IntersectSphereVsSphere(
 		thisTransform->GetPosition(), this->radius, 
 			otherTransform->GetPosition(), collider->radius, outPosition);
 

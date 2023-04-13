@@ -35,25 +35,6 @@ namespace Argent
 		public:
 			RootSignature(ID3D12Device* device, const D3D12_ROOT_SIGNATURE_DESC* rootSigDesc)
 			{
-				D3D12_ROOT_SIGNATURE_DESC desc{};
-
-				D3D12_DESCRIPTOR_RANGE range[1]{};
-
-				range[0] = Helper::Dx12::DescriptorRange::Generate(0, 1, D3D12_DESCRIPTOR_RANGE_TYPE_SRV);
-																																	 
-				D3D12_ROOT_PARAMETER rootParam[1]{};
-				rootParam[0] = Helper::Dx12::RootParameter::Generate(1, &range[0], D3D12_SHADER_VISIBILITY_PIXEL);
-																																  
-				D3D12_STATIC_SAMPLER_DESC samplerDesc = Helper::Dx12::Sampler::GenerateSamplerDesc(Helper::Dx12::Sampler::FilterMode::fAnisotropic, Helper::Dx12::Sampler::WrapMode::wBorder);
-
-
-				desc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-				desc.NumParameters = 1;
-				desc.pParameters = rootParam;
-				desc.NumStaticSamplers = 1;
-				desc.pStaticSamplers = &samplerDesc;
-
-
 				Microsoft::WRL::ComPtr<ID3DBlob> rootSigBlob;
 				Microsoft::WRL::ComPtr<ID3DBlob> errorBlob;
 				HRESULT hr{ S_OK };

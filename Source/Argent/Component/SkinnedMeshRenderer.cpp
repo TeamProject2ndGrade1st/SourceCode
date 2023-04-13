@@ -29,7 +29,7 @@ namespace Argent::Component::Renderer
 	void SkinnedMeshRenderer::Initialize()
 	{
 		GameObject* g = GetOwner();
-		g->GetTransform()->SetWorld(skinnedMesh->globalTransform);
+		g->GetTransform()->SetWorld(skinnedMesh->localTransform);
 		g->SetName(skinnedMesh->GetName());
 	}
 
@@ -61,7 +61,7 @@ namespace Argent::Component::Renderer
 					DirectX::XMStoreFloat4x4(&meshConstant.boneTransforms[boneIndex],
 						DirectX::XMLoadFloat4x4(&bone.offsetTransform) *
 						DirectX::XMLoadFloat4x4(&boneNode.globalTransform) *
-						DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&m->globalTransform))
+						DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&m->localTransform))
 					);
 				}
 				const Resource::Animation::ArAnimation::Keyframe::Node meshNode{ keyframe->nodes.at(m->nodeIndex) };

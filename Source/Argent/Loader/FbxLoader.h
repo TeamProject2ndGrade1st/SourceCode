@@ -106,7 +106,8 @@ namespace Argent::Loader
 			}
 		};
 		std::vector<Component::BaseComponent*> LoadFbx(const char* filePath, bool triangulate = false);
-		
+
+		void LoadDebug(const char* filePath);
 
 	}
 }

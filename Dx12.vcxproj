@@ -46,6 +46,7 @@
     <ClCompile Include="Source\Argent\Core\Random.cpp" />
     <ClCompile Include="Source\Argent\Core\Timer.cpp" />
     <ClCompile Include="Source\Argent\Core\ArWindow.cpp" />
+    <ClCompile Include="Source\Argent\Debug\DebugRenderer.cpp" />
     <ClCompile Include="Source\Argent\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Argent\Graphic\FrameResource.cpp" />
     <ClCompile Include="Source\Argent\Graphic\Graphics.cpp" />
@@ -56,6 +57,7 @@
     <ClCompile Include="Source\Argent\Graphic\Dx12\PipelineState.cpp" />
     <ClCompile Include="Source\Argent\Graphic\FrameBuffer.cpp" />
     <ClCompile Include="Source\Argent\Input\Keyboard.cpp" />
+    <ClCompile Include="Source\Argent\Input\Mouse.cpp" />
     <ClCompile Include="Source\Argent\Loader\FbxLoader.cpp" />
     <ClCompile Include="Source\Argent\Math\MathHelper.cpp" />
     <ClCompile Include="Source\Argent\Other\Helper.cpp" />
@@ -79,6 +81,7 @@
     <ClCompile Include="Source\BaseGun.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\RayCastDemo.cpp" />
     <ClCompile Include="Source\Title.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
@@ -113,6 +116,7 @@
     <ClInclude Include="Source\Argent\Core\Random.h" />
     <ClInclude Include="Source\Argent\Core\Timer.h" />
     <ClInclude Include="Source\Argent\Core\ArWindow.h" />
+    <ClInclude Include="Source\Argent\Debug\DebugRenderer.h" />
     <ClInclude Include="Source\Argent\GameObject\GameObject.h" />
     <ClInclude Include="Source\Argent\Graphic\FrameResource.h" />
     <ClInclude Include="Source\Argent\Graphic\Graphics.h" />
@@ -126,6 +130,7 @@
     <ClInclude Include="Source\Argent\Graphic\Dx12\IndexBuffer.h" />
     <ClInclude Include="Source\Argent\Graphic\FrameBuffer.h" />
     <ClInclude Include="Source\Argent\Input\Keyboard.h" />
+    <ClInclude Include="Source\Argent\Input\Mouse.h" />
     <ClInclude Include="Source\Argent\Loader\FbxLoader.h" />
     <ClInclude Include="Source\Argent\Math\MathHelper.h" />
     <ClInclude Include="Source\Argent\Other\Helper.h" />
@@ -153,9 +158,22 @@
     <ClInclude Include="Source\DemoShaderMacro.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\RayCastDemo.h" />
     <ClInclude Include="Source\Title.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Source\Shader\DebugMeshPixel.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\DebugMeshVertex.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="Source\Shader\GeometricPrimitivePixel.hlsl" />
     <FxCompile Include="Source\Shader\GeometricPrimitiveVertex.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
@@ -208,6 +226,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Source\Shader\DebugMesh.hlsli" />
     <None Include="Source\Shader\GeometricPrimitive.hlsli" />
     <None Include="Source\Shader\Pera.hlsli" />
     <None Include="Source\Shader\SceneConstant.hlsli" />

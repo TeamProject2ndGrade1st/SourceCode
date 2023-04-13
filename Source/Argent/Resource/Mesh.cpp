@@ -8,7 +8,7 @@ namespace Argent::Resource::Mesh
 		ArResource(name, ResourceType::Mesh)
 	,	meshResource(mResource)
 	,	subsets(subsets)
-	,	globalTransform(globalTransform)
+	,	localTransform(globalTransform)
 	{
 		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
 		vertexBuffer = std::make_unique<Dx12::ArVertexBuffer<Vertex>>(device, mResource.vertices);
