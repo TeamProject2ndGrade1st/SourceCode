@@ -3,13 +3,10 @@
 #include "Argent/Argent.h"
 #include "BaseBullet.h"
 #include "BaseGun.h"
-//<<<<<<< HEAD
 #include "BaseEnemy.h"
-//=======
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
 #include "Argent/Component/RayCast.h"
-//>>>>>>> origin/GinNote
 
 void Title::Initialize()
 {
