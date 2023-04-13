@@ -38,7 +38,7 @@ namespace Argent::Component
 				Cylinder,
 				Max,
 			};
-			RayCastCollider(MeshType type = MeshType::Cylinder,
+			RayCastCollider(MeshType type = MeshType::Cube,
 				const DirectX::XMFLOAT3& offset = DirectX::XMFLOAT3(),
 					const DirectX::XMFLOAT3& scale = DirectX::XMFLOAT3(1, 1, 1),
 					const DirectX::XMFLOAT4& rotation = DirectX::XMFLOAT4(1, 1, 1, 1));
@@ -91,7 +91,7 @@ namespace Argent::Component
 
 			void OnCollision(Collider::RayCastCollider* other);
 
-			void CollisionDetection(Collider::RayCastCollider* other) const;
+			bool CollisionDetection(Collider::RayCastCollider* other, HitResult& hitResult) const;
 
 			void DrawDebug() override;
 		protected:

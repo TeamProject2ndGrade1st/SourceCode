@@ -1,4 +1,5 @@
 #include "RayCastDemo.h"
+#include "Argent/Component/ArColliderManager.h"
 
 void RayCastDemo::Initialize()
 {
@@ -22,18 +23,36 @@ void RayCastDemo::Update()
 	{
 		auto p = GetTransform()->GetPosition();
 		p = p + GetTransform()->CalcForward() * moveSpeed * Argent::Timer::GetDeltaTime();
-		GetTransform()->SetPosition(p);
+		ray->SetRayStartPosition(GetTransform()->GetPosition());
+		ray->SetRayDirection(GetTransform()->CalcForward());
+		ray->SetRayLength(moveSpeed * Argent::Timer::GetDeltaTime());
+		HitResult hitResult;
+		if(Argent::Collider::ArColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
+		{
+			GetTransform()->SetPosition(hitResult.position);
+		}
+		else
+			GetTransform()->SetPosition(p);
 	}
 	if (Argent::Input::GetKey(KeyCode::K))
 	{
 		auto p = GetTransform()->GetPosition();
 		p = p + GetTransform()->CalcForward() * -moveSpeed * Argent::Timer::GetDeltaTime();
-		GetTransform()->SetPosition(p);
+		ray->SetRayStartPosition(p);
+		ray->SetRayDirection(GetTransform()->CalcForward());
+		ray->SetRayLength(moveSpeed * Argent::Timer::GetDeltaTime());
+		HitResult hitResult;
+		if (Argent::Collider::ArColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
+		{
+			GetTransform()->SetPosition(hitResult.position);
+		}
+		else
+			GetTransform()->SetPosition(p);
 	}
 
-	ray->SetRayStartPosition(GetTransform()->GetPosition());
-	ray->SetRayDirection(GetTransform()->CalcForward());
-	ray->SetRayLength(moveSpeed * Argent::Timer::GetDeltaTime());
+	//ray->SetRayStartPosition(GetTransform()->GetPosition());
+	//ray->SetRayDirection(GetTransform()->CalcForward());
+	//ray->SetRayLength(moveSpeed * Argent::Timer::GetDeltaTime());
 }
 
 void RayCastDemo::DrawDebug()

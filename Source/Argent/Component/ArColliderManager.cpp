@@ -19,7 +19,7 @@ namespace Argent::Collider
 			}
 		}
 
-		for(size_t i = 0; i < rayCast.size(); ++i)
+		/*for(size_t i = 0; i < rayCast.size(); ++i)
 		{
 			for(size_t j = 0; j < rayCastCollider.size(); ++j)
 			{
@@ -27,6 +27,21 @@ namespace Argent::Collider
 				auto collider = rayCastCollider.at(j);
 				ray->CollisionDetection(collider);
 			}
+		}*/
+	}
+
+	bool ArColliderManager::CollisionDetectionRayCast(Component::Collision::RayCast* ray, Component::Collision::HitResult& hitResult)
+	{
+		bool ret = false;
+		for (size_t j = 0; j < rayCastCollider.size(); ++j)
+		{
+			const auto collider = rayCastCollider.at(j);
+			bool b = ray->CollisionDetection(collider, hitResult);
+			if(b && !ret)
+			{
+				ret = true;
+			}
 		}
+		return ret;
 	}
 }
