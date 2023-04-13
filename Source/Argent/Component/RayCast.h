@@ -19,7 +19,10 @@
 namespace Argent::Component
 {
 	//前方宣言
-	class RayCast;
+	namespace Collision
+	{
+		class RayCast;
+	}
 	using MeshResource = Resource::Mesh::MeshResource;
 
 	namespace Collider
@@ -43,6 +46,12 @@ namespace Argent::Component
 			~RayCastCollider() override = default;
 
 			void Render() const override;
+			void Initialize() override;
+
+			DirectX::XMMATRIX GetWorldTransform();
+#ifdef _DEBUG
+			void DrawDebug() override;
+#endif
 
 			MeshType type;
 			std::unique_ptr<Debug::DebugRenderer> debugRenderer;
@@ -50,6 +59,7 @@ namespace Argent::Component
 			DirectX::XMFLOAT3 scale;
 			DirectX::XMFLOAT4 rotation;
 
+			const MeshResource& GetMeshResource()const { return mResource[static_cast<int>(type)]; }
 		protected:
 			//MeshResource mResource;
 			static MeshResource mResource[static_cast<int>(MeshType::Max)];
@@ -57,27 +67,38 @@ namespace Argent::Component
 		
 	}
 
-
-	class RayCast :
-		public BaseComponent
+	namespace Collision
 	{
-	public:
-		RayCast():
-			BaseComponent("RayCast")
-		{}
+		struct HitResult
+		{
+			DirectX::XMFLOAT3	position = {};		//レイとポリゴンの交点
+			DirectX::XMFLOAT3	normal = {};		//衝突したポリゴンの法線ベクトル
+			float				distance = 0.0f;	//レイの視点から交点までの距離
+			int					materialIndex = -1;	//衝突したポリゴンのマテリアル番号
+		};
 
-		void SetRayStartPosition(const DirectX::XMFLOAT3& f) { start = f; }
-		void SetRayDirection(const DirectX::XMFLOAT3& f) { direction = f; }
-		void SetRayRange(float f) { range = f; }
 
-		void OnCollision(Collider::RayCastCollider* other);
+		class RayCast :
+			public BaseComponent
+		{
+		public:
+			RayCast();
+				
 
-		void CollisionDetection(Collider::RayCastCollider* other);
-	protected:
-		DirectX::XMFLOAT3 start;
-		DirectX::XMFLOAT3 direction;
-		float range;
-	};
+			void SetRayStartPosition(const DirectX::XMFLOAT3& f) { start = f; }
+			void SetRayDirection(const DirectX::XMFLOAT3& f) { direction = f; }
+			void SetRayLength(float f) { length = f; }
 
+			void OnCollision(Collider::RayCastCollider* other);
+
+			void CollisionDetection(Collider::RayCastCollider* other) const;
+
+			void DrawDebug() override;
+		protected:
+			DirectX::XMFLOAT3 start;
+			DirectX::XMFLOAT3 direction;
+			float length;
+		};
+	}
 
 }

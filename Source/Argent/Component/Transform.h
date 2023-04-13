@@ -29,6 +29,9 @@ public:
 	Transform(const Transform&) = default;
 	Transform& operator+=(const Transform& t);
 	Transform& operator=(const Transform& t);
+
+	void Update() override;
+
 #ifdef _DEBUG
 	void DrawDebug() override;
 #endif
@@ -36,13 +39,13 @@ public:
 	void Reset() override;
 	void SetWorld(const DirectX::XMFLOAT4X4& w);
 
-	[[nodiscard]] DirectX::XMMATRIX GetMatrix() const;
+	[[nodiscard]] DirectX::XMMATRIX GetWorldMatrix() const;
 	
 
 	[[nodiscard]] DirectX::XMFLOAT4X4 GetWorld() const
 	{
 		DirectX::XMFLOAT4X4 tmp{};
-		DirectX::XMStoreFloat4x4(&tmp, GetMatrix());
+		DirectX::XMStoreFloat4x4(&tmp, GetWorldMatrix());
 		return tmp;
 	}
 

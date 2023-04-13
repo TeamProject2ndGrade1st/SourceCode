@@ -82,6 +82,7 @@
     <ClCompile Include="Source\BaseGun.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\RayCastDemo.cpp" />
     <ClCompile Include="Source\Title.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
@@ -159,6 +160,7 @@
     <ClInclude Include="Source\DemoShaderMacro.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\RayCastDemo.h" />
     <ClInclude Include="Source\Title.h" />
   </ItemGroup>
   <ItemGroup>

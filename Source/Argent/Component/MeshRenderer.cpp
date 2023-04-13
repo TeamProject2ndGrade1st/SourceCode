@@ -45,13 +45,12 @@ namespace Argent::Component::Renderer
 				3, 4);
 			cmdList->DrawIndexedInstanced(subset.indexCount, 1, subset.startIndexLocation, 0, 0);
 		}
-		
 	}
 
 	void MeshRenderer::Initialize()
 	{
 		GameObject* g = GetOwner();
-		g->GetTransform()->SetWorld(mesh->globalTransform);
+		g->GetTransform()->SetWorld(mesh->localTransform);
 		g->SetName(mesh->GetName());
 	}
 

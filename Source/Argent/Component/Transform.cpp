@@ -29,6 +29,11 @@ Transform& Transform::operator=(const Transform& t)
 	return *this;
 }
 
+void Transform::Update()
+{
+	
+}
+
 #ifdef _DEBUG
 void Transform::DrawDebug()
 {
@@ -68,7 +73,7 @@ void Transform::SetWorld(const DirectX::XMFLOAT4X4& w)
 	defaultWorld = w;
 }
 
-DirectX::XMMATRIX Transform::GetMatrix() const
+DirectX::XMMATRIX Transform::GetWorldMatrix() const
 {
 	const DirectX::XMMATRIX C = { DirectX::XMLoadFloat4x4(&CoordinateSystemTransforms[coordinateSystem]) *
 		DirectX::XMMatrixScaling(scaleFactor, scaleFactor, scaleFactor) };

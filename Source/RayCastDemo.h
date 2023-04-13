@@ -1,33 +1,20 @@
 #pragma once
 #include "Argent/Argent.h"
 
-class Player:
+class RayCastDemo:
 	public Argent::Component::BaseActor
 {
 public:
-	Player();
-	virtual ~Player() override = default;
+	RayCastDemo():
+		BaseActor("RayCastDemo")
+	{}
 
-	void Update() override;
 	void Initialize() override;
 
-#ifdef _DEBUG
-	void DrawDebug() override;
-#endif
-
-
 	void OnRayCollision(const Argent::Component::Collider::RayCastCollider* other) override;
-private:
-	int state = 0;
-
-	GameObject* camera;
-
-	float movement = 1.0f;
-
-	void MoveCamera();
+	void Update() override;
+	void DrawDebug() override;
 
 	Argent::Component::Collision::RayCast* ray;
-protected:
-
+	float moveSpeed;
 };
-
