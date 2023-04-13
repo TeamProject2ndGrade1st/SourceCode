@@ -11,6 +11,7 @@ namespace Argent::Scene
 			if(gameObject.at(i))
 				gameObject.at(i)->Initialize();
 		}
+		isInitialized = true;
 	}
 
 	void BaseScene::Finalize()
@@ -104,7 +105,8 @@ namespace Argent::Scene
 	{
 		std::string n = ObjectNameCheck(obj->GetName(), 0);
 		obj->SetName(n);
-		obj->Initialize();
+		if(isInitialized)
+			obj->Initialize();
 		gameObject.emplace_back(obj);
 	}
 

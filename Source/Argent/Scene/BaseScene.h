@@ -14,6 +14,7 @@ namespace Argent::Scene
 	public:
 		explicit BaseScene(std::string sceneName):
 			sceneName(std::move(sceneName))
+		,	isInitialized(false)
 		{
 			gameObject.clear();
 			AddObject(new GameObject("Camera", new Camera(true, Argent::Graphics::ArGraphics::Instance()->GetWidth(), Argent::Graphics::ArGraphics::Instance()->GetHeight())));
@@ -87,6 +88,7 @@ namespace Argent::Scene
 		const std::string sceneName;
 		std::vector<GameObject*> gameObject{};
 		std::vector<GameObject*> destroyedGameObject{};
+		bool isInitialized;
 	private:
 	};
 	

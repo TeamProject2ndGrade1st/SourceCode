@@ -2,16 +2,11 @@
 
 void RayCastDemo::Initialize()
 {
-	static bool b = false;
-	if (!b)
-	{
 		ray = new Argent::Component::Collision::RayCast();
 		GetOwner()->AddComponent(ray);
 		BaseActor::Initialize();
 		moveSpeed = 1.0f;
 		GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false));
-		b = true;
-	}
 }
 
 void RayCastDemo::OnRayCollision(const Argent::Component::Collider::RayCastCollider* other)

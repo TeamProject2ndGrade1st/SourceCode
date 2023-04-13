@@ -8,7 +8,9 @@
 GameObject::GameObject(std::string name, Argent::Component::BaseComponent* c) :
 	isSelected(false)
 	, name(std::move(name))
+,	isInitialized(false)
 {
+	
 	transform = new Transform();
 	AddComponent(transform);
 	if (c)
@@ -20,6 +22,7 @@ GameObject::GameObject(std::string name, Argent::Component::BaseComponent* c) :
 GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com) :
 	isSelected(false)
 	, name(std::move(name))
+	, isInitialized(false)
 {
 	transform = new Transform();
 	AddComponent(transform);
@@ -40,6 +43,7 @@ GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComp
 GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> components, std::string name) :
 	isSelected(false)
 	, name(name)
+	, isInitialized(false)
 {
 	transform = new Transform();
 	AddComponent(transform);
@@ -48,21 +52,6 @@ GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> 
 		AddComponent(com);
 	}
 }
-
-//void GameObject::AddComToCom()
-//{
-//	//for(size_t i = 0; i < addComponents.size(); ++i)
-//	//{
-//	//	addComponents.at(i)->Initialize();
-//	//	components.emplace_back(addComponents.at(i));
-//	//}
-//	//for(auto& a : addComponents)
-//	//{
-//	//	a->Initialize();
-//	//	components.emplace_back(a);
-//	//}
-//	//addComponents.clear();
-//}
 
 void GameObject::Initialize()
 {
@@ -74,6 +63,7 @@ void GameObject::Initialize()
 	{
 		childObjects.at(i)->Initialize();
 	}
+	isInitialized = true;
 }
 
 void GameObject::Finalize()
@@ -226,6 +216,8 @@ void GameObject::DrawDebug()
 void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 {
 	com->SetOwner(this);
+	if (isInitialized)
+		com->Initialize();
 	//addComponents.emplace_back(com);
 	components.emplace_back(com);
 }

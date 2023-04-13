@@ -78,6 +78,7 @@ protected:
 	int orderInUpdate = 10;
 
 	bool isSelected;
+	bool isInitialized;
 
 private:
 	//std::vector<Argent::Component::BaseComponent*> addComponents;
