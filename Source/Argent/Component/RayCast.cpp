@@ -137,10 +137,19 @@ namespace Argent::Component
 				DirectX::XMStoreFloat3(&collectPosition, CollectPosition);
 
 				auto p = GetOwner()->GetTransform()->GetPosition();
-				p.y = hitResult.position.y;
-				p.x = collectPosition.x;
-				p.z = collectPosition.z;
 
+				HitResult hitResult2;
+				if(Helper::Collision::IntersectRayVsModel(hitResult.position, collectPosition, other->GetMeshResource(), 
+					other->GetWorldTransform(), hitResult2))
+				{
+					p.x = collectPosition.x;
+					p.z = collectPosition.z;
+				}
+				else
+				{
+					p.x = hitResult2.position.x;
+					p.z = hitResult2.position.z;
+				}
 
 				GetOwner()->GetTransform()->SetPosition(p);
 				auto actor = GetOwner()->GetActor();

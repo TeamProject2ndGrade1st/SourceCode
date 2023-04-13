@@ -69,6 +69,21 @@ namespace Argent::Component::Renderer
 				meshConstant.globalTransform = meshNode.globalTransform;
 				m->constantBuffer->UpdateConstantBuffer(meshConstant);
 			}
+			else
+			{
+				Argent::Resource::Mesh::ArSkinnedMesh::Constant meshConstant{};
+				const size_t boneCount{ m->bindPose.bones.size() };
+				for (int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
+				{
+					const auto& bone{ m->bindPose.bones.at(boneIndex) };
+					DirectX::XMStoreFloat4x4(&meshConstant.boneTransforms[boneIndex],
+						DirectX::XMLoadFloat4x4(&bone.offsetTransform) * DirectX::XMLoadFloat4x4(&skinnedMesh->localTransform) * 
+						DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&m->localTransform))
+					);
+				}
+				meshConstant.globalTransform = DirectX::XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+				m->constantBuffer->UpdateConstantBuffer(meshConstant);
+			}
 
 			const auto& material{ materials.at(s.materialUniqueId) };
 			material.constantBuffer->UpdateConstantBuffer(material.constant);
