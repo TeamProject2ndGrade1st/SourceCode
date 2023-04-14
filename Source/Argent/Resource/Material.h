@@ -30,12 +30,12 @@ namespace Argent::Material
 		 * \param RootParameterIndex 
 		 */
 		void Render(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const;
-#ifdef _DEBUG
+
 		void DrawDebug();
-#endif
+
 
 		std::shared_ptr<Texture::ArTexture> texture;
-		ArColor color;
+		Color color;
 		std::string name;
 	};
 
@@ -75,13 +75,13 @@ namespace Argent::Material
 		std::string textureNames[NumTextures];
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
 		Constant constant{};
-		ArColor color;
+		Color color;
 		void CreateTexture(const char* filePath, TextureType type);
 
 		void SetOnCommand(ID3D12GraphicsCommandList* cmdList, UINT cbIndex, UINT diffuseIndex, UINT normalIndex) const;
 		
 
-#ifdef _DEBUG
+
 		void DrawDebug()
 		{
 			if (ImGui::TreeNode(name.c_str()))
@@ -94,6 +94,6 @@ namespace Argent::Material
 				ImGui::TreePop();
 			}
 		}
-#endif
+
 	};
 }

@@ -9,7 +9,7 @@
 #include "../Component/SkinnedMeshRenderer.h"
 #include "../Resource/SkinnedMesh.h"
 #include "../Resource/Material.h"
-#include "../Resource/ArAnimation.h"
+#include "../Resource/Animation.h"
 
 
 namespace Argent::Loader::Fbx
@@ -43,7 +43,7 @@ namespace Argent::Loader::Fbx
 	void FetchMesh(FbxScene* fbxScene,const ArFbxScene& sceneView, std::vector<TmpFbxMesh>& meshes);
 	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, Material::ArMeshMaterial>& materials);
 	void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const ArFbxScene& sceneView);
-	void FetchAnimation(FbxScene* fbxScene, std::vector<Resource::Animation::ArAnimation>& animationClips, 
+	void FetchAnimation(FbxScene* fbxScene, std::vector<Resource::Animation::AnimationClip>& animationClips, 
 			float samplingRate, const ArFbxScene& sceneView);
 	void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<std::vector<ArBoneInfluence>>& boneInfluences);
 
@@ -546,7 +546,7 @@ namespace Argent::Loader::Fbx
 		}
 	}
 
-	void FetchAnimation(FbxScene* fbxScene, std::vector<Resource::Animation::ArAnimation>& animationClips,
+	void FetchAnimation(FbxScene* fbxScene, std::vector<Resource::Animation::AnimationClip>& animationClips,
 		float samplingRate, const ArFbxScene& sceneView)
 	{
 		FbxArray<FbxString*> animationStackNames;

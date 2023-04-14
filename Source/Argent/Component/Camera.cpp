@@ -144,7 +144,7 @@ void Camera::End()
 
 }
 
-#ifdef _DEBUG
+
 void Camera::DrawDebug()
 {
 
@@ -171,7 +171,7 @@ void Camera::DrawDebug()
 		BaseComponent::DrawDebug();
 	}
 }
-#endif
+
 
 DirectX::XMMATRIX Camera::GetViewProjectionMatrix() const
 {

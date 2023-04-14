@@ -6,7 +6,7 @@
 
 #include "../Resource/Mesh.h"
 #include "../Resource/SkinnedMesh.h"
-#include "../Resource/ArAnimation.h"
+#include "../Resource/Animation.h"
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/string.hpp>
@@ -97,7 +97,7 @@ namespace Argent::Loader
 		{
 			std::vector<TmpFbxMesh> tmpMeshes;
 			std::unordered_map<uint64_t, Material::ArMeshMaterial> materials;
-			std::vector<Resource::Animation::ArAnimation> animationClips;
+			std::vector<Resource::Animation::AnimationClip> animationClips;
 
 			template<class T>
 			void serialize(T& archive)

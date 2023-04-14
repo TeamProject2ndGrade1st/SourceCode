@@ -39,9 +39,9 @@ namespace Argent::Scene
 		virtual void End();
 		virtual void Update();
 		virtual void Render();
-	#ifdef _DEBUG
+
 		virtual void DrawDebug();
-	#endif
+
 
 		void DeleteDestroyedObject();
 		//void DestroyGameObject(GameObject* object);

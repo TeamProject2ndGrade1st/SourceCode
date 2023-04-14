@@ -11,24 +11,24 @@
 
 namespace Argent::Resource::Animation
 {
-	class ArAnimation final
+	class AnimationClip final
 		//public Resource::ArResource
 	{
 	public:
-		ArAnimation()
+		AnimationClip()
 			//ArResource(ResourceType::Animation)
 		{}
 
 	private:
-		ArAnimation(uint64_t uniqueId, const char* name)
+		AnimationClip(uint64_t uniqueId, const char* name)
 			//ArResource(uniqueId, name, ResourceType::Animation)
 		{}
 	public:
-		~ArAnimation() = default;
+		~AnimationClip() = default;
 
-		ArAnimation operator=(const ArAnimation& anim)
+		AnimationClip operator=(const AnimationClip& anim)
 		{
-			ArAnimation ret{};
+			AnimationClip ret{};
 			ret.samplingRate = anim.samplingRate;
 			ret.sequence = anim.sequence;
 

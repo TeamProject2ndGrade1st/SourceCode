@@ -9,7 +9,7 @@ GameObject::GameObject(std::string name, Argent::Component::BaseComponent* c) :
 	isSelected(false)
 	, name(std::move(name))
 ,	isInitialized(false)
-//,	isActive(true)
+,	isActive(true)
 {
 	
 	transform = new Transform();
@@ -24,7 +24,7 @@ GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComp
 	isSelected(false)
 	, name(std::move(name))
 	, isInitialized(false)
-//,	isActive(true)
+,	isActive(true)
 {
 	transform = new Transform();
 	AddComponent(transform);
@@ -46,7 +46,7 @@ GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> 
 	isSelected(false)
 	, name(name)
 	, isInitialized(false)
-//,	isActive(true)
+,	isActive(true)
 {
 	transform = new Transform();
 	AddComponent(transform);
@@ -135,7 +135,7 @@ void GameObject::Render() const
 
 void GameObject::DrawDebug() 
 {
-#ifdef _DEBUG
+
 	if(isSelected)
 	{
 		ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_::ImGuiCond_Once);
@@ -218,7 +218,6 @@ void GameObject::DrawDebug()
 		childObjects.at(i)->DrawDebug();
 	}
 
-#endif
 	
 }
 

@@ -17,9 +17,9 @@ public:
 	void Initialize() override;
 	void Update() override;
 	void End() override;
-#ifdef _DEBUG
+
 	void DrawDebug() override;
-#endif
+
 	[[nodiscard]] DirectX::XMMATRIX GetViewProjectionMatrix() const;
 	[[nodiscard]] DirectX::XMMATRIX GetViewMatrix() const;
 	[[nodiscard]] DirectX::XMMATRIX GetProjectionMatrix() const;

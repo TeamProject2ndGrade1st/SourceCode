@@ -30,22 +30,21 @@ public:
 	Transform& operator+=(const Transform& t);
 	Transform& operator=(const Transform& t);
 
+	void Initialize() override;
 	void Update() override;
 
-#ifdef _DEBUG
 	void DrawDebug() override;
-#endif
+
 
 	void Reset() override;
 	void SetWorld(const DirectX::XMFLOAT4X4& w);
 
-	[[nodiscard]] DirectX::XMMATRIX GetWorldMatrix() const;
-	
+	[[nodiscard]] DirectX::XMMATRIX CalcWorldMatrix();
 
-	[[nodiscard]] DirectX::XMFLOAT4X4 GetWorld() const
+	[[nodiscard]] DirectX::XMFLOAT4X4 GetWorld()
 	{
 		DirectX::XMFLOAT4X4 tmp{};
-		DirectX::XMStoreFloat4x4(&tmp, GetWorldMatrix());
+		DirectX::XMStoreFloat4x4(&tmp, CalcWorldMatrix());
 		return tmp;
 	}
 
@@ -80,6 +79,9 @@ private:
 	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT3 scale;
 	DirectX::XMFLOAT4 rotation;
+	DirectX::XMFLOAT4 postRotation;
+	DirectX::XMFLOAT4 orientation;
+
 	float scaleFactor;
 
 	int coordinateSystem;

@@ -78,10 +78,10 @@ namespace Argent::Component
 
 		DirectX::XMMATRIX RayCastCollider::GetWorldTransform()
 		{
-			return GetOwner()->GetTransform()->GetWorldMatrix();
+			return GetOwner()->GetTransform()->CalcWorldMatrix();
 		}
 
-#ifdef _DEBUG
+
 		void RayCastCollider::DrawDebug()
 		{
 			if (ImGui::TreeNode(GetName().c_str()))
@@ -92,7 +92,7 @@ namespace Argent::Component
 				ImGui::TreePop();
 			}
 		}
-#endif
+
 
 	}
 
@@ -147,7 +147,7 @@ namespace Argent::Component
 			}
 			return ret;
 		}
-#ifdef _DEBUG
+
 		void RayCast::DrawDebug()
 		{
 			if(ImGui::TreeNode(GetName().c_str()))
@@ -158,6 +158,6 @@ namespace Argent::Component
 				ImGui::TreePop();
 			}
 		}
-#endif
+
 	}
 }

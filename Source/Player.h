@@ -11,9 +11,9 @@ public:
 	void Update() override;
 	void Initialize() override;
 
-#ifdef _DEBUG
+
 	void DrawDebug() override;
-#endif
+
 
 private:
 	int state = 0;

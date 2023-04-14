@@ -60,9 +60,9 @@ namespace Argent::Scene
 		if(currentScene)
 		{
 			currentScene->Render();
-#ifdef _DEBUG
+//#ifdef _DEBUG
 			currentScene->DrawDebug();
-#endif
+//#endif
 		}
 	}
 

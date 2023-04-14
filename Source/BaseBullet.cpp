@@ -42,7 +42,7 @@ void BaseBullet::OnCollision(const Argent::Component::Collider::Collider* collid
 	GetOwner()->DestroyGameObject(GetOwner());
 }
 
-#ifdef _DEBUG
+
 void BaseBullet::DrawDebug()
 {
 	if(ImGui::TreeNode(GetName().c_str()))
@@ -54,4 +54,4 @@ void BaseBullet::DrawDebug()
 		ImGui::TreePop();
 	}
 }
-#endif
+

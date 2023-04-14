@@ -66,7 +66,7 @@ namespace Argent::Component::Renderer
 		
 	}
 
-#ifdef _DEBUG
+
 	void MeshRenderer::DrawDebug()
 	{
 		if (ImGui::TreeNode(GetName().c_str()))
@@ -84,7 +84,7 @@ namespace Argent::Component::Renderer
 			ImGui::TreePop();
 		}
 	}
-#endif
+
 	void MeshRenderer::CreateComObject(ID3D12Device* device)
 	{
 		for (auto it = materials.begin(); it != materials.end(); ++it)

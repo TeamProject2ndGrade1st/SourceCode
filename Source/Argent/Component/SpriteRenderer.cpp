@@ -61,7 +61,7 @@ namespace Argent::Component::Renderer
 		//sprite->DrawCall(cmdList, 4);
 	}
 
-#ifdef _DEBUG
+
 	void SpriteRenderer::DrawDebug()
 	{
 		if(ImGui::TreeNode(GetName().c_str()))
@@ -71,5 +71,5 @@ namespace Argent::Component::Renderer
 			ImGui::TreePop();
 		}
 	}
-#endif
+
 }

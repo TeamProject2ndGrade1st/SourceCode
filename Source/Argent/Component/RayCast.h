@@ -49,9 +49,9 @@ namespace Argent::Component
 			void Initialize() override;
 
 			DirectX::XMMATRIX GetWorldTransform();
-#ifdef _DEBUG
+
 			void DrawDebug() override;
-#endif
+
 
 			MeshType type;
 			std::unique_ptr<Debug::DebugRenderer> debugRenderer;
@@ -96,9 +96,9 @@ namespace Argent::Component
 
 			bool CollisionDetection(Collider::RayCastCollider* other, HitResult& hitResult) const;
 
-#ifdef _DEBUG
+
 			void DrawDebug() override;
-#endif
+
 		protected:
 			DirectX::XMFLOAT3 start;
 			DirectX::XMFLOAT3 direction;

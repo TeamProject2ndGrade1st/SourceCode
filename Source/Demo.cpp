@@ -7,7 +7,7 @@ void RayCastDemo::Initialize()
 		GetOwner()->AddComponent(ray);
 		BaseActor::Initialize();
 		moveSpeed = 1.0f;
-		GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false));
+		GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver5.fbx", false));
 }
 
 void RayCastDemo::Update()
@@ -43,14 +43,17 @@ void RayCastDemo::Update()
 		}
 	}
 }
-#ifdef _DEBUG
+
 void RayCastDemo::DrawDebug()
 {
 	if (ImGui::TreeNode(GetName().c_str()))
 	{
 		ImGui::SliderFloat("moveSpeed", &moveSpeed, 0, 10.0f);
+		if(ImGui::Button("Destroy"))
+		{
+			GameObject::DestroyGameObject(GetOwner());
+		}
 		BaseActor::DrawDebug();
 		ImGui::TreePop();
 	}
 }
-#endif

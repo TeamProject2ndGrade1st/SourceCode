@@ -10,7 +10,7 @@
 #include "../Graphic/Dx12/ConstantBuffer.h"
 #include "../Resource/SkinnedMesh.h"
 #include "../Resource/Material.h"
-#include "../Resource/ArAnimation.h"
+#include "../Resource/Animation.h"
 
 
 //todo　ボーンあるいはアニメーションを持っていない場合はレンダリングできないため
@@ -65,7 +65,7 @@ namespace Argent::Component::Renderer
 		SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
 			std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
 			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
-			std::vector<Resource::Animation::ArAnimation>& animation);
+			std::vector<Resource::Animation::AnimationClip>& animation);
 
 		~SkinnedMeshRenderer() override = default;
 
@@ -81,15 +81,15 @@ namespace Argent::Component::Renderer
 		}
 		void Render(ID3D12GraphicsCommandList* cmdList,
 			const DirectX::XMFLOAT4X4& world,
-			const Resource::Animation::ArAnimation::Keyframe* keyframe) const;
+			const Resource::Animation::AnimationClip::Keyframe* keyframe) const;
 
 		void Render() const override;
 
 		void Update() override;
 
-	#ifdef _DEBUG
+
 		void DrawDebug() override;
-	#endif
+
 
 		void CreateComObject(ID3D12Device* device);
 
@@ -100,7 +100,7 @@ namespace Argent::Component::Renderer
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial> materials;
 		int clipIndex{};
 		float frameIndex{};
-		std::vector<Resource::Animation::ArAnimation> animationClips;
+		std::vector<Resource::Animation::AnimationClip> animationClips;
 
 		float animationTick{};
 	};

@@ -136,7 +136,7 @@
     <ClInclude Include="Source\Argent\Other\Helper.h" />
     <ClInclude Include="Source\Argent\Other\CerealHelper.h" />
     <ClInclude Include="Source\Argent\Other\Misc.h" />
-    <ClInclude Include="Source\Argent\Resource\ArAnimation.h" />
+    <ClInclude Include="Source\Argent\Resource\Animation.h" />
     <ClInclude Include="Source\Argent\Resource\Audio.h" />
     <ClInclude Include="Source\Argent\Resource\AudioManager.h" />
     <ClInclude Include="Source\Argent\Resource\Effect.h" />

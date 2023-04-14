@@ -18,7 +18,7 @@ void Player::Initialize()
     }
 }
 
-#ifdef _DEBUG
+
 void Player::DrawDebug()
 {
     if(ImGui::TreeNode(GetName().c_str()))
@@ -28,7 +28,7 @@ void Player::DrawDebug()
         ImGui::TreePop();
     }
 }
-#endif
+
 
 void Player::Update()
 {

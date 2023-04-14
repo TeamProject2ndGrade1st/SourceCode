@@ -12,9 +12,9 @@ public:
 	void Initialize() override;
 
 	void Update() override;
-#ifdef _DEBUG
+
 	void DrawDebug() override;
-#endif
+
 	Argent::Component::Collision::RayCast* ray;
 	float moveSpeed;
 };

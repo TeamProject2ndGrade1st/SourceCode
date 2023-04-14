@@ -23,9 +23,8 @@ namespace Argent::Component::Renderer
 		void Update() override;
 		void Render(ID3D12GraphicsCommandList* cmdList) const override;
 		
-#ifdef _DEBUG
+
 		void DrawDebug() override;
-#endif
 
 	private:
 		std::unique_ptr<Resource::Sprite::Sprite> sprite;

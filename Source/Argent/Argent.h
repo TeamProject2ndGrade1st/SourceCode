@@ -36,6 +36,8 @@
 
 #include "Math/MathHelper.h"
 
+#define AR_DEBUG 1
+
 using KeyCode = Argent::Input::Keyboard::KeyCode;
 using HitResult = Argent::Component::Collision::HitResult;
 namespace Argent

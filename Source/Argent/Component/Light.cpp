@@ -24,7 +24,7 @@ void Light::End()
 	g->SetLightPosition(GetOwner()->GetTransform()->GetPosition());
 	g->SetLightColor(GetColor().GetColor());
 }
-#ifdef _DEBUG
+
 void Light::DrawDebug()
 {
 	if(ImGui::TreeNode(GetName().c_str()))
@@ -34,4 +34,4 @@ void Light::DrawDebug()
 		ImGui::TreePop();
 	}
 }
-#endif
+

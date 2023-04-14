@@ -27,9 +27,6 @@ namespace Argent::Component
 			virtual void Render(ID3D12GraphicsCommandList* cmdList) const;
 			void Render() const override;
 
-#ifdef _DEBUG
-			void DrawDebug() override{}
-#endif
 		protected:
 			/*std::vector<std::shared_ptr<Material::SpriteMaterial>> materials;*/
 			std::unique_ptr<Argent::Graphics::RenderingPipeline> renderingPipeline;

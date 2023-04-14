@@ -457,7 +457,7 @@
     <ClInclude Include="Source\Argent\Argent.h">
       <Filter>Argent</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArAnimation.h">
+    <ClInclude Include="Source\Argent\Resource\Animation.h">
       <Filter>Argent\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Component\Light.h">

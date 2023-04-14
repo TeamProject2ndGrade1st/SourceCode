@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "../Resource/ArAnimation.h"
+#include "../Resource/Animation.h"
 
 namespace Argent::Component::Animation
 {
@@ -9,4 +9,7 @@ namespace Argent::Component::Animation
 	{
 		AnimationPlayer();
 	};
+
+
+
 }
