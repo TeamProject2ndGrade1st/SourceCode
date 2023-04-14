@@ -15,6 +15,7 @@ namespace Argent::Component
 
 		virtual ~BaseActor() override = default;
 
+		void Initialize() override;
 		virtual void OnCollision(const Collider::Collider* collider) {}
 		virtual void OnRayCollision(const Collider::RayCastCollider* other) {}
 
