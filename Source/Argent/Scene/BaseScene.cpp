@@ -9,8 +9,12 @@ namespace Argent::Scene
 		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
 			if(gameObject.at(i))
-				gameObject.at(i)->Initialize();
+			{
+				if(gameObject.at(i)->GetIsActive())
+					gameObject.at(i)->Initialize();
+			}
 		}
+		isInitialized = true;
 	}
 
 	void BaseScene::Finalize()
@@ -31,8 +35,10 @@ namespace Argent::Scene
 		//todo resizeしてからのほうが処理軽いかも
 		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
-			if (gameObject.at(i))
+			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
+			{
 				gameObject.at(i)->Begin();
+			}
 		}
 	}
 
@@ -40,7 +46,7 @@ namespace Argent::Scene
 	{
 		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
-			if (gameObject.at(i))
+			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
 				gameObject.at(i)->End();
 		}
 	}
@@ -49,7 +55,7 @@ namespace Argent::Scene
 	{
 		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
-			if (gameObject.at(i))
+			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
 				gameObject.at(i)->Update();
 		}
 	}
@@ -58,19 +64,24 @@ namespace Argent::Scene
 	{
 		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
-			if(gameObject.at(i))
+			if(gameObject.at(i) && gameObject.at(i)->GetIsActive())
 				gameObject.at(i)->Render();
 		}
 	}
 
 	void BaseScene::DeleteDestroyedObject()
 	{
-		for(auto it = destroyedGameObject.begin(); it != destroyedGameObject.end();)
+		for(auto it = gameObject.begin(); it != gameObject.end();)
 		{
-			GameObject* g = (*it);
-			it = destroyedGameObject.erase(it);
-			g->Finalize();
-			delete g;
+			if((*it)->GetDestroyFlag())
+			{
+				delete (*it);
+				it =gameObject.erase(it);
+			}
+			else
+			{
+				++it;
+			}
 		}
 	}
 
@@ -104,7 +115,8 @@ namespace Argent::Scene
 	{
 		std::string n = ObjectNameCheck(obj->GetName(), 0);
 		obj->SetName(n);
-		obj->Initialize();
+		if(isInitialized)
+			obj->Initialize();
 		gameObject.emplace_back(obj);
 	}
 
@@ -130,17 +142,5 @@ namespace Argent::Scene
 #endif
 	}
 
-	void BaseScene::DestroyGameObject(GameObject* object)
-	{
-		//todo これアップデートとかforぶん回してる途中で読んでも大丈夫なのか？
-		destroyedGameObject.emplace_back(object);
-		for (auto it = gameObject.begin(); it != gameObject.end(); ++it)
-		{
-			if ((*it) == object)
-			{
-				gameObject.erase(it);
-				break;
-			}
-		}
-	}
+	// 
 }

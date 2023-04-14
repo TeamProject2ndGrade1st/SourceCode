@@ -28,7 +28,7 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Argent\Component\AnimationPlayer.cpp" />
-    <ClCompile Include="Source\Argent\Component\ArColliderManager.cpp" />
+    <ClCompile Include="Source\Argent\Component\ColliderManager.cpp" />
     <ClCompile Include="Source\Argent\Component\Component.cpp" />
     <ClCompile Include="Source\Argent\Component\EffectRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\RayCast.cpp" />
@@ -82,7 +82,7 @@
     <ClCompile Include="Source\BaseGun.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Player.cpp" />
-    <ClCompile Include="Source\RayCastDemo.cpp" />
+    <ClCompile Include="Source\Demo.cpp" />
     <ClCompile Include="Source\Title.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
@@ -98,7 +98,7 @@
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Argent\Argent.h" />
     <ClInclude Include="Source\Argent\Component\AnimationPlayer.h" />
-    <ClInclude Include="Source\Argent\Component\ArColliderManager.h" />
+    <ClInclude Include="Source\Argent\Component\ColliderManager.h" />
     <ClInclude Include="Source\Argent\Component\Color.h" />
     <ClInclude Include="Source\Argent\Component\Component.h" />
     <ClInclude Include="Source\Argent\Component\EffectRenderer.h" />
@@ -160,7 +160,7 @@
     <ClInclude Include="Source\DemoShaderMacro.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Player.h" />
-    <ClInclude Include="Source\RayCastDemo.h" />
+    <ClInclude Include="Source\Demo.h" />
     <ClInclude Include="Source\Title.h" />
   </ItemGroup>
   <ItemGroup>

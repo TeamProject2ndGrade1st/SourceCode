@@ -31,9 +31,13 @@
 #include "Scene/BaseScene.h"
 #include "Scene/SceneManager.h"
 
+#include "Component/Collider.h"
+#include "Component/RayCast.h"
+
 #include "Math/MathHelper.h"
 
 using KeyCode = Argent::Input::Keyboard::KeyCode;
+using HitResult = Argent::Component::Collision::HitResult;
 namespace Argent
 {
 	namespace Scene

@@ -15,8 +15,6 @@ public:
 	void DrawDebug() override;
 #endif
 
-
-	void OnRayCollision(const Argent::Component::Collider::RayCastCollider* other) override;
 private:
 	int state = 0;
 

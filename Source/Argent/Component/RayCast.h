@@ -84,16 +84,21 @@ namespace Argent::Component
 		public:
 			RayCast();
 				
-
+			void SetRayData(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& direction, float length)
+			{
+				this->start = start;
+				this->direction = direction;
+				this->length = length;
+			}
 			void SetRayStartPosition(const DirectX::XMFLOAT3& f) { start = f; }
 			void SetRayDirection(const DirectX::XMFLOAT3& f) { direction = f; }
 			void SetRayLength(float f) { length = f; }
 
-			void OnCollision(Collider::RayCastCollider* other);
+			bool CollisionDetection(Collider::RayCastCollider* other, HitResult& hitResult) const;
 
-			void CollisionDetection(Collider::RayCastCollider* other) const;
-
+#ifdef _DEBUG
 			void DrawDebug() override;
+#endif
 		protected:
 			DirectX::XMFLOAT3 start;
 			DirectX::XMFLOAT3 direction;

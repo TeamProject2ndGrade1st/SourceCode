@@ -7,7 +7,7 @@
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
 #include "Argent/Component/RayCast.h"
-#include "RayCastDemo.h"
+#include "Demo.h"
 
 void Title::Initialize()
 {

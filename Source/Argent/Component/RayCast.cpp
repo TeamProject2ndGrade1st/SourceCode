@@ -1,7 +1,7 @@
 #include "RayCast.h"
 #include "../Math/MathHelper.h"
 #include "../GameObject/GameObject.h"
-#include "ArColliderManager.h"
+#include "ColliderManager.h"
 
 //#include "../Other/Helper.h"
 //
@@ -23,7 +23,7 @@ namespace Argent::Component
 			static bool b = false;
 			if(!b)
 			{
-				/*{
+				{
 					const char* filePath = "./Resources/Model/Collision/Cube.cereal";
 
 					_ASSERT_EXPR(std::filesystem::exists(filePath), L"指定されたファイルが無い");
@@ -31,15 +31,15 @@ namespace Argent::Component
 					std::ifstream ifs(filePath, std::ios::binary);
 					cereal::BinaryInputArchive deserialization(ifs);
 					deserialization(mResource[static_cast<int>(MeshType::Cube)]);
-				}*/
-				/*{
+				}
+				{
 					const char* filePath = "./Resources/Model/Collision/Sphere.cereal";
 					_ASSERT_EXPR(std::filesystem::exists(filePath), L"指定されたファイルが無い");
 
 					std::ifstream ifs(filePath, std::ios::binary);
 					cereal::BinaryInputArchive deserialization(ifs);
 					deserialization(mResource[static_cast<int>(MeshType::Sphere)]);
-				}*/
+				}
 				{
 					const char* filePath = "./Resources/Model/Collision/Cylinder.cereal";
 					_ASSERT_EXPR(std::filesystem::exists(filePath), L"指定されたファイルが無い");
@@ -101,22 +101,13 @@ namespace Argent::Component
 		RayCast::RayCast():
 			BaseComponent("RayCast")
 		{
-			Argent::Collider::ArColliderManager::Instance().RegisterRay(this);
+			//Argent::Collider::ArColliderManager::Instance().RegisterRay(this);
 		}
 
-		void RayCast::OnCollision(Collider::RayCastCollider* other)
+		bool RayCast::CollisionDetection(Collider::RayCastCollider* other, HitResult& hitResult) const
 		{
-			GameObject* obj = GetOwner();
-			if(obj)
-			{
-				obj->GetActor()->OnRayCollision(other);
-			}
-		}
-
-		void RayCast::CollisionDetection(Collider::RayCastCollider* other) const 
-		{
+			bool ret = false;
 			DirectX::XMFLOAT3 end = start + direction * length;
-			HitResult hitResult;
 			if(Helper::Collision::IntersectRayVsModel(start, end, other->GetMeshResource(), 
 				other->GetWorldTransform(), hitResult))
 			{
@@ -136,28 +127,27 @@ namespace Argent::Component
 				DirectX::XMFLOAT3 collectPosition{};
 				DirectX::XMStoreFloat3(&collectPosition, CollectPosition);
 
-				auto p = GetOwner()->GetTransform()->GetPosition();
-
 				HitResult hitResult2;
-				if(Helper::Collision::IntersectRayVsModel(hitResult.position, collectPosition, other->GetMeshResource(), 
+				if(!Helper::Collision::IntersectRayVsModel(hitResult.position, collectPosition, other->GetMeshResource(), 
 					other->GetWorldTransform(), hitResult2))
 				{
-					p.x = collectPosition.x;
-					p.z = collectPosition.z;
+					hitResult.position = collectPosition;
 				}
 				else
 				{
-					p.x = hitResult2.position.x;
-					p.z = hitResult2.position.z;
+					hitResult.position = hitResult2.position;
 				}
-
+				/*
 				GetOwner()->GetTransform()->SetPosition(p);
 				auto actor = GetOwner()->GetActor();
 				if(actor)
-					actor->OnRayCollision(other);
+					actor->OnRayCollision(other);*/
+				ret = true;
+				
 			}
+			return ret;
 		}
-
+#ifdef _DEBUG
 		void RayCast::DrawDebug()
 		{
 			if(ImGui::TreeNode(GetName().c_str()))
@@ -168,5 +158,6 @@ namespace Argent::Component
 				ImGui::TreePop();
 			}
 		}
+#endif
 	}
 }
