@@ -134,3 +134,18 @@ DirectX::XMFLOAT3 Transform::CalcForward()
 	DirectX::XMStoreFloat3(&ret, DirectX::XMVector3Normalize(rotationMatrix.r[2]));
 	return ret;
 }
+
+DirectX::XMFLOAT3 Transform::CalcUp()
+{
+	DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+	DirectX::XMFLOAT3 ret{};
+	DirectX::XMStoreFloat3(&ret, DirectX::XMVector3Normalize(rotationMatrix.r[1]));
+	return ret;
+}
+DirectX::XMFLOAT3 Transform::CalcRight()
+{
+	DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+	DirectX::XMFLOAT3 ret{};
+	DirectX::XMStoreFloat3(&ret, DirectX::XMVector3Normalize(rotationMatrix.r[0]));
+	return ret;
+}

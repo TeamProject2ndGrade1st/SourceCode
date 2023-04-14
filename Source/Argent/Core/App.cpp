@@ -4,6 +4,7 @@
 #include "../Scene/SceneManager.h"
 #include "../Input/Keyboard.h"
 #include "../Component/ColliderManager.h"
+#include "../Resource/AudioManager.h"
 
 namespace Argent::App
 {
@@ -32,6 +33,7 @@ namespace Argent::App
 			
 		Scene::ArSceneManager arSceneManager;
 		arSceneManager.Initialize();
+		Argent::Resource::Audio::AudioManager::Instance().Initialize();
 		while (MainLoop(arWindow->GetHandle()))
 		{
 			Argent::Input::Keyboard::Instance().Update();
@@ -41,6 +43,8 @@ namespace Argent::App
 
 			arSceneManager.Update();
 			effectManager->Update();
+			Argent::Resource::Audio::AudioManager::Instance().Update();
+			Argent::Resource::Audio::AudioManager::Instance().DrawDebug();
 
 			Argent::Collider::ArColliderManager::Instance().CollisionDetection();
 

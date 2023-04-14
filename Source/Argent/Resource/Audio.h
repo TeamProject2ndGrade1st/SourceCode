@@ -43,6 +43,7 @@ namespace Argent::Resource::Audio
 		bool IsPausing() const { return state == State::Pausing; }
 		bool IsStopping() const { return state == State::Stopping; }
 
+		IXAudio2SourceVoice* GetSourceVoice() const { return sourceVoice;  }
 	private:
 		IXAudio2SourceVoice* sourceVoice;
 		WAVEFORMATEXTENSIBLE wfx = {0};

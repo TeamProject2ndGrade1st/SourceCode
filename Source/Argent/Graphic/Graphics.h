@@ -16,8 +16,6 @@
 #include "FrameResource.h"
 #include "Dx12/Command.h"
 #include "Dx12/DescriptorHeap.h"
-#include "../Component/Camera.h"
-#include "../Component/Light.h"
 
 
 namespace Argent::Graphics
