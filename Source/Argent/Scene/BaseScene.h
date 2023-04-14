@@ -44,7 +44,7 @@ namespace Argent::Scene
 	#endif
 
 		void DeleteDestroyedObject();
-		void DestroyGameObject(GameObject* object);
+		//void DestroyGameObject(GameObject* object);
 
 
 		const std::string& GetName() const { return sceneName; }
@@ -87,7 +87,7 @@ namespace Argent::Scene
 	protected:
 		const std::string sceneName;
 		std::vector<GameObject*> gameObject{};
-		std::vector<GameObject*> destroyedGameObject{};
+		//std::vector<GameObject*> destroyedGameObject{};
 		bool isInitialized;
 	private:
 	};

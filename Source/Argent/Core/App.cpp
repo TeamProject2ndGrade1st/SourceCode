@@ -3,7 +3,7 @@
 #include "../Resource/ResourceManager.h"
 #include "../Scene/SceneManager.h"
 #include "../Input/Keyboard.h"
-#include "../Component/ArColliderManager.h"
+#include "../Component/ColliderManager.h"
 
 namespace Argent::App
 {
@@ -44,6 +44,8 @@ namespace Argent::App
 
 			Argent::Collider::ArColliderManager::Instance().CollisionDetection();
 
+			arSceneManager.DeleteDestroyedObject();
+
 			arGfx->Begin();
 			arSceneManager.Render();
 			effectManager->Render();
@@ -52,7 +54,6 @@ namespace Argent::App
 			ImguiCtrl::End(arGfx->GetCommandList(), arGfx->GetGUIHeap());
 
 			arGfx->End();
-			arSceneManager.DeleteDestroyedObject();
 		}
 		arSceneManager.Finalize();
 		ImguiCtrl::Terminate();

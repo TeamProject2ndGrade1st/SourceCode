@@ -9,6 +9,7 @@ GameObject::GameObject(std::string name, Argent::Component::BaseComponent* c) :
 	isSelected(false)
 	, name(std::move(name))
 ,	isInitialized(false)
+,	isActive(true)
 {
 	
 	transform = new Transform();
@@ -23,6 +24,7 @@ GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComp
 	isSelected(false)
 	, name(std::move(name))
 	, isInitialized(false)
+,	isActive(true)
 {
 	transform = new Transform();
 	AddComponent(transform);
@@ -44,6 +46,7 @@ GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> 
 	isSelected(false)
 	, name(name)
 	, isInitialized(false)
+,	isActive(true)
 {
 	transform = new Transform();
 	AddComponent(transform);
@@ -165,8 +168,10 @@ void GameObject::DrawDebug()
 				CloseWindow();
 			}
 		}
+		ImGui::Checkbox("Active", &isActive);
 		for(size_t i = 0; i < components.size(); ++i)
 		{
+			
 			components.at(i)->DrawDebug();
 		}
 
@@ -254,7 +259,8 @@ void GameObject::CloseAllWindow()
 
 void GameObject::DestroyGameObject(GameObject* object)
 {
-	Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->DestroyGameObject(object);
+	object->willDestroy = true;
+	//Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->DestroyGameObject(object);
 }
 
 GameObject* GameObject::Instantiate(const char* name, Argent::Component::BaseComponent* com)

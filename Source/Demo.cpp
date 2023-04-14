@@ -1,5 +1,5 @@
-#include "RayCastDemo.h"
-#include "Argent/Component/ArColliderManager.h"
+#include "Demo.h"
+#include "Argent/Component/ColliderManager.h"
 
 void RayCastDemo::Initialize()
 {

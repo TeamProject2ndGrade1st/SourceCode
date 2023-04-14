@@ -46,11 +46,15 @@ public:
 
 	bool GetIsSelected() const { return isSelected; }
 	int GetChildCount() const { return static_cast<int>(childObjects.size()); }
+	bool GetIsActive() const { return isActive; }
+	bool GetDestroyFlag() const { return willDestroy; }
 
 	void SetName(std::string s) { name = s; }
 	void SetOrderInUpdate(int i) { orderInUpdate = i;  }
 	void SetParent(GameObject* p) { parent = p; }
 	void SetActor(Argent::Component::BaseActor* a) { actor = a;  }
+	void SetActive(bool b) { isActive = b; }
+	
 
 	void SetIsSelected(bool b) { isSelected = b; }
 
@@ -80,11 +84,8 @@ protected:
 	bool isSelected;
 	bool isInitialized;
 	bool willDestroy;
-	bool isUsed;
+	bool isActive;
 
-private:
-	//std::vector<Argent::Component::BaseComponent*> addComponents;
-	//void AddComToCom();
 public:
 	bool operator<(const GameObject& g) const
 	{

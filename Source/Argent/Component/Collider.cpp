@@ -3,7 +3,7 @@
 #include "../GameObject/GameObject.h"
 #include "BaseActor.h"
 #include "../Other/Helper.h"
-#include "ArColliderManager.h"
+#include "ColliderManager.h"
 #include "../Math/MathHelper.h"
 
 namespace Argent::Component::Collider

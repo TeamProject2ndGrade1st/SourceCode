@@ -2,7 +2,6 @@
 #include "Component.h"
 #include "Collider.h"
 #include "Transform.h"
-#include "RayCast.h"
 
 
 namespace Argent::Component
@@ -20,7 +19,6 @@ namespace Argent::Component
 
 	protected:
 		Transform* GetTransform() const;
-
 	};
 	
 }
