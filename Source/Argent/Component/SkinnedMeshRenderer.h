@@ -28,7 +28,6 @@ namespace Argent::Component::Renderer
 		public Argent::Component::Renderer::BaseRenderer
 	{
 	public:
-		int numUpdate = 0;
 		enum class RootParameterIndex
 		{
 			cbScene,
@@ -75,10 +74,6 @@ namespace Argent::Component::Renderer
 		SkinnedMeshRenderer operator=(const SkinnedMeshRenderer&&) = delete;
 
 		void Initialize() override;
-		void Begin() override
-		{
-			numUpdate = 0;
-		}
 		void Render(ID3D12GraphicsCommandList* cmdList,
 			const DirectX::XMFLOAT4X4& world,
 			const Resource::Animation::AnimationClip::Keyframe* keyframe) const;

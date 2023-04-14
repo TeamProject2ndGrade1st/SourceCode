@@ -80,7 +80,6 @@ void Transform::SetWorld(const DirectX::XMFLOAT4X4& w)
 
 DirectX::XMMATRIX Transform::CalcWorldMatrix()
 {
-	
 	const DirectX::XMFLOAT4 dRotation = rotation - postRotation;
 	// Y to X to Z rotation
 	DirectX::XMVECTOR orientationVec = DirectX::XMLoadFloat4(&orientation);
@@ -93,7 +92,6 @@ DirectX::XMMATRIX Transform::CalcWorldMatrix()
 		DirectX::XMMatrixScaling(scaleFactor, scaleFactor, scaleFactor) };
 	const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) };
 
-	
 	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(u, DirectX::XMConvertToRadians(dRotation.y)));
 	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(r, DirectX::XMConvertToRadians(dRotation.x)));
 	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(f, DirectX::XMConvertToRadians(dRotation.z)));

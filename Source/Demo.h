@@ -16,5 +16,6 @@ public:
 	void DrawDebug() override;
 
 	Argent::Component::Collision::RayCast* ray;
+	Argent::Component::Audio::AudioPlayer* audio;
 	float moveSpeed;
 };

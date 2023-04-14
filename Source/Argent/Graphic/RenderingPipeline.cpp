@@ -185,7 +185,7 @@ namespace Argent::Graphics
 		rootParam[4] = Helper::Dx12::RootParameter::Generate(1, &range[4], D3D12_SHADER_VISIBILITY_PIXEL);
 		rootParam[5] = Helper::Dx12::RootParameter::Generate(1, &range[5], D3D12_SHADER_VISIBILITY_PIXEL);
 
-		D3D12_STATIC_SAMPLER_DESC samplerDesc = Helper::Dx12::Sampler::GenerateSamplerDesc(Helper::Dx12::Sampler::FilterMode::fPoint, Helper::Dx12::Sampler::WrapMode::wRepeat);
+		D3D12_STATIC_SAMPLER_DESC samplerDesc = Helper::Dx12::Sampler::GenerateSamplerDesc(Helper::Dx12::Sampler::FilterMode::fAnisotropic, Helper::Dx12::Sampler::WrapMode::wRepeat);
 
 
 		rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
@@ -295,7 +295,7 @@ namespace Argent::Graphics
 		rsDesc.MultisampleEnable = FALSE;
 		rsDesc.FrontCounterClockwise = TRUE;
 		rsDesc.CullMode = D3D12_CULL_MODE_NONE;
-		rsDesc.FillMode = D3D12_FILL_MODE_WIREFRAME;
+		rsDesc.FillMode = D3D12_FILL_MODE_SOLID;
 		rsDesc.DepthClipEnable = TRUE;
 
 

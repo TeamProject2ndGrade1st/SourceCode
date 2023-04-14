@@ -4,6 +4,7 @@
 #include "../Other/Helper.h"
 #include "../Resource/ResourceManager.h"
 #include "../Graphic/Graphics.h"
+#include "AnimationPlayer.h"
 
 namespace Argent::Component::Renderer
 {
@@ -31,6 +32,7 @@ namespace Argent::Component::Renderer
 		GameObject* g = GetOwner();
 		g->GetTransform()->SetWorld(skinnedMesh->localTransform);
 		g->SetName(skinnedMesh->GetName());
+		 
 	}
 
 	void SkinnedMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList, 
@@ -71,15 +73,15 @@ namespace Argent::Component::Renderer
 			}
 			else
 			{
-				Argent::Resource::Mesh::ArSkinnedMesh::Constant meshConstant{};
+				Resource::Mesh::ArSkinnedMesh::Constant meshConstant{};
 				const size_t boneCount{ m->bindPose.bones.size() };
 				for (int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
 				{
 					const auto& bone{ m->bindPose.bones.at(boneIndex) };
 					DirectX::XMStoreFloat4x4(&meshConstant.boneTransforms[boneIndex],
-						DirectX::XMLoadFloat4x4(&bone.offsetTransform)  * DirectX::XMMatrixIdentity() * 
-						DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixIdentity())
-						//DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&m->localTransform))
+						DirectX::XMLoadFloat4x4(&bone.offsetTransform)// *
+						/*DirectX::XMMatrixIdentity() * */
+						/*DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&m->localTransform))*/
 					);
 				}
 				meshConstant.globalTransform = DirectX::XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
@@ -157,12 +159,10 @@ namespace Argent::Component::Renderer
 			 meshColor.color, &keyframe);
 
 	#endif
-		if (numUpdate == 1) _ASSERT_EXPR(FALSE, L"update call two times");
-		++numUpdate;
 		if (animationClips.size() == 0) return;
 		//static float animationTick{};
 		const Resource::Animation::AnimationClip& animation{ this->animationClips.at(clipIndex) };
-		frameIndex = static_cast<float>(animationTick* animation.samplingRate);
+		frameIndex = static_cast<float>(animationTick * animation.samplingRate);
 		if(frameIndex > animation.sequence.size() - 1)
 		{
 			frameIndex = 0;

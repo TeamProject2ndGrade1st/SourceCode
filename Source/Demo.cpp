@@ -3,17 +3,19 @@
 
 void RayCastDemo::Initialize()
 {
-		ray = new Argent::Component::Collision::RayCast();
-		GetOwner()->AddComponent(ray);
-		BaseActor::Initialize();
-		moveSpeed = 1.0f;
-		GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver5.fbx", false));
+	ray = new Argent::Component::Collision::RayCast();
+	GetOwner()->AddComponent(ray);
+	BaseActor::Initialize();
+	moveSpeed = 1.0f;
+	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver7.fbx", false));
+	audio = new Argent::Component::Audio::AudioPlayer("./Resources/Audio/maou.wav");
+	GetOwner()->AddComponent(audio);
 }
 
 void RayCastDemo::Update()
 {
 	BaseActor::Update();
-
+	
 	if (Argent::Input::GetKey(KeyCode::I))
 	{
 		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcForward(), moveSpeed * Argent::Timer::GetDeltaTime());

@@ -18,6 +18,7 @@ void Title::Initialize()
 
 	//AddObject(new GameObject("DemoGun", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx", false)));
 
+	Argent::Loader::Fbx::LoadDebug("./Resources/Model/Arrow.fbx");
 	
 	AddObject(new GameObject("Nico", new RayCastDemo()));
 //	AddObject(new GameObject("Gun", new BaseGun));
@@ -29,12 +30,6 @@ void Title::Initialize()
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Cube.fbx");
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));
 	AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
-
-	//AddObject(new GameObject("oka", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver5.fbx", true)));
-	for(int i = 0; i < 500; ++i)
-	{
-		//AddObject(new GameObject);
-	}
 
 	BaseScene::Initialize();
 }
