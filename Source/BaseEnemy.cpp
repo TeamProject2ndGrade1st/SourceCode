@@ -14,7 +14,7 @@ BaseEnemy::BaseEnemy(DirectX::XMFLOAT3 setPos)
 
 void BaseEnemy::Initialize()
 {
-    //GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver3.fbx", false));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver5.fbx", false));
     BaseActor::Initialize();
 }
 
@@ -26,7 +26,7 @@ void BaseEnemy::Begin()
 void BaseEnemy::Update()
 {
     Transform* transform = GetOwner()->GetTransform();
-    transform->AddPosition(speed);
+    //transform->AddPosition(speed);
 }
 
 void BaseEnemy::DrawDebug()
