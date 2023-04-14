@@ -3,13 +3,13 @@
 #include "../Graphic/Graphics.h"
 #include "../Resource/ResourceManager.h"
 #include "../Scene/SceneManager.h"
-
+#include "../Input/Keyboard.h"
 
 GameObject::GameObject(std::string name, Argent::Component::BaseComponent* c) :
 	isSelected(false)
 	, name(std::move(name))
 ,	isInitialized(false)
-,	isActive(true)
+//,	isActive(true)
 {
 	
 	transform = new Transform();
@@ -24,7 +24,7 @@ GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComp
 	isSelected(false)
 	, name(std::move(name))
 	, isInitialized(false)
-,	isActive(true)
+//,	isActive(true)
 {
 	transform = new Transform();
 	AddComponent(transform);
@@ -46,7 +46,7 @@ GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> 
 	isSelected(false)
 	, name(name)
 	, isInitialized(false)
-,	isActive(true)
+//,	isActive(true)
 {
 	transform = new Transform();
 	AddComponent(transform);
@@ -168,7 +168,11 @@ void GameObject::DrawDebug()
 				CloseWindow();
 			}
 		}
-		ImGui::Checkbox("Active", &isActive);
+		if(ImGui::Checkbox("Active", &isActive))
+		{
+			if(!isInitialized)
+				Initialize();
+		}
 		for(size_t i = 0; i < components.size(); ++i)
 		{
 			

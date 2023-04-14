@@ -53,7 +53,12 @@ public:
 	void SetOrderInUpdate(int i) { orderInUpdate = i;  }
 	void SetParent(GameObject* p) { parent = p; }
 	void SetActor(Argent::Component::BaseActor* a) { actor = a;  }
-	void SetActive(bool b) { isActive = b; }
+	void SetActive(bool b)
+	{
+		isActive = b;
+		if(!isInitialized)
+			Initialize();
+	}
 	
 
 	void SetIsSelected(bool b) { isSelected = b; }

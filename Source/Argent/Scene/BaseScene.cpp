@@ -142,17 +142,5 @@ namespace Argent::Scene
 #endif
 	}
 
-	//void BaseScene::DestroyGameObject(GameObject* object)
-	//{
-	//	//todo これアップデートとかforぶん回してる途中で読んでも大丈夫なのか？
-	//	destroyedGameObject.emplace_back(object);
-	//	for (auto it = gameObject.begin(); it != gameObject.end(); ++it)
-	//	{
-	//		if ((*it) == object)
-	//		{
-	//			gameObject.erase(it);
-	//			break;
-	//		}
-	//	}
-	//}
+	// 
 }
