@@ -131,17 +131,19 @@ namespace Argent::Resource::Audio
 			static DirectX::XMFLOAT3 listenerPost = DirectX::XMFLOAT3();
 			X3DAUDIO_LISTENER listener = {};
 			X3DAUDIO_EMITTER emitter = {};
-			emitter.ChannelCount = 1;
+			emitter.ChannelCount = 2;
 			emitter.CurveDistanceScaler = emitter.DopplerScaler = 1.0f;
+			emitter.ChannelRadius = 1;
+			emitter.pChannelAzimuths = new FLOAT32;
 
 			//これは何してるかよくわからない
 			X3DAUDIO_DSP_SETTINGS DSPSettings = {};
-			DSPSettings.SrcChannelCount = emitter.ChannelCount;
-			DSPSettings.DstChannelCount = emitter.ChannelCount;
+			DSPSettings.SrcChannelCount = 2;
+			DSPSettings.DstChannelCount = 8;
 			DSPSettings.pDelayTimes = nullptr;
 			XAUDIO2_VOICE_DETAILS voiceDetail{};
 			masterVoice->GetVoiceDetails(&voiceDetail);
-			DSPSettings.pMatrixCoefficients = new FLOAT32[voiceDetail.InputChannels];
+			DSPSettings.pMatrixCoefficients = new FLOAT32[2 * 8];
 
 
 			//3dオーディオ設定を計算
@@ -161,16 +163,15 @@ namespace Argent::Resource::Audio
 				| X3DAUDIO_CALCULATE_LPF_DIRECT | X3DAUDIO_CALCULATE_LPF_REVERB
 				| X3DAUDIO_CALCULATE_REVERB;
 			//計算
-	//		X3DAudioCalculate(X3DInstance, &listener, &emitter, 
-	//			dwCalcFlags,
-	//			&DSPSettings);
+			X3DAudioCalculate(X3DInstance, &listener, &emitter, 
+				dwCalcFlags,
+				&DSPSettings);
 
 
-	//		auto sourceVoice = audio->GetSourceVoice();
+			auto sourceVoice = audio->GetSourceVoice();
 
-	//		sourceVoice->SetFrequencyRatio(DSPSettings.DopplerFactor);
-	//		sourceVoice->SetOutputMatrix(masterVoice, 1, nChannel,
-	//			matrixCoefficients);
+			sourceVoice->SetOutputMatrix(masterVoice, 2, nChannel,
+				DSPSettings.pMatrixCoefficients);
 
 	//		sourceVoice->SetOutputMatrix(submixVoice, 1, 1, &DSPSettings.ReverbLevel);
 	//		XAUDIO2_FILTER_PARAMETERS filterParameters = { LowPassFilter,
@@ -190,11 +191,11 @@ namespace Argent::Resource::Audio
 			deltaTime = 0;
 		}
 
-		XAUDIO2_VOICE_DETAILS voiceDetails;
-		audio->GetSourceVoice()->GetVoiceDetails(&voiceDetails);
-		XAUDIO2_VOICE_DETAILS masterVoiceDetails;
-		masterVoice->GetVoiceDetails(&masterVoiceDetails);
-		audio->GetSourceVoice()->SetOutputMatrix(nullptr, voiceDetails.InputChannels, masterVoiceDetails.InputChannels, outputMatrix);
+		//XAUDIO2_VOICE_DETAILS voiceDetails;
+		//audio->GetSourceVoice()->GetVoiceDetails(&voiceDetails);
+		//XAUDIO2_VOICE_DETAILS masterVoiceDetails;
+		//masterVoice->GetVoiceDetails(&masterVoiceDetails);
+		//audio->GetSourceVoice()->SetOutputMatrix(nullptr, voiceDetails.InputChannels, masterVoiceDetails.InputChannels, outputMatrix);
 		//volume = 2.f - fabsf(pan) * 1.1f;
 	}
 
