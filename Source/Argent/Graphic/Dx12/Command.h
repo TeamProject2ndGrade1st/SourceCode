@@ -52,9 +52,13 @@ namespace Argent::Dx12
 	struct ArCommandBundle
 	{
 		ArCommandBundle(ID3D12Device* device);
-		void Begin() const;
-		Microsoft::WRL::ComPtr<ID3D12CommandList> executeCmdLists{};
+		void Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect,
+			const D3D12_CPU_DESCRIPTOR_HANDLE& dsvHandle, const D3D12_CPU_DESCRIPTOR_HANDLE& rtvHandle,
+			float clearColor[4]) const;
+		void Reset() const;
+
 		Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAlloc{};
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList{};
+		Microsoft::WRL::ComPtr<ID3D12CommandList> executeCmdLists{};
 	};
 }

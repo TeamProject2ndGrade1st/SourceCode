@@ -96,7 +96,7 @@ namespace Argent::Graphics
 		[[nodiscard]] Dx12::ArCommandQueue* GetResourceCmdQueue() const { return resourceQueue.get(); }
 
 
-		const Frame::FrameResource* GetCurrentFrameResource() const { return curFrameResource;  }
+		const FrameResource* GetCurrentFrameResource() const { return curFrameResource;  }
 
 		ID3D12CommandQueue* GetCommandQueue() const { return renderingQueue->cmdQueue.Get();  }
 
@@ -116,8 +116,8 @@ namespace Argent::Graphics
 		Microsoft::WRL::ComPtr<ID3D12DebugDevice> mDebugDevice;
 		Microsoft::WRL::ComPtr<IDXGIFactory6> mFactory;
 		Microsoft::WRL::ComPtr<IDXGISwapChain4> mSwapChain;
-		std::vector<std::unique_ptr<Frame::FrameResource>> frameResources;
-		Frame::FrameResource* curFrameResource;
+		std::vector<std::unique_ptr<FrameResource>> frameResources;
+		FrameResource* curFrameResource;
 
 		std::unique_ptr<Dx12::ArCommandQueue> resourceQueue;
 		std::unique_ptr<Dx12::ArCommandBundle> resourceCmdBundle;
@@ -134,7 +134,7 @@ namespace Argent::Graphics
 		float clearColor[4];
 		float windowWidth;
 		float windowHeight;
-		Frame::SceneConstant sceneConstant;
+		SceneConstant sceneConstant;
 	
 	public:
 		std::unique_ptr<FrameBuffer> frameBuffer[8];

@@ -86,7 +86,7 @@ namespace Argent::Graphics
 
 		for(UINT i = 0; i < NumBackBuffers; ++i)
 		{
-			frameResources.at(i) = std::make_unique<Frame::FrameResource>(mDevice.Get(), mSwapChain.Get(),
+			frameResources.at(i) = std::make_unique<FrameResource>(mDevice.Get(), mSwapChain.Get(),
 			                                                              i, rtvHeap->PopDescriptor(), dsvHeap->PopDescriptor(), srvCbvHeap->PopDescriptor(), NumCmdLists);
 		}
 
@@ -111,7 +111,7 @@ namespace Argent::Graphics
 		}
 
 		mDevice->SetName(L"Device");
-		resourceCmdBundle->Begin();
+		resourceCmdBundle.get()->Reset();
 	}
 
 	void ArGraphics::Initialize()
@@ -127,16 +127,16 @@ namespace Argent::Graphics
 	{
 		const UINT backBufferIndex = mSwapChain->GetCurrentBackBufferIndex();
 		curFrameResource = frameResources.at(backBufferIndex).get();
-		curFrameResource->Begin();
-
-		curFrameResource->UpdateSceneConstant(sceneConstant);
 		
-		const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();
+		curFrameResource->UpdateSceneConstant(sceneConstant);
+		curFrameResource->Reset();
+		
+		//const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();
 		//curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 		
 		//レンダーターゲット
-		const auto rtvHandle = curFrameResource->rtv->GetCPUHandle();
+		//const auto rtvHandle = curFrameResource->rtv->GetCPUHandle();
 
 		//深度
 		//curFrameResource->GetCmdList()->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
@@ -145,8 +145,8 @@ namespace Argent::Graphics
 
 		frameBuffer[0]->Begin(this);
 
-		curFrameResource->GetCmdList()->RSSetViewports(1, &viewport);
-		curFrameResource->GetCmdList()->RSSetScissorRects(1, &scissorRect);
+		//curFrameResource->GetCmdList()->RSSetViewports(1, &viewport);
+		//curFrameResource->GetCmdList()->RSSetScissorRects(1, &scissorRect);
 
 		ID3D12DescriptorHeap* setHeap[]
 		{
@@ -160,15 +160,16 @@ namespace Argent::Graphics
 
 		frameBuffer[0]->End(this);
 		
-		
 		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		curFrameResource->Begin(&viewport, &scissorRect, clearColor);
+
 
 
 		const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();
 		const auto rtvHandle = curFrameResource->rtv->GetCPUHandle();
-		curFrameResource->GetCmdList()->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
-		curFrameResource->GetCmdList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-		curFrameResource->GetCmdList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+		//curFrameResource->GetCmdList()->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
+		//curFrameResource->GetCmdList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+		//curFrameResource->GetCmdList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 
 		frameBuffer[0]->Draw(this);
 #ifdef _DEBUG

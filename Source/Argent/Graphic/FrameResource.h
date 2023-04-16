@@ -10,7 +10,7 @@
 #include "Dx12/Command.h"
 
 
-namespace Argent::Frame
+namespace Argent::Graphics
 {
 	struct SceneConstant
 	{
@@ -40,13 +40,13 @@ namespace Argent::Frame
 		DirectX::XMFLOAT4X4 GetSceneView() const { return cbScene->view;  }
 		DirectX::XMFLOAT4X4 GetSceneProjection() const { return cbScene->projection;  }
 
-		void Begin() const;
+		void Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect, float clearColor[4]) const;
 		void UpdateSceneConstant(const SceneConstant& sceneConstant) const;
 		void SetSceneConstant(UINT rootParameterIndex = 0);
 		void SetBarrier(D3D12_RESOURCE_STATES before, D3D12_RESOURCE_STATES after) const;
-
+		void Reset();
 		Dx12::Descriptor* GetDsv() const { return dsv;  }
-	public:
+
 		std::vector<std::unique_ptr<Dx12::ArCommandBundle>> cmdBundle;
 		Microsoft::WRL::ComPtr<ID3D12Resource> backBuffer;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constantBuffer;

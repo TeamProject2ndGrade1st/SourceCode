@@ -6,7 +6,7 @@
 #include "../Other/Helper.h"
 #include "Dx12/DescriptorHeap.h"
 
-namespace Argent::Frame 
+namespace Argent::Graphics 
 {
 	FrameResource::FrameResource(ID3D12Device* device, 
 	                             IDXGISwapChain4* swapChain, UINT backBufferIndex, 
@@ -109,11 +109,19 @@ namespace Argent::Frame
 		cmdBundle[0]->cmdList->ResourceBarrier(1, &barrier);
 	}
 
-	void FrameResource::Begin() const
+	void FrameResource::Reset()
 	{
 		for(auto& bundle : cmdBundle)
 		{
-			bundle->Begin();
+			bundle.get()->Reset();
+		}
+	}
+
+	void FrameResource::Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect, float clearColor[4]) const
+	{
+		for(auto& bundle : cmdBundle)
+		{
+			bundle->Begin(viewport, scissorRect, dsv->GetCPUHandle(), rtv->GetCPUHandle(), clearColor);
 		}
 	}
 
