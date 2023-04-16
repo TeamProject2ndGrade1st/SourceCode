@@ -19,6 +19,7 @@ namespace Argent::Scene
 		void Update();
 		void End();
 		void Render();
+		void DrawDebug();
 		static void SetNextScene(const std::string& s) { nextScene = s; }
 
 		static ArSceneManager* Instance() { return instance;  }

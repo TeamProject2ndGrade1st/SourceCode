@@ -6,8 +6,7 @@ float WhiteNoise(float2 coord) {
 
 float4 main(VSOUT pin) : SV_TARGET
 {
-
-	return tex.Sample(smp, pin.texcoord);
+	//return tex.Sample(smp, pin.texcoord);
 	float2 samplePoint = pin.texcoord;
 	float4 color = tex.Sample(smp, samplePoint);
 

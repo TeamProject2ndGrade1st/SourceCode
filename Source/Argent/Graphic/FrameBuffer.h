@@ -33,8 +33,8 @@ namespace Argent::Graphics
 		void Draw(const ArGraphics* gfx) const;
 	private:
 		Microsoft::WRL::ComPtr<ID3D12Resource> resource;
-		Microsoft::WRL::ComPtr<ID3D12PipelineState> pipeline;
-		Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
+		//Microsoft::WRL::ComPtr<ID3D12PipelineState> pipeline;
+		//Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
 		//Microsoft::WRL::ComPtr<ID3D12Resource> vertexBuffer;
 		std::unique_ptr<Argent::Shader::ArShader> vertexShader;
 		std::unique_ptr<Argent::Shader::ArShader> pixelShader;

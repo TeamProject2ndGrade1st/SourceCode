@@ -132,17 +132,19 @@ namespace Argent::Graphics
 		curFrameResource->UpdateSceneConstant(sceneConstant);
 		
 		const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();
-		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		//curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 		
 		//レンダーターゲット
 		const auto rtvHandle = curFrameResource->rtv->GetCPUHandle();
 
 		//深度
-		curFrameResource->GetCmdList()->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
-		curFrameResource->GetCmdList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-		curFrameResource->GetCmdList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-		
+		//curFrameResource->GetCmdList()->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
+		//curFrameResource->GetCmdList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+		//curFrameResource->GetCmdList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+
+		frameBuffer[0]->Begin(this);
+
 		curFrameResource->GetCmdList()->RSSetViewports(1, &viewport);
 		curFrameResource->GetCmdList()->RSSetScissorRects(1, &scissorRect);
 
@@ -155,7 +157,26 @@ namespace Argent::Graphics
 		
 	void ArGraphics::End()
 	{
+
+		frameBuffer[0]->End(this);
+		
+		
+		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+
+
+		const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();
+		const auto rtvHandle = curFrameResource->rtv->GetCPUHandle();
+		curFrameResource->GetCmdList()->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
+		curFrameResource->GetCmdList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+		curFrameResource->GetCmdList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+
+		frameBuffer[0]->Draw(this);
+#ifdef _DEBUG
+		ImguiCtrl::End(curFrameResource->GetCmdList(), this->GetGUIHeap());
+#endif
 		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+
+		
 
 		curFrameResource->GetCmdList()->Close();
 		ID3D12CommandList* cmdlists[] { curFrameResource->GetCmdList() };
@@ -163,7 +184,9 @@ namespace Argent::Graphics
 		renderingQueue->SetFence(1);
 
 		ID3D12GraphicsCommandList* cmdList = curFrameResource->GetCmdList();
+#ifdef _DEBUG
 		ImguiCtrl::CallBeforSwap(cmdList);
+#endif
 		mSwapChain->Present(1, 0);
 	}
 

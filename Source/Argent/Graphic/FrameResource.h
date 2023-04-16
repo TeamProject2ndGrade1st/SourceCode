@@ -44,6 +44,8 @@ namespace Argent::Frame
 		void UpdateSceneConstant(const SceneConstant& sceneConstant) const;
 		void SetSceneConstant(UINT rootParameterIndex = 0);
 		void SetBarrier(D3D12_RESOURCE_STATES before, D3D12_RESOURCE_STATES after) const;
+
+		Dx12::Descriptor* GetDsv() const { return dsv;  }
 	public:
 		std::vector<std::unique_ptr<Dx12::ArCommandBundle>> cmdBundle;
 		Microsoft::WRL::ComPtr<ID3D12Resource> backBuffer;

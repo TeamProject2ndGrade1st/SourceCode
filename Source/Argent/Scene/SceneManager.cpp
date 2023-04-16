@@ -60,9 +60,14 @@ namespace Argent::Scene
 		if(currentScene)
 		{
 			currentScene->Render();
-#ifdef _DEBUG
+		}
+	}
+
+	void ArSceneManager::DrawDebug()
+	{
+		if(currentScene)
+		{
 			currentScene->DrawDebug();
-#endif
 		}
 	}
 

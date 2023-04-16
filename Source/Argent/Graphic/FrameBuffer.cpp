@@ -18,7 +18,10 @@ namespace Argent::Graphics
 
 		D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 		D3D12_CLEAR_VALUE clearValue = CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor);
-
+		this->clearColor[0] = clearColor[0];
+		this->clearColor[1] = clearColor[1];
+		this->clearColor[2] = clearColor[2];
+		this->clearColor[3] = clearColor[3];
 		//シェーダーリソースとしてリソースを作成(バリアの設定をするため最初はシェーダーリソース）
 		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &rDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 			&clearValue, IID_PPV_ARGS(resource.ReleaseAndGetAddressOf()));
@@ -49,7 +52,6 @@ namespace Argent::Graphics
 
 		vertexBuffer = std::make_unique<Dx12::ArVertexBuffer<Vertex>>(device, vertice);
 		renderingPipeline = RenderingPipeline::CreateDefaultFrameBufferPipeline();
-		clearColor = Graphics::ArGraphics::Instance()->GetClearColor();
 	}
 
 	void FrameBuffer::Begin(const ArGraphics* gfx) const
@@ -62,12 +64,12 @@ namespace Argent::Graphics
 		cmdList->ResourceBarrier(1, &barrier);
 
 		//auto dsvHandle = gfx->GetDepthHandle();
-		D3D12_CPU_DESCRIPTOR_HANDLE* dsvHandle = nullptr;
+		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = gfx->GetCurrentFrameResource()->GetDsv()->GetCPUHandle();
 		//todo
 		auto handle = rtvDescriptor->GetCPUHandle();
 
 		cmdList->OMSetRenderTargets(1, &handle,
-			false, dsvHandle);
+			false, &dsvHandle);
 		cmdList->ClearRenderTargetView(rtvDescriptor->GetCPUHandle(), clearColor, 0, nullptr);
 
 
@@ -89,8 +91,9 @@ namespace Argent::Graphics
 	void FrameBuffer::Draw(const ArGraphics* gfx) const
 	{
 		ID3D12GraphicsCommandList* cmdList = gfx->GetCommandList();
-		cmdList->SetPipelineState(pipeline.Get());
-		cmdList->SetGraphicsRootSignature(rootSignature.Get());
+		//cmdList->SetPipelineState(pipeline.Get());
+		//cmdList->SetGraphicsRootSignature(rootSignature.Get());
+		renderingPipeline->SetOnCommandList(cmdList);
 		cmdList->SetGraphicsRootDescriptorTable(0, srvDescriptor->GetGPUHandle());
 
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
