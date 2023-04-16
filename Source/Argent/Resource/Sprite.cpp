@@ -8,7 +8,7 @@ namespace Argent::Resource::Sprite
 	Sprite::Sprite():
 		ArResource("Sprite", ResourceType::Texture)
 	{
-		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
+		ID3D12Device* device = Graphics::Graphics::Instance()->GetDevice();
 		HRESULT hr{ S_OK };
 
 		vertices.resize(4);
@@ -30,7 +30,7 @@ namespace Argent::Resource::Sprite
 	                                   const DirectX::XMFLOAT2& center, float angle, float textureWidth, float textureHeight,
 	                                   const DirectX::XMFLOAT4& color) const
 	{
-		const D3D12_VIEWPORT viewport = Argent::Graphics::ArGraphics::Instance()->GetViewport();
+		const D3D12_VIEWPORT viewport = Argent::Graphics::Graphics::Instance()->GetViewport();
 		const DirectX::XMFLOAT2 viewportSize{ viewport.Width, viewport.Height };
 		const DirectX::XMFLOAT2 textureSize{ textureWidth,
 			textureHeight };

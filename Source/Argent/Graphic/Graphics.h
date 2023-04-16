@@ -20,7 +20,7 @@
 
 namespace Argent::Graphics
 {
-	class ArGraphics
+	class Graphics
 	{
 	public:
 		enum class CoordinateSystem
@@ -32,15 +32,15 @@ namespace Argent::Graphics
 			cNone,
 		};
 	public:
-		ArGraphics(HWND hWnd);
-		virtual ~ArGraphics()
+		Graphics(HWND hWnd);
+		virtual ~Graphics()
 		{
 			renderingQueue->SetFence(1);
 		}
-		ArGraphics(const ArGraphics&) = delete;
-		ArGraphics(const ArGraphics&&) = delete;
-		ArGraphics operator=(const ArGraphics&) = delete;
-		ArGraphics operator=(const ArGraphics&&) = delete;
+		Graphics(const Graphics&) = delete;
+		Graphics(const Graphics&&) = delete;
+		Graphics operator=(const Graphics&) = delete;
+		Graphics operator=(const Graphics&&) = delete;
 		
 		void Initialize();
 		void Terminate();
@@ -54,7 +54,7 @@ namespace Argent::Graphics
 		
 		void SetSceneConstant(UINT rootParameterIndex = 0);
 	public:
-		static ArGraphics* Instance() { return instance; }
+		static Graphics* Instance() { return instance; }
 		[[nodiscard]] ID3D12Device* GetDevice() const { return mDevice.Get(); }
 		[[nodiscard]] ID3D12GraphicsCommandList* GetCommandList() const { return curFrameResource->GetCmdList(); }
 		
@@ -109,7 +109,7 @@ namespace Argent::Graphics
 		void SetLightPosition(const DirectX::XMFLOAT3& f) { sceneConstant.lightPosition = f; }
 		void SetLightColor(const DirectX::XMFLOAT4& f) { sceneConstant.lightColor = f; }
 	private:
-		static ArGraphics* instance;
+		static Graphics* instance;
 		static constexpr int NumBackBuffers = 2;
 		static constexpr int NumCmdLists = 1;
 		Microsoft::WRL::ComPtr<ID3D12Device> mDevice;

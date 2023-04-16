@@ -40,7 +40,7 @@ namespace Argent::Component::Renderer
 
 	void BaseRenderer::Render() const
 	{
-		ID3D12GraphicsCommandList* cmdList = Argent::Graphics::ArGraphics::Instance()->GetCommandList();
+		ID3D12GraphicsCommandList* cmdList = Argent::Graphics::Graphics::Instance()->GetCommandList();
 		Render(cmdList);
 	}
 }

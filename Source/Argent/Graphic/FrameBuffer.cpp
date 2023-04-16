@@ -13,8 +13,8 @@ namespace Argent::Graphics
 		HRESULT hr{ S_OK };
 
 		//レンダーターゲットとシェーダリソース用のデスクリプタを取得
-		srvDescriptor = ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor();
-		rtvDescriptor = ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)->PopDescriptor();
+		srvDescriptor = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor();
+		rtvDescriptor = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)->PopDescriptor();
 
 		D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 		D3D12_CLEAR_VALUE clearValue = CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor);
@@ -54,7 +54,7 @@ namespace Argent::Graphics
 		renderingPipeline = RenderingPipeline::CreateDefaultFrameBufferPipeline();
 	}
 
-	void FrameBuffer::Begin(const ArGraphics* gfx) const
+	void FrameBuffer::Begin(const Graphics* gfx) const
 	{
 		ID3D12GraphicsCommandList* cmdList = gfx->GetCommandList();
 		CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
@@ -79,7 +79,7 @@ namespace Argent::Graphics
 		cmdList->RSSetScissorRects(1, &rect);
 	}
 
-	void FrameBuffer::End(const ArGraphics* gfx) const
+	void FrameBuffer::End(const Graphics* gfx) const
 	{
 		CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 			resource.Get(),
@@ -88,7 +88,7 @@ namespace Argent::Graphics
 		gfx->GetCommandList()->ResourceBarrier(1, &barrier);
 	}
 
-	void FrameBuffer::Draw(const ArGraphics* gfx) const
+	void FrameBuffer::Draw(const Graphics* gfx) const
 	{
 		ID3D12GraphicsCommandList* cmdList = gfx->GetCommandList();
 		//cmdList->SetPipelineState(pipeline.Get());

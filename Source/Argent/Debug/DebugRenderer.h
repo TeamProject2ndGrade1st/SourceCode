@@ -36,21 +36,21 @@ namespace Argent::Debug
 		{
 			meshResource.vertices = vertices;
 			meshResource.indices = indices;
-			auto device = Graphics::ArGraphics::Instance()->GetDevice();
+			auto device = Graphics::Graphics::Instance()->GetDevice();
 			vertexBuffer = std::make_unique<Dx12::ArVertexBuffer<Vertex>>(device, vertices);
 			indexBuffer = std::make_unique<Dx12::ArIndexBuffer>(device, indices);
 			renderingPipeline = Graphics::RenderingPipeline::CreateDebugRendererPipeline();
-			constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Constants>>(device, Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+			constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Constants>>(device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 
 		}
 		DebugRenderer(const MeshResource& mResource) :
 			meshResource(mResource)
 		{
-			auto device = Graphics::ArGraphics::Instance()->GetDevice();
+			auto device = Graphics::Graphics::Instance()->GetDevice();
 			vertexBuffer = std::make_unique<Dx12::ArVertexBuffer<Vertex>>(device, meshResource.vertices);
 			indexBuffer = std::make_unique<Dx12::ArIndexBuffer>(device, meshResource.indices);
 			renderingPipeline = Graphics::RenderingPipeline::CreateDebugRendererPipeline();
-			constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Constants>>(device, Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+			constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Constants>>(device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 		}
 
 		void Render(const DirectX::XMFLOAT4X4& world);

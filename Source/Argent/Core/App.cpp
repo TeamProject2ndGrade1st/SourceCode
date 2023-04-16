@@ -14,7 +14,7 @@ namespace Argent::App
 		if(isInstantiated)_ASSERT_EXPR(FALSE, L"Instance is already existed");
 
 		arWindow = std::make_unique<Window::ArWindow>(hInstance, width, height);
-		arGfx = std::make_unique<Graphics::ArGraphics>(arWindow->GetHandle());
+		arGfx = std::make_unique<Graphics::Graphics>(arWindow->GetHandle());
 		effectManager = std::make_unique<Argent::Resource::Effect::EffectManager>(arGfx->GetDevice(), arGfx->GetCommandQueue(), arGfx->GetNumBackBuffers());
 
 		isInstantiated = true;

@@ -11,15 +11,15 @@ namespace Argent::Texture
 	ArTexture::ArTexture(const char* filepath):
 		Argent::Resource::ArImportedResource(filepath, ResourceType::Texture)
 	{
-		descriptor = Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor();
-		imDescriptor = Graphics::ArGraphics::Instance()->GetImGuiHeap()->PopDescriptor();
+		descriptor = Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor();
+		imDescriptor = Graphics::Graphics::Instance()->GetImGuiHeap()->PopDescriptor();
 		const std::filesystem::path path{ filepath };
-		const HRESULT hr = Helper::Texture::LoadTexture(Argent::Graphics::ArGraphics::Instance()->GetDevice(), Argent::Graphics::ArGraphics::Instance()->GetResourceCmdBundle(), 
-		                                                Argent::Graphics::ArGraphics::Instance()->GetResourceCmdQueue(), path.c_str(), shaderResource.ReleaseAndGetAddressOf());
+		const HRESULT hr = Helper::Texture::LoadTexture(Argent::Graphics::Graphics::Instance()->GetDevice(), Argent::Graphics::Graphics::Instance()->GetResourceCmdBundle(), 
+		                                                Argent::Graphics::Graphics::Instance()->GetResourceCmdQueue(), path.c_str(), shaderResource.ReleaseAndGetAddressOf());
 
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
+		ID3D12Device* device = Graphics::Graphics::Instance()->GetDevice();
 
 		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 		srvDesc.Format = shaderResource->GetDesc().Format;

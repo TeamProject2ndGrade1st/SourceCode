@@ -10,7 +10,7 @@
 
 namespace Argent::Graphics
 {
-	class ArGraphics;
+	class Graphics;
 }
 
 namespace Argent::Graphics
@@ -28,9 +28,9 @@ namespace Argent::Graphics
 		virtual ~FrameBuffer() = default;
 
 
-		void Begin(const ArGraphics* gfx) const;
-		void End(const ArGraphics* gfx) const;
-		void Draw(const ArGraphics* gfx) const;
+		void Begin(const Graphics* gfx) const;
+		void End(const Graphics* gfx) const;
+		void Draw(const Graphics* gfx) const;
 	private:
 		Microsoft::WRL::ComPtr<ID3D12Resource> resource;
 		//Microsoft::WRL::ComPtr<ID3D12PipelineState> pipeline;

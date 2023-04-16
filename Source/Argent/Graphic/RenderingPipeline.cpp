@@ -8,7 +8,7 @@ namespace Argent::Graphics
 		vertexShader(std::make_shared<Shader::ArShader>(vsFilePath))
 	,	pixelShader(std::make_shared<Shader::ArShader>(psFilePath))
 	{
-		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
+		ID3D12Device* device = Graphics::Graphics::Instance()->GetDevice();
 		CreateRootSignature(device, rootSigDesc);
 		CreatePipelineState(device, pipelineStateDesc);
 	}
@@ -326,7 +326,7 @@ namespace Argent::Graphics
 	std::unique_ptr<RenderingPipeline> RenderingPipeline::CreateDefaultFrameBufferPipeline()
 	{
 		HRESULT hr{ S_OK };
-		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
+		ID3D12Device* device = Graphics::Graphics::Instance()->GetDevice();
 
 		//ルートシグネチャ用
 		D3D12_DESCRIPTOR_RANGE range[1]{};

@@ -9,9 +9,9 @@
 
 namespace Argent::Graphics
 {
-	ArGraphics* ArGraphics::instance =  nullptr;
+	Graphics* Graphics::instance =  nullptr;
 
-	ArGraphics::ArGraphics(HWND hWnd):
+	Graphics::Graphics(HWND hWnd):
 		curFrameResource(nullptr)
 		,	renderingQueue(nullptr)
 		,	resourceQueue(nullptr)
@@ -114,16 +114,16 @@ namespace Argent::Graphics
 		resourceCmdBundle.get()->Reset();
 	}
 
-	void ArGraphics::Initialize()
+	void Graphics::Initialize()
 	{
 	}
 
-	void ArGraphics::Terminate()
+	void Graphics::Terminate()
 	{
 
 	}
 
-	void ArGraphics::Begin()
+	void Graphics::Begin()
 	{
 		const UINT backBufferIndex = mSwapChain->GetCurrentBackBufferIndex();
 		curFrameResource = frameResources.at(backBufferIndex).get();
@@ -155,7 +155,7 @@ namespace Argent::Graphics
 		curFrameResource->GetCmdList()->SetDescriptorHeaps(_countof(setHeap), setHeap);
 	}
 		
-	void ArGraphics::End()
+	void Graphics::End()
 	{
 
 		frameBuffer[0]->End(this);
@@ -191,7 +191,7 @@ namespace Argent::Graphics
 		mSwapChain->Present(1, 0);
 	}
 
-	HRESULT ArGraphics::CreateWhiteTexture(ID3D12Resource** resource)
+	HRESULT Graphics::CreateWhiteTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
 		
@@ -226,7 +226,7 @@ namespace Argent::Graphics
 		return hr;
 	}
 		
-	HRESULT ArGraphics::CreateBlackTexture(ID3D12Resource** resource)
+	HRESULT Graphics::CreateBlackTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
 		
@@ -266,7 +266,7 @@ namespace Argent::Graphics
 		return hr;
 	}
 		
-	HRESULT ArGraphics::CreateGrayGradationTexture(ID3D12Resource** resource)
+	HRESULT Graphics::CreateGrayGradationTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
 		
@@ -318,7 +318,7 @@ namespace Argent::Graphics
 		return hr;
 	}
 	 
-	HRESULT ArGraphics::CreateNoiseTexture(ID3D12Resource** resource)
+	HRESULT Graphics::CreateNoiseTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
 
@@ -365,7 +365,7 @@ namespace Argent::Graphics
 		return hr;
 	}
 
-	void ArGraphics::SetSceneConstant(UINT rootParameterIndex)
+	void Graphics::SetSceneConstant(UINT rootParameterIndex)
 	{
 		curFrameResource->SetSceneConstant(rootParameterIndex);
 	}

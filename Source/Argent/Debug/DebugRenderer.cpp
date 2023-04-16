@@ -5,9 +5,9 @@ namespace Argent::Debug
 {
 	void DebugRenderer::Render(const DirectX::XMFLOAT4X4& world)
 	{
-		ID3D12GraphicsCommandList* cmdList = Graphics::ArGraphics::Instance()->GetCommandList();
+		ID3D12GraphicsCommandList* cmdList = Graphics::Graphics::Instance()->GetCommandList();
 		renderingPipeline->SetOnCommandList(cmdList);
-		Argent::Graphics::ArGraphics::Instance()->SetSceneConstant(0);
+		Argent::Graphics::Graphics::Instance()->SetSceneConstant(0);
 
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

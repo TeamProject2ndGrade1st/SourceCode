@@ -40,7 +40,7 @@ namespace Argent::Component::Renderer
 	                                   const Resource::Animation::AnimationClip::Keyframe* keyframe) const
 	{
 		BaseRenderer::Render(cmdList);
-		Argent::Graphics::ArGraphics::Instance()->SetSceneConstant(static_cast<UINT>(RootParameterIndex::cbScene));
+		Argent::Graphics::Graphics::Instance()->SetSceneConstant(static_cast<UINT>(RootParameterIndex::cbScene));
 
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -110,13 +110,13 @@ namespace Argent::Component::Renderer
 			const Resource::Animation::AnimationClip::Keyframe& keyframe{ animation.sequence.at(static_cast<uint64_t>(frameIndex)) };
 
 			//todo マテリアルの適用
-			Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), t.GetWorld(),
+			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(), t.GetWorld(),
 				 &keyframe);
 		}
 		else
 		{
 			Resource::Animation::AnimationClip::Keyframe key{};
-			Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), t.GetWorld(),
+			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(), t.GetWorld(),
 			 &key);
 		}
 	}
@@ -153,9 +153,9 @@ namespace Argent::Component::Renderer
 		mesh->UpdateAnimation(keyframe);
 	#endif
 
-		mesh->SetOnCommandList(ArGraphics::Instance()->GetCommandList(),
-			meshTransform.GetWorld(ArGraphics::Instance()->CoordinateSystemTransforms[coordinateSystem], 
-				ArGraphics::Instance()->scaleFactor),
+		mesh->SetOnCommandList(Graphics::Instance()->GetCommandList(),
+			meshTransform.GetWorld(Graphics::Instance()->CoordinateSystemTransforms[coordinateSystem], 
+				Graphics::Instance()->scaleFactor),
 			 meshColor.color, &keyframe);
 
 	#endif
@@ -208,9 +208,9 @@ namespace Argent::Component::Renderer
 			it->second.constantBuffer = 
 				std::make_unique<Dx12::ArConstantBuffer<Argent::Material::ArMeshMaterial::Constant>>(
 					device, 
-					Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
+					Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
 					&it->second.constant);
 		}
-		objectConstantBuffer = std::make_unique<Dx12::ArConstantBuffer<Constants>>(device, Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+		objectConstantBuffer = std::make_unique<Dx12::ArConstantBuffer<Constants>>(device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 	}
 }
