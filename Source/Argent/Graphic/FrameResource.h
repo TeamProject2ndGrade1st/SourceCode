@@ -25,7 +25,7 @@ namespace Argent::Frame
 	{
 	public:
 		FrameResource(ID3D12Device* device, IDXGISwapChain4* swapChain, UINT backBufferIndex, 
-		              Descriptor::ArDescriptor* rtv, Descriptor::ArDescriptor* dsv, Descriptor::ArDescriptor* cbv, 
+		              Dx12::Descriptor* rtv, Dx12::Descriptor* dsv, Dx12::Descriptor* cbv, 
 		              UINT NumCmdLists);
 		~FrameResource() = default;
 		FrameResource operator=(const FrameResource&) = delete;
@@ -49,9 +49,9 @@ namespace Argent::Frame
 		Microsoft::WRL::ComPtr<ID3D12Resource> backBuffer;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constantBuffer;
 		Microsoft::WRL::ComPtr<ID3D12Resource> depthStencilResource;
-		Descriptor::ArDescriptor* rtv;
-		Descriptor::ArDescriptor* dsv;
-		Descriptor::ArDescriptor* cbv;
+		Dx12::Descriptor* rtv;
+		Dx12::Descriptor* dsv;
+		Dx12::Descriptor* cbv;
 		UINT backBufferIndex;
 		SceneConstant*	cbScene;
 	public:

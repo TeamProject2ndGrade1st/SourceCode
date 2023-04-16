@@ -21,7 +21,7 @@ namespace Argent::Component::Renderer
 		}
 		this->animationClips = animation;
 		CreateComObject(device);
-		renderingPipeline = Graphics::RenderingPipeline::CreateDefaultSkinnedMeshPipeLine();
+		renderingPipeline = Graphics::RenderingPipeline::CreateDefaultSkinnedMeshPipeline();
 	}
 
 

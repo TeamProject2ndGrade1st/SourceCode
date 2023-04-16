@@ -74,13 +74,13 @@ namespace Argent::Graphics
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 		
 
-		rtvHeap = std::make_unique<Descriptor::ArDescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, NumBackBuffers);
-		srvCbvHeap = std::make_unique<Descriptor::ArDescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10000);
-		dsvHeap = std::make_unique<Descriptor::ArDescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 100);
-		imGuiHeap = std::make_unique<Descriptor::ArDescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10001);
+		rtvHeap = std::make_unique<Dx12::DescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, NumBackBuffers + 100);
+		srvCbvHeap = std::make_unique<Dx12::DescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10000);
+		dsvHeap = std::make_unique<Dx12::DescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 100);
+		imGuiHeap = std::make_unique<Dx12::DescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10001);
 
 		//imguiに画像を表示するために　一個目の空間はimgui用 それ以降はテクスチャ表示用
-		Descriptor::ArDescriptor* tmp = imGuiHeap->PopDescriptor();
+		Dx12::Descriptor* tmp = imGuiHeap->PopDescriptor();
 
 		frameResources.resize(NumBackBuffers);
 
@@ -128,27 +128,8 @@ namespace Argent::Graphics
 		const UINT backBufferIndex = mSwapChain->GetCurrentBackBufferIndex();
 		curFrameResource = frameResources.at(backBufferIndex).get();
 		curFrameResource->Begin();
-		//if(nextCamera)
-		//{
-		//	if(camera)
-		//		camera->OffSceneCamera();
-		//	camera = nextCamera;
-		//	camera->OnSceneCamera();
-		//	nextCamera = nullptr;
-		//}
 
 		curFrameResource->UpdateSceneConstant(sceneConstant);
-		
-		//if(camera && light)
-		//{
-		//	auto t = camera->GetOwner()->GetTransform();
-		//	curFrameResource->UpdateSceneConstant(camera->GetViewMatrix(),
-		//		camera->GetProjectionMatrix(), light->GetColor().GetColor(),
-		//	                                      light->GetOwner()->GetTransform()->GetPosition(),
-		//	                                      t->GetPosition()
-		//	);
-		//}
-			
 		
 		const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();
 		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);

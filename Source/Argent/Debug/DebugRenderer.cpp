@@ -18,7 +18,7 @@ namespace Argent::Debug
 
 		vertexBuffer->SetOnCommandList(cmdList, 0);
 		indexBuffer->SetOnCommandList(cmdList);
-		cmdList->DrawIndexedInstanced(meshResource.indices.size(), 1, 0, 0, 0);
+		cmdList->DrawIndexedInstanced(static_cast<UINT>(meshResource.indices.size()), 1, 0, 0, 0);
 		
 	}
 

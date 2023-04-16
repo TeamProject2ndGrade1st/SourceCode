@@ -17,7 +17,7 @@ namespace Argent::Component::Renderer
 			this->materials.emplace(m.first, std::move(m.second));
 		}
 		CreateComObject(device);
-		renderingPipeline = Graphics::RenderingPipeline::CreateDefaultStaticMeshPipeLine();
+		renderingPipeline = Graphics::RenderingPipeline::CreateDefaultStaticMeshPipeline();
 	}
 
 	void MeshRenderer::Render(ID3D12GraphicsCommandList* cmdList,

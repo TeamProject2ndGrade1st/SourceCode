@@ -10,7 +10,7 @@ namespace Argent::Frame
 {
 	FrameResource::FrameResource(ID3D12Device* device, 
 	                             IDXGISwapChain4* swapChain, UINT backBufferIndex, 
-	                             Descriptor::ArDescriptor* rtv, Descriptor::ArDescriptor* dsv, Descriptor::ArDescriptor* cbv, 
+	                             Dx12::Descriptor* rtv, Dx12::Descriptor* dsv, Dx12::Descriptor* cbv, 
 	                             UINT NumCmdLists):
 		cbScene(nullptr)
 		,	backBufferIndex(backBufferIndex)

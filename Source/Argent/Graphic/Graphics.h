@@ -68,9 +68,9 @@ namespace Argent::Graphics
 
 		float* GetClearColor() { return clearColor; }
 
-		[[nodiscard]] Descriptor::ArDescriptorHeap* GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE type) const
+		[[nodiscard]] Dx12::DescriptorHeap* GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE type) const
 		{
-			Descriptor::ArDescriptorHeap* heapPointer = nullptr;
+			Dx12::DescriptorHeap* heapPointer = nullptr;
 			switch (type)
 			{
 			case D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV:
@@ -91,7 +91,7 @@ namespace Argent::Graphics
 			return heapPointer;
 		}
 
-		[[nodiscard]] Descriptor::ArDescriptorHeap* GetImGuiHeap() const { return imGuiHeap.get(); }
+		[[nodiscard]] Dx12::DescriptorHeap* GetImGuiHeap() const { return imGuiHeap.get(); }
 		[[nodiscard]] Dx12::ArCommandBundle* GetResourceCmdBundle() const { return resourceCmdBundle.get(); }
 		[[nodiscard]] Dx12::ArCommandQueue* GetResourceCmdQueue() const { return resourceQueue.get(); }
 
@@ -122,10 +122,10 @@ namespace Argent::Graphics
 		std::unique_ptr<Dx12::ArCommandQueue> resourceQueue;
 		std::unique_ptr<Dx12::ArCommandBundle> resourceCmdBundle;
 		std::unique_ptr<Dx12::ArCommandQueue> renderingQueue;
-		std::unique_ptr<Descriptor::ArDescriptorHeap> rtvHeap;
-		std::unique_ptr<Descriptor::ArDescriptorHeap> srvCbvHeap;
-		std::unique_ptr<Descriptor::ArDescriptorHeap> dsvHeap;
-		std::unique_ptr<Descriptor::ArDescriptorHeap> imGuiHeap;
+		std::unique_ptr<Dx12::DescriptorHeap> rtvHeap;
+		std::unique_ptr<Dx12::DescriptorHeap> srvCbvHeap;
+		std::unique_ptr<Dx12::DescriptorHeap> dsvHeap;
+		std::unique_ptr<Dx12::DescriptorHeap> imGuiHeap;
 
 		D3D12_VIEWPORT viewport;
 		D3D12_RECT scissorRect;
@@ -138,8 +138,6 @@ namespace Argent::Graphics
 	
 	public:
 		std::unique_ptr<FrameBuffer> frameBuffer[8];
-
-
 	};
 
 	HRESULT CreateDevice(IDXGIFactory6* factory, ID3D12Device** device);

@@ -16,12 +16,12 @@ namespace Argent::Texture
 		ID3D12Resource* GetTexture() const { return shaderResource.Get(); }
 		float GetWidth() const { return width; }
 		float GetHeight() const { return height; }
-		Descriptor::ArDescriptor* GetDescriptor() const { return descriptor; }
-		Descriptor::ArDescriptor* GetImDescriptor() const { return imDescriptor; }
+		Dx12::Descriptor* GetDescriptor() const { return descriptor; }
+		Dx12::Descriptor* GetImDescriptor() const { return imDescriptor; }
 
 	private:
-		Descriptor::ArDescriptor* descriptor;
-		Descriptor::ArDescriptor* imDescriptor;
+		Dx12::Descriptor* descriptor;
+		Dx12::Descriptor* imDescriptor;
 		Microsoft::WRL::ComPtr<ID3D12Resource> shaderResource;
 		float width;
 		float height;
