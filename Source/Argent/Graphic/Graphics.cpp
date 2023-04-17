@@ -9,9 +9,9 @@
 
 namespace Argent::Graphics
 {
-	ArGraphics* ArGraphics::instance =  nullptr;
+	Graphics* Graphics::instance =  nullptr;
 
-	ArGraphics::ArGraphics(HWND hWnd):
+	Graphics::Graphics(HWND hWnd):
 		curFrameResource(nullptr)
 		,	renderingQueue(nullptr)
 		,	resourceQueue(nullptr)
@@ -74,19 +74,19 @@ namespace Argent::Graphics
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 		
 
-		rtvHeap = std::make_unique<Descriptor::ArDescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, NumBackBuffers);
-		srvCbvHeap = std::make_unique<Descriptor::ArDescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10000);
-		dsvHeap = std::make_unique<Descriptor::ArDescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 100);
-		imGuiHeap = std::make_unique<Descriptor::ArDescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10001);
+		rtvHeap = std::make_unique<Dx12::DescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, NumBackBuffers + 100);
+		srvCbvHeap = std::make_unique<Dx12::DescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10000);
+		dsvHeap = std::make_unique<Dx12::DescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 100);
+		imGuiHeap = std::make_unique<Dx12::DescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10001);
 
 		//imguiに画像を表示するために　一個目の空間はimgui用 それ以降はテクスチャ表示用
-		Descriptor::ArDescriptor* tmp = imGuiHeap->PopDescriptor();
+		Dx12::Descriptor* tmp = imGuiHeap->PopDescriptor();
 
 		frameResources.resize(NumBackBuffers);
 
 		for(UINT i = 0; i < NumBackBuffers; ++i)
 		{
-			frameResources.at(i) = std::make_unique<Frame::FrameResource>(mDevice.Get(), mSwapChain.Get(),
+			frameResources.at(i) = std::make_unique<FrameResource>(mDevice.Get(), mSwapChain.Get(),
 			                                                              i, rtvHeap->PopDescriptor(), dsvHeap->PopDescriptor(), srvCbvHeap->PopDescriptor(), NumCmdLists);
 		}
 
@@ -111,59 +111,42 @@ namespace Argent::Graphics
 		}
 
 		mDevice->SetName(L"Device");
-		resourceCmdBundle->Begin();
+		resourceCmdBundle.get()->Reset();
 	}
 
-	void ArGraphics::Initialize()
+	void Graphics::Initialize()
 	{
 	}
 
-	void ArGraphics::Terminate()
+	void Graphics::Terminate()
 	{
 
 	}
 
-	void ArGraphics::Begin()
+	void Graphics::Begin()
 	{
 		const UINT backBufferIndex = mSwapChain->GetCurrentBackBufferIndex();
 		curFrameResource = frameResources.at(backBufferIndex).get();
-		curFrameResource->Begin();
-		//if(nextCamera)
-		//{
-		//	if(camera)
-		//		camera->OffSceneCamera();
-		//	camera = nextCamera;
-		//	camera->OnSceneCamera();
-		//	nextCamera = nullptr;
-		//}
-
+		
 		curFrameResource->UpdateSceneConstant(sceneConstant);
+		curFrameResource->Reset();
 		
-		//if(camera && light)
-		//{
-		//	auto t = camera->GetOwner()->GetTransform();
-		//	curFrameResource->UpdateSceneConstant(camera->GetViewMatrix(),
-		//		camera->GetProjectionMatrix(), light->GetColor().GetColor(),
-		//	                                      light->GetOwner()->GetTransform()->GetPosition(),
-		//	                                      t->GetPosition()
-		//	);
-		//}
-			
-		
-		const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();
-		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		//const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();
+		//curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 		
 		//レンダーターゲット
-		const auto rtvHandle = curFrameResource->rtv->GetCPUHandle();
+		//const auto rtvHandle = curFrameResource->rtv->GetCPUHandle();
 
 		//深度
-		curFrameResource->GetCmdList()->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
-		curFrameResource->GetCmdList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-		curFrameResource->GetCmdList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-		
-		curFrameResource->GetCmdList()->RSSetViewports(1, &viewport);
-		curFrameResource->GetCmdList()->RSSetScissorRects(1, &scissorRect);
+		//curFrameResource->GetCmdList()->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
+		//curFrameResource->GetCmdList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+		//curFrameResource->GetCmdList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+
+		frameBuffer[0]->Begin(this);
+
+		//curFrameResource->GetCmdList()->RSSetViewports(1, &viewport);
+		//curFrameResource->GetCmdList()->RSSetScissorRects(1, &scissorRect);
 
 		ID3D12DescriptorHeap* setHeap[]
 		{
@@ -172,9 +155,29 @@ namespace Argent::Graphics
 		curFrameResource->GetCmdList()->SetDescriptorHeaps(_countof(setHeap), setHeap);
 	}
 		
-	void ArGraphics::End()
+	void Graphics::End()
 	{
+
+		frameBuffer[0]->End(this);
+		
+		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		curFrameResource->Begin(&viewport, &scissorRect, clearColor);
+
+
+
+		const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();
+		const auto rtvHandle = curFrameResource->rtv->GetCPUHandle();
+		//curFrameResource->GetCmdList()->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
+		//curFrameResource->GetCmdList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+		//curFrameResource->GetCmdList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+
+		frameBuffer[0]->Draw(this);
+#ifdef _DEBUG
+		ImguiCtrl::End(curFrameResource->GetCmdList(), this->GetGUIHeap());
+#endif
 		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+
+		
 
 		curFrameResource->GetCmdList()->Close();
 		ID3D12CommandList* cmdlists[] { curFrameResource->GetCmdList() };
@@ -182,11 +185,13 @@ namespace Argent::Graphics
 		renderingQueue->SetFence(1);
 
 		ID3D12GraphicsCommandList* cmdList = curFrameResource->GetCmdList();
+#ifdef _DEBUG
 		ImguiCtrl::CallBeforSwap(cmdList);
+#endif
 		mSwapChain->Present(1, 0);
 	}
 
-	HRESULT ArGraphics::CreateWhiteTexture(ID3D12Resource** resource)
+	HRESULT Graphics::CreateWhiteTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
 		
@@ -221,7 +226,7 @@ namespace Argent::Graphics
 		return hr;
 	}
 		
-	HRESULT ArGraphics::CreateBlackTexture(ID3D12Resource** resource)
+	HRESULT Graphics::CreateBlackTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
 		
@@ -261,7 +266,7 @@ namespace Argent::Graphics
 		return hr;
 	}
 		
-	HRESULT ArGraphics::CreateGrayGradationTexture(ID3D12Resource** resource)
+	HRESULT Graphics::CreateGrayGradationTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
 		
@@ -313,7 +318,7 @@ namespace Argent::Graphics
 		return hr;
 	}
 	 
-	HRESULT ArGraphics::CreateNoiseTexture(ID3D12Resource** resource)
+	HRESULT Graphics::CreateNoiseTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
 
@@ -360,7 +365,7 @@ namespace Argent::Graphics
 		return hr;
 	}
 
-	void ArGraphics::SetSceneConstant(UINT rootParameterIndex)
+	void Graphics::SetSceneConstant(UINT rootParameterIndex)
 	{
 		curFrameResource->SetSceneConstant(rootParameterIndex);
 	}

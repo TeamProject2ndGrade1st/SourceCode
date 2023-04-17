@@ -20,7 +20,6 @@ void Title::Initialize()
 
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Arrow.fbx");
 	
-	AddObject(new GameObject("Nico", new RayCastDemo()));
 //	AddObject(new GameObject("Gun", new BaseGun));
 	//AddObject(new GameObject("Stage", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 
@@ -29,6 +28,9 @@ void Title::Initialize()
 	//AddObject(new GameObject("Stage1", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Cube.fbx");
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));
+
+
+	AddObject(new GameObject("Nico", new RayCastDemo()));
 	AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
 
 

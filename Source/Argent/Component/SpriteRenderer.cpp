@@ -12,7 +12,7 @@ namespace Argent::Component::Renderer
 	{
 		sprite = std::make_unique<Argent::Resource::Sprite::Sprite>();
 		material = std::make_shared<Material::SpriteMaterial>(filePath);
-		renderingPipeline = Argent::Graphics::RenderingPipeline::CreateDefaultSpritePipeLine();
+		renderingPipeline = Argent::Graphics::RenderingPipeline::CreateDefaultSpritePipeline();
 	}
 
 

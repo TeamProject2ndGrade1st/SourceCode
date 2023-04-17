@@ -9,12 +9,12 @@ namespace
 		ArMesh(name	, mResource, subsets, DirectX::XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1))
 	,	bindPose(bindPose)
 	{
-		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
+		ID3D12Device* device = Graphics::Graphics::Instance()->GetDevice();
 		boneVertexBuffer = std::make_unique<Dx12::ArVertexBuffer<BoneVertex>>(
 			device, bones);
 		constantBuffer = std::make_unique<Dx12::ArConstantBuffer<Constant>>(
 			device,
-			Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+			Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 	}
 
 	void ArSkinnedMesh::SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot)

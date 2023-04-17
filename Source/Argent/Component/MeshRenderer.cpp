@@ -17,14 +17,14 @@ namespace Argent::Component::Renderer
 			this->materials.emplace(m.first, std::move(m.second));
 		}
 		CreateComObject(device);
-		renderingPipeline = Graphics::RenderingPipeline::CreateDefaultStaticMeshPipeLine();
+		renderingPipeline = Graphics::RenderingPipeline::CreateDefaultStaticMeshPipeline();
 	}
 
 	void MeshRenderer::Render(ID3D12GraphicsCommandList* cmdList,
 	                                const DirectX::XMFLOAT4X4& world) const
 	{
 		BaseRenderer::Render(cmdList);
-		Argent::Graphics::ArGraphics::Instance()->SetSceneConstant(0);
+		Argent::Graphics::Graphics::Instance()->SetSceneConstant(0);
 
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -57,7 +57,7 @@ namespace Argent::Component::Renderer
 	void MeshRenderer::Render() const 
 	{
 		const Transform* t = GetOwner()->GetTransform();
-		Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), 
+		Render(Argent::Graphics::Graphics::Instance()->GetCommandList(), 
 			t->AdjustParentTransform().GetWorld());
 	}
 
@@ -92,9 +92,9 @@ namespace Argent::Component::Renderer
 			it->second.constantBuffer =
 				std::make_unique<Argent::Dx12::ArConstantBuffer<Material::ArMeshMaterial::Constant>>(
 					device,
-					Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
+					Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
 					&it->second.constant);
 		}
-		constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Constants>>(device, Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+		constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Constants>>(device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 	}
 }

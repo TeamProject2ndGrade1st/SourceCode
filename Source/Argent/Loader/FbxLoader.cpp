@@ -117,7 +117,7 @@ namespace Argent::Loader::Fbx
 			}
 		}
 
-		ID3D12Device* device = Argent::Graphics::ArGraphics::Instance()->GetDevice();
+		ID3D12Device* device = Argent::Graphics::Graphics::Instance()->GetDevice();
 
 		if (!hasBone)
 		{
