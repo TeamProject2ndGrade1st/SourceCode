@@ -110,13 +110,13 @@ namespace Argent::Component::Renderer
 			const Resource::Animation::AnimationClip::Keyframe& keyframe{ animation.sequence.at(static_cast<uint64_t>(frameIndex)) };
 
 			//todo マテリアルの適用
-			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(), t.GetWorld(),
+			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), t.GetWorld(),
 				 &keyframe);
 		}
 		else
 		{
 			Resource::Animation::AnimationClip::Keyframe key{};
-			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(), t.GetWorld(),
+			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), t.GetWorld(),
 			 &key);
 		}
 	}

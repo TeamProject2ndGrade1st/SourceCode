@@ -3,6 +3,7 @@
 #include <cassert>
 #include "d3dx12.h"
 #include "Graphics.h"
+#include "FrameResource.h"
 
 namespace Argent::Graphics
 {
@@ -56,7 +57,7 @@ namespace Argent::Graphics
 
 	void FrameBuffer::Begin(const Graphics* gfx) const
 	{
-		ID3D12GraphicsCommandList* cmdList = gfx->GetCommandList();
+		ID3D12GraphicsCommandList* cmdList = gfx->GetCommandList(RenderType::Mesh);
 		CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 			resource.Get(),
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
@@ -85,12 +86,12 @@ namespace Argent::Graphics
 			resource.Get(),
 			D3D12_RESOURCE_STATE_RENDER_TARGET,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-		gfx->GetCommandList()->ResourceBarrier(1, &barrier);
+		gfx->GetCommandList(RenderType::Mesh)->ResourceBarrier(1, &barrier);
 	}
 
 	void FrameBuffer::Draw(const Graphics* gfx) const
 	{
-		ID3D12GraphicsCommandList* cmdList = gfx->GetCommandList();
+		ID3D12GraphicsCommandList* cmdList = gfx->GetCommandList(RenderType::Mesh);
 		//cmdList->SetPipelineState(pipeline.Get());
 		//cmdList->SetGraphicsRootSignature(rootSignature.Get());
 		renderingPipeline->SetOnCommandList(cmdList);

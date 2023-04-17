@@ -57,7 +57,7 @@ namespace Argent::Component::Renderer
 	void MeshRenderer::Render() const 
 	{
 		const Transform* t = GetOwner()->GetTransform();
-		Render(Argent::Graphics::Graphics::Instance()->GetCommandList(), 
+		Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), 
 			t->AdjustParentTransform().GetWorld());
 	}
 
