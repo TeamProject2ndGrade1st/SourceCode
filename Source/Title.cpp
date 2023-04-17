@@ -31,7 +31,6 @@ void Title::Initialize()
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));
 	AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
 
-	AddObject(new GameObject("Box", Argent::Loader::Fbx::LoadFbx("./Resources/Model/SK_Mannequin.fbx", true)));
 
 	BaseScene::Initialize();
 }
