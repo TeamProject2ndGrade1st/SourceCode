@@ -18,7 +18,7 @@ void Title::Initialize()
 
 	//AddObject(new GameObject("DemoGun", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx", false)));
 
-	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Arrow.fbx");
+	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Plane.fbx");
 	
 //	AddObject(new GameObject("Gun", new BaseGun));
 	//AddObject(new GameObject("Stage", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
