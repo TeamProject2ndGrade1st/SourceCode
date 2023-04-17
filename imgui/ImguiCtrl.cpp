@@ -6,33 +6,24 @@
 
 void ImguiCtrl::Begin(const char* windowName)
 {
-#ifdef _DEBUG
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 	ImGui::SetNextWindowPos(ImVec2(10.0f, 10.0f), ImGuiCond_::ImGuiCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(300.0f, 500.0f), ImGuiCond_::ImGuiCond_Once);
 	ImGui::Begin(windowName);
-
-#endif
 }
 
 void ImguiCtrl::End(ID3D12GraphicsCommandList* cmdList, ID3D12DescriptorHeap* heap)
 {
-#ifdef _DEBUG
 	ImGui::End();
 	ImGui::Render();
 	cmdList->SetDescriptorHeaps(1, &heap);
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), cmdList);
-
-	
-
-#endif
 }
 
 void ImguiCtrl::CallBeforSwap(ID3D12GraphicsCommandList* cmdList)
 {
-#ifdef _DEBUG
 	ImGuiIO& io = ImGui::GetIO();// (void)io;
 
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -40,12 +31,10 @@ void ImguiCtrl::CallBeforSwap(ID3D12GraphicsCommandList* cmdList)
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault(NULL, (void*)cmdList);
 	}
-#endif
 }
 
 void ::ImguiCtrl::Initialize(HWND hWnd, ID3D12Device* device, ID3D12DescriptorHeap* heap)
 {
-#ifdef _DEBUG
 	IMGUI_CHECKVERSION();
 	if(!ImGui::CreateContext()) assert(0);
 
@@ -67,14 +56,11 @@ void ::ImguiCtrl::Initialize(HWND hWnd, ID3D12Device* device, ID3D12DescriptorHe
 	ImGui_ImplDX12_Init(device, 3, DXGI_FORMAT_R8G8B8A8_UNORM, 
 		heap, heap->GetCPUDescriptorHandleForHeapStart(),
 		heap->GetGPUDescriptorHandleForHeapStart());
-#endif
 }
 
 void ImguiCtrl::Terminate()
 {
-#ifdef _DEBUG
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
-#endif
 }

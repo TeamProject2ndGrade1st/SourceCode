@@ -41,9 +41,9 @@ namespace Argent::Component::Renderer
 		void Render() const override;
 		void Update() override;
 
-#ifdef _DEBUG
+
 		void DrawDebug() override;
-#endif
+
 
 		void CreateComObject(ID3D12Device* device);
 

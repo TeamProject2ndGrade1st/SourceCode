@@ -4,9 +4,9 @@
 
 namespace Argent
 {
-	struct ArColor
+	struct Color
 	{
-		ArColor(const DirectX::XMFLOAT4& color = DirectX::XMFLOAT4(1, 1, 1, 1)):
+		Color(const DirectX::XMFLOAT4& color = DirectX::XMFLOAT4(1, 1, 1, 1)):
 			color(color)
 		{}
 
@@ -14,7 +14,7 @@ namespace Argent
 		{
 			color.x = color.y = color.z = color.w = 1.0f;
 		}
-#ifdef _DEBUG
+
 		void DrawDebug()
 		{
 			ImGui::ColorEdit4("Color", &color.x,
@@ -22,7 +22,6 @@ namespace Argent
 				ImGuiColorEditFlags_AlphaBar);
 		}
 
-#endif
 		DirectX::XMFLOAT4 GetColor() const { return color;  }
 		DirectX::XMFLOAT4 color;
 	};

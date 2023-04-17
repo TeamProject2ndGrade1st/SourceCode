@@ -85,6 +85,12 @@
     <Filter Include="Argent\Debug">
       <UniqueIdentifier>{33bf81a7-64f4-41cd-9131-5e14791e2c99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Argent\Component\Collider">
+      <UniqueIdentifier>{ed570bd7-acd7-4ccc-8007-c5223905b73a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Argent\Component\AnimationPlayer">
+      <UniqueIdentifier>{914e9bb7-216f-4ac6-a16d-0016ca128616}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -229,15 +235,6 @@
     <ClCompile Include="Source\Argent\Math\MathHelper.cpp">
       <Filter>Argent\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\BaseActor.cpp">
-      <Filter>Work In Progress\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Argent\Component\Collider.cpp">
-      <Filter>Work In Progress\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Argent\Component\ArColliderManager.cpp">
-      <Filter>Work In Progress</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Argent\Component\Light.cpp">
       <Filter>Argent\Component\Core</Filter>
     </ClCompile>
@@ -265,19 +262,28 @@
     <ClCompile Include="Source\Argent\Input\Mouse.cpp">
       <Filter>Argent\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Debug\DebugRenderer.cpp">
-      <Filter>Work In Progress</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Argent\Resource\FbxResource.cpp">
       <Filter>Work In Progress</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\AnimationPlayer.cpp">
-      <Filter>Work In Progress\Component</Filter>
+    <ClCompile Include="Source\Demo.cpp" />
+    <ClCompile Include="Source\Argent\Component\ColliderManager.cpp">
+      <Filter>Argent\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\Collider.cpp">
+      <Filter>Argent\Component\Collider</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Component\RayCast.cpp">
-      <Filter>Work In Progress\Component</Filter>
+      <Filter>Argent\Component\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Source\RayCastDemo.cpp" />
+    <ClCompile Include="Source\Argent\Component\AnimationPlayer.cpp">
+      <Filter>Argent\Component\AnimationPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Component\BaseActor.cpp">
+      <Filter>Argent\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Debug\DebugRenderer.cpp">
+      <Filter>Argent\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -400,9 +406,6 @@
     <ClInclude Include="Source\Argent\Component\EffectRenderer.h">
       <Filter>Argent\Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\Color.h">
-      <Filter>Argent\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Argent\Resource\Effect.h">
       <Filter>Argent\Resource\Effect</Filter>
     </ClInclude>
@@ -445,19 +448,10 @@
     <ClInclude Include="Source\Argent\Other\CerealHelper.h">
       <Filter>Argent\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\BaseActor.h">
-      <Filter>Work In Progress\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Argent\Component\Collider.h">
-      <Filter>Work In Progress\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ArColliderManager.h">
-      <Filter>Work In Progress</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Argent\Argent.h">
       <Filter>Argent</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArAnimation.h">
+    <ClInclude Include="Source\Argent\Resource\Animation.h">
       <Filter>Argent\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Component\Light.h">
@@ -487,19 +481,31 @@
     <ClInclude Include="Source\Argent\Input\Mouse.h">
       <Filter>Argent\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Debug\DebugRenderer.h">
-      <Filter>Work In Progress</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Argent\Resource\FbxResource.h">
       <Filter>Work In Progress</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\AnimationPlayer.h">
-      <Filter>Work In Progress\Component</Filter>
+    <ClInclude Include="Source\Demo.h" />
+    <ClInclude Include="Source\Argent\Component\ColliderManager.h">
+      <Filter>Argent\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\Collider.h">
+      <Filter>Argent\Component\Collider</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Component\RayCast.h">
-      <Filter>Work In Progress\Component</Filter>
+      <Filter>Argent\Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Source\RayCastDemo.h" />
+    <ClInclude Include="Source\Argent\Component\AnimationPlayer.h">
+      <Filter>Argent\Component\AnimationPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\BaseActor.h">
+      <Filter>Argent\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\Color.h">
+      <Filter>Argent\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Debug\DebugRenderer.h">
+      <Filter>Argent\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

@@ -9,6 +9,11 @@ namespace Argent::Component
 	{
 		GameObject* obj = GetOwner();
 		if(obj)
+			GetOwner()->SetActor(this);
+	}
+
+	void BaseActor::Initialize()
+	{
 		GetOwner()->SetActor(this);
 	}
 

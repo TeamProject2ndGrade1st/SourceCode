@@ -28,11 +28,11 @@ namespace Argent
 				rootSignature->SetOnCommandList(cmdList);
 			}
 
-			static std::unique_ptr<RenderingPipeline> CreateDefaultSpritePipeLine();
-			static std::unique_ptr<RenderingPipeline> CreateDefaultStaticMeshPipeLine();
-			static std::unique_ptr<RenderingPipeline> CreateDefaultSkinnedMeshPipeLine();
-			static std::unique_ptr<RenderingPipeline> CreateDebugRendererPipeLine();
-
+			static std::unique_ptr<RenderingPipeline> CreateDefaultSpritePipeline();
+			static std::unique_ptr<RenderingPipeline> CreateDefaultStaticMeshPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateDefaultSkinnedMeshPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateDebugRendererPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateDefaultFrameBufferPipeline();
 		private:
 			/**
 			 * \brief 頂点シェーダーとピクセルシェーダー、ルートシグネチャの値は入れなくてもいい

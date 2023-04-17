@@ -19,8 +19,8 @@ Camera::Camera(bool isSceneCamera, float width, float height, float nearZ, float
 ,	right(DirectX::XMFLOAT3(1, 0, 0))
 ,	up(DirectX::XMFLOAT3(0, 1, 0))
 {
-	/*if(Argent::Graphics::ArGraphics::Instance()->GetCamera() == nullptr)
-		Argent::Graphics::ArGraphics::Instance()->SetCamera(this);*/
+	/*if(Argent::Graphics::Graphics::Instance()->GetCamera() == nullptr)
+		Argent::Graphics::Graphics::Instance()->SetCamera(this);*/
 }
 
 void Camera::Reset()
@@ -137,14 +137,14 @@ void Camera::Update()
 
 void Camera::End()
 {
-	auto g = Argent::Graphics::ArGraphics::Instance();
+	auto g = Argent::Graphics::Graphics::Instance();
 	g->SetCameraPosition(GetOwner()->GetTransform()->GetPosition());
 	g->SetProjectionMatrix(GetProjectionMatrix());
 	g->SetViewMatrix(GetViewMatrix());
 
 }
 
-#ifdef _DEBUG
+
 void Camera::DrawDebug()
 {
 
@@ -171,7 +171,7 @@ void Camera::DrawDebug()
 		BaseComponent::DrawDebug();
 	}
 }
-#endif
+
 
 DirectX::XMMATRIX Camera::GetViewProjectionMatrix() const
 {

@@ -4,13 +4,14 @@
 #include "../Other/Helper.h"
 #include "../Resource/ResourceManager.h"
 #include "../Graphic/Graphics.h"
+#include "AnimationPlayer.h"
 
 namespace Argent::Component::Renderer
 {
 	SkinnedMeshRenderer::SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
 		std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
 		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
-		std::vector<Resource::Animation::ArAnimation>& animation) :
+		std::vector<Resource::Animation::AnimationClip>& animation) :
 		BaseRenderer("SkinnedMesh Renderer")
 	{
 		this->skinnedMesh = meshes;
@@ -20,7 +21,7 @@ namespace Argent::Component::Renderer
 		}
 		this->animationClips = animation;
 		CreateComObject(device);
-		renderingPipeline = Graphics::RenderingPipeline::CreateDefaultSkinnedMeshPipeLine();
+		renderingPipeline = Graphics::RenderingPipeline::CreateDefaultSkinnedMeshPipeline();
 	}
 
 
@@ -31,14 +32,15 @@ namespace Argent::Component::Renderer
 		GameObject* g = GetOwner();
 		g->GetTransform()->SetWorld(skinnedMesh->localTransform);
 		g->SetName(skinnedMesh->GetName());
+		 
 	}
 
 	void SkinnedMeshRenderer::Render(ID3D12GraphicsCommandList* cmdList, 
 	                                   const DirectX::XMFLOAT4X4& world,
-	                                   const Resource::Animation::ArAnimation::Keyframe* keyframe) const
+	                                   const Resource::Animation::AnimationClip::Keyframe* keyframe) const
 	{
 		BaseRenderer::Render(cmdList);
-		Argent::Graphics::ArGraphics::Instance()->SetSceneConstant(static_cast<UINT>(RootParameterIndex::cbScene));
+		Argent::Graphics::Graphics::Instance()->SetSceneConstant(static_cast<UINT>(RootParameterIndex::cbScene));
 
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -57,16 +59,32 @@ namespace Argent::Component::Renderer
 				for (int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
 				{
 					const auto& bone{ m->bindPose.bones.at(boneIndex) };
-					const Resource::Animation::ArAnimation::Keyframe::Node& boneNode{ keyframe->nodes.at(bone.nodeIndex) };
+					const Resource::Animation::AnimationClip::Keyframe::Node& boneNode{ keyframe->nodes.at(bone.nodeIndex) };
 					DirectX::XMStoreFloat4x4(&meshConstant.boneTransforms[boneIndex],
 						DirectX::XMLoadFloat4x4(&bone.offsetTransform) *
 						DirectX::XMLoadFloat4x4(&boneNode.globalTransform) *
 						DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&m->localTransform))
 					);
 				}
-				const Resource::Animation::ArAnimation::Keyframe::Node meshNode{ keyframe->nodes.at(m->nodeIndex) };
+				const Resource::Animation::AnimationClip::Keyframe::Node meshNode{ keyframe->nodes.at(m->nodeIndex) };
 
 				meshConstant.globalTransform = meshNode.globalTransform;
+				m->constantBuffer->UpdateConstantBuffer(meshConstant);
+			}
+			else
+			{
+				Resource::Mesh::ArSkinnedMesh::Constant meshConstant{};
+				const size_t boneCount{ m->bindPose.bones.size() };
+				for (int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
+				{
+					const auto& bone{ m->bindPose.bones.at(boneIndex) };
+					DirectX::XMStoreFloat4x4(&meshConstant.boneTransforms[boneIndex],
+						DirectX::XMLoadFloat4x4(&bone.offsetTransform)// *
+						/*DirectX::XMMatrixIdentity() * */
+						/*DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&m->localTransform))*/
+					);
+				}
+				meshConstant.globalTransform = DirectX::XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 				m->constantBuffer->UpdateConstantBuffer(meshConstant);
 			}
 
@@ -85,20 +103,20 @@ namespace Argent::Component::Renderer
 
 	void SkinnedMeshRenderer::Render() const 
 	{
-		const Transform t = GetOwner()->GetTransform()->AdjustParentTransform();
+		Transform t = GetOwner()->GetTransform()->AdjustParentTransform();
 		if(animationClips.size() > 0)
 		{
-			const Resource::Animation::ArAnimation& animation{ this->animationClips.at(clipIndex) };
-			const Resource::Animation::ArAnimation::Keyframe& keyframe{ animation.sequence.at(static_cast<uint64_t>(frameIndex)) };
+			const Resource::Animation::AnimationClip& animation{ this->animationClips.at(clipIndex) };
+			const Resource::Animation::AnimationClip::Keyframe& keyframe{ animation.sequence.at(static_cast<uint64_t>(frameIndex)) };
 
 			//todo マテリアルの適用
-			Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), t.GetWorld(),
+			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(), t.GetWorld(),
 				 &keyframe);
 		}
 		else
 		{
-			Resource::Animation::ArAnimation::Keyframe key{};
-			Render(Argent::Graphics::ArGraphics::Instance()->GetCommandList(), t.GetWorld(),
+			Resource::Animation::AnimationClip::Keyframe key{};
+			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(), t.GetWorld(),
 			 &key);
 		}
 	}
@@ -135,18 +153,16 @@ namespace Argent::Component::Renderer
 		mesh->UpdateAnimation(keyframe);
 	#endif
 
-		mesh->SetOnCommandList(ArGraphics::Instance()->GetCommandList(),
-			meshTransform.GetWorld(ArGraphics::Instance()->CoordinateSystemTransforms[coordinateSystem], 
-				ArGraphics::Instance()->scaleFactor),
+		mesh->SetOnCommandList(Graphics::Instance()->GetCommandList(),
+			meshTransform.GetWorld(Graphics::Instance()->CoordinateSystemTransforms[coordinateSystem], 
+				Graphics::Instance()->scaleFactor),
 			 meshColor.color, &keyframe);
 
 	#endif
-		if (numUpdate == 1) _ASSERT_EXPR(FALSE, L"update call two times");
-		++numUpdate;
 		if (animationClips.size() == 0) return;
 		//static float animationTick{};
-		const Resource::Animation::ArAnimation& animation{ this->animationClips.at(clipIndex) };
-		frameIndex = static_cast<float>(animationTick* animation.samplingRate);
+		const Resource::Animation::AnimationClip& animation{ this->animationClips.at(clipIndex) };
+		frameIndex = static_cast<float>(animationTick * animation.samplingRate);
 		if(frameIndex > animation.sequence.size() - 1)
 		{
 			frameIndex = 0;
@@ -159,7 +175,7 @@ namespace Argent::Component::Renderer
 		}
 	}
 
-#ifdef _DEBUG
+
 	void SkinnedMeshRenderer::DrawDebug()
 	{
 		if (ImGui::TreeNode("Skinned Mesh Renderer"))
@@ -183,7 +199,7 @@ namespace Argent::Component::Renderer
 			ImGui::TreePop();
 		}
 	}
-#endif
+
 
 	void SkinnedMeshRenderer::CreateComObject(ID3D12Device* device)
 	{
@@ -192,9 +208,9 @@ namespace Argent::Component::Renderer
 			it->second.constantBuffer = 
 				std::make_unique<Dx12::ArConstantBuffer<Argent::Material::ArMeshMaterial::Constant>>(
 					device, 
-					Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
+					Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
 					&it->second.constant);
 		}
-		objectConstantBuffer = std::make_unique<Dx12::ArConstantBuffer<Constants>>(device, Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+		objectConstantBuffer = std::make_unique<Dx12::ArConstantBuffer<Constants>>(device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 	}
 }

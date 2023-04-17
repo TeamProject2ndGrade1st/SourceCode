@@ -212,8 +212,8 @@ namespace Argent
 				//todo ’¼‚¹
 				if(FAILED(hr))
 				{
-					hr =Argent::Graphics::ArGraphics::Instance()->CreateWhiteTexture(resource);
-					//hr =Argent::Graphics::ArGraphics::Instance()->CreateNoiseTexture(resource);
+					hr =Argent::Graphics::Graphics::Instance()->CreateWhiteTexture(resource);
+					//hr =Argent::Graphics::Graphics::Instance()->CreateNoiseTexture(resource);
 					_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
 					return hr;
 				}

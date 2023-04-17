@@ -63,8 +63,8 @@ namespace Argent::Resource::Effect
 		Effekseer::Matrix44 fkViewMat;
 		Effekseer::Matrix44 fkProjMat;
 
-		const auto view = Graphics::ArGraphics::Instance()->GetCurrentFrameResource()->GetSceneView();
-		const auto projection = Graphics::ArGraphics::Instance()->GetCurrentFrameResource()->GetSceneProjection();
+		const auto view = Graphics::Graphics::Instance()->GetCurrentFrameResource()->GetSceneView();
+		const auto projection = Graphics::Graphics::Instance()->GetCurrentFrameResource()->GetSceneProjection();
 
 		for (int i = 0; i < 4; ++i)
 		{
@@ -81,7 +81,7 @@ namespace Argent::Resource::Effect
 
 		//描画場所を指定　マルチレンダーターゲット場合は一枚目でやること
 		efkMemoryPool->NewFrame();
-		EffekseerRendererDX12::BeginCommandList(efkCmdList, Graphics::ArGraphics::Instance()->GetCommandList());
+		EffekseerRendererDX12::BeginCommandList(efkCmdList, Graphics::Graphics::Instance()->GetCommandList());
 
 		efkRenderer->BeginRendering();
 		efkManager->Draw();

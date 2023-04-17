@@ -32,7 +32,7 @@ namespace Argent::Material
 		t2->SetOnCommandList(cmdList, normalIndex);
 	}
 
-#ifdef _DEBUG
+
 	void SpriteMaterial::DrawDebug()
 	{
 		if(ImGui::TreeNode("Material"))
@@ -44,7 +44,7 @@ namespace Argent::Material
 			ImGui::TreePop();
 		}
 	}
-#endif
+
 
 
 

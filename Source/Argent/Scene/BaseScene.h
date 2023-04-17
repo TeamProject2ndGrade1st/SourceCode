@@ -14,9 +14,10 @@ namespace Argent::Scene
 	public:
 		explicit BaseScene(std::string sceneName):
 			sceneName(std::move(sceneName))
+		,	isInitialized(false)
 		{
 			gameObject.clear();
-			AddObject(new GameObject("Camera", new Camera(true, Argent::Graphics::ArGraphics::Instance()->GetWidth(), Argent::Graphics::ArGraphics::Instance()->GetHeight())));
+			AddObject(new GameObject("Camera", new Camera(true, Argent::Graphics::Graphics::Instance()->GetWidth(), Argent::Graphics::Graphics::Instance()->GetHeight())));
 			AddObject(new GameObject("Light", new Light));
 		}
 		virtual ~BaseScene() = default;
@@ -38,12 +39,12 @@ namespace Argent::Scene
 		virtual void End();
 		virtual void Update();
 		virtual void Render();
-	#ifdef _DEBUG
+
 		virtual void DrawDebug();
-	#endif
+
 
 		void DeleteDestroyedObject();
-		void DestroyGameObject(GameObject* object);
+		//void DestroyGameObject(GameObject* object);
 
 
 		const std::string& GetName() const { return sceneName; }
@@ -86,7 +87,8 @@ namespace Argent::Scene
 	protected:
 		const std::string sceneName;
 		std::vector<GameObject*> gameObject{};
-		std::vector<GameObject*> destroyedGameObject{};
+		//std::vector<GameObject*> destroyedGameObject{};
+		bool isInitialized;
 	private:
 	};
 	

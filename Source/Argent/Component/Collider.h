@@ -42,9 +42,9 @@ namespace Argent::Component::Collider
 
 		bool CollisionDetection(Collider* other) override;
 
-#ifdef _DEBUG
+
 		void DrawDebug() override;
-#endif
+
 
 	protected:
 		float radius{};
@@ -64,9 +64,9 @@ namespace Argent::Component::Collider
 
 		bool CollisionDetection(Collider* other) override;
 
-#ifdef _DEBUG
+
 		void DrawDebug() override;
-#endif
+
 
 	protected:
 		float radius{};

@@ -18,7 +18,7 @@ void Player::Initialize()
     }
 }
 
-#ifdef _DEBUG
+
 void Player::DrawDebug()
 {
     if(ImGui::TreeNode(GetName().c_str()))
@@ -29,11 +29,6 @@ void Player::DrawDebug()
     }
 }
 
-void Player::OnRayCollision(const Argent::Component::Collider::RayCastCollider* other)
-{
-    _ASSERT_EXPR(false, L"Succeeded");
-}
-#endif
 
 void Player::Update()
 {

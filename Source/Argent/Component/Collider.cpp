@@ -3,7 +3,7 @@
 #include "../GameObject/GameObject.h"
 #include "BaseActor.h"
 #include "../Other/Helper.h"
-#include "ArColliderManager.h"
+#include "ColliderManager.h"
 #include "../Math/MathHelper.h"
 
 namespace Argent::Component::Collider
@@ -44,7 +44,7 @@ namespace Argent::Component::Collider
 		return ret;
 	}
 
-#ifdef _DEBUG
+
 	void SphereCollider::DrawDebug()
 	{
 		if(ImGui::TreeNode(GetName().c_str()))
@@ -54,5 +54,5 @@ namespace Argent::Component::Collider
 		}
 		Collider::DrawDebug();
 	}
-#endif
+
 }

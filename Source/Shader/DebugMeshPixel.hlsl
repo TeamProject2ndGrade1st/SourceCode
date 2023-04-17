@@ -1,6 +1,34 @@
 #include "DebugMesh.hlsli"
+#include "SceneConstant.hlsli"
+
+float3 CalcLambertDiffuse(float3 normal, float3 lightVector, float3 lightColor, float3 kd)
+{
+    float d = max(0, dot(normal, -lightVector));
+
+    return kd * lightColor * d;
+}
+
+float3 CalcPhongSpecular(float3 normal, float3 lightVector, float3 lightColor,
+	float3 eyeVector, float shininess, float3 ks)
+{
+    float3 R = reflect(lightVector, normal);
+
+    float d = max(dot(-eyeVector, R), 0);
+    d = pow(d, shininess);
+
+    return d * lightColor * ks;
+}
 
 float4 main(VSOut pin) : SV_TARGET
 {
-	return float4(1.0f, 0, 0, 1.0f);
+
+    float3 L = normalize(float3(pin.position - lightPosition.xyz));
+    float3 E = normalize(float3(cameraPosition.xyz - pin.position.xyz));
+    float3 N = pin.normal.xyz;
+    float4 color = float4(1, 0, 0, 1);
+
+    float3 diffuse = CalcLambertDiffuse(N, L, lightColor, float3(1, 1, 1));
+
+    float4 ret = float4(color.rgb * diffuse.rgb * color.rgb, 1);
+	return ret;
 }
