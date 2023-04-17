@@ -107,6 +107,7 @@ namespace Argent::Graphics
 		barrier.Transition.pResource = backBuffer.Get();
 		
 		cmdBundle[0]->cmdList->ResourceBarrier(1, &barrier);
+		cmdBundle[1]->cmdList->ResourceBarrier(1, &barrier);
 	}
 
 	void FrameResource::Reset()
@@ -127,6 +128,7 @@ namespace Argent::Graphics
 		{
 			if(i > static_cast<int>(RenderType::Mesh)) break;
 			bundle->Begin(viewport, scissorRect, dsv->GetCPUHandle(), rtv->GetCPUHandle(), clearColor);
+			++i;
 		}
 	}
 
