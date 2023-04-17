@@ -25,9 +25,14 @@ void RayCastDemo::Update()
 
 	if (Argent::Input::GetKey(KeyCode::I))
 	{
+		auto G = GetOwner();
 		auto p = GetTransform()->GetPosition();
 		p = p + GetTransform()->CalcForward() * moveSpeed * Argent::Timer::GetDeltaTime();
 		GetTransform()->SetPosition(p);
+	}
+	else if (Argent::Input::GetKeyUp(KeyCode::I))
+	{
+		int A = 0;
 	}
 	if (Argent::Input::GetKey(KeyCode::K))
 	{
