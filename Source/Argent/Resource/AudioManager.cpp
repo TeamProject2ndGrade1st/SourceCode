@@ -24,8 +24,8 @@ namespace Argent::Resource::Audio
 		masterVoice->GetChannelMask(&dwChannelMask);
 		X3DAUDIO_HANDLE X3DInstance;
 		//X3DAudio
-		hr = X3DAudioInitialize(dwChannelMask, 
-			X3DAUDIO_SPEED_OF_SOUND, X3DInstance);
+		//hr = X3DAudioInitialize(dwChannelMask, 
+		//	X3DAUDIO_SPEED_OF_SOUND, X3DInstance);
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 		 
 		X3DAUDIO_LISTENER listener = {};
@@ -41,7 +41,7 @@ namespace Argent::Resource::Audio
 		//masterVoice->GetVoiceDetails(&voiceDetail);
 		DSPSettings.pMatrixCoefficients = nullptr;
 
-		X3DAudioCalculate(X3DInstance, &listener, &emitter, NULL, &DSPSettings);
+		//X3DAudioCalculate(X3DInstance, &listener, &emitter, NULL, &DSPSettings);
 
 		//3dオーディオ設定を計算
 		//emitter.OrientFront = Emitter
