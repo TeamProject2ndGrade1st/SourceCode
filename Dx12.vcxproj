@@ -70,9 +70,9 @@
     <ClCompile Include="Source\Argent\Resource\ArResource.cpp" />
     <ClCompile Include="Source\Argent\Resource\SkinnedMesh.cpp" />
     <ClCompile Include="Source\Argent\Resource\ResourceManager.cpp" />
-    <ClCompile Include="Source\Argent\Resource\ArShader.cpp" />
+    <ClCompile Include="Source\Argent\Resource\Shader.cpp" />
     <ClCompile Include="Source\Argent\Resource\Sprite.cpp" />
-    <ClCompile Include="Source\Argent\Resource\ArTexture.cpp" />
+    <ClCompile Include="Source\Argent\Resource\Texture.cpp" />
     <ClCompile Include="Source\Argent\Resource\EffectManager.cpp" />
     <ClCompile Include="Source\Argent\Scene\BaseScene.cpp" />
     <ClCompile Include="Source\Argent\Scene\SceneManager.cpp" />
@@ -146,9 +146,9 @@
     <ClInclude Include="Source\Argent\Resource\SkinnedMesh.h" />
     <ClInclude Include="Source\Argent\Resource\ArResource.h" />
     <ClInclude Include="Source\Argent\Resource\ResourceManager.h" />
-    <ClInclude Include="Source\Argent\Resource\ArShader.h" />
+    <ClInclude Include="Source\Argent\Resource\Shader.h" />
     <ClInclude Include="Source\Argent\Resource\Sprite.h" />
-    <ClInclude Include="Source\Argent\Resource\ArTexture.h" />
+    <ClInclude Include="Source\Argent\Resource\Texture.h" />
     <ClInclude Include="Source\Argent\Resource\EffectManager.h" />
     <ClInclude Include="Source\Argent\Scene\BaseScene.h" />
     <ClInclude Include="Source\Argent\Scene\SceneManager.h" />

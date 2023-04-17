@@ -107,7 +107,7 @@ namespace Argent::Graphics
 		for(auto& buffer : frameBuffer)
 		{
 			buffer = std::make_unique<FrameBuffer>(mDevice.Get(), frameResources.at(0)->GetBackBufferDesc(), 
-			                                       clearColor, rtvHeap->GetDesc());
+			                                       clearColor);
 		}
 
 		mDevice->SetName(L"Device");

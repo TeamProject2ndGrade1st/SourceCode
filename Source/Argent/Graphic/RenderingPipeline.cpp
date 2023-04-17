@@ -5,8 +5,8 @@ namespace Argent::Graphics
 {
 	RenderingPipeline::RenderingPipeline(const char* vsFilePath, const char* psFilePath,
 		const D3D12_ROOT_SIGNATURE_DESC* rootSigDesc, D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineStateDesc):
-		vertexShader(std::make_shared<Shader::ArShader>(vsFilePath))
-	,	pixelShader(std::make_shared<Shader::ArShader>(psFilePath))
+		vertexShader(std::make_shared<Resource::Shader>(vsFilePath))
+	,	pixelShader(std::make_shared<Resource::Shader>(psFilePath))
 	{
 		ID3D12Device* device = Graphics::Graphics::Instance()->GetDevice();
 		CreateRootSignature(device, rootSigDesc);

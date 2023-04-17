@@ -1,5 +1,6 @@
 #include "Pera.hlsli"
 
+
 float WhiteNoise(float2 coord) {
    return frac(sin(dot(coord, float2(8.7819, 3.255))) * 437.645);
 }

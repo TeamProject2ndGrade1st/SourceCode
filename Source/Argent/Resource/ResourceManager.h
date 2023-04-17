@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "ArResource.h"
-#include "ArTexture.h"
+#include "Texture.h"
 
 
 namespace Argent::Resource
@@ -48,7 +48,7 @@ namespace Argent::Resource
 			return it->second.lock();
 		}
 
-		std::shared_ptr<Argent::Texture::ArTexture> GetTexture(uint64_t uniqueId) const 
+		std::shared_ptr<Argent::Resource::Texture> GetTexture(uint64_t uniqueId) const 
 		{
 			const auto it = resources.find(uniqueId);
 			if (it == resources.end()) _ASSERT_EXPR(FALSE, "missing id");
@@ -61,7 +61,7 @@ namespace Argent::Resource
 
 	private:
 
-		std::shared_ptr<Argent::Texture::ArTexture> FindResourceFromFilePath(const char* filePath) const
+		std::shared_ptr<Argent::Resource::Texture> FindResourceFromFilePath(const char* filePath) const
 		{
 			for(auto& res : resources)
 			{
@@ -73,9 +73,9 @@ namespace Argent::Resource
 			return nullptr;
 		}
 
-		std::unordered_map<uint64_t, std::weak_ptr<Texture::ArTexture>> resources;
+		std::unordered_map<uint64_t, std::weak_ptr<Resource::Texture>> resources;
 
-		std::vector<std::shared_ptr<Argent::Texture::ArTexture>> rowTextureData;
+		std::vector<std::shared_ptr<Argent::Resource::Texture>> rowTextureData;
 	public:
 		static ResourceManager& Instance()
 		{

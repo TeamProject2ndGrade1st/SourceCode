@@ -3,16 +3,16 @@
 #include "ArResource.h"
 
 
-namespace Argent::Shader
+namespace Argent::Resource
 {
-	class ArShader:
+	class Shader:
 		public Resource::ArResource
 	{
 	public:
-		ArShader(const char* filepath);
+		Shader(const char* filepath);
 		
 	public:
-		~ArShader() = default;
+		~Shader() = default;
 		bool Read(const char* filename);
 		
 		[[nodiscard]] void* GetData() const { return data.get(); }

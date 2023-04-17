@@ -99,6 +99,7 @@ namespace Argent::Graphics
 	void FrameResource::SetBarrier(D3D12_RESOURCE_STATES before, D3D12_RESOURCE_STATES after) const
 	{
 		D3D12_RESOURCE_BARRIER barrier{};
+		
 		barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 		barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 		barrier.Transition.StateBefore = before;

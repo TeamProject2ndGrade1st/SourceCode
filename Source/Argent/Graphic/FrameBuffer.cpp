@@ -7,9 +7,8 @@
 
 namespace Argent::Graphics
 {
-	FrameBuffer::FrameBuffer(ID3D12Device* device, D3D12_RESOURCE_DESC rDesc,
-		float clearColor[4],
-		D3D12_DESCRIPTOR_HEAP_DESC heapDesc)
+	FrameBuffer::FrameBuffer(ID3D12Device* device, D3D12_RESOURCE_DESC rsDesc,
+		float clearColor[4])
 	{
 		HRESULT hr{ S_OK };
 
@@ -24,7 +23,7 @@ namespace Argent::Graphics
 		this->clearColor[2] = clearColor[2];
 		this->clearColor[3] = clearColor[3];
 		//シェーダーリソースとしてリソースを作成(バリアの設定をするため最初はシェーダーリソース）
-		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &rDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &rsDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 			&clearValue, IID_PPV_ARGS(resource.ReleaseAndGetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 

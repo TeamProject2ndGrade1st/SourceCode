@@ -1,7 +1,7 @@
 #pragma once
 #include <d3d12.h>
 #include "Dx12/PipelineState.h"
-#include "../Resource/ArShader.h"
+#include "../Resource/Shader.h"
 
 
 namespace Argent
@@ -58,8 +58,8 @@ namespace Argent
 
 			std::shared_ptr<Dx12::PipelineState> pipelineState{};
 			std::shared_ptr<Dx12::RootSignature> rootSignature{};
-			std::shared_ptr<Shader::ArShader> vertexShader{};
-			std::shared_ptr<Shader::ArShader> pixelShader{};
+			std::shared_ptr<Resource::Shader> vertexShader{};
+			std::shared_ptr<Resource::Shader> pixelShader{};
 		};
 		
 	}
