@@ -26,6 +26,7 @@ void Player::DrawDebug()
     {
         ImGui::SliderFloat("movement", &movement, 0.1f, 10.0);
         ImGui::DragFloat2("mouse", &mousePos.x);
+        ImGui::SliderFloat("sensitivity", &sensitivity, 0.1f, 2.0f);
 		BaseActor::DrawDebug();
         ImGui::TreePop();
     }
@@ -43,8 +44,8 @@ void Player::Update()
 
         {
             auto c = camera->GetComponent<Camera>();
-            c->SetMaxRotation(DirectX::XMFLOAT4(100, 0, 0, 0));
-			c->SetMinRotation(DirectX::XMFLOAT4(-100, 0, 0, 0));
+            c->SetMaxRotation(DirectX::XMFLOAT4(100, 370, 0, 0));
+			c->SetMinRotation(DirectX::XMFLOAT4(-100, -10, 0, 0));
         }
 
         ++state;
@@ -60,8 +61,7 @@ void Player::Update()
         // マウスの位置を取る
         mousePos = Argent::Input::Mouse::Instance().GetPosition();
         // マウスの移動量を取る
-        DirectX::XMFLOAT2 mouseVec = Argent::Input::Mouse::Instance().GetMoveVec();
-        
+        DirectX::XMFLOAT2 mouseVec = Argent::Input::Mouse::Instance().GetMoveVec();        
         
         
         // カメラのtransformを取る
@@ -69,12 +69,14 @@ void Player::Update()
         // カメラの回転値を取る
         DirectX::XMFLOAT4 cameraRot = t->GetRotation();
 
-        DirectX::XMFLOAT4 mouseMovement{ mouseVec.y,mouseVec.x,0,0 };
+        DirectX::XMFLOAT4 mouseMovement{ mouseVec.y * sensitivity,mouseVec.x * sensitivity,0,0 };
 
         DirectX::XMFLOAT4 setRotation{};
         setRotation = cameraRot;
         setRotation.x += mouseMovement.x;
         setRotation.y += mouseMovement.y;
+
+
         // 制限を作る
         //if (setRotation.x >= 100.0f)
         //{
@@ -83,9 +85,12 @@ void Player::Update()
         //    mouseMovement.x = 0;
         //   // mouseMovement.x = -0.01;
         //    setRotation.x = 100;
-
         //}
 
+        // カメラ横のやつ(回転できるようにする)
+        if (setRotation.y > 360)setRotation.y -= 360;
+        if (setRotation.y < 0)setRotation.y += 360;
+        
 
         t->SetRotation(setRotation);
         //t->SetRotation(cameraRot + mouseMovement);
