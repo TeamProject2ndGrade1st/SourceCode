@@ -1,21 +1,23 @@
 #pragma once
 #include <vector>
-#include "BaseEnemy.h"
+#include "Argent/Component/BaseActor.h"
 
-class  State
+class State
 {
 public:
-	 State(BaseEnemy* enemy);
+	State(Argent::Component::BaseActor* chara) :owner(chara) {}
 	 virtual ~State() {}
 
-private:
+	 //ステートに入った時に呼ばれる
+	 virtual void Enter() = 0;
+
+	 //ステートで毎フレーム呼ばれる
+	 virtual void Execute() = 0;
+
+	 //ステートから出るときに呼ばれる
+	 virtual void Exit() = 0;
+
+protected:
+	Argent::Component::BaseActor* owner;
 
 };
-
- State:: State()
-{
-}
-
- State::~ State()
-{
-}

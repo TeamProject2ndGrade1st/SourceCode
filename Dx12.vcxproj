@@ -83,6 +83,7 @@
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\RayCastDemo.cpp" />
+    <ClCompile Include="Source\StateDerived.cpp" />
     <ClCompile Include="Source\StateMachine.cpp" />
     <ClCompile Include="Source\Title.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\RayCastDemo.h" />
+    <ClInclude Include="Source\StateDerived.h" />
     <ClInclude Include="Source\StateMachine.h" />
     <ClInclude Include="Source\Title.h" />
   </ItemGroup>

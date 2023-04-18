@@ -1,4 +1,6 @@
 #pragma once
+#include "BaseState.h"
+
 class StateMachine
 {
 public:
@@ -6,15 +8,18 @@ public:
     ~StateMachine();
 
     void Update();
-    void SetState();
-    void ChangeState();
+    void SetState(int setState);
+    void ChangeState(int newState);
 
-    void RegisterState();
+    void RegisterState(State* state);
     //ステート登録
 
     int GetStateIndex();
 
 private:
-    //State* currentState = nullptr;
+    State* currentState = nullptr;
+
+    //各ステートを保持する配列
+    std::vector<State*> statePool;
 };
 
