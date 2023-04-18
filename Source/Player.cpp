@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Argent/Argent.h"
 #include "Argent/Graphic/Graphics.h"
+#include "Argent/Input/Mouse.h"
 
 Player::Player() :BaseActor("player")
 {
@@ -24,6 +25,7 @@ void Player::DrawDebug()
     if(ImGui::TreeNode(GetName().c_str()))
     {
         ImGui::SliderFloat("movement", &movement, 0.1f, 10.0);
+        ImGui::DragFloat2("mouse", &mousePos.x);
 		BaseActor::DrawDebug();
         ImGui::TreePop();
     }
@@ -38,6 +40,8 @@ void Player::Update()
         //camera = Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->GetGameObject("Camera");
         camera = GameObject::FindGameObject("Camera"); // ‚±‚Á‚¿‚Å
         movement = 0.5f;
+
+        mousePos = Argent::Input::Mouse::Instance().GetPosition();
 
         ++state;
         break;

@@ -22,6 +22,8 @@ private:
 
 	float movement = 1.0f;
 
+	DirectX::XMFLOAT2 mousePos;
+
 	void MoveCamera();
 
 	Argent::Component::Collision::RayCast* ray;
