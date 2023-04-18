@@ -277,9 +277,21 @@
     <ClCompile Include="Source\Argent\Component\RayCast.cpp">
       <Filter>Work In Progress\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\RayCastDemo.cpp" />
-    <ClCompile Include="Source\BaseEnemy.cpp" />
-    <ClCompile Include="Source\StateMachine.cpp" />
+    <ClCompile Include="Source\BaseFriend.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RayCastDemo.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateDerived.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BaseState.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -501,10 +513,19 @@
     <ClInclude Include="Source\Argent\Component\RayCast.h">
       <Filter>Work In Progress\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\RayCastDemo.h" />
-    <ClInclude Include="Source\BaseEnemy.h" />
-    <ClInclude Include="Source\StateMachine.h" />
     <ClInclude Include="Source\BaseState.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseFriend.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RayCastDemo.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateDerived.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine.h">
       <Filter>Game\Component</Filter>
     </ClInclude>
   </ItemGroup>

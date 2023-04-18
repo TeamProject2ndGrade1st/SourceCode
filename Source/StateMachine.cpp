@@ -24,8 +24,7 @@ void StateMachine::SetState(int setState)
 void StateMachine::ChangeState(int newState)
 {
 	currentState->Exit();
-	currentState = statePool.at(newState);
-	currentState->Enter();
+	SetState(newState);
 }
 
 void StateMachine::RegisterState(State* state)

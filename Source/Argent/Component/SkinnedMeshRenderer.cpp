@@ -168,6 +168,7 @@ namespace Argent::Component::Renderer
 			{
 				ImGui::SliderInt("Animation Clip", &clipIndex, 0, static_cast<int>(animationClips.size()) - 1);
 				ImGui::Text(animationClips.at(clipIndex).name.c_str());
+				ImGui::SliderFloat("Animation Frame", &frameIndex, 0.0f, static_cast<float>(animationClips.at(clipIndex).sequence.size()), "%.1f");
 			}
 
 			if (ImGui::TreeNode("Material"))
@@ -196,5 +197,21 @@ namespace Argent::Component::Renderer
 					&it->second.constant);
 		}
 		objectConstantBuffer = std::make_unique<Dx12::ArConstantBuffer<Constants>>(device, Graphics::ArGraphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+	}
+
+	void SkinnedMeshRenderer::SetAnimation(int index)
+	{
+		clipIndex = index;
+		frameIndex = 0;
+		animationTick = 0;
+	}
+	bool SkinnedMeshRenderer::IsAnimationEnd()
+	{
+		const Resource::Animation::ArAnimation& animation{ this->animationClips.at(clipIndex) };
+		if (frameIndex > animation.sequence.size() - 2)
+		{
+			return true;
+		}
+		return false;
 	}
 }

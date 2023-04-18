@@ -3,7 +3,7 @@
 #include "Argent/Argent.h"
 #include "BaseBullet.h"
 #include "BaseGun.h"
-#include "BaseEnemy.h"
+#include "BaseFriend.h"
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
 #include "Argent/Component/RayCast.h"
@@ -15,8 +15,8 @@ void Title::Initialize()
 
 	//AddObject(new GameObject("plane", Argent::Loader::Fbx::LoadFbx("./Resources/Model/plane.fbx", true)));
 
-	//AddObject(new GameObject("enemy_ver03", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver3.fbx", false)));
-	AddObject(new GameObject("enemy_ver03", new BaseEnemy()));
+	//AddObject(new GameObject("nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
+	AddObject(new GameObject("enemy_ver03", new BaseFriend()));
 
 	//AddObject(new GameObject("DemoGun", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx", false)));
 
@@ -27,7 +27,8 @@ void Title::Initialize()
 
 //	AddObject(new GameObject("player", new Player));
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
-	//AddObject(new GameObject("Stage1", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
+	AddObject(new GameObject("capsuel", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
+	GetGameObject("capsuel")->GetTransform()->SetScaleFactor(0.01f);
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Cube.fbx");
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));
 	//AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));

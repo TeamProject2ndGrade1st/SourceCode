@@ -78,8 +78,9 @@
     <ClCompile Include="Source\Argent\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\BaseBullet.cpp" />
     <ClCompile Include="Source\BaseBulletManager.cpp" />
-    <ClCompile Include="Source\BaseEnemy.cpp" />
+    <ClCompile Include="Source\BaseFriend.cpp" />
     <ClCompile Include="Source\BaseGun.cpp" />
+    <ClCompile Include="Source\BaseState.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\RayCastDemo.cpp" />
@@ -157,7 +158,7 @@
     <ClInclude Include="Source\Argent\Scene\SceneManager.h" />
     <ClInclude Include="Source\BaseBullet.h" />
     <ClInclude Include="Source\BaseBulletManager.h" />
-    <ClInclude Include="Source\BaseEnemy.h" />
+    <ClInclude Include="Source\BaseFriend.h" />
     <ClInclude Include="Source\BaseGun.h" />
     <ClInclude Include="Source\BaseState.h" />
     <ClInclude Include="Source\DemoShaderMacro.h" />

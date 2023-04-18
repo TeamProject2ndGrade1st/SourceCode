@@ -1,11 +1,11 @@
 #pragma once
 #include <vector>
-#include "Argent/Component/BaseActor.h"
+class BaseFriend;
 
 class State
 {
 public:
-	State(Argent::Component::BaseActor* chara) :owner(chara) {}
+	State(BaseFriend* _friend) :owner(_friend) {}
 	 virtual ~State() {}
 
 	 //ステートに入った時に呼ばれる
@@ -18,6 +18,28 @@ public:
 	 virtual void Exit() = 0;
 
 protected:
-	Argent::Component::BaseActor* owner;
+	BaseFriend* owner;
 
+};
+
+
+class HierarchicalState : public State
+{
+public:
+	HierarchicalState(BaseFriend* _friend) :State(_friend) {}
+	virtual ~HierarchicalState() {}
+
+	virtual void Enetr() = 0;
+	virtual void Execute() = 0;
+	virtual void Exit() = 0;
+
+	virtual void SetSubState(int newState);
+	virtual void ChangeSubState(int newState);
+	virtual void RegisterSubState(State* state);
+	virtual State* SetSubState() { return subState; }
+	virtual int GetSubStateIndex();
+
+protected:
+	std::vector<State*> subStatePool;
+	State* subState = nullptr;
 };
