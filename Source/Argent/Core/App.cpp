@@ -5,6 +5,7 @@
 #include "../Input/Keyboard.h"
 #include "../Component/ColliderManager.h"
 #include "../Resource/AudioManager.h"
+#include "../Input/Mouse.h"
 
 namespace Argent::App
 {
@@ -39,6 +40,7 @@ namespace Argent::App
 		while (MainLoop(arWindow->GetHandle()))
 		{
 			Argent::Input::Keyboard::Instance().Update();
+			Argent::Input::Mouse::Instance().Update();
 
 #ifdef _DEBUG
 			ImguiCtrl::Begin("Main Window");

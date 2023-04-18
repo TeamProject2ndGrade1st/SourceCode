@@ -1,5 +1,4 @@
 #include "ResourceManager.h"
-#include "ArTexture.h"
 
 namespace Argent::Resource
 {
@@ -23,11 +22,11 @@ namespace Argent::Resource
 
 	uint64_t ResourceManager::LoadTexture(const char* filePath)
 	{
-		std::shared_ptr<Texture::ArTexture> ret = FindResourceFromFilePath(filePath);
+		std::shared_ptr<Resource::Texture> ret = FindResourceFromFilePath(filePath);
 		if(ret) 
 			return ret->GetUniqueId();
 
-		ret = std::make_shared<Argent::Texture::ArTexture>(filePath);
+		ret = std::make_shared<Argent::Resource::Texture>(filePath);
 
 		resources[ret->GetUniqueId()] = ret;
 

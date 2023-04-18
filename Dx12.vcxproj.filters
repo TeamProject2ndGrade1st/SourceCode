@@ -199,13 +199,13 @@
     <ClCompile Include="Source\Argent\Resource\Mesh.cpp">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\ArTexture.cpp">
+    <ClCompile Include="Source\Argent\Resource\Texture.cpp">
       <Filter>Argent\Resource\Texture</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Resource\ResourceManager.cpp">
       <Filter>Argent\Resource\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Resource\ArShader.cpp">
+    <ClCompile Include="Source\Argent\Resource\Shader.cpp">
       <Filter>Argent\Resource\Shader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Resource\Sprite.cpp">
@@ -284,6 +284,7 @@
     <ClCompile Include="Source\Argent\Debug\DebugRenderer.cpp">
       <Filter>Argent\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Argent\Graphic\RenderContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -412,13 +413,13 @@
     <ClInclude Include="Source\Argent\Resource\Mesh.h">
       <Filter>Argent\Resource\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArTexture.h">
+    <ClInclude Include="Source\Argent\Resource\Texture.h">
       <Filter>Argent\Resource\Texture</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Resource\ResourceManager.h">
       <Filter>Argent\Resource\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Resource\ArShader.h">
+    <ClInclude Include="Source\Argent\Resource\Shader.h">
       <Filter>Argent\Resource\Shader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Resource\Sprite.h">
@@ -506,6 +507,7 @@
     <ClInclude Include="Source\Argent\Debug\DebugRenderer.h">
       <Filter>Argent\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\RenderContext.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

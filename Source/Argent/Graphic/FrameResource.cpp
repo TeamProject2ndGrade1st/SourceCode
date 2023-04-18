@@ -93,12 +93,13 @@ namespace Argent::Graphics
 	void FrameResource::SetSceneConstant(UINT rootParameterIndex)
 	{
 		//cmdBundle.at(0)->cmdList->SetDescriptorHeaps(1, cbv->GetDescriptorHeap()->GetHeapDoublePointer());
-		cmdBundle.at(0)->cmdList->SetGraphicsRootDescriptorTable(rootParameterIndex, cbv->GetGPUHandle());
+		cmdBundle.at(static_cast<int>(RenderType::Mesh))->cmdList->SetGraphicsRootDescriptorTable(rootParameterIndex, cbv->GetGPUHandle());
 	}
 
 	void FrameResource::SetBarrier(D3D12_RESOURCE_STATES before, D3D12_RESOURCE_STATES after) const
 	{
 		D3D12_RESOURCE_BARRIER barrier{};
+		
 		barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 		barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 		barrier.Transition.StateBefore = before;
@@ -107,21 +108,28 @@ namespace Argent::Graphics
 		barrier.Transition.pResource = backBuffer.Get();
 		
 		cmdBundle[0]->cmdList->ResourceBarrier(1, &barrier);
+		cmdBundle[1]->cmdList->ResourceBarrier(1, &barrier);
 	}
 
 	void FrameResource::Reset()
 	{
+		int i = 0;
 		for(auto& bundle : cmdBundle)
 		{
+			if(i > static_cast<int>(RenderType::Mesh)) break;
 			bundle.get()->Reset();
+			++i;
 		}
 	}
 
 	void FrameResource::Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect, float clearColor[4]) const
 	{
+		int i = 0;
 		for(auto& bundle : cmdBundle)
 		{
+			if(i > static_cast<int>(RenderType::Mesh)) break;
 			bundle->Begin(viewport, scissorRect, dsv->GetCPUHandle(), rtv->GetCPUHandle(), clearColor);
+			++i;
 		}
 	}
 

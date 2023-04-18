@@ -10,7 +10,7 @@
 
 void Title::Initialize()
 {
-	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
+	AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
 
 	//AddObject(new GameObject("plane", Argent::Loader::Fbx::LoadFbx("./Resources/Model/plane.fbx", true)));
 	
@@ -18,7 +18,7 @@ void Title::Initialize()
 
 	//AddObject(new GameObject("DemoGun", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx", false)));
 
-	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Arrow.fbx");
+	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Plane.fbx");
 	
 //	AddObject(new GameObject("Gun", new BaseGun));
 	AddObject(new GameObject("Stage", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
@@ -34,6 +34,7 @@ void Title::Initialize()
 
 	AddObject(new GameObject("Nico", new RayCastDemo()));
 	AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
+
 
 	BaseScene::Initialize();
 }

@@ -7,7 +7,7 @@ namespace Argent::Material
 	SpriteMaterial::SpriteMaterial(const char* textureFilepath):
 		color(DirectX::XMFLOAT4(1, 1, 1, 1))
 	{
-		texture =std::make_unique<Texture::ArTexture>(textureFilepath);
+		texture =std::make_unique<Resource::Texture>(textureFilepath);
 	}
 
 	void SpriteMaterial::Render(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const

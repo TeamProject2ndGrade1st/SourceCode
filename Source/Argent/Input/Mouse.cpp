@@ -1,5 +1,5 @@
 #include "Mouse.h"
-
+#include "../Graphic/Graphics.h"
 namespace Argent::Input
 {
 	Mouse::Mouse()
@@ -13,7 +13,7 @@ namespace Argent::Input
 	{
 		POINT p{};
 		GetCursorPos(&p);
-		//ScreenToClient(Argent::Graphics::ArGraphics::Instance()->GetWindowHandle(), &p);
+		ScreenToClient(Argent::Graphics::Graphics::Instance()->hWnd, &p);
 		postPosition = position;
 		position = DirectX::XMFLOAT2(static_cast<float>(p.x), static_cast<float>(p.y));
 		moveVec = DirectX::XMFLOAT2(position.x - postPosition.x, position.y - postPosition.y);

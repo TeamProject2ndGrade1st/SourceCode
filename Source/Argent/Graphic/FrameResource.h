@@ -21,6 +21,18 @@ namespace Argent::Graphics
 		DirectX::XMFLOAT3 cameraPosition;
 	};
 
+	enum class RenderType
+	{
+		Sprite,
+		Mesh,
+		PostEffect,
+		demo1,
+		demo2,
+		demo3,
+		demo4,
+		demo5,
+	};
+
 	class FrameResource
 	{
 	public:
@@ -35,7 +47,7 @@ namespace Argent::Graphics
 
 		[[nodiscard]] D3D12_RESOURCE_DESC GetBackBufferDesc() const { return backBuffer->GetDesc(); }
 
-		[[nodiscard]] ID3D12GraphicsCommandList* GetCmdList() const { return cmdBundle.at(0)->cmdList.Get(); }
+		[[nodiscard]] ID3D12GraphicsCommandList* GetCmdList(RenderType type) const { return cmdBundle.at(static_cast<int>(type))->cmdList.Get(); }
 
 		DirectX::XMFLOAT4X4 GetSceneView() const { return cbScene->view;  }
 		DirectX::XMFLOAT4X4 GetSceneProjection() const { return cbScene->projection;  }

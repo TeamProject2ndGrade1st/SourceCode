@@ -1,4 +1,4 @@
-#include "ArTexture.h"
+#include "Texture.h"
 
 #include "ArResource.h"
 #include "../Graphic/Graphics.h"
@@ -6,9 +6,9 @@
 #include "../Other/Helper.h"
 #include "../Resource/ResourceManager.h"
 
-namespace Argent::Texture
+namespace Argent::Resource
 {
-	ArTexture::ArTexture(const char* filepath):
+	Texture::Texture(const char* filepath):
 		Argent::Resource::ArImportedResource(filepath, ResourceType::Texture)
 	{
 		descriptor = Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor();
@@ -36,7 +36,7 @@ namespace Argent::Texture
 		height = static_cast<float>(shaderResource->GetDesc().Height);
 	}
 
-	void ArTexture::SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const
+	void Texture::SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const
 	{
 		cmdList->SetDescriptorHeaps(1, descriptor->GetDescriptorHeap()->GetHeapDoublePointer());
 		cmdList->SetGraphicsRootDescriptorTable(RootParameterIndex, descriptor->GetGPUHandle());

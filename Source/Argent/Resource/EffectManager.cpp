@@ -81,7 +81,7 @@ namespace Argent::Resource::Effect
 
 		//描画場所を指定　マルチレンダーターゲット場合は一枚目でやること
 		efkMemoryPool->NewFrame();
-		EffekseerRendererDX12::BeginCommandList(efkCmdList, Graphics::Graphics::Instance()->GetCommandList());
+		EffekseerRendererDX12::BeginCommandList(efkCmdList, Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh));
 
 		efkRenderer->BeginRendering();
 		efkManager->Draw();

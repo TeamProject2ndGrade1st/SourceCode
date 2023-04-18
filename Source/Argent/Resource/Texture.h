@@ -4,13 +4,13 @@
 #include "../Graphic/Dx12/Descriptor.h"
 #include "ArResource.h"
 
-namespace Argent::Texture
+namespace Argent::Resource
 {
-	class ArTexture:
+	class Texture:
 		public Argent::Resource::ArImportedResource
 	{
 	public:
-		ArTexture(const char* filePath);
+		Texture(const char* filePath);
 
 		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const;
 		ID3D12Resource* GetTexture() const { return shaderResource.Get(); }

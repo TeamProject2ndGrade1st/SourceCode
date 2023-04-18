@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 #include <DirectXMath.h>
-#include "ArTexture.h"
+#include "Texture.h"
 #include "ArResource.h"
 #include "../Component/Color.h"
 #include "../Graphic/Dx12/ConstantBuffer.h"
@@ -34,7 +34,7 @@ namespace Argent::Material
 		void DrawDebug();
 
 
-		std::shared_ptr<Texture::ArTexture> texture;
+		std::shared_ptr<Resource::Texture> texture;
 		Color color;
 		std::string name;
 	};

@@ -15,6 +15,7 @@ namespace Argent::Graphics
 		curFrameResource(nullptr)
 		,	renderingQueue(nullptr)
 		,	resourceQueue(nullptr)
+	,	hWnd(hWnd)
 	{
 		if(instance) _ASSERT_EXPR(FALSE, L"Already Instantiated");
 		instance = this;
@@ -25,9 +26,9 @@ namespace Argent::Graphics
 		GetClientRect(hWnd, &rc);
 		windowWidth = static_cast<float>(rc.right - rc.left);
 		windowHeight = static_cast<float>(rc.bottom - rc.top);
-		clearColor[0] = 0.8f;
-		clearColor[1] = 0.9f;
-		clearColor[2] = 0.9f;
+		clearColor[0] = 255.0f / 256;
+		clearColor[1] = 169.0f / 256;
+		clearColor[2] = 242.0f / 256;
 
 		clearColor[3] = 1.0f;
 		
@@ -107,7 +108,7 @@ namespace Argent::Graphics
 		for(auto& buffer : frameBuffer)
 		{
 			buffer = std::make_unique<FrameBuffer>(mDevice.Get(), frameResources.at(0)->GetBackBufferDesc(), 
-			                                       clearColor, rtvHeap->GetDesc());
+			                                       clearColor);
 		}
 
 		mDevice->SetName(L"Device");
@@ -152,7 +153,8 @@ namespace Argent::Graphics
 		{
 			srvCbvHeap->GetHeapPointer(),
 		};
-		curFrameResource->GetCmdList()->SetDescriptorHeaps(_countof(setHeap), setHeap);
+		curFrameResource->GetCmdList(RenderType::Sprite)->SetDescriptorHeaps(_countof(setHeap), setHeap);
+		curFrameResource->GetCmdList(RenderType::Mesh)->SetDescriptorHeaps(_countof(setHeap), setHeap);
 	}
 		
 	void Graphics::End()
@@ -173,18 +175,20 @@ namespace Argent::Graphics
 
 		frameBuffer[0]->Draw(this);
 #ifdef _DEBUG
-		ImguiCtrl::End(curFrameResource->GetCmdList(), this->GetGUIHeap());
+		ImguiCtrl::End(curFrameResource->GetCmdList(RenderType::Mesh), this->GetGUIHeap());
 #endif
 		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 
 		
 
-		curFrameResource->GetCmdList()->Close();
-		ID3D12CommandList* cmdlists[] { curFrameResource->GetCmdList() };
-		renderingQueue->cmdQueue->ExecuteCommandLists(1, cmdlists);
+		curFrameResource->GetCmdList(RenderType::Sprite)->Close();
+		curFrameResource->GetCmdList(RenderType::Mesh)->Close();
+
+		ID3D12CommandList* cmdlists[] { curFrameResource->GetCmdList(RenderType::Sprite), curFrameResource->GetCmdList(RenderType::Mesh) };
+		renderingQueue->cmdQueue->ExecuteCommandLists(2, cmdlists);
 		renderingQueue->SetFence(1);
 
-		ID3D12GraphicsCommandList* cmdList = curFrameResource->GetCmdList();
+		ID3D12GraphicsCommandList* cmdList = curFrameResource->GetCmdList(RenderType::Mesh);
 #ifdef _DEBUG
 		ImguiCtrl::CallBeforSwap(cmdList);
 #endif

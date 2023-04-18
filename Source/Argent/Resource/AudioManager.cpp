@@ -17,7 +17,6 @@ namespace Argent::Resource::Audio
 		if (instance) _ASSERT_EXPR(FALSE, "already instanciated");
 		instance = this;
 
-
 		HRESULT hr{ S_OK };
 
 		//オーディオエンジンの作成
@@ -55,7 +54,6 @@ namespace Argent::Resource::Audio
 		
 		masterVoice->GetChannelMask(&dwChannelMask);
 
-		//X3DAudio
 		hr = X3DAudioInitialize(dwChannelMask,
 			X3DAUDIO_SPEED_OF_SOUND, X3DInstance);
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));

@@ -18,4 +18,6 @@ public:
 	Argent::Component::Collision::RayCast* ray;
 	Argent::Component::Audio::AudioPlayer* audio;
 	float moveSpeed;
+	DirectX::XMFLOAT2 mousePos;
+	DirectX::XMFLOAT2 mousePostPos;
 };

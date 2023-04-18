@@ -32,6 +32,7 @@ namespace Argent::Graphics
 			cNone,
 		};
 	public:
+		HWND hWnd;
 		Graphics(HWND hWnd);
 		virtual ~Graphics()
 		{
@@ -56,7 +57,7 @@ namespace Argent::Graphics
 	public:
 		static Graphics* Instance() { return instance; }
 		[[nodiscard]] ID3D12Device* GetDevice() const { return mDevice.Get(); }
-		[[nodiscard]] ID3D12GraphicsCommandList* GetCommandList() const { return curFrameResource->GetCmdList(); }
+		[[nodiscard]] ID3D12GraphicsCommandList* GetCommandList(RenderType type) const { return curFrameResource->GetCmdList(type); }
 		
 		[[nodiscard]] float GetWidth() const { return windowWidth; }
 		[[nodiscard]] float GetHeight() const { return windowHeight; }
@@ -111,7 +112,7 @@ namespace Argent::Graphics
 	private:
 		static Graphics* instance;
 		static constexpr int NumBackBuffers = 2;
-		static constexpr int NumCmdLists = 1;
+		static constexpr int NumCmdLists = 8;
 		Microsoft::WRL::ComPtr<ID3D12Device> mDevice;
 		Microsoft::WRL::ComPtr<ID3D12DebugDevice> mDebugDevice;
 		Microsoft::WRL::ComPtr<IDXGIFactory6> mFactory;

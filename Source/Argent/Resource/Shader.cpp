@@ -1,12 +1,12 @@
-#include "ArShader.h"
+#include "Shader.h"
 
 #include <d3d12.h>
 #include <cassert>
 #include "ResourceManager.h"
 
-namespace Argent::Shader
+namespace Argent::Resource
 {
-	ArShader::ArShader(const char* filepath):
+	Shader::Shader(const char* filepath):
 		ArResource(filepath, ResourceType::Shader)
 	{
 		data = nullptr;
@@ -15,7 +15,7 @@ namespace Argent::Shader
 		assert(hr);
 	}
 		
-	bool ArShader::Read(const char* filename)
+	bool Shader::Read(const char* filename)
 	{
 		FILE* fp{ nullptr };
 

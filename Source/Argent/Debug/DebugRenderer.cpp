@@ -5,7 +5,7 @@ namespace Argent::Debug
 {
 	void DebugRenderer::Render(const DirectX::XMFLOAT4X4& world)
 	{
-		ID3D12GraphicsCommandList* cmdList = Graphics::Graphics::Instance()->GetCommandList();
+		ID3D12GraphicsCommandList* cmdList = Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh);
 		renderingPipeline->SetOnCommandList(cmdList);
 		Argent::Graphics::Graphics::Instance()->SetSceneConstant(0);
 

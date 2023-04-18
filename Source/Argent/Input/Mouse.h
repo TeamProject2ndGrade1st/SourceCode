@@ -44,10 +44,10 @@ namespace Argent::Input
 		void SetIsWheelRotateOff() { isWheelRotate = false; }
 		void SetRowWheelRotateValue(float v) { rowWheelRotateValue = v; }
 
-		[[nodiscard]] DirectX::XMFLOAT2 GetPosition() const { return position; }
-		[[nodiscard]] DirectX::XMFLOAT2 GetMoveVec() const { return moveVec; }
-		[[nodiscard]] DirectX::XMFLOAT2 GetPostPosition() const { return postPosition; }
-		[[nodiscard]] WheelStates GetWheelState() const { return wheelState; }
+		DirectX::XMFLOAT2 GetPosition() const { return position; }
+		DirectX::XMFLOAT2 GetMoveVec() const { return moveVec; }
+		DirectX::XMFLOAT2 GetPostPosition() const { return postPosition; }
+		WheelStates GetWheelState() const { return wheelState; }
 
 		float GetRowWheelRotateValue() const { return rowWheelRotateValue; }
 
