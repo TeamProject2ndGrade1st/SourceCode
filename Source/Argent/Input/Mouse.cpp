@@ -4,9 +4,9 @@ namespace Argent::Input
 {
 	Mouse::Mouse()
 	{
-		mouseState[Mouses::LeftButton] = State::NONE;
-		mouseState[Mouses::RightButton] = State::NONE;
-		mouseState[Mouses::MiddleButton] = State::NONE;
+		mouseState[Button::LeftButton] = State::NONE;
+		mouseState[Button::RightButton] = State::NONE;
+		mouseState[Button::MiddleButton] = State::NONE;
 	}
 
 	void Mouse::Update()
@@ -64,19 +64,19 @@ namespace Argent::Input
 		else wheelState = WheelStates::None;
 	}
 
-	bool Mouse::IsButtonPress(Mouses m)
+	bool Mouse::GetButton(Button m)
 	{
 		if (mouseState[m] == State::PRESS) return true;
 		return false;
 	}
 
-	bool Mouse::IsButtonPressEnter(Mouses m)
+	bool Mouse::GetButtonDown(Button m)
 	{
 		if (mouseState[m] == State::ENTER) return true;
 		return false;
 	}
 
-	bool Mouse::IsButtonRelease(Mouses m)
+	bool Mouse::GetButtonUp(Button m)
 	{
 		if (mouseState[m] == State::RELEASE) return true;
 		return false;

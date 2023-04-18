@@ -155,7 +155,6 @@ void Camera::End()
 
 void Camera::DrawDebug()
 {
-
 	if(ImGui::TreeNode("Camera"))
 	{
 		if(ImGui::Button("Use Scene Camera"))
@@ -231,7 +230,7 @@ void CameraController::Update()
 
 	if(!camera->GetIsSceneCamera()) return;
 
-	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::MiddleButton))
+	if(Argent::Input::Mouse::Instance().GetButton(Argent::Input::Mouse::Button::MiddleButton))
 	{
 		DirectX::XMFLOAT3 position = transform->GetPosition();
 		if(!camera) return;
@@ -252,7 +251,7 @@ void CameraController::Update()
 	}
 
 	//Rotate
-	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::RightButton))
+	if(Argent::Input::Mouse::Instance().GetButton(Argent::Input::Mouse::Button::RightButton))
 	{
 		DirectX::XMFLOAT4 rotation = transform->GetRotation();
 
