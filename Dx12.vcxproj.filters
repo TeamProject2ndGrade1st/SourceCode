@@ -278,6 +278,8 @@
       <Filter>Work In Progress\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\RayCastDemo.cpp" />
+    <ClCompile Include="Source\BaseEnemy.cpp" />
+    <ClCompile Include="Source\StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -500,6 +502,11 @@
       <Filter>Work In Progress\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\RayCastDemo.h" />
+    <ClInclude Include="Source\BaseEnemy.h" />
+    <ClInclude Include="Source\StateMachine.h" />
+    <ClInclude Include="Source\BaseState.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
