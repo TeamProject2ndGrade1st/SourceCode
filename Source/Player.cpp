@@ -41,7 +41,10 @@ void Player::Update()
         camera = GameObject::FindGameObject("Camera"); // こっちで
         movement = 0.5f;
 
-        mousePos = Argent::Input::Mouse::Instance().GetPosition();
+        {
+            auto c = camera->GetComponent<Camera>();
+            c->SetMRotate(DirectX::XMFLOAT3(100, 0, 0));
+        }
 
         ++state;
         break;
@@ -49,6 +52,37 @@ void Player::Update()
 
         // 移動
         MoveCamera();
+
+
+        // マウスのポジション
+#if 1
+        // マウスの位置を取る
+        mousePos = Argent::Input::Mouse::Instance().GetPosition();
+        // マウスの移動量を取る
+        DirectX::XMFLOAT2 mouseVec = Argent::Input::Mouse::Instance().GetMoveVec();
+        
+        
+        
+        // カメラのtransformを取る
+        Transform* t = camera->GetTransform();
+        // カメラの回転値を取る
+        DirectX::XMFLOAT4 cameraRot = t->GetRotation();
+
+        DirectX::XMFLOAT4 mouseMovement{ mouseVec.y,mouseVec.x,0,0 };
+
+        // 制限を作る
+        //if (cameraRot.x >= 100.0f)
+        //{
+        //    //cameraRot.x = 100;
+
+        //    //mouseMovement.y = 0;
+        //    mouseMovement.x = -0.01;
+        //}
+
+
+        
+        t->SetRotation(cameraRot + mouseMovement);
+#endif
 
         break;
 

@@ -33,6 +33,8 @@ public:
 	DirectX::XMFLOAT3 GetRight() { return right; }
 	DirectX::XMFLOAT3 GetUp() { return up; }
 
+	DirectX::XMFLOAT3 GetMRotate() { return maxRotation; }
+	void SetMRotate(DirectX::XMFLOAT3 mRot) { maxRotation = mRot; }
 
 private:
 	float width;
@@ -43,6 +45,7 @@ private:
 	float aspectRatio;
 
 	bool isSceneCamera;
+	DirectX::XMFLOAT3 maxRotation;
 
 	DirectX::XMFLOAT3 forward;
 	DirectX::XMFLOAT3 right;

@@ -137,6 +137,14 @@ void Camera::Update()
 
 void Camera::End()
 {
+	auto t = GetOwner()->GetTransform();
+	auto rot = t->GetRotation();
+	if (rot.x > maxRotation.x)
+	{
+		rot.x = maxRotation.x;
+		t->SetRotation(rot);
+	}
+
 	auto g = Argent::Graphics::Graphics::Instance();
 	g->SetCameraPosition(GetOwner()->GetTransform()->GetPosition());
 	g->SetProjectionMatrix(GetProjectionMatrix());
