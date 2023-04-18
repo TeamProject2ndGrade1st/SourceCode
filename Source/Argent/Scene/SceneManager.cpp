@@ -41,6 +41,8 @@ namespace Argent::Scene
 
 	void ArSceneManager::Update()
 	{
+		start = end;
+		end = GetTickCount();   
 		ChangeScene();
 		if(currentScene)
 		{
@@ -67,6 +69,8 @@ namespace Argent::Scene
 		if(currentScene)
 		{
 			currentScene->DrawDebug();
+			double elapsedTime = (double)(end - start) / 1000;
+			ImGui::InputDouble("Deltatime", &elapsedTime);
 		}
 	}
 
