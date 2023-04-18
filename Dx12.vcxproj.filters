@@ -284,6 +284,7 @@
     <ClCompile Include="Source\Argent\Debug\DebugRenderer.cpp">
       <Filter>Argent\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Argent\Graphic\RenderContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -506,6 +507,7 @@
     <ClInclude Include="Source\Argent\Debug\DebugRenderer.h">
       <Filter>Argent\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\RenderContext.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

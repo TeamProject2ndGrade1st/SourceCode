@@ -51,6 +51,12 @@ namespace Argent::Component::Renderer
 			material->color.color);
 	}
 
+	void SpriteRenderer::Render() const
+	{
+		auto cmdList = Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh);
+		Render(cmdList);
+	}
+
 	void SpriteRenderer::Render(ID3D12GraphicsCommandList* cmdList) const
 	{
 		BaseRenderer::Render(cmdList);

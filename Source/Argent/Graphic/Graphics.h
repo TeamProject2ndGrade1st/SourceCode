@@ -32,6 +32,7 @@ namespace Argent::Graphics
 			cNone,
 		};
 	public:
+		HWND hWnd;
 		Graphics(HWND hWnd);
 		virtual ~Graphics()
 		{

@@ -21,6 +21,7 @@ namespace Argent::Component::Renderer
 		void Begin() override;
 		void End() override;
 		void Update() override;
+		void Render() const override;
 		void Render(ID3D12GraphicsCommandList* cmdList) const override;
 		
 

@@ -1,5 +1,6 @@
 #include "Demo.h"
 #include "Argent/Component/ColliderManager.h"
+#include "Argent/Input/Mouse.h"
 
 void RayCastDemo::Initialize()
 {
@@ -50,6 +51,13 @@ void RayCastDemo::DrawDebug()
 {
 	if (ImGui::TreeNode(GetName().c_str()))
 	{
+		mousePos = Argent::Input::Mouse::Instance().GetPosition();
+		mousePostPos = Argent::Input::Mouse::Instance().GetPostPosition();
+		auto vec = Argent::Input::Mouse::Instance().GetMoveVec();
+		ImGui::InputFloat2("mouse", &mousePos.x);
+		ImGui::InputFloat2("mousePost", &mousePostPos.x);
+		ImGui::InputFloat2("mouseMoveVec", &vec.x);
+
 		ImGui::SliderFloat("moveSpeed", &moveSpeed, 0, 10.0f);
 		if(ImGui::Button("Destroy"))
 		{

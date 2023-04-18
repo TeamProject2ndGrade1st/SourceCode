@@ -15,6 +15,7 @@ namespace Argent::Graphics
 		curFrameResource(nullptr)
 		,	renderingQueue(nullptr)
 		,	resourceQueue(nullptr)
+	,	hWnd(hWnd)
 	{
 		if(instance) _ASSERT_EXPR(FALSE, L"Already Instantiated");
 		instance = this;
