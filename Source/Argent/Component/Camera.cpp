@@ -18,6 +18,8 @@ Camera::Camera(bool isSceneCamera, float width, float height, float nearZ, float
 ,	forward(DirectX::XMFLOAT3(0, 0, 1))
 ,	right(DirectX::XMFLOAT3(1, 0, 0))
 ,	up(DirectX::XMFLOAT3(0, 1, 0))
+,	maxRotation(0, 0, 0, 0)
+,	minRotation(0, 0, 0, 0)
 {
 	/*if(Argent::Graphics::Graphics::Instance()->GetCamera() == nullptr)
 		Argent::Graphics::Graphics::Instance()->SetCamera(this);*/
@@ -137,8 +139,16 @@ void Camera::Update()
 
 void Camera::LateUpdate()
 {
+	//‰ñ“]—Ê‚Ì§ŒÀ
 	auto rotation = GetOwner()->GetTransform()->GetRotation();
-	rotation = Min(rotation, maxRotation);
+	if(useMaxRotation)
+	{
+		rotation = Min(rotation, maxRotation);
+	}
+	if(useMinRotation)
+	{
+		rotation = Max(rotation, minRotation);
+	}
 	GetOwner()->GetTransform()->SetRotation(rotation);
 	auto g = Argent::Graphics::Graphics::Instance();
 	g->SetCameraPosition(GetOwner()->GetTransform()->GetPosition());

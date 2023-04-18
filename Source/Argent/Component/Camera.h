@@ -35,7 +35,9 @@ public:
 	DirectX::XMFLOAT3 GetUp() { return up; }
 
 	DirectX::XMFLOAT4 GetMaxRotation() const { return maxRotation; }
-	void SetMaxRotation(const DirectX::XMFLOAT4& mRot) { maxRotation = mRot; }
+	void SetMaxRotation(const DirectX::XMFLOAT4& mRot) { maxRotation = mRot; useMaxRotation = true; }
+	DirectX::XMFLOAT4 GetMinRotation() const { return minRotation; }
+	void SetMinRotation(const DirectX::XMFLOAT4& mRot) { minRotation = mRot;  useMinRotation = true; }
 
 private:
 	float width;
@@ -47,6 +49,9 @@ private:
 
 	bool isSceneCamera;
 	DirectX::XMFLOAT4 maxRotation;
+	DirectX::XMFLOAT4 minRotation;
+	bool useMaxRotation = false;
+	bool useMinRotation = false;
 
 	DirectX::XMFLOAT3 forward;
 	DirectX::XMFLOAT3 right;

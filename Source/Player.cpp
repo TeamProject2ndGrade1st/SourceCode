@@ -44,6 +44,7 @@ void Player::Update()
         {
             auto c = camera->GetComponent<Camera>();
             c->SetMaxRotation(DirectX::XMFLOAT4(100, 0, 0, 0));
+			c->SetMinRotation(DirectX::XMFLOAT4(-100, 0, 0, 0));
         }
 
         ++state;
