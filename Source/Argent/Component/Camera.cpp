@@ -147,7 +147,6 @@ void Camera::End()
 
 void Camera::DrawDebug()
 {
-
 	if(ImGui::TreeNode("Camera"))
 	{
 		if(ImGui::Button("Use Scene Camera"))
