@@ -25,11 +25,11 @@ namespace Argent::Graphics
 	public:
 		enum class CoordinateSystem
 		{
-			cRightYup,
-			cLeftYup,
-			cRightZup,
-			cLeftZup,
-			cNone,
+			RightYup,
+			LeftYup,
+			RightZup,
+			LeftZup,
+			CoordCount,
 		};
 	public:
 		HWND hWnd;

@@ -8,7 +8,7 @@ namespace Argent::Input
 	class Mouse
 	{
 	public:
-		enum class Mouses
+		enum class Button
 		{
 			LeftButton = 0x01,
 			RightButton = 0x02,
@@ -35,9 +35,9 @@ namespace Argent::Input
 
 
 		void Update();
-		bool IsButtonPress(Mouses m);
-		bool IsButtonPressEnter(Mouses m);
-		bool IsButtonRelease(Mouses m);
+		bool GetButton(Button m);
+		bool GetButtonDown(Button m);
+		bool GetButtonUp(Button m);
 		bool IsMouseWheelRotate() const { return isWheelRotate; }
 
 		void SetIsWheelRotateOn() { isWheelRotate = true; }
@@ -51,7 +51,7 @@ namespace Argent::Input
 
 		float GetRowWheelRotateValue() const { return rowWheelRotateValue; }
 
-		std::unordered_map<Mouses, State> mouseState;
+		std::unordered_map<Button, State> mouseState;
 	private:
 		DirectX::XMFLOAT2 position;
 		DirectX::XMFLOAT2 moveVec;
