@@ -97,6 +97,18 @@ void GameObject::Begin()
 	}
 }
 
+void GameObject::EarlyUpdate()
+{
+	for(size_t i = 0; i < components.size(); ++i)
+	{
+		components.at(i)->EarlyUpdate();
+	}
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		childObjects.at(i)->EarlyUpdate();
+	}
+}
+
 void GameObject::End()
 {
 	for(size_t i = 0; i < components.size(); ++i)
@@ -118,6 +130,18 @@ void GameObject::Update()
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
 		childObjects.at(i)->Update();
+	}
+}
+
+void GameObject::LateUpdate()
+{
+	for(size_t i = 0; i < components.size(); ++i)
+	{
+		components.at(i)->LateUpdate();
+	}
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		childObjects.at(i)->LateUpdate();
 	}
 }
 

@@ -16,6 +16,7 @@ public:
 	void Reset() override;
 	void Initialize() override;
 	void Update() override;
+	void LateUpdate() override;
 	void End() override;
 
 	void DrawDebug() override;
@@ -33,8 +34,8 @@ public:
 	DirectX::XMFLOAT3 GetRight() { return right; }
 	DirectX::XMFLOAT3 GetUp() { return up; }
 
-	DirectX::XMFLOAT3 GetMRotate() { return maxRotation; }
-	void SetMRotate(DirectX::XMFLOAT3 mRot) { maxRotation = mRot; }
+	DirectX::XMFLOAT4 GetMaxRotation() const { return maxRotation; }
+	void SetMaxRotation(const DirectX::XMFLOAT4& mRot) { maxRotation = mRot; }
 
 private:
 	float width;
@@ -45,7 +46,7 @@ private:
 	float aspectRatio;
 
 	bool isSceneCamera;
-	DirectX::XMFLOAT3 maxRotation;
+	DirectX::XMFLOAT4 maxRotation;
 
 	DirectX::XMFLOAT3 forward;
 	DirectX::XMFLOAT3 right;

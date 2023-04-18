@@ -56,7 +56,19 @@ namespace Argent::Scene
 		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
 			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
+				gameObject.at(i)->EarlyUpdate();
+		}
+
+		for(size_t i = 0; i < gameObject.size(); ++i)
+		{
+			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
 				gameObject.at(i)->Update();
+		}
+
+		for(size_t i = 0; i < gameObject.size(); ++i)
+		{
+			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
+				gameObject.at(i)->LateUpdate();
 		}
 	}
 

@@ -43,7 +43,7 @@ void Player::Update()
 
         {
             auto c = camera->GetComponent<Camera>();
-            c->SetMRotate(DirectX::XMFLOAT3(100, 0, 0));
+            c->SetMaxRotation(DirectX::XMFLOAT4(100, 0, 0, 0));
         }
 
         ++state;
@@ -70,18 +70,24 @@ void Player::Update()
 
         DirectX::XMFLOAT4 mouseMovement{ mouseVec.y,mouseVec.x,0,0 };
 
+        DirectX::XMFLOAT4 setRotation{};
+        setRotation = cameraRot;
+        setRotation.x += mouseMovement.x;
+        setRotation.y += mouseMovement.y;
         // §ŒÀ‚ðì‚é
-        //if (cameraRot.x >= 100.0f)
+        //if (setRotation.x >= 100.0f)
         //{
-        //    //cameraRot.x = 100;
+        //    cameraRot.x = 100;
+        //	mouseMovement.y = 0;
+        //    mouseMovement.x = 0;
+        //   // mouseMovement.x = -0.01;
+        //    setRotation.x = 100;
 
-        //    //mouseMovement.y = 0;
-        //    mouseMovement.x = -0.01;
         //}
 
 
-        
-        t->SetRotation(cameraRot + mouseMovement);
+        t->SetRotation(setRotation);
+        //t->SetRotation(cameraRot + mouseMovement);
 #endif
 
         break;

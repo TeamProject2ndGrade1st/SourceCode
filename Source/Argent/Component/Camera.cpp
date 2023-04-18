@@ -135,21 +135,28 @@ void Camera::Update()
 	DirectX::XMStoreFloat3(&up, DirectX::XMVector3Normalize(DirectX::XMVector3Rotate(UpVec, quaternion)));
 }
 
+void Camera::LateUpdate()
+{
+	auto rotation = GetOwner()->GetTransform()->GetRotation();
+	rotation = Min(rotation, maxRotation);
+	GetOwner()->GetTransform()->SetRotation(rotation);
+	auto g = Argent::Graphics::Graphics::Instance();
+	g->SetCameraPosition(GetOwner()->GetTransform()->GetPosition());
+	g->SetProjectionMatrix(GetProjectionMatrix());
+	g->SetViewMatrix(GetViewMatrix());
+}
+
 void Camera::End()
 {
-	auto t = GetOwner()->GetTransform();
+	/*auto t = GetOwner()->GetTransform();
 	auto rot = t->GetRotation();
 	if (rot.x > maxRotation.x)
 	{
 		rot.x = maxRotation.x;
 		t->SetRotation(rot);
-	}
+	}*/
 
-	auto g = Argent::Graphics::Graphics::Instance();
-	g->SetCameraPosition(GetOwner()->GetTransform()->GetPosition());
-	g->SetProjectionMatrix(GetProjectionMatrix());
-	g->SetViewMatrix(GetViewMatrix());
-
+	
 }
 
 
