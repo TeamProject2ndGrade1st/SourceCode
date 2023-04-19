@@ -38,5 +38,7 @@ namespace Argent::Scene
 		static std::string nextScene;
 		BaseScene* currentScene;
 		std::unordered_map<std::string, std::unique_ptr<BaseScene>> scenes{};
+		DWORD end;
+		DWORD start;
 	};
 }

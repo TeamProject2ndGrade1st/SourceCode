@@ -33,12 +33,13 @@ namespace Argent::Scene
 		 * \brief 毎フレーム一番最初に呼ばれる
 		 */
 		virtual void Begin();
+		virtual void Update();
+		virtual void Render();
+
 		/**
 		 * \brief 毎フレーム一番最後に呼ばれる
 		 */
 		virtual void End();
-		virtual void Update();
-		virtual void Render();
 
 		virtual void DrawDebug();
 

@@ -30,6 +30,8 @@ private:
 
 	Argent::Component::Collision::RayCast* ray;
 protected:
-
+	DWORD start;
+	DWORD end;
+	double deltaTime;
 };
 

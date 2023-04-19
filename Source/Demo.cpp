@@ -8,7 +8,7 @@ void RayCastDemo::Initialize()
 	GetOwner()->AddComponent(ray);
 	BaseActor::Initialize();
 	moveSpeed = 1.0f;
-	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver7.fbx", false));
+	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver8.fbx", false));
 	audio = new Argent::Component::Audio::AudioPlayer("./Resources/Audio/maou.wav");
 	GetOwner()->AddComponent(audio);
 }

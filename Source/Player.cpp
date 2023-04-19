@@ -5,6 +5,8 @@
 
 Player::Player() :BaseActor("player")
 {
+    movement = 10;
+
 }
 
 void Player::Initialize()
@@ -17,6 +19,15 @@ void Player::Initialize()
 	    g->AddComponent(ray);
         b = true;
     }
+
+    camera = GameObject::FindGameObject("Camera"); // Ç±Ç¡ÇøÇ≈
+        movement = 10.5f;
+
+        {
+            auto c = camera->GetComponent<Camera>();
+            c->SetMaxRotation(DirectX::XMFLOAT4(100, 0, 0, 0));
+			c->SetMinRotation(DirectX::XMFLOAT4(-100, 0, 0, 0));
+        }
 }
 
 
@@ -24,6 +35,19 @@ void Player::DrawDebug()
 {
     if(ImGui::TreeNode(GetName().c_str()))
     {
+        static int frameTime = 0;
+        ++frameTime;
+        double elapsedTime = (double)(end - start) / 1000;
+        deltaTime += elapsedTime;
+        static int frame = 0;
+        if(deltaTime > 1.0f)
+        {
+            frame = frameTime;
+	        deltaTime = 0;
+            frameTime = 0;
+        }
+        ImGui::InputInt("FrameRate", &frame);
+        ImGui::InputDouble("ElapsedTime", &elapsedTime);
         ImGui::SliderFloat("movement", &movement, 0.1f, 10.0);
         ImGui::DragFloat2("mouse", &mousePos.x);
         ImGui::SliderFloat("sensitivity", &sensitivity, 0.1f, 2.0f);
@@ -102,6 +126,10 @@ void Player::Update()
         break;
 
     }
+    start = end;
+    end = GetTickCount();
+	MoveCamera();
+
     GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
 
     ray->SetRayStartPosition(GetTransform()->GetPosition());
@@ -112,53 +140,23 @@ void Player::Update()
 // ÉJÉÅÉâÇÃà⁄ìÆ
 void Player::MoveCamera()
 {
-#if 0
-    Transform* t = camera->GetTransform();
-    auto velocity = t->CalcForward();
-    auto pos = t->GetPosition();
-    auto rot = t->GetRotation();
-
-    float _speed = movement;
-
-    if (Argent::Input::GetKey(KeyCode::W) || Argent::Input::GetKey(KeyCode::S) ||
-        Argent::Input::GetKey(KeyCode::A) || Argent::Input::GetKey(KeyCode::D))
-    {
-        if (Argent::Input::GetKey(KeyCode::W))
-        {
-            velocity.z = _speed;
-        }
-        if (Argent::Input::GetKey(KeyCode::S))
-        {
-            velocity.z = -_speed;
-        }
-        if (Argent::Input::GetKey(KeyCode::D))
-        {
-            velocity.x = _speed;
-        }
-        if (Argent::Input::GetKey(KeyCode::A))
-        {
-            velocity.x = -_speed;
-        }
-        if (velocity.x != 0 || velocity.z != 0)
-        {
-            pos.x += rot.x * velocity.x;
-            pos.y = rot.y * velocity.y;
-            pos.z = rot.z * velocity.z;
-        };
-        t->SetPosition(pos);
-    }
-#endif
+    static DWORD start;
+    static DWORD end;
 
     // ëO(W)
+	//if (GetAsyncKeyState('W') < 0)
     if (Argent::Input::GetKey(KeyCode::W))
     {
         auto t = camera->GetTransform();
         auto pos = t->GetPosition();
         pos.z += movement * Argent::Timer::ArTimer::Instance().DeltaTime();
         t->SetPosition(pos);
+        start = GetTickCount();
     }
+    
 
     // å„ÇÎ(S)
+    //if (GetAsyncKeyState('S') < 0)
     if (Argent::Input::GetKey(KeyCode::S))
     {
         auto t = camera->GetTransform();
@@ -166,8 +164,9 @@ void Player::MoveCamera()
         pos.z -= movement * Argent::Timer::ArTimer::Instance().DeltaTime();
         t->SetPosition(pos);
     }
-
+     
     // âE(D)
+    //if (GetAsyncKeyState('D') < 0)
     if (Argent::Input::GetKey(KeyCode::D))
     {
         auto t = camera->GetTransform();
@@ -177,7 +176,8 @@ void Player::MoveCamera()
     }
 
     // ç∂(A)
-    if (Argent::Input::GetKey(KeyCode::A))
+    //if (GetAsyncKeyState('A') < 0)
+	if (Argent::Input::GetKey(KeyCode::A))
     {
         auto t = camera->GetTransform();
         auto pos = t->GetPosition();

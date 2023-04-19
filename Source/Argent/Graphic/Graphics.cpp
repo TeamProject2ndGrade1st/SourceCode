@@ -462,6 +462,13 @@ namespace Argent::Graphics
 		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
 		swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+
+		//DXGI_RATIONAL rational{};
+		//rational.Denominator
+		//DXGI_SWAP_CHAIN_FULLSCREEN_DESC fullScreenDesc{};
+
+		//fullScreenDesc.RefreshRate = ;
+		
 		hr = factory->CreateSwapChainForHwnd(cmdQueue, hWnd, &swapChainDesc,
 		                                     nullptr, nullptr, tempSwapChain.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
