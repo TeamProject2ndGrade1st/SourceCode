@@ -92,6 +92,9 @@ void Player::Update()
         if (setRotation.y < 0)setRotation.y += 360;
         
 
+        t->CalcForward();
+
+
         t->SetRotation(setRotation);
         //t->SetRotation(cameraRot + mouseMovement);
 #endif
@@ -109,6 +112,43 @@ void Player::Update()
 // ƒJƒƒ‰‚ÌˆÚ“®
 void Player::MoveCamera()
 {
+#if 0
+    Transform* t = camera->GetTransform();
+    auto velocity = t->CalcForward();
+    auto pos = t->GetPosition();
+    auto rot = t->GetRotation();
+
+    float _speed = movement;
+
+    if (Argent::Input::GetKey(KeyCode::W) || Argent::Input::GetKey(KeyCode::S) ||
+        Argent::Input::GetKey(KeyCode::A) || Argent::Input::GetKey(KeyCode::D))
+    {
+        if (Argent::Input::GetKey(KeyCode::W))
+        {
+            velocity.z = _speed;
+        }
+        if (Argent::Input::GetKey(KeyCode::S))
+        {
+            velocity.z = -_speed;
+        }
+        if (Argent::Input::GetKey(KeyCode::D))
+        {
+            velocity.x = _speed;
+        }
+        if (Argent::Input::GetKey(KeyCode::A))
+        {
+            velocity.x = -_speed;
+        }
+        if (velocity.x != 0 || velocity.z != 0)
+        {
+            pos.x += rot.x * velocity.x;
+            pos.y = rot.y * velocity.y;
+            pos.z = rot.z * velocity.z;
+        };
+        t->SetPosition(pos);
+    }
+#endif
+
     // ‘O(W)
     if (Argent::Input::GetKey(KeyCode::W))
     {
