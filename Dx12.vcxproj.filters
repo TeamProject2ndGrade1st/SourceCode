@@ -275,6 +275,7 @@
     <ClCompile Include="Source\Argent\Component\RayCast.cpp">
       <Filter>Argent\Component\Collider</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Source\Argent\Component\AnimationPlayer.cpp">
       <Filter>Argent\Component\AnimationPlayer</Filter>
     </ClCompile>
@@ -285,6 +286,23 @@
       <Filter>Argent\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Graphic\RenderContext.cpp" />
+=======
+    <ClCompile Include="Source\BaseFriend.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RayCastDemo.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateDerived.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BaseState.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+>>>>>>> origin/Tana
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -495,6 +513,7 @@
     <ClInclude Include="Source\Argent\Component\RayCast.h">
       <Filter>Argent\Component\Collider</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Source\Argent\Component\AnimationPlayer.h">
       <Filter>Argent\Component\AnimationPlayer</Filter>
     </ClInclude>
@@ -508,6 +527,23 @@
       <Filter>Argent\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Graphic\RenderContext.h" />
+=======
+    <ClInclude Include="Source\BaseState.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseFriend.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RayCastDemo.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateDerived.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+>>>>>>> origin/Tana
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

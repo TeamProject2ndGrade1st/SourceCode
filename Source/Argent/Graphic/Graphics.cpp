@@ -149,8 +149,8 @@ namespace Argent::Graphics
 		frameBuffer[0]->End(this);
 		frameBuffer[1]->End(this);
 		curFrameResource->SetRenderTarget(viewport, scissorRect, clearColor);
-		frameBuffer[1]->Draw(this);
 		frameBuffer[0]->Draw(this);
+		frameBuffer[1]->Draw(this);
 #ifdef _DEBUG	
 		ImguiCtrl::End(curFrameResource->GetCmdList(RenderType::PostRendering), this->GetGUIHeap());
 #endif

@@ -51,7 +51,8 @@ namespace Argent::Component::Renderer
 	{
 		GameObject* g = GetOwner();
 		g->GetTransform()->SetWorld(mesh->localTransform);
-		g->SetName(mesh->GetName());
+		if(g->GetParent())
+			g->SetName(mesh->GetName());
 	}
 
 	void MeshRenderer::Render() const 

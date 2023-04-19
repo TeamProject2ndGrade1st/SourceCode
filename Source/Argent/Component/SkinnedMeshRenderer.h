@@ -88,6 +88,12 @@ namespace Argent::Component::Renderer
 
 		void CreateComObject(ID3D12Device* device);
 
+		//í«â¡ÅiTanaÅj
+		void SetAnimation(int index);
+		int GetAnimation() { return clipIndex; }
+		float GetAnimationFrame() { return frameIndex; }
+		bool IsAnimationEnd();
+
 	private:
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> objectConstantBuffer;
 

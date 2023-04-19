@@ -58,6 +58,7 @@ GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> 
 
 void GameObject::Initialize()
 {
+	isInitialized = true;
 	for(size_t i = 0; i < components.size(); ++i)
 	{
 		components.at(i)->Initialize();
@@ -66,7 +67,6 @@ void GameObject::Initialize()
 	{
 		childObjects.at(i)->Initialize();
 	}
-	isInitialized = true;
 }
 
 void GameObject::Finalize()
