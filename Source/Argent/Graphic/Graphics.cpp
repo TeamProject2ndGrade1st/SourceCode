@@ -126,7 +126,6 @@ namespace Argent::Graphics
 		{
 			buff->Terminate();
 		}
-//		curFrameResource->WaitForEvent(renderingQueue.get());
 	}
 
 	void Graphics::Begin()
@@ -162,9 +161,6 @@ namespace Argent::Graphics
 		ImguiCtrl::End(curFrameResource->GetCmdList(RenderType::PostRendering), this->GetGUIHeap());
 #endif
 		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
-
-		//curFrameResource->GetCmdList(RenderType::Sprite)->Close();
-		//curFrameResource->GetCmdList(RenderType::Mesh)->Close();
 		curFrameResource->End();
 		
 		ID3D12CommandList* cmdlists[] { curFrameResource->GetCmdList(RenderType::Sprite), curFrameResource->GetCmdList(RenderType::Mesh), curFrameResource->GetCmdList(RenderType::PostRendering) };

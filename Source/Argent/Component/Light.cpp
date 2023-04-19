@@ -12,6 +12,15 @@ Light::Light(std::string name, DirectX::XMFLOAT4 color):
 		Argent::Graphics::Graphics::Instance()->SetLight(this);*/
 }
 
+void Light::Initialize()
+{
+	auto t = GetOwner()->GetTransform();
+	auto p = t->GetPosition();
+	p.y = 100;
+	p.z = -30;
+	t->SetPosition(p);
+}
+
 void Light::Reset()
 {
 	color.Reset();
