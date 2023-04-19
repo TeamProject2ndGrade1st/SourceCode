@@ -37,14 +37,14 @@ namespace Argent::Graphics
 		hr = CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(tmpFactory.ReleaseAndGetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
 		
-		hr = tmpFactory->QueryInterface(IID_PPV_ARGS(mFactory.ReleaseAndGetAddressOf()));
+		hr = tmpFactory->QueryInterface(IID_PPV_ARGS(factory.ReleaseAndGetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
 #else
-			hr = CreateDXGIFactory1(IID_PPV_ARGS(mFactory.ReleaseAndGetAddressOf()));
+			hr = CreateDXGIFactory1(IID_PPV_ARGS(factory.ReleaseAndGetAddressOf()));
 			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
 #endif
 
-		hr = CreateDevice(mFactory.Get(), mDevice.ReleaseAndGetAddressOf());
+		hr = CreateDevice(factory.Get(), device.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
 		//#ifdef _DEBUG
@@ -59,7 +59,7 @@ namespace Argent::Graphics
 
 #ifdef _DEBUG
 		ID3D12DebugDevice2* dDevice;
-		hr = mDevice->QueryInterface(IID_PPV_ARGS(&dDevice));
+		hr = device->QueryInterface(IID_PPV_ARGS(&dDevice));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 		dDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL | D3D12_RLDO_IGNORE_INTERNAL);
 		dDevice->Release();
@@ -67,18 +67,18 @@ namespace Argent::Graphics
 
 
 		
-		renderingQueue = std::make_unique<Dx12::ArCommandQueue>(mDevice.Get());
-		resourceQueue = std::make_unique<Dx12::ArCommandQueue>(mDevice.Get());
-		resourceCmdBundle = std::make_unique<Dx12::ArCommandBundle>(mDevice.Get());
+		renderingQueue = std::make_unique<Dx12::ArCommandQueue>(device.Get());
+		resourceQueue = std::make_unique<Dx12::ArCommandQueue>(device.Get());
+		resourceCmdBundle = std::make_unique<Dx12::CommandBundle>(device.Get());
 
-		hr = CreateSwapChain(hWnd, mFactory.Get(), static_cast<UINT>(windowWidth), static_cast<UINT>(windowHeight), NumBackBuffers, renderingQueue->cmdQueue.Get(), mSwapChain.GetAddressOf());
+		hr = CreateSwapChain(hWnd, factory.Get(), static_cast<UINT>(windowWidth), static_cast<UINT>(windowHeight), NumBackBuffers, renderingQueue->cmdQueue.Get(), swapChain.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 		
 
-		rtvHeap = std::make_unique<Dx12::DescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, NumBackBuffers + 100);
-		srvCbvHeap = std::make_unique<Dx12::DescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10000);
-		dsvHeap = std::make_unique<Dx12::DescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 100);
-		imGuiHeap = std::make_unique<Dx12::DescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10001);
+		rtvHeap = std::make_unique<Dx12::DescriptorHeap>(device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, NumBackBuffers + 100);
+		srvCbvHeap = std::make_unique<Dx12::DescriptorHeap>(device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10000);
+		dsvHeap = std::make_unique<Dx12::DescriptorHeap>(device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 100);
+		imGuiHeap = std::make_unique<Dx12::DescriptorHeap>(device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10001);
 
 		//imguiに画像を表示するために　一個目の空間はimgui用 それ以降はテクスチャ表示用
 		Dx12::Descriptor* tmp = imGuiHeap->PopDescriptor();
@@ -87,8 +87,8 @@ namespace Argent::Graphics
 
 		for(UINT i = 0; i < NumBackBuffers; ++i)
 		{
-			frameResources.at(i) = std::make_unique<FrameResource>(mDevice.Get(), mSwapChain.Get(),
-			                                                              i, rtvHeap->PopDescriptor(), dsvHeap->PopDescriptor(), srvCbvHeap->PopDescriptor(), NumCmdLists);
+			frameResources.at(i) = std::make_unique<FrameResource>(device.Get(), swapChain.Get(),
+			i, rtvHeap->PopDescriptor(), dsvHeap->PopDescriptor(), srvCbvHeap->PopDescriptor(), NumCmdLists);
 		}
 
 		//ビューポート　シザー矩形
@@ -107,11 +107,11 @@ namespace Argent::Graphics
 
 		for(auto& buffer : frameBuffer)
 		{
-			buffer = std::make_unique<FrameBuffer>(mDevice.Get(), frameResources.at(0)->GetBackBufferDesc(), 
+			buffer = std::make_unique<FrameBuffer>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), 
 			                                       clearColor);
 		}
 
-		mDevice->SetName(L"Device");
+		device->SetName(L"Device");
 		resourceCmdBundle.get()->Reset();
 	}
 
@@ -126,73 +126,50 @@ namespace Argent::Graphics
 
 	void Graphics::Begin()
 	{
-		const UINT backBufferIndex = mSwapChain->GetCurrentBackBufferIndex();
+		const UINT backBufferIndex = swapChain->GetCurrentBackBufferIndex();
 		curFrameResource = frameResources.at(backBufferIndex).get();
 		
 		curFrameResource->UpdateSceneConstant(sceneConstant);
-		curFrameResource->Reset();
-		
-		//const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();
-		//curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
-
-		
-		//レンダーターゲット
-		//const auto rtvHandle = curFrameResource->rtv->GetCPUHandle();
-
-		//深度
-		//curFrameResource->GetCmdList()->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
-		//curFrameResource->GetCmdList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-		//curFrameResource->GetCmdList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+		curFrameResource->Begin(&viewport, &scissorRect, clearColor);
 
 		frameBuffer[0]->Begin(this);
-
-		//curFrameResource->GetCmdList()->RSSetViewports(1, &viewport);
-		//curFrameResource->GetCmdList()->RSSetScissorRects(1, &scissorRect);
 
 		ID3D12DescriptorHeap* setHeap[]
 		{
 			srvCbvHeap->GetHeapPointer(),
 		};
-		curFrameResource->GetCmdList(RenderType::Sprite)->SetDescriptorHeaps(_countof(setHeap), setHeap);
+	//	curFrameResource->GetCmdList(RenderType::Sprite)->SetDescriptorHeaps(_countof(setHeap), setHeap);
 		curFrameResource->GetCmdList(RenderType::Mesh)->SetDescriptorHeaps(_countof(setHeap), setHeap);
 	}
 		
 	void Graphics::End()
 	{
-
-		frameBuffer[0]->End(this);
-		
-		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
-		curFrameResource->Begin(&viewport, &scissorRect, clearColor);
-
-
-
-		const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();
-		const auto rtvHandle = curFrameResource->rtv->GetCPUHandle();
-		//curFrameResource->GetCmdList()->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
-		//curFrameResource->GetCmdList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-		//curFrameResource->GetCmdList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-
 		frameBuffer[0]->Draw(this);
+		
+		
+
+		
+		curFrameResource->SetRenderTarget(viewport, scissorRect, clearColor);
+		
 #ifdef _DEBUG
 		ImguiCtrl::End(curFrameResource->GetCmdList(RenderType::Mesh), this->GetGUIHeap());
 #endif
+		frameBuffer[0]->End(this);
 		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 
+		//curFrameResource->GetCmdList(RenderType::Sprite)->Close();
+		//curFrameResource->GetCmdList(RenderType::Mesh)->Close();
+		curFrameResource->End();
 		
-
-		curFrameResource->GetCmdList(RenderType::Sprite)->Close();
-		curFrameResource->GetCmdList(RenderType::Mesh)->Close();
-
-		ID3D12CommandList* cmdlists[] { curFrameResource->GetCmdList(RenderType::Sprite), curFrameResource->GetCmdList(RenderType::Mesh) };
-		renderingQueue->cmdQueue->ExecuteCommandLists(2, cmdlists);
+		ID3D12CommandList* cmdlists[] { /*curFrameResource->GetCmdList(RenderType::Sprite),*/ curFrameResource->GetCmdList(RenderType::Mesh) };
+		renderingQueue->cmdQueue->ExecuteCommandLists(_countof(cmdlists), cmdlists);
 		renderingQueue->SetFence(1);
 
 		ID3D12GraphicsCommandList* cmdList = curFrameResource->GetCmdList(RenderType::Mesh);
 #ifdef _DEBUG
 		ImguiCtrl::CallBeforSwap(cmdList);
 #endif
-		mSwapChain->Present(1, 0);
+		swapChain->Present(1, 0);
 	}
 
 	HRESULT Graphics::CreateWhiteTexture(ID3D12Resource** resource)
@@ -218,7 +195,7 @@ namespace Argent::Graphics
 		resDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 		resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 		
-		hr = mDevice->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, 
+		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, 
 		                                      &resDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, nullptr,
 		                                      IID_PPV_ARGS(resource));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
@@ -253,7 +230,7 @@ namespace Argent::Graphics
 		resDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 		resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 		
-		hr = mDevice->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, 
+		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, 
 		                                      &resDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, nullptr,
 		                                      IID_PPV_ARGS(resource));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
@@ -295,7 +272,7 @@ namespace Argent::Graphics
 		resDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 		resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 		
-		hr = mDevice->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, 
+		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, 
 		                                      &resDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, nullptr,
 		                                      IID_PPV_ARGS(resource));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
@@ -345,7 +322,7 @@ namespace Argent::Graphics
 		resDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 		resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
-		hr = mDevice->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE,
+		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE,
 			&resDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, nullptr,
 			IID_PPV_ARGS(resource));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));

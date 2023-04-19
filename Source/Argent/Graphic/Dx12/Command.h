@@ -49,9 +49,9 @@ namespace Argent::Dx12
 		}
 	};
 
-	struct ArCommandBundle
+	struct CommandBundle
 	{
-		ArCommandBundle(ID3D12Device* device);
+		CommandBundle(ID3D12Device* device);
 		void Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect,
 			const D3D12_CPU_DESCRIPTOR_HANDLE& dsvHandle, const D3D12_CPU_DESCRIPTOR_HANDLE& rtvHandle,
 			float clearColor[4]) const;

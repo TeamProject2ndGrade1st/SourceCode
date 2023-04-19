@@ -22,13 +22,14 @@ namespace Argent::Graphics
 		cmdBundle.resize(NumCmdLists);
 		for(UINT i = 0; i < NumCmdLists; ++i)
 		{
-			cmdBundle.at(i) = std::make_unique<Dx12::ArCommandBundle>(device);
+			cmdBundle.at(i) = std::make_unique<Dx12::CommandBundle>(device);
 			hr = swapChain->GetBuffer(backBufferIndex, IID_PPV_ARGS(backBuffer.ReleaseAndGetAddressOf()));
 			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
 			device->CreateRenderTargetView(backBuffer.Get(), nullptr, rtv->GetCPUHandle());
 		}
 
+		//シーン用のコンスタントバッファを作成（カメラの位置とかライトとかその他シーン共通のモノ用)
 		const CD3DX12_HEAP_PROPERTIES prop = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 		CD3DX12_RESOURCE_DESC desc = CD3DX12_RESOURCE_DESC::Buffer(Helper::Math::CalcAlignmentSize(sizeof(SceneConstant)));
 		hr = device->CreateCommittedResource(&prop, D3D12_HEAP_FLAG_NONE, &desc, D3D12_RESOURCE_STATE_GENERIC_READ,
@@ -43,7 +44,8 @@ namespace Argent::Graphics
 		cBufferViewDesc.SizeInBytes = static_cast<UINT>(constantBuffer->GetDesc().Width);
 		device->CreateConstantBufferView(&cBufferViewDesc, cbv->GetCPUHandle());
 
-		
+
+		//深度バッファを作る
 		D3D12_RESOURCE_DESC resDesc{};
 		resDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 		resDesc.Width = backBuffer->GetDesc().Width;
@@ -62,9 +64,7 @@ namespace Argent::Graphics
 		D3D12_CLEAR_VALUE depthClearValue{};
 		depthClearValue.DepthStencil.Depth = 1.0f;
 		depthClearValue.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-		
-			
-			
+
 		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_DEPTH_WRITE, 
 		                                     &depthClearValue, IID_PPV_ARGS(depthStencilResource.ReleaseAndGetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
@@ -107,30 +107,47 @@ namespace Argent::Graphics
 		barrier.Transition.Subresource = 0;
 		barrier.Transition.pResource = backBuffer.Get();
 		
-		cmdBundle[0]->cmdList->ResourceBarrier(1, &barrier);
-		cmdBundle[1]->cmdList->ResourceBarrier(1, &barrier);
+		cmdBundle[static_cast<int>(RenderType::PostRendering)]->cmdList->ResourceBarrier(1, &barrier);
 	}
 
 	void FrameResource::Reset()
 	{
-		int i = 0;
 		for(auto& bundle : cmdBundle)
 		{
-			if(i > static_cast<int>(RenderType::Mesh)) break;
 			bundle.get()->Reset();
-			++i;
 		}
 	}
 
 	void FrameResource::Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect, float clearColor[4]) const
 	{
-		int i = 0;
 		for(auto& bundle : cmdBundle)
 		{
-			if(i > static_cast<int>(RenderType::Mesh)) break;
 			bundle->Begin(viewport, scissorRect, dsv->GetCPUHandle(), rtv->GetCPUHandle(), clearColor);
-			++i;
 		}
 	}
 
+	void FrameResource::End() const
+	{
+		for(const auto& bundle : cmdBundle)
+		{
+			bundle->cmdList->Close();
+		}
+	}
+
+	void FrameResource::SetRenderTarget(const D3D12_VIEWPORT& viewport, const D3D12_RECT& rect, float clearColor[4])
+	{
+		//auto dsvHandle = gfx->GetDepthHandle();
+		//todo
+		const auto dsvHandle = dsv->GetCPUHandle();
+		//const auto dsvHandle = gfx->GetCurrentFrameResource()->GetDsv()->GetCPUHandle();
+		const auto rtvHandle = rtv->GetCPUHandle();
+
+		GetCmdList(RenderType::PostRendering)->OMSetRenderTargets(1, &rtvHandle,
+			false, &dsvHandle);
+		SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		GetCmdList(RenderType::PostRendering)->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+		GetCmdList(RenderType::PostRendering)->ClearRenderTargetView(rtv->GetCPUHandle(), clearColor, 0, nullptr);
+		GetCmdList(RenderType::PostRendering)->RSSetViewports(1, &viewport);
+		GetCmdList(RenderType::PostRendering)->RSSetScissorRects(1, &rect);
+	}
 }

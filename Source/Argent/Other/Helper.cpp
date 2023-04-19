@@ -198,7 +198,7 @@ namespace Argent
 
 		namespace Texture
 		{
-			HRESULT LoadTexture(ID3D12Device* device, Argent::Dx12::ArCommandBundle* cmdBundle, Argent::Dx12::ArCommandQueue* cmdQueue, const wchar_t* filepath, ID3D12Resource** resource)
+			HRESULT LoadTexture(ID3D12Device* device, Argent::Dx12::CommandBundle* cmdBundle, Argent::Dx12::ArCommandQueue* cmdQueue, const wchar_t* filepath, ID3D12Resource** resource)
 			{
 				DirectX::TexMetadata metaData{};
 				DirectX::ScratchImage scratchImage{};
