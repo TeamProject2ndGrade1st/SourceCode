@@ -39,8 +39,24 @@ namespace Argent::Resource
 	{
 		for(auto& m : materials)
 		{
-			return nullptr;
+			if(m.second.lock()->CompareName(name) && !m.second.expired())
+			{
+				return m.second.lock();
+			}
 		}
+		return nullptr;
+	}
+
+	std::shared_ptr<Texture> ResourceManager::FindResourceFromFilePath(const char* filePath) const
+	{
+		for (auto& res : textures)
+		{
+			if (res.second.lock()->CompareName(filePath) && !res.second.expired())
+			{
+				return res.second.lock();
+			}
+		}
+		return nullptr;
 	}
 
 	//bool ResourceManager::FindTexture(const wchar_t* filepath, ID3D12Resource** ppResource)

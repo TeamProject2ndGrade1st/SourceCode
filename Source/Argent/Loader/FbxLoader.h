@@ -72,9 +72,7 @@ namespace Argent::Loader
 			int64_t nodeIndex;
 			std::string name;
 			Argent::Resource::Mesh::MeshResource meshResource;
-			//std::vector<Argent::Resource::Mesh::Vertex> vertices;
 			std::vector<Resource::Mesh::BoneVertex> vertexBones;
-			//std::vector<uint32_t> indices;
 			std::vector<Resource::Mesh::Subset> subsets;
 			Argent::Resource::Mesh::Skeleton bindPose;
 			DirectX::XMFLOAT4X4 defaultGlobalTransform

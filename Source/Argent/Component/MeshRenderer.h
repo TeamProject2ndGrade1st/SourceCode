@@ -24,8 +24,9 @@ namespace Argent::Component::Renderer
 
 
 	public:
-		MeshRenderer(ID3D12Device* device, const char* fileName, std::shared_ptr<Resource::Mesh::ArMesh> meshes,
-			std::unordered_map<uint64_t, std::shared_ptr<Material::MeshMaterial>>& materials);
+		MeshRenderer(ID3D12Device* device, const char* fileName, 
+			std::shared_ptr<Resource::Mesh::ArMesh> meshes
+			);
 		~MeshRenderer() override = default;
 
 		MeshRenderer(const MeshRenderer&) = delete;
@@ -52,9 +53,6 @@ namespace Argent::Component::Renderer
 
 	protected:
 		std::shared_ptr<Resource::Mesh::ArMesh> mesh{};
-
-		std::unordered_map<uint64_t, std::shared_ptr<Material::MeshMaterial>> materials{};
-		
 	public:
 	};
 }

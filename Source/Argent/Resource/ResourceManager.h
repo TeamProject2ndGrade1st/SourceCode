@@ -53,10 +53,16 @@ namespace Argent::Resource
 		std::shared_ptr<Texture> GetTexture(uint64_t uniqueId) const 
 		{
 			const auto it = textures.find(uniqueId);
-			if (it == textures.end()) _ASSERT_EXPR(FALSE, "missing id");
-			if (it->second.expired()) _ASSERT_EXPR(FALSE, "missing resource");
+			if (it == textures.end()) _ASSERT_EXPR(FALSE, L"missing id");
+			if (it->second.expired()) _ASSERT_EXPR(FALSE, L"missing resource");
 
 			return it->second.lock();
+		}
+
+		void RegisterMaterial(std::shared_ptr<Material::MeshMaterial> m)
+		{
+			resources.emplace_back(m);
+			materials[m->GetUniqueId()] = m;
 		}
 
 		uint64_t LoadTexture(const char* filePath);
@@ -65,17 +71,8 @@ namespace Argent::Resource
 
 	private:
 
-		std::shared_ptr<Texture> FindResourceFromFilePath(const char* filePath) const
-		{
-			for(auto& res : textures)
-			{
-				if(res.second.lock()->CompareName(filePath) && !res.second.expired())
-				{
-					return res.second.lock();
-				}
-			}
-			return nullptr;
-		}
+		std::shared_ptr<Texture> FindResourceFromFilePath(const char* filePath) const;
+		
 
 		std::vector<std::shared_ptr<ArResource>> resources;	//ÉfÅ[É^ï€éùÇÃÇΩÇﬂÇ¡Ç€Ç¢Ç≈Ç∑
 		std::unordered_map<uint64_t, std::weak_ptr<Texture>> textures;

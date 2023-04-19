@@ -39,9 +39,16 @@ namespace Argent::Resource
 		}
 
 		uint64_t GetUniqueId() const { return uniqueId; }  // NOLINT(modernize-use-nodiscard)
-		const char* GetName() const { return name.c_str(); }// NOLINT(modernize-use-nodiscard)
+		const char* GetName() const
+		{
+			if(name.size() > 120)
+			{
+				_ASSERT_EXPR(false, L"Very Long String");
+			}
+			return name.c_str();
+		}// NOLINT(modernize-use-nodiscard)
 		void SetName(const char* n) { name = n; }
-	private:
+	protected:
 		uint64_t uniqueId;
 		std::string name;
 		const ResourceType type;

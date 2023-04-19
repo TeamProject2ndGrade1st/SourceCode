@@ -62,7 +62,6 @@ namespace Argent::Component::Renderer
 	public:
 		SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
 			std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
-			std::unordered_map<uint64_t, std::shared_ptr<Material::MeshMaterial>>& materials,
 			std::vector<Resource::Animation::AnimationClip>& animation);
 
 		~SkinnedMeshRenderer() override = default;
@@ -97,7 +96,6 @@ namespace Argent::Component::Renderer
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> objectConstantBuffer;
 
 		std::shared_ptr<Argent::Resource::Mesh::ArSkinnedMesh> skinnedMesh;
-		std::unordered_map<uint64_t, std::shared_ptr<Material::MeshMaterial>> materials;
 		int clipIndex{};
 		float frameIndex{};
 		std::vector<Resource::Animation::AnimationClip> animationClips;

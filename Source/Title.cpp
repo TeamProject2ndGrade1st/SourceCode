@@ -36,6 +36,7 @@ void Title::Initialize()
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Cube.fbx");
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));
 
+	AddObject(new GameObject("MeshDemo", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx")));
 
 	AddObject(new GameObject("Nico", new RayCastDemo()));
 	AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));

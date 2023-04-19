@@ -63,13 +63,23 @@ namespace Argent::Loader::Fbx
 			cereal::BinaryInputArchive deserialization(ifs);
 			deserialization(sceneView, fbxResource);
 
-			for(auto& m : fbxResource.materials)
+			for(auto& mesh : fbxResource.tmpMeshes)
+			{
+				for(auto& s : mesh.subsets)
+				{
+					for(int i = 0; i < Material::MeshMaterial::NumTextures; ++i)
+					{
+						s.material->CreateTexture(s.material->textureNames[i].c_str(), static_cast<Material::MeshMaterial::TextureType>(i));
+					}
+				}
+			}
+			/*for(auto& m : fbxResource.materials)
 			{
 				for(int i = 0; i < Material::MeshMaterial::NumTextures; ++i)
 				{
 					m.second->CreateTexture(m.second->textureNames[i].c_str(),static_cast<Material::MeshMaterial::TextureType>(i));
 				}
-			}
+			}*/
 		}
 		else
 		{
@@ -93,13 +103,11 @@ namespace Argent::Loader::Fbx
 
 			Traverse(fbxScene->GetRootNode(), sceneView);
 
-			FetchMesh(fbxScene, sceneView, fbxResource.tmpMeshes);
 			FetchMaterial(fbxScene, sceneView, filePath, fbxResource.materials);
+			FetchMesh(fbxScene, sceneView, fbxResource.tmpMeshes);
 			
 
 			FetchAnimation(fbxScene, fbxResource.animationClips, 0, sceneView);
-
-
 
 			manager->Destroy();
 			std::ofstream ofs(cerealFileName.c_str(), std::ios::binary);
@@ -136,7 +144,7 @@ namespace Argent::Loader::Fbx
 			for(size_t i = 0; i < meshes.size(); ++i)
 			{
 				ret.at(i) = new Component::Renderer::MeshRenderer(device,
-					filePath, meshes.at(i), fbxResource.materials);
+					filePath, meshes.at(i));
 			}
 			/*ret = new Component::Renderer::MeshRenderer(device,
 				filePath, meshes, fbxResource.materials);*/
@@ -158,7 +166,7 @@ namespace Argent::Loader::Fbx
 			for (size_t i = 0; i < skinnedMeshes.size(); ++i)
 			{
 				ret.at(i) = new Component::Renderer::SkinnedMeshRenderer(device, filePath,
-					skinnedMeshes.at(i), fbxResource.materials, fbxResource.animationClips);
+					skinnedMeshes.at(i), fbxResource.animationClips);
 
 			}
 			//ret = new Component::Renderer::SkinnedMeshRenderer(device, filePath,
@@ -221,7 +229,6 @@ namespace Argent::Loader::Fbx
 		}
 	}
 
-
 	void LoadDebug(const char* filePath)
 	{
 		//シリアライズ
@@ -278,6 +285,9 @@ namespace Argent::Loader::Fbx
 			{
 				const FbxSurfaceMaterial* fbxMaterial{ fbxMesh->GetNode()->GetMaterial(materialIndex) };
 				subsets.at(materialIndex).materialUniqueId = fbxMaterial->GetUniqueID();
+				subsets.at(materialIndex).materialName = fbxMaterial->GetName();
+				
+				subsets.at(materialIndex).material = Resource::ResourceManager::Instance().GetMaterial(fbxMaterial->GetName());
 			}
 
 			if (MaterialCount > 0)
@@ -363,7 +373,7 @@ namespace Argent::Loader::Fbx
 		}
 	}
 
-	void FetchSurfaceMaterial(const FbxSurfaceMaterial* surfaceMaterial, const char* pName, const char* fbxFilePath, std::shared_ptr<Material::MeshMaterial>& material)
+	void FetchSurfaceMaterial(const FbxSurfaceMaterial* surfaceMaterial, const char* pName, const char* fbxFilePath, std::shared_ptr<Material::MeshMaterial> material)
 	{
 		const FbxProperty fbxProp = surfaceMaterial->FindProperty(pName);
 
@@ -410,7 +420,6 @@ namespace Argent::Loader::Fbx
 				path.replace_filename(tmpFilePath);
 
 				material->CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureType::Normal);
-				
 			}
 			
 			
@@ -439,7 +448,7 @@ namespace Argent::Loader::Fbx
 		}
 	}
 
-	void SetDummySurfaceMaterial(std::shared_ptr<Material::MeshMaterial>& material)
+	void SetDummySurfaceMaterial(std::shared_ptr<Material::MeshMaterial> material)
 	{
 		material->CreateTexture("", Material::MeshMaterial::TextureType::Diffuse);
 		material->CreateTexture("", Material::MeshMaterial::TextureType::Normal);
@@ -459,9 +468,8 @@ namespace Argent::Loader::Fbx
 				for (int materialIndex = 0; materialIndex < materialCount; ++materialIndex)
 				{
 					const FbxSurfaceMaterial* fbxMaterial{ fbxNode->GetMaterial(materialIndex) };
-
-					std::shared_ptr<Material::MeshMaterial> material = std::make_shared<Material::MeshMaterial>();
-					material->name = fbxMaterial->GetName();
+					const char* name = fbxMaterial->GetName();
+					std::shared_ptr<Material::MeshMaterial> material = std::make_shared<Material::MeshMaterial>(name);
 					UINT64 materialUniqueId = fbxMaterial->GetUniqueID();
 
 					/// スペキュラー　アンビエント　ディフューズ　ノーマルだけ読み込む
@@ -472,6 +480,7 @@ namespace Argent::Loader::Fbx
 					FetchSurfaceMaterial(fbxMaterial, FbxSurfaceMaterial::sBump, fbxFilePath, material);
 
 					materials.emplace(materialUniqueId, material);
+					Resource::ResourceManager::Instance().RegisterMaterial(material);
 				}
 			}
 			else
@@ -482,8 +491,8 @@ namespace Argent::Loader::Fbx
 
 		if(materials.size() <= 0)
 		{
-			auto material = std::make_shared<Material::MeshMaterial>();
-			material->name = "Dummy";
+			const char* name = "Dummy";
+			auto material = std::make_shared<Material::MeshMaterial>(name);
 			SetDummySurfaceMaterial(material);
 			materials.emplace(0, material);
 		}
