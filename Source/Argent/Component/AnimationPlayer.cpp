@@ -1,21 +1,29 @@
 #include "AnimationPlayer.h"
 #include "../Core/Timer.h"
 
-void Argent::Component::Animation::AnimationPlayer::Update()
+namespace Argent::Component::Animation
 {
-	if (clips.size() == 0) return;
-	//static float animationTick{};
-	const Resource::Animation::AnimationClip& animation{ this->clips.at(clipIndex) };
-	frameIndex = static_cast<float>(animationTick* animation.samplingRate);
-	if(frameIndex > animation.sequence.size() - 1)
+	AnimationPlayer::AnimationPlayer(std::vector<Resource::Animation::AnimationClip> clips):
+		BaseComponent("Animation Player")
 	{
-		frameIndex = 0;
+		this->clips = clips;
+	}
 
-		animationTick = 0;
-	}
-	else
+	void AnimationPlayer::Update()
 	{
-		animationTick += Timer::ArTimer::Instance().DeltaTime();
+		if (clips.size() == 0) return;
+		
+		const Resource::Animation::AnimationClip& animation{ this->clips.at(clipIndex) };
+		frameIndex = static_cast<float>(animationTick* animation.samplingRate);
+		if(frameIndex > animation.sequence.size() - 1)
+		{
+			frameIndex = 0;
+
+			animationTick = 0;
+		}
+		else
+		{
+			animationTick += Timer::ArTimer::Instance().DeltaTime();
+		}
 	}
-	BaseComponent::Update();
 }

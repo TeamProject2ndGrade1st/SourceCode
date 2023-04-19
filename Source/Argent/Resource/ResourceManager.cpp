@@ -28,11 +28,19 @@ namespace Argent::Resource
 
 		ret = std::make_shared<Argent::Resource::Texture>(filePath);
 
-		resources[ret->GetUniqueId()] = ret;
+		textures[ret->GetUniqueId()] = ret;
 
-		rowTextureData.emplace_back(ret);
+		resources.emplace_back(ret);
 
 		return ret->GetUniqueId();
+	}
+
+	std::shared_ptr<Material::MeshMaterial> ResourceManager::GetMaterial(const char* name)
+	{
+		for(auto& m : materials)
+		{
+			return nullptr;
+		}
 	}
 
 	//bool ResourceManager::FindTexture(const wchar_t* filepath, ID3D12Resource** ppResource)

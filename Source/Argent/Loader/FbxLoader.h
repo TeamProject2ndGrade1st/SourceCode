@@ -96,7 +96,7 @@ namespace Argent::Loader
 		struct FbxResource
 		{
 			std::vector<TmpFbxMesh> tmpMeshes;
-			std::unordered_map<uint64_t, Material::ArMeshMaterial> materials;
+			std::unordered_map<uint64_t, std::shared_ptr<Material::MeshMaterial>> materials;
 			std::vector<Resource::Animation::AnimationClip> animationClips;
 
 			template<class T>

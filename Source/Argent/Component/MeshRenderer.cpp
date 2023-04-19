@@ -8,7 +8,7 @@ namespace Argent::Component::Renderer
 {
 	MeshRenderer::MeshRenderer(ID3D12Device* device, const char* fileName,
 		std::shared_ptr<Resource::Mesh::ArMesh> meshes,
-		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials):
+		std::unordered_map<uint64_t, std::shared_ptr<Material::MeshMaterial>>& materials):
 		BaseRenderer("Mesh Renderer")
 	{
 		this->mesh = meshes;
@@ -37,11 +37,11 @@ namespace Argent::Component::Renderer
 		for (const auto& subset : mesh->subsets)
 		{
 			const auto& material{ materials.at(subset.materialUniqueId) };
-			Argent::Material::ArMeshMaterial::Constant tmpConstant;
-			tmpConstant = material.constant;
-			tmpConstant.color = material.color.GetColor();
-			material.constantBuffer->UpdateConstantBuffer(tmpConstant);
-			material.SetOnCommand(cmdList, 2,
+			Argent::Material::MeshMaterial::Constant tmpConstant;
+			tmpConstant = material->constant;
+			tmpConstant.color = material->color.GetColor();
+			material->constantBuffer->UpdateConstantBuffer(tmpConstant);
+			material->SetOnCommand(cmdList, 2,
 				3, 4);
 			cmdList->DrawIndexedInstanced(subset.indexCount, 1, subset.startIndexLocation, 0, 0);
 		}
@@ -76,7 +76,7 @@ namespace Argent::Component::Renderer
 			{
 				for (auto& m : materials)
 				{
-					m.second.DrawDebug();
+					m.second->DrawDebug();
 				}
 				ImGui::TreePop();
 			}
@@ -90,11 +90,11 @@ namespace Argent::Component::Renderer
 	{
 		for (auto it = materials.begin(); it != materials.end(); ++it)
 		{
-			it->second.constantBuffer =
-				std::make_unique<Argent::Dx12::ArConstantBuffer<Material::ArMeshMaterial::Constant>>(
+			it->second->constantBuffer =
+				std::make_unique<Argent::Dx12::ArConstantBuffer<Material::MeshMaterial::Constant>>(
 					device,
 					Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
-					&it->second.constant);
+					&it->second->constant);
 		}
 		constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Constants>>(device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 	}

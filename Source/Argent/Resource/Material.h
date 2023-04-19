@@ -39,7 +39,7 @@ namespace Argent::Material
 		std::string name;
 	};
 
-	struct ArMeshMaterial
+	struct MeshMaterial
 	{
 	public:
 		template<class T>

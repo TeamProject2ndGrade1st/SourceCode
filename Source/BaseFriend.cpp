@@ -18,7 +18,7 @@ void BaseFriend::Initialize()
 {
     static bool flag;
     if (flag)return;
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/Enemy_001Ver9.fbx", false));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     BaseActor::Initialize();
 
     GetOwner()->GetTransform()->SetScaleFactor(0.03f);
