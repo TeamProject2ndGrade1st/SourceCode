@@ -69,6 +69,7 @@ namespace Argent::App
 
 			arGfx->End();
 		}
+		arGfx->Terminate();
 		arSceneManager.Finalize();
 #ifdef _DEBUG
 		ImguiCtrl::Terminate();
@@ -78,7 +79,7 @@ namespace Argent::App
 
 	int ArApp::Terminate() const
 	{
-		arGfx->Terminate();
+		//arGfx->Terminate();
 		return 0;
 	}
 }

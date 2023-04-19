@@ -32,7 +32,7 @@ namespace Argent::Graphics
 	class FrameResource
 	{
 	public:
-		FrameResource(ID3D12Device* device, IDXGISwapChain4* swapChain, UINT backBufferIndex, 
+		FrameResource(ID3D12Device* device, IDXGISwapChain3* swapChain, UINT backBufferIndex, 
 		              Dx12::Descriptor* rtv, Dx12::Descriptor* dsv, Dx12::Descriptor* cbv, 
 		              UINT NumCmdLists);
 		~FrameResource() = default;
@@ -55,9 +55,9 @@ namespace Argent::Graphics
 		void SetSceneConstant(UINT rootParameterIndex = 0);
 		void SetBarrier(D3D12_RESOURCE_STATES before, D3D12_RESOURCE_STATES after) const;
 		void Reset();
+		void Terminate();
 		Dx12::Descriptor* GetDsv() const { return dsv;  }
 
-		std::vector<std::unique_ptr<Dx12::CommandBundle>> cmdBundle;
 		Microsoft::WRL::ComPtr<ID3D12Resource> backBuffer;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constantBuffer;
 		Microsoft::WRL::ComPtr<ID3D12Resource> depthStencilResource;
@@ -66,6 +66,11 @@ namespace Argent::Graphics
 		Dx12::Descriptor* cbv;
 		UINT backBufferIndex;
 		SceneConstant*	cbScene;
+		uint64_t fenceValue;
+
+		struct CommandQueue;
+		void WaitForEvent(Dx12::CommandQueue* cmdQueue);
+		std::vector<std::unique_ptr<Dx12::CommandBundle>> cmdBundle;
 	public:
 	};
 }

@@ -9,7 +9,7 @@
 namespace Argent::Graphics 
 {
 	FrameResource::FrameResource(ID3D12Device* device, 
-	                             IDXGISwapChain4* swapChain, UINT backBufferIndex, 
+	                             IDXGISwapChain3* swapChain, UINT backBufferIndex, 
 	                             Dx12::Descriptor* rtv, Dx12::Descriptor* dsv, Dx12::Descriptor* cbv, 
 	                             UINT NumCmdLists):
 		cbScene(nullptr)
@@ -117,6 +117,26 @@ namespace Argent::Graphics
 			bundle.get()->Reset();
 		}
 	}
+
+	void FrameResource::Terminate()
+	{
+		for(auto& bundle : cmdBundle)
+		{
+			bundle.get()->cmdList->Close();
+		}
+		this->Reset();
+	}
+
+	void FrameResource::WaitForEvent(Dx12::CommandQueue* cmdQueue)
+	{
+		if(cmdQueue->fence->GetCompletedValue() < fenceValue)
+		{
+			HANDLE fenceEvent{};
+			cmdQueue->fence->SetEventOnCompletion(fenceValue, fenceEvent);
+			WaitForSingleObject(fenceEvent, INFINITE);
+		}
+	}
+
 
 	void FrameResource::Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect, float clearColor[4]) const
 	{

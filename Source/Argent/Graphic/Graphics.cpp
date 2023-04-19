@@ -67,8 +67,8 @@ namespace Argent::Graphics
 
 
 		
-		renderingQueue = std::make_unique<Dx12::ArCommandQueue>(device.Get());
-		resourceQueue = std::make_unique<Dx12::ArCommandQueue>(device.Get());
+		renderingQueue = std::make_unique<Dx12::CommandQueue>(device.Get());
+		resourceQueue = std::make_unique<Dx12::CommandQueue>(device.Get());
 		resourceCmdBundle = std::make_unique<Dx12::CommandBundle>(device.Get());
 
 		hr = CreateSwapChain(hWnd, factory.Get(), static_cast<UINT>(windowWidth), static_cast<UINT>(windowHeight), NumBackBuffers, renderingQueue->cmdQueue.Get(), swapChain.GetAddressOf());
@@ -121,12 +121,19 @@ namespace Argent::Graphics
 
 	void Graphics::Terminate()
 	{
-
+		renderingQueue->WaitForFence(NumBackBuffers);
+		for(auto& buff : frameResources)
+		{
+			buff->Terminate();
+		}
+//		curFrameResource->WaitForEvent(renderingQueue.get());
 	}
 
 	void Graphics::Begin()
 	{
-		const UINT backBufferIndex = swapChain->GetCurrentBackBufferIndex();
+		if(curFrameResource)curFrameResource->WaitForEvent(renderingQueue.get());
+		++backBufferIndex;
+		backBufferIndex = backBufferIndex % NumBackBuffers;
 		curFrameResource = frameResources.at(backBufferIndex).get();
 		
 		curFrameResource->UpdateSceneConstant(sceneConstant);
@@ -162,13 +169,14 @@ namespace Argent::Graphics
 		
 		ID3D12CommandList* cmdlists[] { curFrameResource->GetCmdList(RenderType::Sprite), curFrameResource->GetCmdList(RenderType::Mesh), curFrameResource->GetCmdList(RenderType::PostRendering) };
 		renderingQueue->cmdQueue->ExecuteCommandLists(_countof(cmdlists), cmdlists);
-		renderingQueue->SetFence(1);
 
 		ID3D12GraphicsCommandList* cmdList = curFrameResource->GetCmdList(RenderType::PostRendering);
 #ifdef _DEBUG
-		ImguiCtrl::CallBeforSwap(cmdList);
+		ImguiCtrl::CallBeforeSwap(cmdList);
 #endif
-		swapChain->Present(1, 0);
+		swapChain->Present(0, 0);
+
+		renderingQueue->SetFence(static_cast<int>(RenderType::Count), curFrameResource);
 	}
 
 	HRESULT Graphics::CreateWhiteTexture(ID3D12Resource** resource)
@@ -421,7 +429,7 @@ namespace Argent::Graphics
 		return E_FAIL;
 	}
 
-	HRESULT CreateSwapChain(HWND hWnd, IDXGIFactory2* factory, UINT windowWidth, UINT windowHeight, UINT NumBackBuffers, ID3D12CommandQueue* cmdQueue, IDXGISwapChain4** ppSwapChain)
+	HRESULT CreateSwapChain(HWND hWnd, IDXGIFactory2* factory, UINT windowWidth, UINT windowHeight, UINT NumBackBuffers, ID3D12CommandQueue* cmdQueue, IDXGISwapChain3** ppSwapChain)
 	{
 		HRESULT hr{ S_OK };
 		DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};

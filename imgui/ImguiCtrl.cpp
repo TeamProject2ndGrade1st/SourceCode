@@ -22,9 +22,9 @@ void ImguiCtrl::End(ID3D12GraphicsCommandList* cmdList, ID3D12DescriptorHeap* he
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), cmdList);
 }
 
-void ImguiCtrl::CallBeforSwap(ID3D12GraphicsCommandList* cmdList)
+void ImguiCtrl::CallBeforeSwap(ID3D12GraphicsCommandList* cmdList)
 {
-	ImGuiIO& io = ImGui::GetIO();// (void)io;
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
@@ -43,7 +43,7 @@ void ::ImguiCtrl::Initialize(HWND hWnd, ID3D12Device* device, ID3D12DescriptorHe
 		16.0f, nullptr);
 
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+//	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
 	ImGuiStyle& style = ImGui::GetStyle();
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)

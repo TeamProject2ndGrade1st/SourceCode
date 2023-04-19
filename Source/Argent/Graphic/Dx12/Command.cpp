@@ -1,9 +1,24 @@
 #include "Command.h"
 #include<d3d12.h>
 #include <dxgi1_6.h>
+#include "../FrameResource.h"
 
 namespace Argent::Dx12
 {
+	void CommandQueue::SetFence(UINT numCmdList, Graphics::FrameResource* resource)
+	{
+		if(!resource)
+		{
+			cmdQueue->Signal(fence.Get(), ++fenceValue);
+		}
+		else
+		{
+			resource->fenceValue += 1;
+			fenceValue = resource->fenceValue;
+			cmdQueue->Signal(fence.Get(), resource->fenceValue);
+		}
+	}
+
 	CommandBundle::CommandBundle(ID3D12Device* device)
 	{
 		HRESULT hr{ S_OK };
@@ -24,9 +39,10 @@ namespace Argent::Dx12
 		cmdList->Close();
 	}
 
+
 	void CommandBundle::Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect,
-		const D3D12_CPU_DESCRIPTOR_HANDLE& dsvHandle, const D3D12_CPU_DESCRIPTOR_HANDLE& rtvHandle,
-		float clearColor[4]) const
+	                          const D3D12_CPU_DESCRIPTOR_HANDLE& dsvHandle, const D3D12_CPU_DESCRIPTOR_HANDLE& rtvHandle,
+	                          float clearColor[4]) const
 	{
 		this->Reset();
 		//cmdList->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
