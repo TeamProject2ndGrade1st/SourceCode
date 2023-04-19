@@ -93,13 +93,11 @@ namespace Argent::Graphics
 		renderingPipeline = RenderingPipeline::CreateDefaultFrameBufferPipeline();
 	}
 
-	void FrameBuffer::Begin(const Graphics* gfx) const
+	void FrameBuffer::Begin(const Graphics* gfx, ID3D12GraphicsCommandList* cList)
 	{
-		ID3D12GraphicsCommandList* cmdList = gfx->GetCommandList(RenderType::Mesh);
-		//ID3D12GraphicsCommandList* spriteCmdList = gfx->GetCommandList(RenderType::Sprite);
+		cmdList = cList;
 
 		const auto dsvHandle = dsvDescriptor->GetCPUHandle();
-		//const auto dsvHandle = gfx->GetCurrentFrameResource()->GetDsv()->GetCPUHandle();
 		const auto rtvHandle = rtvDescriptor->GetCPUHandle();
 
 		CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
@@ -108,7 +106,6 @@ namespace Argent::Graphics
 			D3D12_RESOURCE_STATE_RENDER_TARGET);
 		//メッシュ描画用とスプライト描画用の両方のコマンドリストでバリアを発行（レンダーターゲットがそれぞれ違う）
 		cmdList->ResourceBarrier(1, &barrier);
-		//spriteCmdList->ResourceBarrier(1, &barrier);
 
 		cmdList->OMSetRenderTargets(1, &rtvHandle,
 			false, &dsvHandle);
@@ -131,18 +128,18 @@ namespace Argent::Graphics
 			resource.Get(),
 			D3D12_RESOURCE_STATE_RENDER_TARGET,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-		gfx->GetCommandList(RenderType::Mesh)->ResourceBarrier(1, &barrier);
+		cmdList->ResourceBarrier(1, &barrier);
 		//gfx->GetCommandList(RenderType::Sprite)->ResourceBarrier(1, &barrier);
 	}
 
 	void FrameBuffer::Draw(const Graphics* gfx) const
 	{
-		ID3D12GraphicsCommandList* cmdList = gfx->GetCommandList(RenderType::Mesh);
-		renderingPipeline->SetOnCommandList(cmdList);
-		cmdList->SetGraphicsRootDescriptorTable(0, srvDescriptor->GetGPUHandle());
+		ID3D12GraphicsCommandList* commandList = gfx->GetCommandList(RenderType::PostRendering);
+		renderingPipeline->SetOnCommandList(commandList);
+		commandList->SetGraphicsRootDescriptorTable(0, srvDescriptor->GetGPUHandle());
 
-		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-		vertexBuffer->SetOnCommandList(cmdList, 0);
-		cmdList->DrawInstanced(4, 1, 0, 0);
+		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+		vertexBuffer->SetOnCommandList(commandList, 0);
+		commandList->DrawInstanced(4, 1, 0, 0);
 	}
 }

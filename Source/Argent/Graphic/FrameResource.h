@@ -23,7 +23,7 @@ namespace Argent::Graphics
 
 	enum class RenderType
 	{
-		//Sprite,
+		Sprite,
 		Mesh,
 		PostRendering,
 		Count

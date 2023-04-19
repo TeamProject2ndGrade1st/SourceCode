@@ -28,7 +28,7 @@ namespace Argent::Graphics
 		virtual ~FrameBuffer() = default;
 
 
-		void Begin(const Graphics* gfx) const;
+		void Begin(const Graphics* gfx, ID3D12GraphicsCommandList* cList);
 		void End(const Graphics* gfx) const;
 		void Draw(const Graphics* gfx) const;
 	private:
@@ -42,5 +42,6 @@ namespace Argent::Graphics
 		Dx12::Descriptor* rtvDescriptor;
 		Dx12::Descriptor* dsvDescriptor;
 		float clearColor[4];
+		ID3D12GraphicsCommandList* cmdList;
 	};
 }
