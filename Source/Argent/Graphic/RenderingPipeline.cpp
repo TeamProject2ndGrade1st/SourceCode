@@ -295,7 +295,7 @@ namespace Argent::Graphics
 		rsDesc.MultisampleEnable = FALSE;
 		rsDesc.FrontCounterClockwise = TRUE;
 		rsDesc.CullMode = D3D12_CULL_MODE_NONE;
-		rsDesc.FillMode = D3D12_FILL_MODE_SOLID;
+		rsDesc.FillMode = D3D12_FILL_MODE_WIREFRAME;
 		rsDesc.DepthClipEnable = TRUE;
 
 

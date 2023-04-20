@@ -36,12 +36,15 @@ namespace Argent::Component
 				Cube,
 				Sphere,
 				Cylinder,
+				Mesh,
 				Max,
 			};
 			RayCastCollider(MeshType type = MeshType::Cylinder,
 				const DirectX::XMFLOAT3& offset = DirectX::XMFLOAT3(),
 					const DirectX::XMFLOAT3& scale = DirectX::XMFLOAT3(1, 1, 1),
 					const DirectX::XMFLOAT4& rotation = DirectX::XMFLOAT4(1, 1, 1, 1));
+
+			RayCastCollider(const MeshResource& mResource);
 
 			~RayCastCollider() override = default;
 
@@ -59,10 +62,10 @@ namespace Argent::Component
 			DirectX::XMFLOAT3 scale;
 			DirectX::XMFLOAT4 rotation;
 
-			const MeshResource& GetMeshResource()const { return mResource[static_cast<int>(type)]; }
+			const MeshResource& GetMeshResource()const { return mResources[static_cast<int>(type)]; }
 		protected:
-			//MeshResource mResource;
-			static MeshResource mResource[static_cast<int>(MeshType::Max)];
+			MeshResource mResource;
+			static MeshResource mResources[static_cast<int>(MeshType::Max)];
 		};
 		
 	}

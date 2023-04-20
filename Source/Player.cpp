@@ -31,30 +31,6 @@ void Player::Initialize()
 }
 
 
-void Player::DrawDebug()
-{
-    if(ImGui::TreeNode(GetName().c_str()))
-    {
-        static int frameTime = 0;
-        ++frameTime;
-        double elapsedTime = (double)(end - start) / 1000;
-        deltaTime += elapsedTime;
-        static int frame = 0;
-        if(deltaTime > 1.0f)
-        {
-            frame = frameTime;
-	        deltaTime = 0;
-            frameTime = 0;
-        }
-        ImGui::InputInt("FrameRate", &frame);
-        ImGui::InputDouble("ElapsedTime", &elapsedTime);
-        ImGui::SliderFloat("movement", &movement, 0.1f, 10.0);
-        ImGui::DragFloat2("mouse", &mousePos.x);
-        ImGui::SliderFloat("sensitivity", &sensitivity, 0.1f, 2.0f);
-		BaseActor::DrawDebug();
-        ImGui::TreePop();
-    }
-}
 
 
 void Player::Update()
@@ -118,7 +94,8 @@ void Player::Update()
 
         t->CalcForward();
 
-        t->SetRotation(setRotation);
+        if(useCameraControl)
+			t->SetRotation(setRotation);
         //t->SetRotation(cameraRot + mouseMovement);
 #endif
 
@@ -133,6 +110,39 @@ void Player::Update()
     ray->SetRayStartPosition(GetTransform()->GetPosition());
     ray->SetRayDirection(GetTransform()->CalcForward());
     ray->SetRayLength(movement * Argent::Timer::GetDeltaTime());
+
+#ifdef _DEBUG
+    if(Argent::Input::GetKeyDown(KeyCode::O))
+    {
+	    useCameraControl = !useCameraControl;
+    }
+#endif
+}
+
+void Player::DrawDebug()
+{
+    if(ImGui::TreeNode(GetName().c_str()))
+    {
+        ImGui::Checkbox("UseCameraControl", &useCameraControl);
+        static int frameTime = 0;
+        ++frameTime;
+        double elapsedTime = (double)(end - start) / 1000;
+        deltaTime += elapsedTime;
+        static int frame = 0;
+        if(deltaTime > 1.0f)
+        {
+            frame = frameTime;
+	        deltaTime = 0;
+            frameTime = 0;
+        }
+        ImGui::InputInt("FrameRate", &frame);
+        ImGui::InputDouble("ElapsedTime", &elapsedTime);
+        ImGui::SliderFloat("movement", &movement, 0.1f, 10.0);
+        ImGui::DragFloat2("mouse", &mousePos.x);
+        ImGui::SliderFloat("sensitivity", &sensitivity, 0.1f, 2.0f);
+		BaseActor::DrawDebug();
+        ImGui::TreePop();
+    }
 }
 
 // ƒJƒƒ‰‚ÌˆÚ“®
@@ -175,6 +185,7 @@ void Player::MoveCamera()
     }
 #endif
 
+    if(!useCameraControl) return;
     // ‘O(W)
 	//if (GetAsyncKeyState('W') < 0)
     if (Argent::Input::GetKey(KeyCode::W))

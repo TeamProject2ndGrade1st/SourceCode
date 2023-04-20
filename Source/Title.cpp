@@ -8,6 +8,7 @@
 #include "Argent/Debug/DebugRenderer.h"
 #include "Argent/Component/RayCast.h"
 #include "Demo.h"
+#include "Stage.h"
 
 void Title::Initialize()
 {
@@ -28,18 +29,18 @@ void Title::Initialize()
 //	AddObject(new GameObject("Gun", new BaseGun));
 	//AddObject(new GameObject("Stage", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 
-//	AddObject(new GameObject("player", new Player));
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 	// player ‚Â‚¢‚©
+	AddObject(new GameObject("player", new Player));
 	//GetGameObject("player")->AddComponent(new Player);
 	//AddObject(new GameObject("Stage1", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Cube.fbx");
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));
 
-	AddObject(new GameObject("MeshDemo", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx")));
+//	AddObject(new GameObject("MeshDemo", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx")));
 
-	AddObject(new GameObject("Nico", new RayCastDemo()));
-	AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
+//	AddObject(new GameObject("Nico", new RayCastDemo()));
+//	AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 	//AddObject(new GameObject("capsuel", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
 	//GetGameObject("capsuel")->GetTransform()->SetScaleFactor(0.01f);
@@ -47,6 +48,7 @@ void Title::Initialize()
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));
 	//AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
 
+	AddObject(new GameObject("Stage", new Stage));
 
 	BaseScene::Initialize();
 }

@@ -21,7 +21,7 @@ float3 CalcPhongSpecular(float3 normal, float3 lightVector, float3 lightColor,
 
 float4 main(VSOut pin) : SV_TARGET
 {
-
+    return float4(1, 0, 0, 1);
     float3 L = normalize(float3(pin.position - lightPosition.xyz));
     float3 E = normalize(float3(cameraPosition.xyz - pin.position.xyz));
     float3 N = pin.normal.xyz;

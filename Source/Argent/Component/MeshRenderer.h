@@ -45,6 +45,7 @@ namespace Argent::Component::Renderer
 
 		void DrawDebug() override;
 
+		std::shared_ptr<Resource::Mesh::ArMesh> GetMesh() const { return mesh; }
 
 		void CreateComObject(ID3D12Device* device);
 

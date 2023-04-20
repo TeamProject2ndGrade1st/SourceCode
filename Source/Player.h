@@ -33,5 +33,7 @@ protected:
 	DWORD start;
 	DWORD end;
 	double deltaTime;
+
+	bool useCameraControl = true;
 };
 

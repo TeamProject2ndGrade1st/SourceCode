@@ -90,7 +90,7 @@ namespace Argent::Component::Renderer
 			material->SetOnCommand(cmdList, static_cast<UINT>(RootParameterIndex::cbMaterial),
 				static_cast<UINT>(RootParameterIndex::txAlbedo), 
 				static_cast<UINT>(RootParameterIndex::txNormal));
-
+			
 			m->constantBuffer->SetOnCommandList(cmdList, static_cast<UINT>(RootParameterIndex::cbMesh));
 
 			m->SetOnCommandList(cmdList);

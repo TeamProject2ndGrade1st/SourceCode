@@ -91,6 +91,9 @@
     <Filter Include="Argent\Component\AnimationPlayer">
       <UniqueIdentifier>{914e9bb7-216f-4ac6-a16d-0016ca128616}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Stage">
+      <UniqueIdentifier>{a55bb292-cb82-44ea-9f6a-fe9cb9fe6826}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -295,6 +298,10 @@
     </ClCompile>
     <ClCompile Include="Source\BaseState.cpp">
       <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Argent\Graphic\RenderContext.cpp" />
+    <ClCompile Include="Source\Stage.cpp">
+      <Filter>Game\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -529,6 +536,10 @@
     </ClInclude>
     <ClInclude Include="Source\StateMachine.h">
       <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\RenderContext.h" />
+    <ClInclude Include="Source\Stage.h">
+      <Filter>Game\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
