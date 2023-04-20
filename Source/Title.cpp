@@ -8,7 +8,11 @@
 #include "Argent/Debug/DebugRenderer.h"
 #include "Argent/Component/RayCast.h"
 #include "Demo.h"
+
 #include "Stage.h"
+
+#include "spikeBot.h"
+
 
 void Title::Initialize()
 {
@@ -37,16 +41,25 @@ void Title::Initialize()
 	//GetGameObject("player")->AddComponent(new Player);
 //	AddObject(new GameObject("player", new Player));
 
-	AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/barike-do_0419_1.fbx")));
+	// spikeBot
+	//AddObject(new GameObject("spikeBot", Argent::Loader::Fbx::LoadFbx("./Resources/Model/spike_bot_0419_1.fbx")));
+	AddObject(new GameObject("spikeBot", new SpikeBot()));
+	AddObject(new GameObject("Demo", new RayCastDemo));
+
+	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/barike-do_0419_1.fbx")));
 
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 	// player ‚Â‚¢‚©
-	GetGameObject("player")->AddComponent(new Player);
+	//GetGameObject("player")->AddComponent(new Player);
 	//AddObject(new GameObject("Stage1", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Cube.fbx");
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));
 
+
 //	AddObject(new GameObject("MeshDemo", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx")));
+
+	//AddObject(new GameObject("MeshDemo", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/map_0419_1.fbx")));
+
 
 //	AddObject(new GameObject("Nico", new RayCastDemo()));
 //	AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
@@ -77,7 +90,7 @@ void Title::Update()
 {
 	BaseScene::Update();
 
-	if(Argent::Input::GetKeyUp(KeyCode::Enter))
+	if(Argent::Input::GetKeyUp(KeyCode::F2))
 	{
 		Argent::Scene::ArSceneManager::SetNextScene("StageSelect");
 	}

@@ -74,22 +74,23 @@ void Player::Update()
         // ƒJƒƒ‰‰¡‚Ì‚â‚Â(‰ñ“]‚Å‚«‚é‚æ‚¤‚É‚·‚é)
         if (setRotation.y > 360)setRotation.y -= 360;
         if (setRotation.y < 0)setRotation.y += 360;
-        
-    	t->SetRotation(setRotation);
+
+        static bool use = false;
+        if(Argent::Input::GetKeyUp(KeyCode::U))
+        {
+	        use = !use;
+        }
+        if(use)
+        {
+    		t->SetRotation(setRotation);
+        }
 #endif
 
         break;
 
     }
-    start = end;
-    end = GetTickCount();
-	
 
     GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
-
-    ray->SetRayStartPosition(GetTransform()->GetPosition());
-    ray->SetRayDirection(GetTransform()->CalcForward());
-    ray->SetRayLength(movement * Argent::Timer::GetDeltaTime());
 
 #ifdef _DEBUG
     if(Argent::Input::GetKeyDown(KeyCode::O))
@@ -104,19 +105,6 @@ void Player::DrawDebug()
     if(ImGui::TreeNode(GetName().c_str()))
     {
         ImGui::Checkbox("UseCameraControl", &useCameraControl);
-        static int frameTime = 0;
-        ++frameTime;
-        double elapsedTime = (double)(end - start) / 1000;
-        deltaTime += elapsedTime;
-        static int frame = 0;
-        if(deltaTime > 1.0f)
-        {
-            frame = frameTime;
-	        deltaTime = 0;
-            frameTime = 0;
-        }
-        ImGui::InputInt("FrameRate", &frame);
-        ImGui::InputDouble("ElapsedTime", &elapsedTime);
         ImGui::SliderFloat("movement", &movement, 0.1f, 10.0);
         ImGui::DragFloat2("mouse", &mousePos.x);
         ImGui::SliderFloat("sensitivity", &sensitivity, 0.1f, 2.0f);
@@ -157,6 +145,14 @@ void Player::MoveCamera()
     cameraFront = cameraFront * movement * Argent::Timer::GetDeltaTime();
     
     p = p + cameraRight + cameraFront;
+
+    auto pos = t->GetPosition();
+    ray->SetRayData(pos, p);
+    HitResult hitResult{};
+    if(Argent::Collision::RayCollisionDetection(ray, hitResult))
+    {
+	    p = hitResult.position;
+    }
 
     t->SetPosition(p);
 }

@@ -58,15 +58,31 @@ namespace Argent::Component
 
 		RayCastCollider::RayCastCollider(const MeshResource& mResource):
 			BaseComponent("RayCastCollider")
-		,	mResource(mResource)
 		,	offset(DirectX::XMFLOAT3())
 		,	scale(DirectX::XMFLOAT3(1, 1, 1))
 		,	rotation(DirectX::XMFLOAT4())
+		,	type(MeshType::Mesh)
 		{
+			this->mResource.emplace_back(mResource);
 			debugRenderer = std::make_unique<Debug::DebugRenderer>(
 				mResource);
 
 			Argent::Collider::ArColliderManager::Instance().RegisterRayCastCollider(this);
+		}
+
+		RayCastCollider::RayCastCollider(std::vector<MeshResource> mResource):
+			BaseComponent("RayCastCollider")
+		,	offset(DirectX::XMFLOAT3())
+		,	scale(DirectX::XMFLOAT3(1, 1, 1))
+		,	rotation(DirectX::XMFLOAT4())
+		,	type(MeshType::Mesh)
+		{
+			this->mResource = mResource;
+			debugRenderer = std::make_unique<Debug::DebugRenderer>(
+				mResource.at(0));
+
+			Argent::Collider::ArColliderManager::Instance().RegisterRayCastCollider(this);
+
 		}
 
 
@@ -91,7 +107,12 @@ namespace Argent::Component
 
 		DirectX::XMMATRIX RayCastCollider::GetWorldTransform()
 		{
-			return GetOwner()->GetTransform()->CalcWorldMatrix();
+			auto m = GetOwner()->GetTransform()->CalcWorldMatrix();
+			const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) };const DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+			const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(offset.x,offset.y, offset.z) };
+
+			auto lm = S * R * T;
+			return m * lm;
 		}
 
 
@@ -120,43 +141,93 @@ namespace Argent::Component
 		bool RayCast::CollisionDetection(Collider::RayCastCollider* other, HitResult& hitResult) const
 		{
 			bool ret = false;
-			DirectX::XMFLOAT3 end = start + direction * length;
-			if(Helper::Collision::IntersectRayVsModel(start, end, other->GetMeshResource(), 
-				other->GetWorldTransform(), hitResult))
+		//	DirectX::XMFLOAT3 end = start + direction * length;
+
+			if(other->type != Collider::RayCastCollider::MeshType::Mesh)
 			{
-				//壁までのベクトル
-				DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&start);
-				DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
-				DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
-
-				//壁の法線
-				DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hitResult.normal);
-
-				//入射ベクトルを法線に射影
-				DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(DirectX::XMVectorNegate(Vec), Normal);
-
-				//補正位置の計算　
-				DirectX::XMVECTOR CollectPosition = DirectX::XMVectorMultiplyAdd(Normal, Dot, End);
-				DirectX::XMFLOAT3 collectPosition{};
-				DirectX::XMStoreFloat3(&collectPosition, CollectPosition);
-
-				HitResult hitResult2;
-				if(!Helper::Collision::IntersectRayVsModel(hitResult.position, collectPosition, other->GetMeshResource(), 
-					other->GetWorldTransform(), hitResult2))
+				if(Helper::Collision::IntersectRayVsModel(start, end, other->GetMeshResource(), 
+					other->GetWorldTransform(), hitResult))
 				{
-					hitResult.position = collectPosition;
+					//壁までのベクトル
+					DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&start);
+					DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
+					DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
+
+					//壁の法線
+					DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hitResult.normal);
+
+					//入射ベクトルを法線に射影
+					DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(DirectX::XMVectorNegate(Vec), Normal);
+
+					//補正位置の計算　
+					DirectX::XMVECTOR CollectPosition = DirectX::XMVectorMultiplyAdd(Normal, Dot, End);
+					DirectX::XMFLOAT3 collectPosition{};
+					DirectX::XMStoreFloat3(&collectPosition, CollectPosition);
+
+					HitResult hitResult2;
+					if(!Helper::Collision::IntersectRayVsModel(hitResult.position, collectPosition, other->GetMeshResource(), 
+						other->GetWorldTransform(), hitResult2))
+					{
+						hitResult.position = collectPosition;
+					}
+					else
+					{
+						hitResult.position = hitResult2.position;
+					}
+					/*
+					GetOwner()->GetTransform()->SetPosition(p);
+					auto actor = GetOwner()->GetActor();
+					if(actor)
+						actor->OnRayCollision(other);*/
+					ret = true;
+					
 				}
-				else
+			}
+			else
+			{
+				auto m = other->GetMeshResourceVec();
+
+				for(auto& mR : m)
 				{
-					hitResult.position = hitResult2.position;
+					if(Helper::Collision::IntersectRayVsModel(start, end, mR, 
+						other->GetWorldTransform(), hitResult))
+					{
+						//壁までのベクトル
+						DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&start);
+						DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
+						DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
+
+						//壁の法線
+						DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hitResult.normal);
+
+						//入射ベクトルを法線に射影
+						DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(DirectX::XMVectorNegate(Vec), Normal);
+
+						//補正位置の計算　
+						DirectX::XMVECTOR CollectPosition = DirectX::XMVectorMultiplyAdd(Normal, Dot, End);
+						DirectX::XMFLOAT3 collectPosition{};
+						DirectX::XMStoreFloat3(&collectPosition, CollectPosition);
+
+						HitResult hitResult2;
+						if(!Helper::Collision::IntersectRayVsModel(hitResult.position, collectPosition, other->GetMeshResource(), 
+							other->GetWorldTransform(), hitResult2))
+						{
+							hitResult.position = collectPosition;
+						}
+						else
+						{
+							hitResult.position = hitResult2.position;
+						}
+						/*
+						GetOwner()->GetTransform()->SetPosition(p);
+						auto actor = GetOwner()->GetActor();
+						if(actor)
+							actor->OnRayCollision(other);*/
+						ret = true;
+						
+					}
 				}
-				/*
-				GetOwner()->GetTransform()->SetPosition(p);
-				auto actor = GetOwner()->GetActor();
-				if(actor)
-					actor->OnRayCollision(other);*/
-				ret = true;
-				
+
 			}
 			return ret;
 		}
@@ -166,8 +237,7 @@ namespace Argent::Component
 			if(ImGui::TreeNode(GetName().c_str()))
 			{
 				ImGui::InputFloat3("Start", &start.x);
-				ImGui::InputFloat3("Direction", &direction.x);
-				ImGui::InputFloat("Length", &length);
+				ImGui::InputFloat3("End", &end.x);
 				ImGui::TreePop();
 			}
 		}

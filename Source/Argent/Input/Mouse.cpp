@@ -25,9 +25,11 @@ namespace Argent::Input
 		if(resetPositionToCenter)
 		{
 			postPosition =DirectX::XMFLOAT2(width / 2, height / 2);
+			ShowCursor(false);
 		}
 		else
 		{
+			ShowCursor(true);
 			postPosition = position;
 		}
 		position = DirectX::XMFLOAT2(static_cast<float>(p.x), static_cast<float>(p.y));

@@ -88,6 +88,7 @@
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Demo.cpp" />
     <ClCompile Include="Source\StageSelect.cpp" />
+    <ClCompile Include="Source\spikeBot.cpp" />
     <ClCompile Include="Source\StateDerived.cpp" />
     <ClCompile Include="Source\StateMachine.cpp" />
     <ClCompile Include="Source\Title.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Demo.h" />
     <ClInclude Include="Source\StageSelect.h" />
+    <ClInclude Include="Source\spikeBot.h" />
     <ClInclude Include="Source\StateDerived.h" />
     <ClInclude Include="Source\StateMachine.h" />
     <ClInclude Include="Source\Title.h" />
