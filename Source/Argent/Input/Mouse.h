@@ -52,6 +52,8 @@ namespace Argent::Input
 		float GetRowWheelRotateValue() const { return rowWheelRotateValue; }
 
 		std::unordered_map<Button, State> mouseState;
+
+		void SetIsResetPositionToCenter(bool b) { resetPositionToCenter = b; }
 	private:
 		DirectX::XMFLOAT2 position;
 		DirectX::XMFLOAT2 moveVec;
@@ -60,5 +62,9 @@ namespace Argent::Input
 		bool isWheelRotate;
 		float rowWheelRotateValue;
 		WheelStates wheelState;
+		bool resetPositionToCenter = false;
+
+		int width = GetSystemMetrics(SM_CXSCREEN);
+		int height = GetSystemMetrics(SM_CYSCREEN);
 	};
 }
