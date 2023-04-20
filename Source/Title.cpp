@@ -9,17 +9,18 @@
 #include "Argent/Component/RayCast.h"
 #include "Demo.h"
 #include "Stage.h"
+#include "Argent/Component/EffectRenderer.h"
 
 void Title::Initialize()
 {
-	AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
+	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
 
 	//AddObject(new GameObject("plane", Argent::Loader::Fbx::LoadFbx("./Resources/Model/plane.fbx", true)));
 	
 	//AddObject(new GameObject("enemy_ver03", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver3.fbx", false)));
 
 	//AddObject(new GameObject("nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
-	AddObject(new GameObject("enemy_ver03", new BaseFriend()));
+	//AddObject(new GameObject("enemy_ver03", new BaseFriend()));
 
 	//AddObject(new GameObject("DemoGun", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx", false)));
 
@@ -31,7 +32,7 @@ void Title::Initialize()
 
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 	// player ついか
-	AddObject(new GameObject("player", new Player));
+	//AddObject(new GameObject("player", new Player));
 	//GetGameObject("player")->AddComponent(new Player);
 	//AddObject(new GameObject("Stage1", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Cube.fbx");
@@ -48,7 +49,11 @@ void Title::Initialize()
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));
 	//AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
 
-	AddObject(new GameObject("Stage", new Stage));
+//	AddObject(new GameObject("Stage", new Stage));
+
+
+	//エフェクトの追加方法　複製してファイルネームのところだけ変えればok
+	AddObject(new GameObject("Effect", new Argent::Component::Renderer::EffectRenderer("./Resources/Effects/barel_test.efk", "./Resources/Effects")));
 
 	BaseScene::Initialize();
 }
