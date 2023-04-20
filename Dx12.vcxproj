@@ -84,12 +84,10 @@
     <ClCompile Include="Source\BaseState.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Player.cpp" />
-
     <ClCompile Include="Source\Demo.cpp" />
-
+    <ClCompile Include="Source\spikeBot.cpp" />
     <ClCompile Include="Source\StateDerived.cpp" />
     <ClCompile Include="Source\StateMachine.cpp" />
-
     <ClCompile Include="Source\Title.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
@@ -169,12 +167,10 @@
     <ClInclude Include="Source\DemoShaderMacro.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Player.h" />
-
     <ClInclude Include="Source\Demo.h" />
-
+    <ClInclude Include="Source\spikeBot.h" />
     <ClInclude Include="Source\StateDerived.h" />
     <ClInclude Include="Source\StateMachine.h" />
-
     <ClInclude Include="Source\Title.h" />
   </ItemGroup>
   <ItemGroup>
