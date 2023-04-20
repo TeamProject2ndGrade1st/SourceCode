@@ -53,7 +53,7 @@ namespace Argent::App
 #ifdef _DEBUG
 			Argent::Resource::Audio::AudioManager::Instance().DrawDebug();
 #endif
-			Argent::Collider::ArColliderManager::Instance().CollisionDetection();
+			Argent::Collider::ColliderManager::Instance().CollisionDetection();
 
 			arSceneManager.DeleteDestroyedObject();
 

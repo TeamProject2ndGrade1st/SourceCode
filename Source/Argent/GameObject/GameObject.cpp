@@ -11,7 +11,6 @@ GameObject::GameObject(std::string name, Argent::Component::BaseComponent* c) :
 ,	isInitialized(false)
 ,	isActive(true)
 {
-	
 	transform = new Transform();
 	AddComponent(transform);
 	if (c)

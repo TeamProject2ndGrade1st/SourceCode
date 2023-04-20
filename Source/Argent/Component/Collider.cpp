@@ -12,7 +12,12 @@ namespace Argent::Component::Collider
 		BaseComponent(name)
 		,	type(type)
 	{
-		Argent::Collider::ArColliderManager::Instance().RegisterCollider(this);
+		Argent::Collider::ColliderManager::Instance().RegisterCollider(this);
+	}
+
+	Collider::~Collider()
+	{
+		Argent::Collider::ColliderManager::Instance().UnRegisterCollider(this);
 	}
 
 	void Collider::OnCollision(const Collider* collider)

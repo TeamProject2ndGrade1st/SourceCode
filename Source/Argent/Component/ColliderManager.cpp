@@ -2,7 +2,7 @@
 
 namespace Argent::Collider
 {
-	void ArColliderManager::CollisionDetection()
+	void ColliderManager::CollisionDetection()
 	{
 		for(size_t i = 0; i < collider.size(); ++i)
 		{
@@ -19,7 +19,7 @@ namespace Argent::Collider
 		}
 	}
 
-	bool ArColliderManager::CollisionDetectionRayCast(Component::Collision::RayCast* ray, Component::Collision::HitResult& hitResult)
+	bool ColliderManager::CollisionDetectionRayCast(Component::Collision::RayCast* ray, Component::Collision::HitResult& hitResult)
 	{
 		bool ret = false;
 		for (size_t j = 0; j < rayCastCollider.size(); ++j)

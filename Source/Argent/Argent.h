@@ -117,7 +117,7 @@ namespace Argent
 	{
 		inline bool RayCollisionDetection(Component::Collision::RayCast* ray, HitResult& hitResult)
 		{
-			return Argent::Collider::ArColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult);
+			return Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult);
 		}
 	}
 

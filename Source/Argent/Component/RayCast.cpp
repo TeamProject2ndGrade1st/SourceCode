@@ -53,7 +53,7 @@ namespace Argent::Component
 			debugRenderer = std::make_unique<Debug::DebugRenderer>(
 				mResources[static_cast<int>(type)]);
 
-			Argent::Collider::ArColliderManager::Instance().RegisterRayCastCollider(this);
+			Argent::Collider::ColliderManager::Instance().RegisterRayCastCollider(this);
 		}
 
 		RayCastCollider::RayCastCollider(const MeshResource& mResource):
@@ -67,7 +67,7 @@ namespace Argent::Component
 			debugRenderer = std::make_unique<Debug::DebugRenderer>(
 				mResource);
 
-			Argent::Collider::ArColliderManager::Instance().RegisterRayCastCollider(this);
+			Argent::Collider::ColliderManager::Instance().RegisterRayCastCollider(this);
 		}
 
 		RayCastCollider::RayCastCollider(std::vector<MeshResource> mResource):
@@ -81,8 +81,13 @@ namespace Argent::Component
 			debugRenderer = std::make_unique<Debug::DebugRenderer>(
 				mResource.at(0));
 
-			Argent::Collider::ArColliderManager::Instance().RegisterRayCastCollider(this);
+			Argent::Collider::ColliderManager::Instance().RegisterRayCastCollider(this);
 
+		}
+
+		RayCastCollider::~RayCastCollider()
+		{
+			Argent::Collider::ColliderManager::Instance().UnRegisterRayCastCollider(this);
 		}
 
 
@@ -107,6 +112,7 @@ namespace Argent::Component
 
 		DirectX::XMMATRIX RayCastCollider::GetWorldTransform()
 		{
+			auto g = GetOwner();
 			auto m = GetOwner()->GetTransform()->CalcWorldMatrix();
 			const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) };const DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
 			const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(offset.x,offset.y, offset.z) };
@@ -135,14 +141,15 @@ namespace Argent::Component
 		RayCast::RayCast():
 			BaseComponent("RayCast")
 		{
-			//Argent::Collider::ArColliderManager::Instance().RegisterRay(this);
+			//Argent::Collider::ColliderManager::Instance().RegisterRay(this);
 		}
 
 		bool RayCast::CollisionDetection(Collider::RayCastCollider* other, HitResult& hitResult) const
 		{
 			bool ret = false;
 		//	DirectX::XMFLOAT3 end = start + direction * length;
-
+			auto g = GetOwner();
+			auto og = other->GetOwner();
 			if(other->type != Collider::RayCastCollider::MeshType::Mesh)
 			{
 				if(Helper::Collision::IntersectRayVsModel(start, end, other->GetMeshResource(), 

@@ -48,7 +48,7 @@ namespace Argent::Component
 			RayCastCollider(const MeshResource& mResource);
 			RayCastCollider(std::vector<MeshResource> mResource);
 
-			~RayCastCollider() override = default;
+			~RayCastCollider() override;
 
 			void Render() const override;
 			void Initialize() override;

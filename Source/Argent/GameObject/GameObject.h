@@ -47,7 +47,10 @@ public:
 	GameObject* GetParent() const					{ return parent; }
 	template <typename T> T* GetChild();
 	template <typename T> T* GetComponent();
-	Transform* GetTransform() const					{ return transform; }
+	Transform* GetTransform() const
+	{
+		return transform;
+	}
 	Argent::Component::BaseActor* GetActor() const	{ return actor; }
 
 	bool GetIsSelected() const { return isSelected; }

@@ -21,7 +21,7 @@ void RayCastDemo::Update()
 	{
 		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcForward(), moveSpeed * Argent::Timer::GetDeltaTime());
 		HitResult hitResult;
-		if(Argent::Collider::ArColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
+		if(Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
 		{
 			GetTransform()->SetPosition(hitResult.position);
 		}
@@ -35,7 +35,7 @@ void RayCastDemo::Update()
 	{
 		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcForward() * -1, moveSpeed * Argent::Timer::GetDeltaTime());
 		HitResult hitResult;
-		if (Argent::Collider::ArColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
+		if (Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
 		{
 			GetTransform()->SetPosition(hitResult.position);
 		}
@@ -49,7 +49,7 @@ void RayCastDemo::Update()
 	{
 		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcRight() * -1, moveSpeed * Argent::Timer::GetDeltaTime());
 		HitResult hitResult;
-		if (Argent::Collider::ArColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
+		if (Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
 		{
 			GetTransform()->SetPosition(hitResult.position);
 		}
@@ -64,7 +64,7 @@ void RayCastDemo::Update()
 		auto r = GetTransform()->CalcRight();
 		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcRight(), moveSpeed * Argent::Timer::GetDeltaTime());
 		HitResult hitResult;
-		if (Argent::Collider::ArColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
+		if (Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
 		{
 			GetTransform()->SetPosition(hitResult.position);
 		}
