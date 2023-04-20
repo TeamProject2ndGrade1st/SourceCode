@@ -6,6 +6,7 @@ void IdleState::Enter()
 {
     owner->SetAnimation(static_cast<int>(FriendAnimation::Idle)); 
 	owner->SetStateTimer(10.0f);
+	
 }
 
 void IdleState::Execute()
@@ -52,6 +53,8 @@ void WalkState::Enter()
 
 void WalkState::Execute()
 {
+	int animationFrame = static_cast<int>(owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimationFrame());
+	//TODO:‘«‚ðˆø‚«‚¸‚é‚Æ‚«friction‚ðã‚°‚Ü‚­‚é
 	float timer = owner->GetStateTimer();
 	owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
 
@@ -67,13 +70,29 @@ void WalkState::Execute()
 	case static_cast<int>(FriendAnimation::Walk_ChangeFrom_Action):
 		if (owner->isAnimationEnd())
 		{
+			owner->SetAccelaration(acceleration);
+			owner->SetMaxSpeed(maxSpeed_late);
 			owner->SetAnimation(static_cast<int>(FriendAnimation::Walk));
 		}
 		break;
 
 	case static_cast<int>(FriendAnimation::Walk):
+		
+		//‘«‚ðˆø‚«‚¸‚éŽž‚ÍˆÚ“®‘¬“x‚ð—Ž‚Æ‚·
+		if (animationFrame == startMovingFastFrame)
+		{
+			owner->SetMaxSpeed(maxSpeed_fast);
+		}
+		if (animationFrame == endMovingFastFrame)
+		{
+			owner->SetMaxSpeed(maxSpeed_late);
+
+		}
+
 		if (timer < 0.0f)
 		{
+			owner->SetAccelaration(owner->Init_GetAccelaration());
+			owner->SetVelocity(DirectX::XMFLOAT3(0,0,0));
 			owner->SetAnimation(static_cast<int>(FriendAnimation::Walk_End));
 		}
 		break;

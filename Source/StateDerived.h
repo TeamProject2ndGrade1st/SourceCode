@@ -34,6 +34,15 @@ public:
     void Enter()override;
     void Execute()override;
     void Exit()override;
+
+private:
+    const float acceleration{ 10.0f };
+    const float maxSpeed_fast{ 6.0f };
+    const float maxSpeed_late{ 2.0f };
+
+    //アニメーション8~18フレーム間で動きが早くなる
+    const int startMovingFastFrame{ 8 };
+    const int endMovingFastFrame{ 18 };
 };
 
 class AttackState : public State
