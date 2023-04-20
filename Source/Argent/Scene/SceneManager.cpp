@@ -3,6 +3,7 @@
 //todo âΩÇ∆Ç©Ç∑ÇÈÇ±Ç∆
 #include "../../Title.h"
 #include "../../Game.h"
+#include "../../StageSelect.h"
 #include "../Input/Keyboard.h"
 
 namespace Argent::Scene
@@ -15,11 +16,20 @@ namespace Argent::Scene
 	{
 		if (instance) _ASSERT_EXPR(FALSE, L"Already instantiated");
 		instance = this;
-		std::unique_ptr<BaseScene> s = std::make_unique<Title>("Title");
+
+		//ÉVÅ[ÉìÇÃí«â¡
+		RegisterScene<Title>();
+		RegisterScene<Game>();
+		RegisterScene<StageSelect>();
+		/*std::unique_ptr<BaseScene> s = std::make_unique<Title>();
 		scenes[s->GetName()] = std::move(s);
 		
-		s = std::make_unique<Game>("Game");
+		s = std::make_unique<Game>();
 		scenes[s->GetName()] = std::move(s);
+
+
+		s = std::make_unique<StageSelect>();
+		scenes[s->GetName()] = std::move(s);*/
 	}
 
 	void ArSceneManager::Initialize()
@@ -33,8 +43,9 @@ namespace Argent::Scene
 			currentScene->Finalize();
 	}
 
-	void ArSceneManager::Begin() const
+	void ArSceneManager::Begin()
 	{
+		ChangeScene();
 		if (currentScene)
 			currentScene->Begin();
 	}
@@ -43,7 +54,7 @@ namespace Argent::Scene
 	{
 		start = end;
 		end = GetTickCount();   
-		ChangeScene();
+		
 		if(currentScene)
 		{
 			currentScene->Update();

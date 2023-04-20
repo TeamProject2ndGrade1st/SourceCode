@@ -3,7 +3,7 @@
 
 namespace Argent::Resource::Mesh
 {
-	ArMesh::ArMesh(const char* name, const MeshResource& mResource,
+	Mesh::Mesh(const char* name, const MeshResource& mResource,
 	               const std::vector<Subset>& subsets, const DirectX::XMFLOAT4X4 globalTransform) :
 		ArResource(name, ResourceType::Mesh)
 	,	meshResource(mResource)

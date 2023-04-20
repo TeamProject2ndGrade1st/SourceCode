@@ -9,7 +9,7 @@
 namespace Argent::Component::Renderer
 {
 	SkinnedMeshRenderer::SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
-		std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
+		std::shared_ptr<Resource::Mesh::SkinnedMesh> meshes,
 		std::vector<Resource::Animation::AnimationClip>& animation) :
 		BaseRenderer("SkinnedMesh Renderer")
 	{
@@ -50,7 +50,7 @@ namespace Argent::Component::Renderer
 		{
 			if (animationClips.size() > 0)
 			{
-				Argent::Resource::Mesh::ArSkinnedMesh::Constant meshConstant{};
+				Argent::Resource::Mesh::SkinnedMesh::Constant meshConstant{};
 				const size_t boneCount{ m->bindPose.bones.size() };
 				for (int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
 				{
@@ -69,7 +69,7 @@ namespace Argent::Component::Renderer
 			}
 			else
 			{
-				Resource::Mesh::ArSkinnedMesh::Constant meshConstant{};
+				Resource::Mesh::SkinnedMesh::Constant meshConstant{};
 				const size_t boneCount{ m->bindPose.bones.size() };
 				for (int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
 				{

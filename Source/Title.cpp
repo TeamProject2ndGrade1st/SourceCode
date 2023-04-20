@@ -50,6 +50,7 @@ void Title::Initialize()
 
 	AddObject(new GameObject("Stage", new Stage));
 
+
 	BaseScene::Initialize();
 }
 
@@ -69,7 +70,7 @@ void Title::Update()
 {
 	BaseScene::Update();
 
-	if(Argent::Input::GetKeyDown(KeyCode::P))
+	if(Argent::Input::GetKeyUp(KeyCode::Enter))
 	{
 		Argent::Scene::ArSceneManager::SetNextScene("Game");
 	}

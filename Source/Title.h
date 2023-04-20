@@ -5,8 +5,8 @@ class Title final :
 	public Argent::Scene::BaseScene
 {
 public:
-    Title(std::string sceneName):
-		Argent::Scene::BaseScene(sceneName)
+    Title():
+		Argent::Scene::BaseScene("Title")
 	{}
 	~Title() override = default;
 		

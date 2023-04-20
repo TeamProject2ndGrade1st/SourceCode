@@ -4,9 +4,9 @@
 namespace
 	Argent::Resource::Mesh
 {
-	ArSkinnedMesh::ArSkinnedMesh(const char* name, const MeshResource& mResource, std::vector<BoneVertex> bones,
+	SkinnedMesh::SkinnedMesh(const char* name, const MeshResource& mResource, std::vector<BoneVertex> bones,
 		const std::vector<Subset>& subsets, const Skeleton& bindPose):
-		ArMesh(name	, mResource, subsets, DirectX::XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1))
+		Mesh(name	, mResource, subsets, DirectX::XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1))
 	,	bindPose(bindPose)
 	{
 		ID3D12Device* device = Graphics::Graphics::Instance()->GetDevice();
@@ -17,9 +17,9 @@ namespace
 			Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 	}
 
-	void ArSkinnedMesh::SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot)
+	void SkinnedMesh::SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot)
 	{
 		boneVertexBuffer->SetOnCommandList(cmdList, 1);
-		ArMesh::SetOnCommandList(cmdList, vertexStartSlot);
+		Mesh::SetOnCommandList(cmdList, vertexStartSlot);
 	}
 }

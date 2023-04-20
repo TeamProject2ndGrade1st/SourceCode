@@ -68,14 +68,14 @@ namespace Argent::Resource::Mesh
 	};
 
 
-	class ArSkinnedMesh final :
-		public ArMesh
+	class SkinnedMesh final :
+		public Mesh
 	{
 	public:
 		static const int MaxBones{ 256 };
-		ArSkinnedMesh(const char* name, const MeshResource& mResource, std::vector<BoneVertex> bones,
+		SkinnedMesh(const char* name, const MeshResource& mResource, std::vector<BoneVertex> bones,
 			const std::vector<Subset>& subsets, const Skeleton& bindPose);
-		~ArSkinnedMesh() override = default;
+		~SkinnedMesh() override = default;
 
 		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot = 0) override;
 

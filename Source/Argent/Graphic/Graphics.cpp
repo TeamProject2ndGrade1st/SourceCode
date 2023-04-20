@@ -130,7 +130,6 @@ namespace Argent::Graphics
 
 	void Graphics::Begin()
 	{
-		if(curFrameResource)curFrameResource->WaitForEvent(renderingQueue.get());
 		++backBufferIndex;
 		backBufferIndex = backBufferIndex % NumBackBuffers;
 		curFrameResource = frameResources.at(backBufferIndex).get();
@@ -173,6 +172,9 @@ namespace Argent::Graphics
 		swapChain->Present(0, 0);
 
 		renderingQueue->SetFence(static_cast<int>(RenderType::Count), curFrameResource);
+
+		//todo シーン遷移時にオブジェクトの開放で落ちるので毎フレーム描画終了まで待つ　チーム制作終わったあとでもいいので駆らなず変更すること
+		if(curFrameResource)curFrameResource->WaitForEvent(renderingQueue.get());
 	}
 
 	HRESULT Graphics::CreateWhiteTexture(ID3D12Resource** resource)

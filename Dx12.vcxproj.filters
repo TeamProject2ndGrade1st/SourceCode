@@ -303,6 +303,7 @@
     <ClCompile Include="Source\Stage.cpp">
       <Filter>Game\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StageSelect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -541,6 +542,7 @@
     <ClInclude Include="Source\Stage.h">
       <Filter>Game\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\StageSelect.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

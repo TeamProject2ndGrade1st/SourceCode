@@ -14,7 +14,7 @@ namespace Argent::Scene
 
 		void Initialize();
 		void Finalize() const;
-		void Begin() const;
+		void Begin();
 		void Update();
 		void End() const;
 		void Render() const;
@@ -30,8 +30,17 @@ namespace Argent::Scene
 			if (currentScene)
 				currentScene->DeleteDestroyedObject();
 		}
+
+		template<class T>
+		void RegisterScene()
+		{
+			std::unique_ptr<T> t = std::make_unique<T>();
+			scenes[t->GetName()] = std::move(t);
+		}
 	private:
 		void ChangeScene();
+
+		
 		
 	private:
 		static ArSceneManager* instance;

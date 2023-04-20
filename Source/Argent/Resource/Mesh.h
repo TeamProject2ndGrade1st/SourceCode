@@ -59,13 +59,13 @@ namespace Argent::Resource::Mesh
 	 * \brief 頂点バッファとインデックスバッファを持つ
 	 *  
 	 */
-	class ArMesh:
+	class Mesh:
 		public ArResource 
 	{
 	public:
-		ArMesh(const char* name, const MeshResource& mResource,
+		Mesh(const char* name, const MeshResource& mResource,
 		const std::vector<Subset>& subsets, const DirectX::XMFLOAT4X4 globalTransform);
-		virtual ~ArMesh() override = default;
+		virtual ~Mesh() override = default;
 
 		virtual void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT vertexStartSlot = 0)
 		{

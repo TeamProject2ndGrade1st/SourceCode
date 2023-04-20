@@ -7,7 +7,7 @@
 namespace Argent::Component::Renderer
 {
 	MeshRenderer::MeshRenderer(ID3D12Device* device, const char* fileName,
-		std::shared_ptr<Resource::Mesh::ArMesh> meshes):
+		std::shared_ptr<Resource::Mesh::Mesh> meshes):
 		BaseRenderer("Mesh Renderer")
 	{
 		this->mesh = meshes;
