@@ -11,7 +11,7 @@ namespace Argent::Dx12
 	class ArConstantBuffer
 	{
 	public:
-		ArConstantBuffer(ID3D12Device* device, Descriptor::ArDescriptor* descriptor,const T* fillValue = nullptr);
+		ArConstantBuffer(ID3D12Device* device, Dx12::Descriptor* descriptor,const T* fillValue = nullptr);
 		~ArConstantBuffer() = default;
 
 		void UpdateConstantBuffer(const T& t)
@@ -29,12 +29,12 @@ namespace Argent::Dx12
 		}
 	private:
 		Microsoft::WRL::ComPtr<ID3D12Resource> constantBuffer;
-		Argent::Descriptor::ArDescriptor* descriptor;
+		Argent::Dx12::Descriptor* descriptor;
 		T* map{};
 	};
 
 	template <class T>
-	ArConstantBuffer<T>::ArConstantBuffer(ID3D12Device* device, Descriptor::ArDescriptor* descriptor, const T* fillValue):
+	ArConstantBuffer<T>::ArConstantBuffer(ID3D12Device* device, Dx12::Descriptor* descriptor, const T* fillValue):
 		descriptor(descriptor)
 	{
 		HRESULT hr{ S_OK };

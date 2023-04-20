@@ -10,7 +10,7 @@
 #include "Dx12/Command.h"
 
 
-namespace Argent::Frame
+namespace Argent::Graphics
 {
 	struct SceneConstant
 	{
@@ -21,11 +21,19 @@ namespace Argent::Frame
 		DirectX::XMFLOAT3 cameraPosition;
 	};
 
+	enum class RenderType
+	{
+		Sprite,
+		Mesh,
+		PostRendering,
+		Count
+	};
+
 	class FrameResource
 	{
 	public:
-		FrameResource(ID3D12Device* device, IDXGISwapChain4* swapChain, UINT backBufferIndex, 
-		              Descriptor::ArDescriptor* rtv, Descriptor::ArDescriptor* dsv, Descriptor::ArDescriptor* cbv, 
+		FrameResource(ID3D12Device* device, IDXGISwapChain3* swapChain, UINT backBufferIndex, 
+		              Dx12::Descriptor* rtv, Dx12::Descriptor* dsv, Dx12::Descriptor* cbv, 
 		              UINT NumCmdLists);
 		~FrameResource() = default;
 		FrameResource operator=(const FrameResource&) = delete;
@@ -35,25 +43,34 @@ namespace Argent::Frame
 
 		[[nodiscard]] D3D12_RESOURCE_DESC GetBackBufferDesc() const { return backBuffer->GetDesc(); }
 
-		[[nodiscard]] ID3D12GraphicsCommandList* GetCmdList() const { return cmdBundle.at(0)->cmdList.Get(); }
+		[[nodiscard]] ID3D12GraphicsCommandList* GetCmdList(RenderType type) const { return cmdBundle.at(static_cast<int>(type))->cmdList.Get(); }
 
 		DirectX::XMFLOAT4X4 GetSceneView() const { return cbScene->view;  }
 		DirectX::XMFLOAT4X4 GetSceneProjection() const { return cbScene->projection;  }
 
-		void Begin() const;
+		void Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect, float clearColor[4]) const;
+		void End() const;
+		void SetRenderTarget(const D3D12_VIEWPORT& viewport, const D3D12_RECT& rect, float clearColor[4]);
 		void UpdateSceneConstant(const SceneConstant& sceneConstant) const;
 		void SetSceneConstant(UINT rootParameterIndex = 0);
 		void SetBarrier(D3D12_RESOURCE_STATES before, D3D12_RESOURCE_STATES after) const;
-	public:
-		std::vector<std::unique_ptr<Dx12::ArCommandBundle>> cmdBundle;
+		void Reset();
+		void Terminate();
+		Dx12::Descriptor* GetDsv() const { return dsv;  }
+
 		Microsoft::WRL::ComPtr<ID3D12Resource> backBuffer;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constantBuffer;
 		Microsoft::WRL::ComPtr<ID3D12Resource> depthStencilResource;
-		Descriptor::ArDescriptor* rtv;
-		Descriptor::ArDescriptor* dsv;
-		Descriptor::ArDescriptor* cbv;
+		Dx12::Descriptor* rtv;
+		Dx12::Descriptor* dsv;
+		Dx12::Descriptor* cbv;
 		UINT backBufferIndex;
 		SceneConstant*	cbScene;
+		uint64_t fenceValue;
+
+		struct CommandQueue;
+		void WaitForEvent(Dx12::CommandQueue* cmdQueue);
+		std::vector<std::unique_ptr<Dx12::CommandBundle>> cmdBundle;
 	public:
 	};
 }

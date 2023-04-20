@@ -10,15 +10,15 @@ public:
 	virtual ~Light() = default;
 
 
+    void Initialize() override;
     void Reset() override;
     void End() override;
-#ifdef _DEBUG
+
     void DrawDebug() override;
-#endif
-    [[nodiscard]] Argent::ArColor GetColor() const { return color; }
+    [[nodiscard]] Argent::Color GetColor() const { return color; }
 
 
 protected:
-    Argent::ArColor color;
+    Argent::Color color;
 };
 

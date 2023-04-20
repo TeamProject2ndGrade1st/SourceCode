@@ -1,23 +1,23 @@
 #pragma once
 #include <d3d12.h>
 
-namespace Argent::Descriptor
+namespace Argent::Dx12
 {
-	class ArDescriptorHeap;
-	class ArDescriptor
+	class DescriptorHeap;
+	class Descriptor
 	{
 	public:
-		ArDescriptor(D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle, D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle, UINT heapIndex, ArDescriptorHeap* heapPointer);
-		~ArDescriptor() = default;
-		ArDescriptor(const ArDescriptor&) = delete;
-		ArDescriptor(const ArDescriptor&&) = delete;
-		ArDescriptor operator=(const ArDescriptor&) = delete;
-		ArDescriptor operator=(const ArDescriptor&&) = delete;
+		Descriptor(D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle, D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle, UINT heapIndex, DescriptorHeap* heapPointer);
+		~Descriptor() = default;
+		Descriptor(const Descriptor&) = delete;
+		Descriptor(const Descriptor&&) = delete;
+		Descriptor operator=(const Descriptor&) = delete;
+		Descriptor operator=(const Descriptor&&) = delete;
 
 
 		[[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle() const { return gpuHandle; }
 		[[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandle() const { return cpuHandle; }
-		[[nodiscard]] ArDescriptorHeap* GetDescriptorHeap() const { return heapPointer; }
+		[[nodiscard]] DescriptorHeap* GetDescriptorHeap() const { return heapPointer; }
 
 		UINT GetHeapIndex() const { return heapIndex; }
 
@@ -25,6 +25,6 @@ namespace Argent::Descriptor
 		D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
 		D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle;
 		UINT heapIndex;
-		ArDescriptorHeap* heapPointer;
+		DescriptorHeap* heapPointer;
 	};
 }

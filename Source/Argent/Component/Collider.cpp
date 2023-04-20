@@ -44,7 +44,7 @@ namespace Argent::Component::Collider
 		return ret;
 	}
 
-#ifdef _DEBUG
+
 	void SphereCollider::DrawDebug()
 	{
 		if(ImGui::TreeNode(GetName().c_str()))
@@ -54,5 +54,5 @@ namespace Argent::Component::Collider
 		}
 		Collider::DrawDebug();
 	}
-#endif
+
 }

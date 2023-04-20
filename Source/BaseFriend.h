@@ -35,7 +35,11 @@ public:
 
     void SetAnimation(int index)
     {
-        GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetAnimation(index);
+        GameObject* g = GetOwner();
+        auto com = g->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
+
+        com->SetAnimation(index);
+       // GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetAnimation(index);
     }
     bool isAnimationEnd()
     {

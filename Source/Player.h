@@ -11,9 +11,9 @@ public:
 	void Update() override;
 	void Initialize() override;
 
-#ifdef _DEBUG
+
 	void DrawDebug() override;
-#endif
+
 
 private:
 	int state = 0;
@@ -22,10 +22,18 @@ private:
 
 	float movement = 1.0f;
 
+	float sensitivity = 1.0f;
+
+	DirectX::XMFLOAT2 mousePos;
+
 	void MoveCamera();
 
 	Argent::Component::Collision::RayCast* ray;
 protected:
+	DWORD start;
+	DWORD end;
+	double deltaTime;
 
+	bool useCameraControl = true;
 };
 

@@ -42,7 +42,6 @@ namespace Argent::Component::Renderer
 		effect->Play(t->GetPosition(), t->GetScale(), t->GetRotation());
 	}
 
-#ifdef _DEBUG
 	void EffectRenderer::DrawDebug()
 	{
 		if(ImGui::TreeNode(GetName().c_str()))
@@ -52,5 +51,5 @@ namespace Argent::Component::Renderer
 			ImGui::TreePop();
 		}
 	}
-#endif
+
 }

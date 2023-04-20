@@ -1,7 +1,7 @@
 #pragma once
 #include <d3d12.h>
 #include "Dx12/PipelineState.h"
-#include "../Resource/ArShader.h"
+#include "../Resource/Shader.h"
 
 
 namespace Argent
@@ -28,11 +28,11 @@ namespace Argent
 				rootSignature->SetOnCommandList(cmdList);
 			}
 
-			static std::unique_ptr<RenderingPipeline> CreateDefaultSpritePipeLine();
-			static std::unique_ptr<RenderingPipeline> CreateDefaultStaticMeshPipeLine();
-			static std::unique_ptr<RenderingPipeline> CreateDefaultSkinnedMeshPipeLine();
-			static std::unique_ptr<RenderingPipeline> CreateDebugRendererPipeLine();
-
+			static std::unique_ptr<RenderingPipeline> CreateDefaultSpritePipeline();
+			static std::unique_ptr<RenderingPipeline> CreateDefaultStaticMeshPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateDefaultSkinnedMeshPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateDebugRendererPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateDefaultFrameBufferPipeline();
 		private:
 			/**
 			 * \brief 頂点シェーダーとピクセルシェーダー、ルートシグネチャの値は入れなくてもいい
@@ -58,8 +58,8 @@ namespace Argent
 
 			std::shared_ptr<Dx12::PipelineState> pipelineState{};
 			std::shared_ptr<Dx12::RootSignature> rootSignature{};
-			std::shared_ptr<Shader::ArShader> vertexShader{};
-			std::shared_ptr<Shader::ArShader> pixelShader{};
+			std::shared_ptr<Resource::Shader> vertexShader{};
+			std::shared_ptr<Resource::Shader> pixelShader{};
 		};
 		
 	}

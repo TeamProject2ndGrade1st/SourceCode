@@ -36,6 +36,7 @@ namespace Argent::Component
 				Cube,
 				Sphere,
 				Cylinder,
+				Mesh,
 				Max,
 			};
 			RayCastCollider(MeshType type = MeshType::Cylinder,
@@ -43,15 +44,17 @@ namespace Argent::Component
 					const DirectX::XMFLOAT3& scale = DirectX::XMFLOAT3(1, 1, 1),
 					const DirectX::XMFLOAT4& rotation = DirectX::XMFLOAT4(1, 1, 1, 1));
 
+			RayCastCollider(const MeshResource& mResource);
+
 			~RayCastCollider() override = default;
 
 			void Render() const override;
 			void Initialize() override;
 
 			DirectX::XMMATRIX GetWorldTransform();
-#ifdef _DEBUG
+
 			void DrawDebug() override;
-#endif
+
 
 			MeshType type;
 			std::unique_ptr<Debug::DebugRenderer> debugRenderer;
@@ -59,10 +62,10 @@ namespace Argent::Component
 			DirectX::XMFLOAT3 scale;
 			DirectX::XMFLOAT4 rotation;
 
-			const MeshResource& GetMeshResource()const { return mResource[static_cast<int>(type)]; }
+			const MeshResource& GetMeshResource()const { return mResources[static_cast<int>(type)]; }
 		protected:
-			//MeshResource mResource;
-			static MeshResource mResource[static_cast<int>(MeshType::Max)];
+			MeshResource mResource;
+			static MeshResource mResources[static_cast<int>(MeshType::Max)];
 		};
 		
 	}
@@ -96,9 +99,9 @@ namespace Argent::Component
 
 			bool CollisionDetection(Collider::RayCastCollider* other, HitResult& hitResult) const;
 
-#ifdef _DEBUG
+
 			void DrawDebug() override;
-#endif
+
 		protected:
 			DirectX::XMFLOAT3 start;
 			DirectX::XMFLOAT3 direction;

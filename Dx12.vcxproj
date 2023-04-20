@@ -28,7 +28,7 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Argent\Component\AnimationPlayer.cpp" />
-    <ClCompile Include="Source\Argent\Component\ArColliderManager.cpp" />
+    <ClCompile Include="Source\Argent\Component\ColliderManager.cpp" />
     <ClCompile Include="Source\Argent\Component\Component.cpp" />
     <ClCompile Include="Source\Argent\Component\EffectRenderer.cpp" />
     <ClCompile Include="Source\Argent\Component\RayCast.cpp" />
@@ -50,6 +50,7 @@
     <ClCompile Include="Source\Argent\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Argent\Graphic\FrameResource.cpp" />
     <ClCompile Include="Source\Argent\Graphic\Graphics.cpp" />
+    <ClCompile Include="Source\Argent\Graphic\RenderContext.cpp" />
     <ClCompile Include="Source\Argent\Graphic\RenderingPipeline.cpp" />
     <ClCompile Include="Source\Argent\Graphic\Dx12\Command.cpp" />
     <ClCompile Include="Source\Argent\Graphic\Dx12\Descriptor.cpp" />
@@ -70,9 +71,9 @@
     <ClCompile Include="Source\Argent\Resource\ArResource.cpp" />
     <ClCompile Include="Source\Argent\Resource\SkinnedMesh.cpp" />
     <ClCompile Include="Source\Argent\Resource\ResourceManager.cpp" />
-    <ClCompile Include="Source\Argent\Resource\ArShader.cpp" />
+    <ClCompile Include="Source\Argent\Resource\Shader.cpp" />
     <ClCompile Include="Source\Argent\Resource\Sprite.cpp" />
-    <ClCompile Include="Source\Argent\Resource\ArTexture.cpp" />
+    <ClCompile Include="Source\Argent\Resource\Texture.cpp" />
     <ClCompile Include="Source\Argent\Resource\EffectManager.cpp" />
     <ClCompile Include="Source\Argent\Scene\BaseScene.cpp" />
     <ClCompile Include="Source\Argent\Scene\SceneManager.cpp" />
@@ -82,8 +83,9 @@
     <ClCompile Include="Source\BaseGun.cpp" />
     <ClCompile Include="Source\BaseState.cpp" />
     <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\Stage.cpp" />
     <ClCompile Include="Source\Player.cpp" />
-    <ClCompile Include="Source\RayCastDemo.cpp" />
+    <ClCompile Include="Source\Demo.cpp" />
     <ClCompile Include="Source\StateDerived.cpp" />
     <ClCompile Include="Source\StateMachine.cpp" />
     <ClCompile Include="Source\Title.cpp" />
@@ -101,7 +103,7 @@
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Argent\Argent.h" />
     <ClInclude Include="Source\Argent\Component\AnimationPlayer.h" />
-    <ClInclude Include="Source\Argent\Component\ArColliderManager.h" />
+    <ClInclude Include="Source\Argent\Component\ColliderManager.h" />
     <ClInclude Include="Source\Argent\Component\Color.h" />
     <ClInclude Include="Source\Argent\Component\Component.h" />
     <ClInclude Include="Source\Argent\Component\EffectRenderer.h" />
@@ -124,6 +126,7 @@
     <ClInclude Include="Source\Argent\GameObject\GameObject.h" />
     <ClInclude Include="Source\Argent\Graphic\FrameResource.h" />
     <ClInclude Include="Source\Argent\Graphic\Graphics.h" />
+    <ClInclude Include="Source\Argent\Graphic\RenderContext.h" />
     <ClInclude Include="Source\Argent\Graphic\RenderingPipeline.h" />
     <ClInclude Include="Source\Argent\Graphic\Dx12\Command.h" />
     <ClInclude Include="Source\Argent\Graphic\Dx12\ConstantBuffer.h" />
@@ -140,7 +143,7 @@
     <ClInclude Include="Source\Argent\Other\Helper.h" />
     <ClInclude Include="Source\Argent\Other\CerealHelper.h" />
     <ClInclude Include="Source\Argent\Other\Misc.h" />
-    <ClInclude Include="Source\Argent\Resource\ArAnimation.h" />
+    <ClInclude Include="Source\Argent\Resource\Animation.h" />
     <ClInclude Include="Source\Argent\Resource\Audio.h" />
     <ClInclude Include="Source\Argent\Resource\AudioManager.h" />
     <ClInclude Include="Source\Argent\Resource\Effect.h" />
@@ -150,9 +153,9 @@
     <ClInclude Include="Source\Argent\Resource\SkinnedMesh.h" />
     <ClInclude Include="Source\Argent\Resource\ArResource.h" />
     <ClInclude Include="Source\Argent\Resource\ResourceManager.h" />
-    <ClInclude Include="Source\Argent\Resource\ArShader.h" />
+    <ClInclude Include="Source\Argent\Resource\Shader.h" />
     <ClInclude Include="Source\Argent\Resource\Sprite.h" />
-    <ClInclude Include="Source\Argent\Resource\ArTexture.h" />
+    <ClInclude Include="Source\Argent\Resource\Texture.h" />
     <ClInclude Include="Source\Argent\Resource\EffectManager.h" />
     <ClInclude Include="Source\Argent\Scene\BaseScene.h" />
     <ClInclude Include="Source\Argent\Scene\SceneManager.h" />
@@ -163,8 +166,9 @@
     <ClInclude Include="Source\BaseState.h" />
     <ClInclude Include="Source\DemoShaderMacro.h" />
     <ClInclude Include="Source\Game.h" />
+    <ClInclude Include="Source\Stage.h" />
     <ClInclude Include="Source\Player.h" />
-    <ClInclude Include="Source\RayCastDemo.h" />
+    <ClInclude Include="Source\Demo.h" />
     <ClInclude Include="Source\StateDerived.h" />
     <ClInclude Include="Source\StateMachine.h" />
     <ClInclude Include="Source\Title.h" />

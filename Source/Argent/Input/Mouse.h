@@ -8,7 +8,7 @@ namespace Argent::Input
 	class Mouse
 	{
 	public:
-		enum class Mouses
+		enum class Button
 		{
 			LeftButton = 0x01,
 			RightButton = 0x02,
@@ -35,23 +35,23 @@ namespace Argent::Input
 
 
 		void Update();
-		bool IsButtonPress(Mouses m);
-		bool IsButtonPressEnter(Mouses m);
-		bool IsButtonRelease(Mouses m);
+		bool GetButton(Button m);
+		bool GetButtonDown(Button m);
+		bool GetButtonUp(Button m);
 		bool IsMouseWheelRotate() const { return isWheelRotate; }
 
 		void SetIsWheelRotateOn() { isWheelRotate = true; }
 		void SetIsWheelRotateOff() { isWheelRotate = false; }
 		void SetRowWheelRotateValue(float v) { rowWheelRotateValue = v; }
 
-		[[nodiscard]] DirectX::XMFLOAT2 GetPosition() const { return position; }
-		[[nodiscard]] DirectX::XMFLOAT2 GetMoveVec() const { return moveVec; }
-		[[nodiscard]] DirectX::XMFLOAT2 GetPostPosition() const { return postPosition; }
-		[[nodiscard]] WheelStates GetWheelState() const { return wheelState; }
+		DirectX::XMFLOAT2 GetPosition() const { return position; }
+		DirectX::XMFLOAT2 GetMoveVec() const { return moveVec; }
+		DirectX::XMFLOAT2 GetPostPosition() const { return postPosition; }
+		WheelStates GetWheelState() const { return wheelState; }
 
 		float GetRowWheelRotateValue() const { return rowWheelRotateValue; }
 
-		std::unordered_map<Mouses, State> mouseState;
+		std::unordered_map<Button, State> mouseState;
 	private:
 		DirectX::XMFLOAT2 position;
 		DirectX::XMFLOAT2 moveVec;

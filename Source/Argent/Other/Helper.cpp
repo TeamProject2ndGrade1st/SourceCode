@@ -198,7 +198,7 @@ namespace Argent
 
 		namespace Texture
 		{
-			HRESULT LoadTexture(ID3D12Device* device, Argent::Dx12::ArCommandBundle* cmdBundle, Argent::Dx12::ArCommandQueue* cmdQueue, const wchar_t* filepath, ID3D12Resource** resource)
+			HRESULT LoadTexture(ID3D12Device* device, Argent::Dx12::CommandBundle* cmdBundle, Argent::Dx12::CommandQueue* cmdQueue, const wchar_t* filepath, ID3D12Resource** resource)
 			{
 				DirectX::TexMetadata metaData{};
 				DirectX::ScratchImage scratchImage{};
@@ -212,8 +212,8 @@ namespace Argent
 				//todo ’¼‚¹
 				if(FAILED(hr))
 				{
-					hr =Argent::Graphics::ArGraphics::Instance()->CreateWhiteTexture(resource);
-					//hr =Argent::Graphics::ArGraphics::Instance()->CreateNoiseTexture(resource);
+					hr =Argent::Graphics::Graphics::Instance()->CreateWhiteTexture(resource);
+					//hr =Argent::Graphics::Graphics::Instance()->CreateNoiseTexture(resource);
 					_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
 					return hr;
 				}
@@ -327,6 +327,7 @@ namespace Argent
 						ID3D12CommandList* cmdlists[]{ cmdBundle->cmdList.Get() };
 						cmdQueue->Execute(1, cmdlists);
 						cmdQueue->SetFence();
+						cmdQueue->WaitForFence();
 					}
 				}
 

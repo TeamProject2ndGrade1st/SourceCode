@@ -20,7 +20,6 @@ namespace Argent::Scene
 		
 		s = std::make_unique<Game>("Game");
 		scenes[s->GetName()] = std::move(s);
-		
 	}
 
 	void ArSceneManager::Initialize()
@@ -28,13 +27,13 @@ namespace Argent::Scene
 		nextScene = "Title";
 	}
 		
-	void ArSceneManager::Finalize()
+	void ArSceneManager::Finalize() const
 	{
 		if(currentScene)
 			currentScene->Finalize();
 	}
 
-	void ArSceneManager::Begin()
+	void ArSceneManager::Begin() const
 	{
 		if (currentScene)
 			currentScene->Begin();
@@ -42,6 +41,8 @@ namespace Argent::Scene
 
 	void ArSceneManager::Update()
 	{
+		start = end;
+		end = GetTickCount();   
 		ChangeScene();
 		if(currentScene)
 		{
@@ -49,20 +50,27 @@ namespace Argent::Scene
 		}
 	}
 
-	void ArSceneManager::End()
+	void ArSceneManager::End() const
 	{
 		if (currentScene)
 			currentScene->End();
 	}
 
-	void ArSceneManager::Render()
+	void ArSceneManager::Render() const
 	{
 		if(currentScene)
 		{
 			currentScene->Render();
-#ifdef _DEBUG
+		}
+	}
+
+	void ArSceneManager::DrawDebug() const
+	{
+		if(currentScene)
+		{
 			currentScene->DrawDebug();
-#endif
+			double elapsedTime = (double)(end - start) / 1000;
+			ImGui::InputDouble("Deltatime", &elapsedTime);
 		}
 	}
 

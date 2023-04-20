@@ -23,9 +23,9 @@ public:
 
 	void OnCollision(const Argent::Component::Collider::Collider* collider) override;
 	static void Shot(BaseBullet* bulletActor, const Transform& t);
-#ifdef _DEBUG
+
 	void DrawDebug() override;
-#endif
+
 protected:
 	float damage;
 	float speed;

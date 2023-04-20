@@ -17,7 +17,7 @@ namespace Argent::Scene
 		,	isInitialized(false)
 		{
 			gameObject.clear();
-			AddObject(new GameObject("Camera", new Camera(true, Argent::Graphics::ArGraphics::Instance()->GetWidth(), Argent::Graphics::ArGraphics::Instance()->GetHeight())));
+			AddObject(new GameObject("Camera", new Camera(true, Argent::Graphics::Graphics::Instance()->GetWidth(), Argent::Graphics::Graphics::Instance()->GetHeight())));
 			AddObject(new GameObject("Light", new Light));
 		}
 		virtual ~BaseScene() = default;
@@ -33,15 +33,16 @@ namespace Argent::Scene
 		 * \brief 毎フレーム一番最初に呼ばれる
 		 */
 		virtual void Begin();
+		virtual void Update();
+		virtual void Render();
+
 		/**
 		 * \brief 毎フレーム一番最後に呼ばれる
 		 */
 		virtual void End();
-		virtual void Update();
-		virtual void Render();
-	#ifdef _DEBUG
+
 		virtual void DrawDebug();
-	#endif
+
 
 		void DeleteDestroyedObject();
 		//void DestroyGameObject(GameObject* object);

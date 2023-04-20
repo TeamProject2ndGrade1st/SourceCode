@@ -2,9 +2,9 @@
 #include "d3dx12.h"
 #include "../../Other/Misc.h"
 
-namespace Argent::Descriptor
+namespace Argent::Dx12
 {
-	ArDescriptorHeap::ArDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors):
+	DescriptorHeap::DescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors):
 		MaxDescriptorCounts(numDescriptors)
 		,	heapIncrementSize(device->GetDescriptorHandleIncrementSize(type))
 		,	descriptorStackCounter(0)
@@ -59,7 +59,7 @@ namespace Argent::Descriptor
 		descriptors.resize(numDescriptors);
 		for(auto& desc : descriptors)
 		{
-			desc = std::make_unique<Descriptor::ArDescriptor>(cpuH, gpuH, heapIndex, this);
+			desc = std::make_unique<Dx12::Descriptor>(cpuH, gpuH, heapIndex, this);
 			cpuH.ptr += heapIncrementSize;
 			if (type != D3D12_DESCRIPTOR_HEAP_TYPE_DSV && type != D3D12_DESCRIPTOR_HEAP_TYPE_RTV)
 				gpuH.ptr += heapIncrementSize;
@@ -67,7 +67,7 @@ namespace Argent::Descriptor
 		}
 	}
 
-	ArDescriptor* ArDescriptorHeap::PopDescriptor()
+	Descriptor* DescriptorHeap::PopDescriptor()
 	{
 		if(descriptorStackCounter >= descriptors.size()) _ASSERT_EXPR(FALSE, L"Overed heapSize");
 		return descriptors.at(descriptorStackCounter++).get();

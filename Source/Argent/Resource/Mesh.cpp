@@ -10,7 +10,7 @@ namespace Argent::Resource::Mesh
 	,	subsets(subsets)
 	,	localTransform(globalTransform)
 	{
-		ID3D12Device* device = Graphics::ArGraphics::Instance()->GetDevice();
+		ID3D12Device* device = Graphics::Graphics::Instance()->GetDevice();
 		vertexBuffer = std::make_unique<Dx12::ArVertexBuffer<Vertex>>(device, mResource.vertices);
 		indexBuffer = std::make_unique<Dx12::ArIndexBuffer>(device, mResource.indices);
 	}

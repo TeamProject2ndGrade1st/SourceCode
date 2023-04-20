@@ -12,9 +12,12 @@ public:
 	void Initialize() override;
 
 	void Update() override;
-#ifdef _DEBUG
+
 	void DrawDebug() override;
-#endif
+
 	Argent::Component::Collision::RayCast* ray;
+	Argent::Component::Audio::AudioPlayer* audio;
 	float moveSpeed;
+	DirectX::XMFLOAT2 mousePos;
+	DirectX::XMFLOAT2 mousePostPos;
 };

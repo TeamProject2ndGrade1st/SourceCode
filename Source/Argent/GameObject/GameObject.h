@@ -26,10 +26,16 @@ public:
 
 	virtual void Initialize();
 	virtual void Finalize();
+
 	virtual void Begin();
-	virtual void End();
+	virtual void EarlyUpdate();
 	virtual void Update();
+	virtual void LateUpdate();
 	virtual void Render() const;
+	virtual void End();
+
+
+
 	virtual void DrawDebug();
 
 	void AddComponent(Argent::Component::BaseComponent* com);

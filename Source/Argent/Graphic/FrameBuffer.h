@@ -3,41 +3,45 @@
 #include <memory>
 #include <wrl.h>
 #include <DirectXMath.h>
-#include "../Resource/ArShader.h"
+#include "../Resource/Shader.h"
+#include "Dx12/Descriptor.h"
+#include "RenderingPipeline.h"
+#include "Dx12/VertexBuffer.h"
 
 namespace Argent::Graphics
 {
-	class ArGraphics;
+	class Graphics;
 }
 
-class ArGraphics;
-
-class FrameBuffer
+namespace Argent::Graphics
 {
-	struct Vertex
+	class FrameBuffer
 	{
-		DirectX::XMFLOAT3 position;
-		DirectX::XMFLOAT2 texcoord;
+		struct Vertex
+		{
+			DirectX::XMFLOAT3 position;
+			DirectX::XMFLOAT2 texcoord;
+		};
+	public:
+		FrameBuffer(ID3D12Device* device, D3D12_RESOURCE_DESC rsDesc, 
+			float clearColor[4]);
+		virtual ~FrameBuffer() = default;
+
+
+		void Begin(const Graphics* gfx, ID3D12GraphicsCommandList* cList);
+		void End(const Graphics* gfx) const;
+		void Draw(const Graphics* gfx) const;
+	private:
+		Microsoft::WRL::ComPtr<ID3D12Resource> resource;	//レンダーターゲットorシェーダーリソース
+		Microsoft::WRL::ComPtr<ID3D12Resource> depthResource;	//深度バッファ
+		std::unique_ptr<Resource::Shader> vertexShader;
+		std::unique_ptr<Resource::Shader> pixelShader;
+		std::unique_ptr<RenderingPipeline> renderingPipeline;
+		std::shared_ptr<Dx12::ArVertexBuffer<Vertex>> vertexBuffer;
+		Dx12::Descriptor* srvDescriptor;
+		Dx12::Descriptor* rtvDescriptor;
+		Dx12::Descriptor* dsvDescriptor;
+		float clearColor[4];
+		ID3D12GraphicsCommandList* cmdList;
 	};
-public:
-	FrameBuffer(ID3D12Device* device, D3D12_RESOURCE_DESC rDesc, float clearColor[4],
-		D3D12_DESCRIPTOR_HEAP_DESC heapDesc);
-	virtual ~FrameBuffer() = default;
-
-
-	void Begin(Argent::Graphics::ArGraphics* gfx);
-	void End(Argent::Graphics::ArGraphics* gfx);
-	void Draw(Argent::Graphics::ArGraphics* gfx);
-private:
-	Microsoft::WRL::ComPtr<ID3D12Resource> resource;
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap;
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvHeap;
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> cbvHeap;
-	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipeline;
-	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
-	Microsoft::WRL::ComPtr<ID3D12Resource> vertexBuffer;
-	std::unique_ptr<Argent::Shader::ArShader> vertexShader;
-	std::unique_ptr<Argent::Shader::ArShader> pixelShader;
-	D3D12_VERTEX_BUFFER_VIEW vertexView{};
-};
-
+}

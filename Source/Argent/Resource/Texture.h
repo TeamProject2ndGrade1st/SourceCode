@@ -4,24 +4,24 @@
 #include "../Graphic/Dx12/Descriptor.h"
 #include "ArResource.h"
 
-namespace Argent::Texture
+namespace Argent::Resource
 {
-	class ArTexture:
+	class Texture:
 		public Argent::Resource::ArImportedResource
 	{
 	public:
-		ArTexture(const char* filePath);
+		Texture(const char* filePath);
 
 		void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const;
 		ID3D12Resource* GetTexture() const { return shaderResource.Get(); }
 		float GetWidth() const { return width; }
 		float GetHeight() const { return height; }
-		Descriptor::ArDescriptor* GetDescriptor() const { return descriptor; }
-		Descriptor::ArDescriptor* GetImDescriptor() const { return imDescriptor; }
+		Dx12::Descriptor* GetDescriptor() const { return descriptor; }
+		Dx12::Descriptor* GetImDescriptor() const { return imDescriptor; }
 
 	private:
-		Descriptor::ArDescriptor* descriptor;
-		Descriptor::ArDescriptor* imDescriptor;
+		Dx12::Descriptor* descriptor;
+		Dx12::Descriptor* imDescriptor;
 		Microsoft::WRL::ComPtr<ID3D12Resource> shaderResource;
 		float width;
 		float height;

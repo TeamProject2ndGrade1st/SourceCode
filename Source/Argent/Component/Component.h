@@ -26,12 +26,18 @@ namespace Argent::Component
 
 		virtual void Initialize() { Reset(); }	//最初に一回だけ呼ばれる
 		virtual void Finalize() {}				//最後に一回だけ呼ばれる
+
+
 		virtual void Begin() {}					//毎フレーム最初に呼ばれる
-		virtual void End() {}					//毎フレーム最後に呼ばれる
+		virtual void EarlyUpdate() {}			//Beginのあとに
 		virtual void Update() {}				//毎フレームBeginとEndの間で呼ばれる
+		virtual void LateUpdate() {}			//updateのあとに
 		virtual void Render() const {}				//毎フレーム　描画用関数
+		virtual void End() {}					//毎フレーム最後に呼ばれる
+
+
 		virtual void Reset() {}					//Initializeが呼ばれた直後の状態に戻す
-#ifdef _DEBUG
+
 		virtual void DrawDebug()
 		{
 			DebugReset();
@@ -44,15 +50,12 @@ namespace Argent::Component
 				Reset();
 			}
 		}
-#endif
 
-	public:
 		std::string GetName() const { return name; }
 
 	private:
 		std::string name;
 		GameObject* owner;
-		//std::vector<std::unordered_map<char[], std::set<char>>>* unti;
 	};
 
 }

@@ -56,7 +56,19 @@ namespace Argent::Scene
 		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
 			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
+				gameObject.at(i)->EarlyUpdate();
+		}
+
+		for(size_t i = 0; i < gameObject.size(); ++i)
+		{
+			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
 				gameObject.at(i)->Update();
+		}
+
+		for(size_t i = 0; i < gameObject.size(); ++i)
+		{
+			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
+				gameObject.at(i)->LateUpdate();
 		}
 	}
 
@@ -75,6 +87,7 @@ namespace Argent::Scene
 		{
 			if((*it)->GetDestroyFlag())
 			{
+				(*it)->Finalize();
 				delete (*it);
 				it =gameObject.erase(it);
 			}
@@ -85,9 +98,10 @@ namespace Argent::Scene
 		}
 	}
 
-#ifdef _DEBUG
+
 	void BaseScene::DrawDebug()
 	{
+		ImGui::Text(GetName().c_str());
 		if (ImGui::TreeNode("Object"))
 		{
 			for(size_t i = 0; i < gameObject.size(); ++i)
@@ -101,7 +115,7 @@ namespace Argent::Scene
 			gameObject.at(i)->DrawDebug();
 		}
 	}
-#endif
+
 
 	void BaseScene::CloseAllDebugWindow() const
 	{
@@ -122,8 +136,6 @@ namespace Argent::Scene
 
 	void BaseScene::ImGuiCheckBox(GameObject* obj)
 	{
-#ifdef _DEBUG
-		
 		if (ImGui::Button(obj->GetName().c_str()))
 		{
 			CloseAllDebugWindow();
@@ -139,7 +151,6 @@ namespace Argent::Scene
 			}
 			ImGui::TreePop();
 		}
-#endif
 	}
 
 	// 

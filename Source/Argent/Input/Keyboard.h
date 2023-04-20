@@ -430,7 +430,7 @@ namespace Argent::Input
 		{
 			for(auto it = keyState.begin(); it != keyState.end(); ++it)
 			{
-				const auto State = GetKeyState((*it).first);
+				const auto State = GetAsyncKeyState((*it).first);
 				if(State & 0x8000)
 				{
 					switch ((*it).second)

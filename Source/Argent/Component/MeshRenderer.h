@@ -24,8 +24,9 @@ namespace Argent::Component::Renderer
 
 
 	public:
-		MeshRenderer(ID3D12Device* device, const char* fileName, std::shared_ptr<Resource::Mesh::ArMesh> meshes,
-			std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials);
+		MeshRenderer(ID3D12Device* device, const char* fileName, 
+			std::shared_ptr<Resource::Mesh::ArMesh> meshes
+			);
 		~MeshRenderer() override = default;
 
 		MeshRenderer(const MeshRenderer&) = delete;
@@ -41,9 +42,10 @@ namespace Argent::Component::Renderer
 		void Render() const override;
 		void Update() override;
 
-#ifdef _DEBUG
+
 		void DrawDebug() override;
-#endif
+
+		std::shared_ptr<Resource::Mesh::ArMesh> GetMesh() const { return mesh; }
 
 		void CreateComObject(ID3D12Device* device);
 
@@ -52,8 +54,6 @@ namespace Argent::Component::Renderer
 
 	protected:
 		std::shared_ptr<Resource::Mesh::ArMesh> mesh{};
-		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial> materials{};
-		
 	public:
 	};
 }

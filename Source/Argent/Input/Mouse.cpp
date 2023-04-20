@@ -1,19 +1,19 @@
 #include "Mouse.h"
-
+#include "../Graphic/Graphics.h"
 namespace Argent::Input
 {
 	Mouse::Mouse()
 	{
-		mouseState[Mouses::LeftButton] = State::NONE;
-		mouseState[Mouses::RightButton] = State::NONE;
-		mouseState[Mouses::MiddleButton] = State::NONE;
+		mouseState[Button::LeftButton] = State::NONE;
+		mouseState[Button::RightButton] = State::NONE;
+		mouseState[Button::MiddleButton] = State::NONE;
 	}
 
 	void Mouse::Update()
 	{
 		POINT p{};
 		GetCursorPos(&p);
-		//ScreenToClient(Argent::Graphics::ArGraphics::Instance()->GetWindowHandle(), &p);
+		ScreenToClient(Argent::Graphics::Graphics::Instance()->hWnd, &p);
 		postPosition = position;
 		position = DirectX::XMFLOAT2(static_cast<float>(p.x), static_cast<float>(p.y));
 		moveVec = DirectX::XMFLOAT2(position.x - postPosition.x, position.y - postPosition.y);
@@ -64,19 +64,19 @@ namespace Argent::Input
 		else wheelState = WheelStates::None;
 	}
 
-	bool Mouse::IsButtonPress(Mouses m)
+	bool Mouse::GetButton(Button m)
 	{
 		if (mouseState[m] == State::PRESS) return true;
 		return false;
 	}
 
-	bool Mouse::IsButtonPressEnter(Mouses m)
+	bool Mouse::GetButtonDown(Button m)
 	{
 		if (mouseState[m] == State::ENTER) return true;
 		return false;
 	}
 
-	bool Mouse::IsButtonRelease(Mouses m)
+	bool Mouse::GetButtonUp(Button m)
 	{
 		if (mouseState[m] == State::RELEASE) return true;
 		return false;

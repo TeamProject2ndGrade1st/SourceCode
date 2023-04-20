@@ -18,7 +18,6 @@ void StateMachine::SetState(int setState)
 {
 	currentState = statePool.at(setState);
 	currentState->Enter();
-
 }
 
 void StateMachine::ChangeState(int newState)

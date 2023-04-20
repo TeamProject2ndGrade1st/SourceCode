@@ -5,7 +5,7 @@ class BaseFriend;
 class State
 {
 public:
-	State(BaseFriend* _friend) :owner(_friend) {}
+	State(BaseFriend* _friend, const char* name) :owner(_friend), name(name) {}
 	 virtual ~State() {}
 
 	 //ステートに入った時に呼ばれる
@@ -19,14 +19,14 @@ public:
 
 protected:
 	BaseFriend* owner;
-
+	const char* name;
 };
 
 
 class HierarchicalState : public State
 {
 public:
-	HierarchicalState(BaseFriend* _friend) :State(_friend) {}
+	HierarchicalState(BaseFriend* _friend) :State(_friend, "hierarchical") {}
 	virtual ~HierarchicalState() {}
 
 	virtual void Enetr() = 0;

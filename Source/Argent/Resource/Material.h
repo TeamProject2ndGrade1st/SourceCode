@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 #include <DirectXMath.h>
-#include "ArTexture.h"
+#include "Texture.h"
 #include "ArResource.h"
 #include "../Component/Color.h"
 #include "../Graphic/Dx12/ConstantBuffer.h"
@@ -15,6 +15,8 @@
 #include <cereal/types/set.hpp>
 #include <cereal/types/map.hpp>
 #include <cereal/types/string.hpp>
+
+#include "ArResource.h"
 
 
 namespace Argent::Material
@@ -30,18 +32,26 @@ namespace Argent::Material
 		 * \param RootParameterIndex 
 		 */
 		void Render(ID3D12GraphicsCommandList* cmdList, UINT RootParameterIndex) const;
-#ifdef _DEBUG
-		void DrawDebug();
-#endif
 
-		std::shared_ptr<Texture::ArTexture> texture;
-		ArColor color;
+		void DrawDebug();
+
+
+		std::shared_ptr<Resource::Texture> texture;
+		Color color;
 		std::string name;
 	};
 
-	struct ArMeshMaterial
+	class MeshMaterial:
+		public Resource::ArResource
 	{
 	public:
+		MeshMaterial(const char* name):
+			ArResource(name, ResourceType::Mesh)
+		{}
+
+		MeshMaterial():
+			ArResource("Material", ResourceType::Material)
+		{}
 		template<class T>
 		void serialize(T& archive)
 		{
@@ -68,23 +78,20 @@ namespace Argent::Material
 				archive(color, ka, kd, ks, shininess);
 			}
 		};
-		std::string name;
 
 		static constexpr int NumTextures = static_cast<int>(TextureType::Max);
 		uint64_t textureUniqueId[NumTextures];
 		std::string textureNames[NumTextures];
-		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
+		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer{};
 		Constant constant{};
-		ArColor color;
+		Color color;
 		void CreateTexture(const char* filePath, TextureType type);
 
 		void SetOnCommand(ID3D12GraphicsCommandList* cmdList, UINT cbIndex, UINT diffuseIndex, UINT normalIndex) const;
-		
 
-#ifdef _DEBUG
 		void DrawDebug()
 		{
-			if (ImGui::TreeNode(name.c_str()))
+			if (ImGui::TreeNode(GetName()))
 			{
 				ImGui::DragFloat3("Ka", &constant.ka.x, 0.001f, 0, 1.0f);
 				ImGui::DragFloat3("Kd", &constant.kd.x, 0.001f, 0, 1.0f);
@@ -94,6 +101,6 @@ namespace Argent::Material
 				ImGui::TreePop();
 			}
 		}
-#endif
+
 	};
 }

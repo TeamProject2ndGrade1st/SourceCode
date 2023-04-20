@@ -6,7 +6,7 @@
 
 #include "../Resource/Mesh.h"
 #include "../Resource/SkinnedMesh.h"
-#include "../Resource/ArAnimation.h"
+#include "../Resource/Animation.h"
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/string.hpp>
@@ -72,9 +72,7 @@ namespace Argent::Loader
 			int64_t nodeIndex;
 			std::string name;
 			Argent::Resource::Mesh::MeshResource meshResource;
-			//std::vector<Argent::Resource::Mesh::Vertex> vertices;
 			std::vector<Resource::Mesh::BoneVertex> vertexBones;
-			//std::vector<uint32_t> indices;
 			std::vector<Resource::Mesh::Subset> subsets;
 			Argent::Resource::Mesh::Skeleton bindPose;
 			DirectX::XMFLOAT4X4 defaultGlobalTransform
@@ -96,8 +94,8 @@ namespace Argent::Loader
 		struct FbxResource
 		{
 			std::vector<TmpFbxMesh> tmpMeshes;
-			std::unordered_map<uint64_t, Material::ArMeshMaterial> materials;
-			std::vector<Resource::Animation::ArAnimation> animationClips;
+			std::unordered_map<uint64_t, std::shared_ptr<Material::MeshMaterial>> materials;
+			std::vector<Resource::Animation::AnimationClip> animationClips;
 
 			template<class T>
 			void serialize(T& archive)

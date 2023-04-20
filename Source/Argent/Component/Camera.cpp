@@ -18,9 +18,11 @@ Camera::Camera(bool isSceneCamera, float width, float height, float nearZ, float
 ,	forward(DirectX::XMFLOAT3(0, 0, 1))
 ,	right(DirectX::XMFLOAT3(1, 0, 0))
 ,	up(DirectX::XMFLOAT3(0, 1, 0))
+,	maxRotation(0, 0, 0, 0)
+,	minRotation(0, 0, 0, 0)
 {
-	/*if(Argent::Graphics::ArGraphics::Instance()->GetCamera() == nullptr)
-		Argent::Graphics::ArGraphics::Instance()->SetCamera(this);*/
+	/*if(Argent::Graphics::Graphics::Instance()->GetCamera() == nullptr)
+		Argent::Graphics::Graphics::Instance()->SetCamera(this);*/
 }
 
 void Camera::Reset()
@@ -135,19 +137,41 @@ void Camera::Update()
 	DirectX::XMStoreFloat3(&up, DirectX::XMVector3Normalize(DirectX::XMVector3Rotate(UpVec, quaternion)));
 }
 
-void Camera::End()
+void Camera::LateUpdate()
 {
-	auto g = Argent::Graphics::ArGraphics::Instance();
+	//‰ñ“]—Ê‚Ì§ŒÀ
+	auto rotation = GetOwner()->GetTransform()->GetRotation();
+	if(useMaxRotation)
+	{
+		rotation = Min(rotation, maxRotation);
+	}
+	if(useMinRotation)
+	{
+		rotation = Max(rotation, minRotation);
+	}
+	GetOwner()->GetTransform()->SetRotation(rotation);
+	auto g = Argent::Graphics::Graphics::Instance();
 	g->SetCameraPosition(GetOwner()->GetTransform()->GetPosition());
 	g->SetProjectionMatrix(GetProjectionMatrix());
 	g->SetViewMatrix(GetViewMatrix());
-
 }
 
-#ifdef _DEBUG
+void Camera::End()
+{
+	/*auto t = GetOwner()->GetTransform();
+	auto rot = t->GetRotation();
+	if (rot.x > maxRotation.x)
+	{
+		rot.x = maxRotation.x;
+		t->SetRotation(rot);
+	}*/
+
+	
+}
+
+
 void Camera::DrawDebug()
 {
-
 	if(ImGui::TreeNode("Camera"))
 	{
 		if(ImGui::Button("Use Scene Camera"))
@@ -171,7 +195,7 @@ void Camera::DrawDebug()
 		BaseComponent::DrawDebug();
 	}
 }
-#endif
+
 
 DirectX::XMMATRIX Camera::GetViewProjectionMatrix() const
 {
@@ -223,7 +247,7 @@ void CameraController::Update()
 
 	if(!camera->GetIsSceneCamera()) return;
 
-	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::MiddleButton))
+	if(Argent::Input::Mouse::Instance().GetButton(Argent::Input::Mouse::Button::MiddleButton))
 	{
 		DirectX::XMFLOAT3 position = transform->GetPosition();
 		if(!camera) return;
@@ -244,7 +268,7 @@ void CameraController::Update()
 	}
 
 	//Rotate
-	if(Argent::Input::Mouse::Instance().IsButtonPress(Argent::Input::Mouse::Mouses::RightButton))
+	if(Argent::Input::Mouse::Instance().GetButton(Argent::Input::Mouse::Button::RightButton))
 	{
 		DirectX::XMFLOAT4 rotation = transform->GetRotation();
 

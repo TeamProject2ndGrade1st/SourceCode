@@ -8,8 +8,17 @@ Light::Light(std::string name, DirectX::XMFLOAT4 color):
 	BaseComponent(name)
 ,	color(color)
 {
-	/*if(Argent::Graphics::ArGraphics::Instance()->GetLight() == nullptr)
-		Argent::Graphics::ArGraphics::Instance()->SetLight(this);*/
+	/*if(Argent::Graphics::Graphics::Instance()->GetLight() == nullptr)
+		Argent::Graphics::Graphics::Instance()->SetLight(this);*/
+}
+
+void Light::Initialize()
+{
+	auto t = GetOwner()->GetTransform();
+	auto p = t->GetPosition();
+	p.y = 100;
+	p.z = -30;
+	t->SetPosition(p);
 }
 
 void Light::Reset()
@@ -20,11 +29,11 @@ void Light::Reset()
 
 void Light::End()
 {
-	auto g = Argent::Graphics::ArGraphics::Instance();
+	auto g = Argent::Graphics::Graphics::Instance();
 	g->SetLightPosition(GetOwner()->GetTransform()->GetPosition());
 	g->SetLightColor(GetColor().GetColor());
 }
-#ifdef _DEBUG
+
 void Light::DrawDebug()
 {
 	if(ImGui::TreeNode(GetName().c_str()))
@@ -34,4 +43,4 @@ void Light::DrawDebug()
 		ImGui::TreePop();
 	}
 }
-#endif
+

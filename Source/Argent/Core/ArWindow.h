@@ -14,9 +14,6 @@ namespace Argent::Window
 
 
 		static LRESULT CALLBACK HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-		
-
-
 
 		HWND GetHandle() const { return hWnd; }
 	private:

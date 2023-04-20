@@ -9,7 +9,7 @@ namespace Argent::Component
 {
 	namespace Collider
 	{
-		Resource::Mesh::MeshResource RayCastCollider::mResource[] {};
+		Resource::Mesh::MeshResource RayCastCollider::mResources[] {};
 
 		RayCastCollider::RayCastCollider(MeshType type,
 			const DirectX::XMFLOAT3& offset, const DirectX::XMFLOAT3& scale,
@@ -30,7 +30,7 @@ namespace Argent::Component
 
 					std::ifstream ifs(filePath, std::ios::binary);
 					cereal::BinaryInputArchive deserialization(ifs);
-					deserialization(mResource[static_cast<int>(MeshType::Cube)]);
+					deserialization(mResources[static_cast<int>(MeshType::Cube)]);
 				}
 				{
 					const char* filePath = "./Resources/Model/Collision/Sphere.cereal";
@@ -38,7 +38,7 @@ namespace Argent::Component
 
 					std::ifstream ifs(filePath, std::ios::binary);
 					cereal::BinaryInputArchive deserialization(ifs);
-					deserialization(mResource[static_cast<int>(MeshType::Sphere)]);
+					deserialization(mResources[static_cast<int>(MeshType::Sphere)]);
 				}
 				{
 					const char* filePath = "./Resources/Model/Collision/Cylinder.cereal";
@@ -46,17 +46,30 @@ namespace Argent::Component
 
 					std::ifstream ifs(filePath, std::ios::binary);
 					cereal::BinaryInputArchive deserialization(ifs);
-					deserialization(mResource[static_cast<int>(MeshType::Cylinder)]);
+					deserialization(mResources[static_cast<int>(MeshType::Cylinder)]);
 				}
 				b = true;
 			}
 			debugRenderer = std::make_unique<Debug::DebugRenderer>(
-				mResource[static_cast<int>(type)]);
+				mResources[static_cast<int>(type)]);
 
 			Argent::Collider::ArColliderManager::Instance().RegisterRayCastCollider(this);
 		}
 
-		
+		RayCastCollider::RayCastCollider(const MeshResource& mResource):
+			BaseComponent("RayCastCollider")
+		,	mResource(mResource)
+		,	offset(DirectX::XMFLOAT3())
+		,	scale(DirectX::XMFLOAT3(1, 1, 1))
+		,	rotation(DirectX::XMFLOAT4())
+		{
+			debugRenderer = std::make_unique<Debug::DebugRenderer>(
+				mResource);
+
+			Argent::Collider::ArColliderManager::Instance().RegisterRayCastCollider(this);
+		}
+
+
 		void RayCastCollider::Render() const
 		{
 			if(debugRenderer)
@@ -78,10 +91,10 @@ namespace Argent::Component
 
 		DirectX::XMMATRIX RayCastCollider::GetWorldTransform()
 		{
-			return GetOwner()->GetTransform()->GetWorldMatrix();
+			return GetOwner()->GetTransform()->CalcWorldMatrix();
 		}
 
-#ifdef _DEBUG
+
 		void RayCastCollider::DrawDebug()
 		{
 			if (ImGui::TreeNode(GetName().c_str()))
@@ -92,7 +105,7 @@ namespace Argent::Component
 				ImGui::TreePop();
 			}
 		}
-#endif
+
 
 	}
 
@@ -147,7 +160,7 @@ namespace Argent::Component
 			}
 			return ret;
 		}
-#ifdef _DEBUG
+
 		void RayCast::DrawDebug()
 		{
 			if(ImGui::TreeNode(GetName().c_str()))
@@ -158,6 +171,6 @@ namespace Argent::Component
 				ImGui::TreePop();
 			}
 		}
-#endif
+
 	}
 }

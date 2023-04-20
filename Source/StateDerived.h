@@ -4,7 +4,7 @@
 class IdleState : public State
 {
 public:
-    IdleState(BaseFriend* _friend) : State(_friend) {}
+    IdleState(BaseFriend* _friend) : State(_friend, "idle") {}
     ~IdleState() {}
 
     void Enter()override;
@@ -16,7 +16,7 @@ public:
 class ActionState : public State
 {
 public:
-    ActionState(BaseFriend* _friend) : State(_friend) {}
+    ActionState(BaseFriend* _friend) : State(_friend, "action") {}
     ~ActionState() {}
 
     void Enter()override;
@@ -28,7 +28,7 @@ public:
 class WalkState : public State
 {
 public:
-    WalkState(BaseFriend* _friend) : State(_friend) {}
+    WalkState(BaseFriend* _friend) : State(_friend, "walk") {}
     ~WalkState() {}
 
     void Enter()override;
@@ -48,7 +48,7 @@ private:
 class AttackState : public State
 {
 public:
-    AttackState(BaseFriend* _friend) : State(_friend) {}
+    AttackState(BaseFriend* _friend) : State(_friend, "attack") {}
     ~AttackState() {}
 
     void Enter()override;

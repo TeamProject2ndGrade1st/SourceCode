@@ -30,28 +30,27 @@ public:
 	Transform& operator+=(const Transform& t);
 	Transform& operator=(const Transform& t);
 
+	void Initialize() override;
 	void Update() override;
 
-#ifdef _DEBUG
 	void DrawDebug() override;
-#endif
+
 
 	void Reset() override;
 	void SetWorld(const DirectX::XMFLOAT4X4& w);
 
-	[[nodiscard]] DirectX::XMMATRIX GetWorldMatrix() const;
-	
+	[[nodiscard]] DirectX::XMMATRIX CalcWorldMatrix();
 
-	[[nodiscard]] DirectX::XMFLOAT4X4 GetWorld() const
+	[[nodiscard]] DirectX::XMFLOAT4X4 GetWorld()
 	{
 		DirectX::XMFLOAT4X4 tmp{};
-		DirectX::XMStoreFloat4x4(&tmp, GetWorldMatrix());
+		DirectX::XMStoreFloat4x4(&tmp, CalcWorldMatrix());
 		return tmp;
 	}
 
-	[[nodiscard]] DirectX::XMFLOAT3 GetPosition() const { return position; }
-	[[nodiscard]] DirectX::XMFLOAT3 GetScale() const { return scale; }
-	[[nodiscard]] DirectX::XMFLOAT4 GetRotation() const { return rotation; }
+	DirectX::XMFLOAT3 GetPosition() const { return position; }
+	DirectX::XMFLOAT3 GetScale() const { return scale; }
+	DirectX::XMFLOAT4 GetRotation() const { return rotation; }
 
 	void SetPosition(const DirectX::XMFLOAT3& pos) { position = pos; }
 	void SetScale(const DirectX::XMFLOAT3& scl) { scale = scl; }
@@ -75,11 +74,20 @@ public:
 	 * \brief 正規化された前方ベクトルを返す(回転値が(0, 0, 0)の時の前方ベクトルは(0, 0, 1))
 	 */
 	DirectX::XMFLOAT3 CalcForward();
+	/**
+	 * \brief 
+	 * \return 正規化済み上方ベクトルを返す（回転値(0, 0, 0)の場合は(0, 1, 0)
+	 */
+	DirectX::XMFLOAT3 CalcUp();
+	DirectX::XMFLOAT3 CalcRight();
 private:
 
 	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT3 scale;
 	DirectX::XMFLOAT4 rotation;
+	DirectX::XMFLOAT4 postRotation;
+	DirectX::XMFLOAT4 orientation;
+
 	float scaleFactor;
 
 	int coordinateSystem;

@@ -11,14 +11,14 @@ namespace Argent::Scene
 	public:
 		ArSceneManager();
 		~ArSceneManager() = default;
-		
-		//void Execute();
+
 		void Initialize();
-		void Finalize();
-		void Begin();
+		void Finalize() const;
+		void Begin() const;
 		void Update();
-		void End();
-		void Render();
+		void End() const;
+		void Render() const;
+		void DrawDebug() const;
 		static void SetNextScene(const std::string& s) { nextScene = s; }
 
 		static ArSceneManager* Instance() { return instance;  }
@@ -37,7 +37,8 @@ namespace Argent::Scene
 		static ArSceneManager* instance;
 		static std::string nextScene;
 		BaseScene* currentScene;
-		std::unordered_map<std::string, std::unique_ptr<BaseScene>> scenes;
-
+		std::unordered_map<std::string, std::unique_ptr<BaseScene>> scenes{};
+		DWORD end;
+		DWORD start;
 	};
 }

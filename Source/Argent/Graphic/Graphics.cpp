@@ -9,12 +9,13 @@
 
 namespace Argent::Graphics
 {
-	ArGraphics* ArGraphics::instance =  nullptr;
+	Graphics* Graphics::instance =  nullptr;
 
-	ArGraphics::ArGraphics(HWND hWnd):
+	Graphics::Graphics(HWND hWnd):
 		curFrameResource(nullptr)
 		,	renderingQueue(nullptr)
 		,	resourceQueue(nullptr)
+	,	hWnd(hWnd)
 	{
 		if(instance) _ASSERT_EXPR(FALSE, L"Already Instantiated");
 		instance = this;
@@ -25,25 +26,25 @@ namespace Argent::Graphics
 		GetClientRect(hWnd, &rc);
 		windowWidth = static_cast<float>(rc.right - rc.left);
 		windowHeight = static_cast<float>(rc.bottom - rc.top);
-		clearColor[0] = 0.8f;
-		clearColor[1] = 0.9f;
-		clearColor[2] = 0.9f;
+		clearColor[0] = 255.0f / 256;
+		clearColor[1] = 169.0f / 256;
+		clearColor[2] = 242.0f / 256;
 
-		clearColor[3] = 1.0f;
+		clearColor[3] = 0;
 		
 #ifdef _DEBUG
 		Microsoft::WRL::ComPtr<IDXGIFactory2> tmpFactory;
 		hr = CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(tmpFactory.ReleaseAndGetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
 		
-		hr = tmpFactory->QueryInterface(IID_PPV_ARGS(mFactory.ReleaseAndGetAddressOf()));
+		hr = tmpFactory->QueryInterface(IID_PPV_ARGS(factory.ReleaseAndGetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
 #else
-			hr = CreateDXGIFactory1(IID_PPV_ARGS(mFactory.ReleaseAndGetAddressOf()));
+			hr = CreateDXGIFactory1(IID_PPV_ARGS(factory.ReleaseAndGetAddressOf()));
 			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
 #endif
 
-		hr = CreateDevice(mFactory.Get(), mDevice.ReleaseAndGetAddressOf());
+		hr = CreateDevice(factory.Get(), device.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
 		//#ifdef _DEBUG
@@ -58,7 +59,7 @@ namespace Argent::Graphics
 
 #ifdef _DEBUG
 		ID3D12DebugDevice2* dDevice;
-		hr = mDevice->QueryInterface(IID_PPV_ARGS(&dDevice));
+		hr = device->QueryInterface(IID_PPV_ARGS(&dDevice));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 		dDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL | D3D12_RLDO_IGNORE_INTERNAL);
 		dDevice->Release();
@@ -66,28 +67,28 @@ namespace Argent::Graphics
 
 
 		
-		renderingQueue = std::make_unique<Dx12::ArCommandQueue>(mDevice.Get());
-		resourceQueue = std::make_unique<Dx12::ArCommandQueue>(mDevice.Get());
-		resourceCmdBundle = std::make_unique<Dx12::ArCommandBundle>(mDevice.Get());
+		renderingQueue = std::make_unique<Dx12::CommandQueue>(device.Get());
+		resourceQueue = std::make_unique<Dx12::CommandQueue>(device.Get());
+		resourceCmdBundle = std::make_unique<Dx12::CommandBundle>(device.Get());
 
-		hr = CreateSwapChain(hWnd, mFactory.Get(), static_cast<UINT>(windowWidth), static_cast<UINT>(windowHeight), NumBackBuffers, renderingQueue->cmdQueue.Get(), mSwapChain.GetAddressOf());
+		hr = CreateSwapChain(hWnd, factory.Get(), static_cast<UINT>(windowWidth), static_cast<UINT>(windowHeight), NumBackBuffers, renderingQueue->cmdQueue.Get(), swapChain.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 		
 
-		rtvHeap = std::make_unique<Descriptor::ArDescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, NumBackBuffers);
-		srvCbvHeap = std::make_unique<Descriptor::ArDescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10000);
-		dsvHeap = std::make_unique<Descriptor::ArDescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 100);
-		imGuiHeap = std::make_unique<Descriptor::ArDescriptorHeap>(mDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10001);
+		rtvHeap = std::make_unique<Dx12::DescriptorHeap>(device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, NumBackBuffers + 100);
+		srvCbvHeap = std::make_unique<Dx12::DescriptorHeap>(device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10000);
+		dsvHeap = std::make_unique<Dx12::DescriptorHeap>(device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 100);
+		imGuiHeap = std::make_unique<Dx12::DescriptorHeap>(device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 10001);
 
 		//imguiに画像を表示するために　一個目の空間はimgui用 それ以降はテクスチャ表示用
-		Descriptor::ArDescriptor* tmp = imGuiHeap->PopDescriptor();
+		Dx12::Descriptor* tmp = imGuiHeap->PopDescriptor();
 
 		frameResources.resize(NumBackBuffers);
 
 		for(UINT i = 0; i < NumBackBuffers; ++i)
 		{
-			frameResources.at(i) = std::make_unique<Frame::FrameResource>(mDevice.Get(), mSwapChain.Get(),
-			                                                              i, rtvHeap->PopDescriptor(), dsvHeap->PopDescriptor(), srvCbvHeap->PopDescriptor(), NumCmdLists);
+			frameResources.at(i) = std::make_unique<FrameResource>(device.Get(), swapChain.Get(),
+			i, rtvHeap->PopDescriptor(), dsvHeap->PopDescriptor(), srvCbvHeap->PopDescriptor(), NumCmdLists);
 		}
 
 		//ビューポート　シザー矩形
@@ -106,87 +107,75 @@ namespace Argent::Graphics
 
 		for(auto& buffer : frameBuffer)
 		{
-			buffer = std::make_unique<FrameBuffer>(mDevice.Get(), frameResources.at(0)->GetBackBufferDesc(), 
-			                                       clearColor, rtvHeap->GetDesc());
+			buffer = std::make_unique<FrameBuffer>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), 
+			                                       clearColor);
 		}
 
-		mDevice->SetName(L"Device");
-		resourceCmdBundle->Begin();
+		device->SetName(L"Device");
+		resourceCmdBundle.get()->Reset();
 	}
 
-	void ArGraphics::Initialize()
+	void Graphics::Initialize()
 	{
 	}
 
-	void ArGraphics::Terminate()
+	void Graphics::Terminate()
 	{
-
+		renderingQueue->WaitForFence(NumBackBuffers);
+		for(auto& buff : frameResources)
+		{
+			buff->Terminate();
+		}
 	}
 
-	void ArGraphics::Begin()
+	void Graphics::Begin()
 	{
-		const UINT backBufferIndex = mSwapChain->GetCurrentBackBufferIndex();
+		if(curFrameResource)curFrameResource->WaitForEvent(renderingQueue.get());
+		++backBufferIndex;
+		backBufferIndex = backBufferIndex % NumBackBuffers;
 		curFrameResource = frameResources.at(backBufferIndex).get();
-		curFrameResource->Begin();
-		//if(nextCamera)
-		//{
-		//	if(camera)
-		//		camera->OffSceneCamera();
-		//	camera = nextCamera;
-		//	camera->OnSceneCamera();
-		//	nextCamera = nullptr;
-		//}
-
+		
 		curFrameResource->UpdateSceneConstant(sceneConstant);
-		
-		//if(camera && light)
-		//{
-		//	auto t = camera->GetOwner()->GetTransform();
-		//	curFrameResource->UpdateSceneConstant(camera->GetViewMatrix(),
-		//		camera->GetProjectionMatrix(), light->GetColor().GetColor(),
-		//	                                      light->GetOwner()->GetTransform()->GetPosition(),
-		//	                                      t->GetPosition()
-		//	);
-		//}
-			
-		
-		const auto dsvHandle = curFrameResource->dsv->GetCPUHandle();
-		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		curFrameResource->Begin(&viewport, &scissorRect, clearColor);
 
-		
-		//レンダーターゲット
-		const auto rtvHandle = curFrameResource->rtv->GetCPUHandle();
-
-		//深度
-		curFrameResource->GetCmdList()->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
-		curFrameResource->GetCmdList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-		curFrameResource->GetCmdList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-		
-		curFrameResource->GetCmdList()->RSSetViewports(1, &viewport);
-		curFrameResource->GetCmdList()->RSSetScissorRects(1, &scissorRect);
+		frameBuffer[0]->Begin(this, GetCommandList(RenderType::Mesh));
+		frameBuffer[1]->Begin(this, GetCommandList(RenderType::Sprite));
 
 		ID3D12DescriptorHeap* setHeap[]
 		{
 			srvCbvHeap->GetHeapPointer(),
 		};
-		curFrameResource->GetCmdList()->SetDescriptorHeaps(_countof(setHeap), setHeap);
+		curFrameResource->GetCmdList(RenderType::Sprite)->SetDescriptorHeaps(_countof(setHeap), setHeap);
+		curFrameResource->GetCmdList(RenderType::Mesh)->SetDescriptorHeaps(_countof(setHeap), setHeap);
+		curFrameResource->GetCmdList(RenderType::PostRendering)->SetDescriptorHeaps(_countof(setHeap), setHeap);
 	}
 		
-	void ArGraphics::End()
+	void Graphics::End()
 	{
+		frameBuffer[0]->End(this);
+		frameBuffer[1]->End(this);
+		curFrameResource->SetRenderTarget(viewport, scissorRect, clearColor);
+		frameBuffer[0]->Draw(this);
+		frameBuffer[1]->Draw(this);
+#ifdef _DEBUG	
+		ImguiCtrl::End(curFrameResource->GetCmdList(RenderType::PostRendering), this->GetGUIHeap());
+#endif
 		curFrameResource->SetBarrier(D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+		curFrameResource->End();
+		
+		ID3D12CommandList* cmdlists[] { curFrameResource->GetCmdList(RenderType::Sprite), curFrameResource->GetCmdList(RenderType::Mesh), curFrameResource->GetCmdList(RenderType::PostRendering) };
+		renderingQueue->cmdQueue->ExecuteCommandLists(_countof(cmdlists), cmdlists);
 
-		curFrameResource->GetCmdList()->Close();
-		ID3D12CommandList* cmdlists[] { curFrameResource->GetCmdList() };
-		renderingQueue->cmdQueue->ExecuteCommandLists(1, cmdlists);
-		renderingQueue->SetFence(1);
+		ID3D12GraphicsCommandList* cmdList = curFrameResource->GetCmdList(RenderType::PostRendering);
+#ifdef _DEBUG
+		ImguiCtrl::CallBeforeSwap(cmdList);
+#endif
+		swapChain->Present(0, 0);
 
-		ID3D12GraphicsCommandList* cmdList = curFrameResource->GetCmdList();
-		ImguiCtrl::CallBeforSwap(cmdList);
-		mSwapChain->Present(1, 0);
+		renderingQueue->SetFence(static_cast<int>(RenderType::Count), curFrameResource);
 	}
 
-	HRESULT ArGraphics::CreateWhiteTexture(ID3D12Resource** resource)
+	HRESULT Graphics::CreateWhiteTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
 		
@@ -209,7 +198,7 @@ namespace Argent::Graphics
 		resDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 		resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 		
-		hr = mDevice->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, 
+		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, 
 		                                      &resDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, nullptr,
 		                                      IID_PPV_ARGS(resource));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
@@ -221,7 +210,7 @@ namespace Argent::Graphics
 		return hr;
 	}
 		
-	HRESULT ArGraphics::CreateBlackTexture(ID3D12Resource** resource)
+	HRESULT Graphics::CreateBlackTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
 		
@@ -244,7 +233,7 @@ namespace Argent::Graphics
 		resDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 		resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 		
-		hr = mDevice->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, 
+		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, 
 		                                      &resDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, nullptr,
 		                                      IID_PPV_ARGS(resource));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
@@ -261,7 +250,7 @@ namespace Argent::Graphics
 		return hr;
 	}
 		
-	HRESULT ArGraphics::CreateGrayGradationTexture(ID3D12Resource** resource)
+	HRESULT Graphics::CreateGrayGradationTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
 		
@@ -286,7 +275,7 @@ namespace Argent::Graphics
 		resDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 		resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 		
-		hr = mDevice->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, 
+		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, 
 		                                      &resDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, nullptr,
 		                                      IID_PPV_ARGS(resource));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
@@ -313,7 +302,7 @@ namespace Argent::Graphics
 		return hr;
 	}
 	 
-	HRESULT ArGraphics::CreateNoiseTexture(ID3D12Resource** resource)
+	HRESULT Graphics::CreateNoiseTexture(ID3D12Resource** resource)
 	{
 		HRESULT hr{ S_OK };
 
@@ -336,7 +325,7 @@ namespace Argent::Graphics
 		resDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 		resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
-		hr = mDevice->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE,
+		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE,
 			&resDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, nullptr,
 			IID_PPV_ARGS(resource));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
@@ -360,7 +349,7 @@ namespace Argent::Graphics
 		return hr;
 	}
 
-	void ArGraphics::SetSceneConstant(UINT rootParameterIndex)
+	void Graphics::SetSceneConstant(UINT rootParameterIndex)
 	{
 		curFrameResource->SetSceneConstant(rootParameterIndex);
 	}
@@ -436,7 +425,7 @@ namespace Argent::Graphics
 		return E_FAIL;
 	}
 
-	HRESULT CreateSwapChain(HWND hWnd, IDXGIFactory2* factory, UINT windowWidth, UINT windowHeight, UINT NumBackBuffers, ID3D12CommandQueue* cmdQueue, IDXGISwapChain4** ppSwapChain)
+	HRESULT CreateSwapChain(HWND hWnd, IDXGIFactory2* factory, UINT windowWidth, UINT windowHeight, UINT NumBackBuffers, ID3D12CommandQueue* cmdQueue, IDXGISwapChain3** ppSwapChain)
 	{
 		HRESULT hr{ S_OK };
 		DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
@@ -453,6 +442,13 @@ namespace Argent::Graphics
 		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
 		swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+
+		//DXGI_RATIONAL rational{};
+		//rational.Denominator
+		//DXGI_SWAP_CHAIN_FULLSCREEN_DESC fullScreenDesc{};
+
+		//fullScreenDesc.RefreshRate = ;
+		
 		hr = factory->CreateSwapChainForHwnd(cmdQueue, hWnd, &swapChainDesc,
 		                                     nullptr, nullptr, tempSwapChain.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;

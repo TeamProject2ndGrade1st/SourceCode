@@ -21,8 +21,6 @@ namespace Argent::Resource::Mesh
 				archive(uniqueId, name, parentIndex, nodeIndex, offsetTransform);
 			}
 
-
-
 			uint64_t uniqueId{};
 			std::string name;
 			int64_t parentIndex{ -1 };

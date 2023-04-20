@@ -4,11 +4,16 @@
 #include <wrl.h>
 #include "../../Other/Misc.h"
 
+namespace Argent::Graphics
+{
+	class FrameResource;
+}
+
 namespace Argent::Dx12
 {
-	struct ArCommandQueue
+	struct CommandQueue
 	{
-		ArCommandQueue(ID3D12Device* device):
+		CommandQueue(ID3D12Device* device):
 			cmdQueue(nullptr)
 			,	fence(nullptr)
 			,	fenceEvent()
@@ -33,13 +38,15 @@ namespace Argent::Dx12
 		HANDLE						fenceEvent;
 		uint64_t					fenceValue;
 
-		void SetFence(UINT numCmdList = 1)
+		void SetFence(UINT numCmdList = 1, Graphics::FrameResource* resource = nullptr);
+		
+
+		void WaitForFence(int numCount = 1)
 		{
-			cmdQueue->Signal(fence.Get(), ++fenceValue);
 			if(fence->GetCompletedValue() < fenceValue)
 			{
 				fence->SetEventOnCompletion(fenceValue, fenceEvent);
-				WaitForMultipleObjects(numCmdList, &fenceEvent, true, INFINITE);
+				WaitForMultipleObjects( numCount, &fenceEvent, true, INFINITE);
 			}
 		}
 
@@ -49,12 +56,16 @@ namespace Argent::Dx12
 		}
 	};
 
-	struct ArCommandBundle
+	struct CommandBundle
 	{
-		ArCommandBundle(ID3D12Device* device);
-		void Begin() const;
-		Microsoft::WRL::ComPtr<ID3D12CommandList> executeCmdLists{};
+		CommandBundle(ID3D12Device* device);
+		void Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect,
+			const D3D12_CPU_DESCRIPTOR_HANDLE& dsvHandle, const D3D12_CPU_DESCRIPTOR_HANDLE& rtvHandle,
+			float clearColor[4]) const;
+		void Reset() const;
+
 		Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAlloc{};
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList{};
+		Microsoft::WRL::ComPtr<ID3D12CommandList> executeCmdLists{};
 	};
 }
