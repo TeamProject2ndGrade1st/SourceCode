@@ -28,6 +28,11 @@ private:
 
 	void MoveCamera();
 
+	DirectX::XMFLOAT3 GetMoveVec()const;
+	void InputMove(float elapsedTime);
+	void Move(float elapsedTime, float vx, float vz, float speed);
+	void Turn(float elapsedTime, float vx, float vz, float speed);
+
 	Argent::Component::Collision::RayCast* ray;
 protected:
 	DWORD start;

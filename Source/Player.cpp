@@ -6,7 +6,7 @@
 Player::Player() :BaseActor("player")
 {
     movement = 10;
-
+    sensitivity = 0.3f;
 }
 
 void Player::Initialize()
@@ -77,20 +77,20 @@ void Player::Update()
     case 1:
 
         // 移動
-        MoveCamera();
-
+        //MoveCamera();
+        InputMove(Argent::Timer::GetDeltaTime());
 
         // マウスのポジション
 #if 1
         // マウスの位置を取る
         mousePos = Argent::Input::Mouse::Instance().GetPosition();
         // マウスの移動量を取る
-        DirectX::XMFLOAT2 mouseVec = Argent::Input::Mouse::Instance().GetMoveVec();        
+        DirectX::XMFLOAT2 mouseVec = Argent::Input::Mouse::Instance().GetMoveVec();
         
         
         // カメラのtransformを取る
         Transform* t = camera->GetTransform();
-        // カメラの回転値を取る
+        // カメラの回転値を取るw
         DirectX::XMFLOAT4 cameraRot = t->GetRotation();
 
         DirectX::XMFLOAT4 mouseMovement{ mouseVec.y * sensitivity,mouseVec.x * sensitivity,0,0 };
@@ -120,7 +120,8 @@ void Player::Update()
 
 
         t->SetRotation(setRotation);
-        //t->SetRotation(cameraRot + mouseMovement);
+        
+
 #endif
 
         break;
@@ -185,3 +186,143 @@ void Player::MoveCamera()
         t->SetPosition(pos);
     }
 }
+
+#if 1
+DirectX::XMFLOAT3 Player::GetMoveVec() const
+{
+    // 入力情報を取得
+    float ax = 0;
+    float ay = 0;
+
+    if (Argent::Input::GetKey(KeyCode::D))ax = 1.0f;
+    if (Argent::Input::GetKey(KeyCode::A))ax = -1.0f;
+    if (Argent::Input::GetKey(KeyCode::W))ay = 1.0f;
+    if (Argent::Input::GetKey(KeyCode::S))ay = -1.0f;
+
+    // カメラ方向とスティック入力値によって進行方向を計算する
+    Transform* t = camera->GetTransform();
+
+    const DirectX::XMFLOAT3& cameraRight = t->CalcRight();
+    const DirectX::XMFLOAT3& cameraFront = t->CalcForward();
+
+    // 移動ベクトルはXZ平面に水平なベクトルになるようにする
+
+    // カメラ右方向ベクトルをXZ単位ベクトルに変換
+    float cameraRightX = cameraRight.x;
+    float cameraRightZ = cameraRight.z;
+    float cameraRightLength = (cameraRightX * cameraRightX + cameraRightZ * cameraRightZ);
+    if (cameraRightLength > 0.0f)
+    {
+        // 単位ベクトル化
+        DirectX::XMFLOAT3 v = DirectX::XMFLOAT3(cameraRightX, 0.0f, cameraRightZ);
+
+        // 一個ずつ計算した場合
+        DirectX::XMVECTOR vec = DirectX::XMLoadFloat3(&v);  // ベクトルを作る
+        DirectX::XMVector3Normalize(vec);                   // 正規化する
+        DirectX::XMStoreFloat3(&v, vec);                    // FLOAT3に戻す
+
+        // まとめていっきにした場合
+        //DirectX::XMStoreFloat3(&v, DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&v)));
+
+        cameraRightX = v.x;
+        cameraRightZ = v.z;
+    }
+
+    // カメラ前方向ベクトルをXZ単位ベクトルに変換
+    float cameraFrontX = cameraFront.x;
+    float cameraFrontZ = cameraFront.z;
+    float cameraFrontLength = (cameraFrontX * cameraFrontX + cameraFrontZ * cameraFrontZ);
+    if (cameraFrontLength > 0.0f)
+    {
+        // 単位ベクトル化
+        DirectX::XMFLOAT3 v = DirectX::XMFLOAT3(cameraFrontX, 0.0f, cameraFrontZ);
+        DirectX::XMStoreFloat3(&v, DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&v)));
+
+        cameraFrontX = v.x;
+        cameraFrontZ = v.z;
+    }
+
+    // スティックの水平入力値をカメラ右方向に反映し、
+    // スティックの垂直入力値をカメラ前方向に反映し、
+    // 進行方向ベクトルを計算する
+    DirectX::XMFLOAT3 vec;
+    vec.x = cameraRightX * sinf(ax) + cameraFrontX * sinf(ay);
+    vec.z = cameraRightZ * sinf(ax) + cameraFrontZ * sinf(ay);
+    // Y軸方向には移動しない
+    vec.y = 0.0f;
+
+    return vec;
+}
+
+void Player::InputMove(float elapsedTime)
+{
+    // 進行方向ベクトル取得
+    DirectX::XMFLOAT3 moveVec = GetMoveVec();
+
+    // 移動処理
+    Move(elapsedTime, moveVec.x, moveVec.z, 5.0f);
+
+    // 旋回処理
+    //Turn(elapsedTime, moveVec.x, moveVec.z, DirectX::XMConvertToRadians(720));
+}
+
+// 移動処理
+void Player::Move(float elapsedTime, float vx, float vz, float speed)
+{
+    Transform* t = camera->GetTransform();
+    DirectX::XMFLOAT3 pos = t->GetPosition();
+
+    speed *= elapsedTime;
+    pos.z += vz * speed;
+    pos.x += vx * speed;
+
+    t->SetPosition(pos);
+}
+
+// 旋回処理
+void Player::Turn(float elapsedTime, float vx, float vz, float speed)
+{
+    Transform* t = camera->GetTransform();
+    DirectX::XMFLOAT4 angle = t->GetRotation();
+
+    speed *= elapsedTime;
+
+    // 進行ベクトルがゼロベクトル場合は処理する必要なし
+    if (vx == 0 && vz == 0)return;
+
+    // 進行ベクトルを単位ベクトル化
+    DirectX::XMFLOAT3 v = DirectX::XMFLOAT3(vx, 0.0f, vz);  // FLOAT3作る
+    DirectX::XMVECTOR vec = DirectX::XMLoadFloat3(&v);      // VECTOR作る
+    DirectX::XMVector3Normalize(vec);                       // 正規化する
+    DirectX::XMStoreFloat3(&v, vec);
+
+    // 自身の回転値から前方向を求める
+    float frontX = sinf(angle.y);
+    float frontZ = cosf(angle.y);
+
+    // 回転角を求めるため、２つの単位ベクトルの内積を計算する
+    float dot = (v.x * frontX) + (v.z * frontZ);
+
+    // 内積値は-1.0~1.0で表現されており、２つの単位ベクトルの角度が
+    // 小さいほど1.0に近づくという性質を利用して回転速度を調整する
+    float rot = 1.0 - dot;  // 補正値
+
+    // 左右判定を行うために２つの単位ベクトルの外積を計算する
+    float cross = (v.x * frontZ) - (v.z * frontX);
+
+    // 2Dの外積値が正の場合か負の場合によって左右判定が行える
+    // 左右判定を行うことによって左右回転を選択する
+    if (cross < 0.0f)
+    {
+        //angle.y -= speed;
+        angle.y -= rot * speed;
+    }
+    else
+    {
+        //angle.y += speed;
+        angle.y += rot * speed;
+    }
+
+    t->SetRotation(angle);
+}
+#endif
