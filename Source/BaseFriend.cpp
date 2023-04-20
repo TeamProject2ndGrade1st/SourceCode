@@ -16,8 +16,6 @@ BaseFriend::BaseFriend(DirectX::XMFLOAT3 setPos)
 
 void BaseFriend::Initialize()
 {
-    static bool flag;
-    if (flag)return;
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     BaseActor::Initialize();
 
@@ -30,8 +28,6 @@ void BaseFriend::Initialize()
     stateMachine.get()->RegisterState(new AttackState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
-
-    flag = true;
 }
 
 void BaseFriend::Begin()

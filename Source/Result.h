@@ -1,16 +1,17 @@
 #pragma once
 #include "Argent/Argent.h"
 
-class StageSelect:
+
+class Result:
 	public Argent::Scene::BaseScene
 {
 public:
-	StageSelect():
-		BaseScene("StageSelect")
-	{}
+	Result():
+		BaseScene("Result")
+	{};
 
 	void Update() override;
+	~Result() override = default;
 
-	~StageSelect()override = default;
 };
 

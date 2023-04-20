@@ -4,8 +4,15 @@
 
 namespace Argent::Scene
 {
+	void BaseScene::ClearGameObject()
+	{
+		gameObject.clear();
+	}
+
 	void BaseScene::Initialize()
 	{
+		AddObject(new GameObject("Camera", new Camera(true, Argent::Graphics::Graphics::Instance()->GetWidth(), Argent::Graphics::Graphics::Instance()->GetHeight())));
+		AddObject(new GameObject("Light", new Light));
 		for(size_t i = 0; i < gameObject.size(); ++i)
 		{
 			if(gameObject.at(i))
@@ -28,6 +35,7 @@ namespace Argent::Scene
 			}
 		}
 		gameObject.clear();
+		isInitialized = false;
 	}
 
 	void BaseScene::Begin()

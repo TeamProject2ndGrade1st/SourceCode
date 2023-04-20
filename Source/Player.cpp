@@ -6,31 +6,24 @@
 Player::Player() :BaseActor("player")
 {
     movement = 10;
-
+    sensitivity = 0.3f;
 }
 
 void Player::Initialize()
 {
-    static bool b = false;
-    if(!b)
-    {
-	    ray = new Argent::Component::Collision::RayCast();
-	    auto g = GetOwner();
-	    g->AddComponent(ray);
-        b = true;
-    }
+	ray = new Argent::Component::Collision::RayCast();
+	auto g = GetOwner();
+	g->AddComponent(ray);
+
 
     camera = GameObject::FindGameObject("Camera"); // こっちで
-        movement = 10.5f;
-
-        {
-            auto c = camera->GetComponent<Camera>();
-            c->SetMaxRotation(DirectX::XMFLOAT4(100, 0, 0, 0));
-			c->SetMinRotation(DirectX::XMFLOAT4(-100, 0, 0, 0));
-        }
+    movement = 10.5f;
+    {
+        auto c = camera->GetComponent<Camera>();
+        c->SetMaxRotation(DirectX::XMFLOAT4(100, 0, 0, 0));
+	    	c->SetMinRotation(DirectX::XMFLOAT4(-100, 0, 0, 0));
+    }
 }
-
-
 
 
 void Player::Update()
@@ -55,18 +48,17 @@ void Player::Update()
         // 移動
         MoveCamera();
 
-
         // マウスのポジション
 #if 1
         // マウスの位置を取る
         mousePos = Argent::Input::Mouse::Instance().GetPosition();
         // マウスの移動量を取る
-        DirectX::XMFLOAT2 mouseVec = Argent::Input::Mouse::Instance().GetMoveVec();        
+        DirectX::XMFLOAT2 mouseVec = Argent::Input::Mouse::Instance().GetMoveVec();
         
         
         // カメラのtransformを取る
         Transform* t = camera->GetTransform();
-        // カメラの回転値を取る
+        // カメラの回転値を取るw
         DirectX::XMFLOAT4 cameraRot = t->GetRotation();
 
         DirectX::XMFLOAT4 mouseMovement{ mouseVec.y * sensitivity,mouseVec.x * sensitivity,0,0 };
@@ -77,26 +69,13 @@ void Player::Update()
         setRotation.y += mouseMovement.y;
 
 
-        // 制限を作る
-        //if (setRotation.x >= 100.0f)
-        //{
-        //    cameraRot.x = 100;
-        //	mouseMovement.y = 0;
-        //    mouseMovement.x = 0;
-        //   // mouseMovement.x = -0.01;
-        //    setRotation.x = 100;
-        //}
+
 
         // カメラ横のやつ(回転できるようにする)
         if (setRotation.y > 360)setRotation.y -= 360;
         if (setRotation.y < 0)setRotation.y += 360;
         
-
-        t->CalcForward();
-
-        if(useCameraControl)
-			t->SetRotation(setRotation);
-        //t->SetRotation(cameraRot + mouseMovement);
+    	t->SetRotation(setRotation);
 #endif
 
         break;
@@ -104,7 +83,8 @@ void Player::Update()
     }
     start = end;
     end = GetTickCount();
-	MoveCamera();
+	
+
     GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
 
     ray->SetRayStartPosition(GetTransform()->GetPosition());
@@ -148,83 +128,36 @@ void Player::DrawDebug()
 // カメラの移動
 void Player::MoveCamera()
 {
-#if 0
+    // 入力情報を取得
+    float ax = 0;
+    float ay = 0;
+
+    if (Argent::Input::GetKey(KeyCode::D))ax = 1.0f;
+    if (Argent::Input::GetKey(KeyCode::A))ax = -1.0f;
+    if (Argent::Input::GetKey(KeyCode::W))ay = 1.0f;
+    if (Argent::Input::GetKey(KeyCode::S))ay = -1.0f;
+
+    // カメラ方向とスティック入力値によって進行方向を計算する
     Transform* t = camera->GetTransform();
-    auto velocity = t->CalcForward();
-    auto pos = t->GetPosition();
-    auto rot = t->GetRotation();
+    auto p = t->GetPosition();
 
-    float _speed = movement;
+    DirectX::XMFLOAT3 cameraRight = t->CalcRight();
+    DirectX::XMFLOAT3 cameraFront = t->CalcForward();
 
-    if (Argent::Input::GetKey(KeyCode::W) || Argent::Input::GetKey(KeyCode::S) ||
-        Argent::Input::GetKey(KeyCode::A) || Argent::Input::GetKey(KeyCode::D))
-    {
-        if (Argent::Input::GetKey(KeyCode::W))
-        {
-            velocity.z = _speed;
-        }
-        if (Argent::Input::GetKey(KeyCode::S))
-        {
-            velocity.z = -_speed;
-        }
-        if (Argent::Input::GetKey(KeyCode::D))
-        {
-            velocity.x = _speed;
-        }
-        if (Argent::Input::GetKey(KeyCode::A))
-        {
-            velocity.x = -_speed;
-        }
-        if (velocity.x != 0 || velocity.z != 0)
-        {
-            pos.x += rot.x * velocity.x;
-            pos.y = rot.y * velocity.y;
-            pos.z = rot.z * velocity.z;
-        };
-        t->SetPosition(pos);
-    }
-#endif
-
-    if(!useCameraControl) return;
-    // 前(W)
-	//if (GetAsyncKeyState('W') < 0)
-    if (Argent::Input::GetKey(KeyCode::W))
-    {
-        auto t = camera->GetTransform();
-        auto pos = t->GetPosition();
-        pos.z += movement * Argent::Timer::ArTimer::Instance().DeltaTime();
-        t->SetPosition(pos);
-        start = GetTickCount();
-    }
     
+    cameraRight.y = 0;
+    cameraFront.y = 0;
 
-    // 後ろ(S)
-    //if (GetAsyncKeyState('S') < 0)
-    if (Argent::Input::GetKey(KeyCode::S))
-    {
-        auto t = camera->GetTransform();
-        auto pos = t->GetPosition();
-        pos.z -= movement * Argent::Timer::ArTimer::Instance().DeltaTime();
-        t->SetPosition(pos);
-    }
-     
-    // 右(D)
-    //if (GetAsyncKeyState('D') < 0)
-    if (Argent::Input::GetKey(KeyCode::D))
-    {
-        auto t = camera->GetTransform();
-        auto pos = t->GetPosition();
-        pos.x += movement * Argent::Timer::ArTimer::Instance().DeltaTime();
-        t->SetPosition(pos);
-    }
+    cameraRight = Normalize(cameraRight);
+    cameraFront = Normalize(cameraFront);
 
-    // 左(A)
-    //if (GetAsyncKeyState('A') < 0)
-	if (Argent::Input::GetKey(KeyCode::A))
-    {
-        auto t = camera->GetTransform();
-        auto pos = t->GetPosition();
-        pos.x -= movement * Argent::Timer::ArTimer::Instance().DeltaTime();
-        t->SetPosition(pos);
-    }
+    cameraRight = cameraRight* ax ;
+    cameraFront = cameraFront * ay;
+    cameraRight = cameraRight * movement * Argent::Timer::GetDeltaTime();
+    cameraFront = cameraFront * movement * Argent::Timer::GetDeltaTime();
+    
+    p = p + cameraRight + cameraFront;
+
+    t->SetPosition(p);
 }
+

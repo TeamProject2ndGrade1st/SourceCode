@@ -12,7 +12,8 @@
 
 void Title::Initialize()
 {
-	AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
+	ClearGameObject();
+	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
 
 	//AddObject(new GameObject("plane", Argent::Loader::Fbx::LoadFbx("./Resources/Model/plane.fbx", true)));
 	
@@ -29,10 +30,18 @@ void Title::Initialize()
 //	AddObject(new GameObject("Gun", new BaseGun));
 	//AddObject(new GameObject("Stage", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 
+
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 	// player ‚Â‚¢‚©
 	AddObject(new GameObject("player", new Player));
 	//GetGameObject("player")->AddComponent(new Player);
+//	AddObject(new GameObject("player", new Player));
+
+	AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/barike-do_0419_1.fbx")));
+
+	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
+	// player ‚Â‚¢‚©
+	GetGameObject("player")->AddComponent(new Player);
 	//AddObject(new GameObject("Stage1", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Cube.fbx");
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));
@@ -49,8 +58,6 @@ void Title::Initialize()
 	//AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
 
 	AddObject(new GameObject("Stage", new Stage));
-
-
 	BaseScene::Initialize();
 }
 
@@ -72,7 +79,7 @@ void Title::Update()
 
 	if(Argent::Input::GetKeyUp(KeyCode::Enter))
 	{
-		Argent::Scene::ArSceneManager::SetNextScene("Game");
+		Argent::Scene::ArSceneManager::SetNextScene("StageSelect");
 	}
 }
 

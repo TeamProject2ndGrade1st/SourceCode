@@ -4,6 +4,7 @@
 #include "../../Title.h"
 #include "../../Game.h"
 #include "../../StageSelect.h"
+#include "../../Result.h"
 #include "../Input/Keyboard.h"
 
 namespace Argent::Scene
@@ -21,6 +22,7 @@ namespace Argent::Scene
 		RegisterScene<Title>();
 		RegisterScene<Game>();
 		RegisterScene<StageSelect>();
+		RegisterScene<Result>();
 		/*std::unique_ptr<BaseScene> s = std::make_unique<Title>();
 		scenes[s->GetName()] = std::move(s);
 		

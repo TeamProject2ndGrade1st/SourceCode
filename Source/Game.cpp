@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Argent/Argent.h"
 
 void Game::Initialize()
 {
@@ -12,6 +13,10 @@ void Game::Finalize()
 
 void Game::Update()
 {
+	if(Argent::Input::GetKeyUp(KeyCode::Enter))
+	{
+		Argent::Scene::ArSceneManager::SetNextScene("Result");
+	}
 	BaseScene::Update();
 }
 

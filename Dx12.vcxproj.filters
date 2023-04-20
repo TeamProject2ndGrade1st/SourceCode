@@ -94,6 +94,9 @@
     <Filter Include="Game\Stage">
       <UniqueIdentifier>{a55bb292-cb82-44ea-9f6a-fe9cb9fe6826}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Scene">
+      <UniqueIdentifier>{61d8f1a6-db6c-4bd7-8ee3-b3a45c5309b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -129,12 +132,6 @@
     </ClCompile>
     <ClCompile Include="Source\Argent\Scene\SceneManager.cpp">
       <Filter>Argent\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Title.cpp">
-      <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Loader\FbxLoader.cpp">
       <Filter>Argent\Loader</Filter>
@@ -303,7 +300,18 @@
     <ClCompile Include="Source\Stage.cpp">
       <Filter>Game\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StageSelect.cpp" />
+    <ClCompile Include="Source\Game.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Result.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StageSelect.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Title.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -341,12 +349,6 @@
     </ClInclude>
     <ClInclude Include="Source\Argent\Scene\SceneManager.h">
       <Filter>Argent\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Title.h">
-      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Loader\FbxLoader.h">
       <Filter>Argent\Loader</Filter>
@@ -542,7 +544,18 @@
     <ClInclude Include="Source\Stage.h">
       <Filter>Game\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StageSelect.h" />
+    <ClInclude Include="Source\Game.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Result.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StageSelect.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Title.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
