@@ -53,7 +53,7 @@ namespace Argent::Component::Renderer
 
 	void SpriteRenderer::Render() const
 	{
-		auto cmdList = Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh);
+		auto cmdList = Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Sprite);
 		Render(cmdList);
 	}
 

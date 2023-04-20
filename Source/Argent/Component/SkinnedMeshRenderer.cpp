@@ -10,15 +10,10 @@ namespace Argent::Component::Renderer
 {
 	SkinnedMeshRenderer::SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
 		std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
-		std::unordered_map<uint64_t, Argent::Material::ArMeshMaterial>& materials,
 		std::vector<Resource::Animation::AnimationClip>& animation) :
 		BaseRenderer("SkinnedMesh Renderer")
 	{
 		this->skinnedMesh = meshes;
-		for (auto& m : materials)
-		{
-			this->materials.emplace(m.first, std::move(m.second));
-		}
 		this->animationClips = animation;
 		CreateComObject(device);
 		renderingPipeline = Graphics::RenderingPipeline::CreateDefaultSkinnedMeshPipeline();
@@ -31,7 +26,8 @@ namespace Argent::Component::Renderer
 	{
 		GameObject* g = GetOwner();
 		g->GetTransform()->SetWorld(skinnedMesh->localTransform);
-		g->SetName(skinnedMesh->GetName());
+		if(g->GetParent())
+			g->SetName(skinnedMesh->GetName());
 		 
 	}
 
@@ -88,9 +84,10 @@ namespace Argent::Component::Renderer
 				m->constantBuffer->UpdateConstantBuffer(meshConstant);
 			}
 
-			const auto& material{ materials.at(s.materialUniqueId) };
-			material.constantBuffer->UpdateConstantBuffer(material.constant);
-			material.SetOnCommand(cmdList, static_cast<UINT>(RootParameterIndex::cbMaterial),
+			const auto& material{ s.material };
+			//const auto& material{ materials.at(s.materialUniqueId) };
+			material->constantBuffer->UpdateConstantBuffer(material->constant);
+			material->SetOnCommand(cmdList, static_cast<UINT>(RootParameterIndex::cbMaterial),
 				static_cast<UINT>(RootParameterIndex::txAlbedo), 
 				static_cast<UINT>(RootParameterIndex::txNormal));
 
@@ -184,13 +181,14 @@ namespace Argent::Component::Renderer
 			{
 				ImGui::SliderInt("Animation Clip", &clipIndex, 0, static_cast<int>(animationClips.size()) - 1);
 				ImGui::Text(animationClips.at(clipIndex).name.c_str());
+				ImGui::SliderFloat("Animation Frame", &frameIndex, 0.0f, static_cast<float>(animationClips.at(clipIndex).sequence.size()), "%.1f");
 			}
 
 			if (ImGui::TreeNode("Material"))
 			{
-				for (auto& m : materials)
+				for (auto& s : skinnedMesh->subsets)
 				{
-					m.second.DrawDebug();
+					s.material->DrawDebug();
 				}
 				ImGui::TreePop();
 			}
@@ -203,14 +201,40 @@ namespace Argent::Component::Renderer
 
 	void SkinnedMeshRenderer::CreateComObject(ID3D12Device* device)
 	{
-		for(auto it = materials.begin(); it != materials.end(); ++it)
+		/*for(auto it = materials.begin(); it != materials.end(); ++it)
 		{
-			it->second.constantBuffer = 
-				std::make_unique<Dx12::ArConstantBuffer<Argent::Material::ArMeshMaterial::Constant>>(
+			it->second->constantBuffer = 
+				std::make_unique<Dx12::ArConstantBuffer<Argent::Material::MeshMaterial::Constant>>(
 					device, 
 					Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
-					&it->second.constant);
+					&it->second->constant);
+		}*/
+
+		for(auto& s : skinnedMesh->subsets)
+		{
+			if (s.material->constantBuffer == nullptr)
+			{
+				s.material->constantBuffer = std::make_unique<Dx12::ArConstantBuffer<Argent::Material::MeshMaterial::Constant>>(
+					device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
+					&s.material->constant);
+			}
 		}
 		objectConstantBuffer = std::make_unique<Dx12::ArConstantBuffer<Constants>>(device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+	}
+
+	void SkinnedMeshRenderer::SetAnimation(int index)
+	{
+		clipIndex = index;
+		frameIndex = 0;
+		animationTick = 0;
+	}
+	bool SkinnedMeshRenderer::IsAnimationEnd()
+	{
+		const Resource::Animation::AnimationClip& animation{ this->animationClips.at(clipIndex) };
+		if (frameIndex > animation.sequence.size() - 2)
+		{
+			return true;
+		}
+		return false;
 	}
 }

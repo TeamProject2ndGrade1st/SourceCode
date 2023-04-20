@@ -64,7 +64,7 @@ void Player::Update()
     case 0:
         //camera = Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->GetGameObject("Camera");
         camera = GameObject::FindGameObject("Camera"); // ‚±‚Á‚¿‚Å
-        movement = 0.5f;
+        movement = 10.5f;
 
         {
             auto c = camera->GetComponent<Camera>();
@@ -118,7 +118,6 @@ void Player::Update()
 
         t->CalcForward();
 
-
         t->SetRotation(setRotation);
         
 
@@ -141,8 +140,10 @@ void Player::Update()
 // ƒJƒƒ‰‚ÌˆÚ“®
 void Player::MoveCamera()
 {
+
     static DWORD start;
     static DWORD end;
+
 
     // ‘O(W)
 	//if (GetAsyncKeyState('W') < 0)

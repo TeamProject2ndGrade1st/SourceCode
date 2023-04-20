@@ -9,7 +9,7 @@ class Camera final:
 	public Argent::Component::BaseComponent
 {
 public:
-	Camera(bool isSceneCamera, float width, float height, float nearZ = 0.01f, float farZ = 100.0f, float fov = 60.0f,
+	Camera(bool isSceneCamera, float width, float height, float nearZ = 0.01f, float farZ = 5000.0f, float fov = 60.0f,
 		const Transform* target = nullptr);
 	~Camera() override = default;
 

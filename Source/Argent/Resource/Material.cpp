@@ -15,13 +15,13 @@ namespace Argent::Material
 		texture->SetOnCommandList(cmdList, RootParameterIndex);
 	}
 
-	void ArMeshMaterial::CreateTexture(const char* filePath, TextureType type)
+	void MeshMaterial::CreateTexture(const char* filePath, TextureType type)
 	{
 		textureUniqueId[static_cast<UINT>(type)] = Argent::Resource::ResourceManager::Instance().LoadTexture(filePath);
 		textureNames[static_cast<UINT>(type)] = filePath;
 	}
 
-	void ArMeshMaterial::SetOnCommand(ID3D12GraphicsCommandList* cmdList, UINT cbIndex, UINT diffuseIndex,
+	void MeshMaterial::SetOnCommand(ID3D12GraphicsCommandList* cmdList, UINT cbIndex, UINT diffuseIndex,
 		UINT normalIndex) const
 	{
 		//todo ‚È‚ñ‚Æ‚©”’

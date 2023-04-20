@@ -5,6 +5,8 @@
 
 #include "ArResource.h"
 #include "Texture.h"
+#include "Material.h"
+
 
 
 namespace Argent::Resource
@@ -39,43 +41,44 @@ namespace Argent::Resource
 			return ret;
 		}
 
-		std::shared_ptr<Argent::Resource::ArResource> GetResource(uint64_t uniqueId) const  // NOLINT(modernize-use-nodiscard)
+		std::shared_ptr<ArResource> GetResource(uint64_t uniqueId) const  // NOLINT(modernize-use-nodiscard)
 		{
-			const auto it = resources.find(uniqueId);
-			if(it == resources.end()) _ASSERT_EXPR(FALSE, "missing id");
+			const auto it = textures.find(uniqueId);
+			if(it == textures.end()) _ASSERT_EXPR(FALSE, "missing id");
 			if(it->second.expired()) _ASSERT_EXPR(FALSE, "missing resource");
 
 			return it->second.lock();
 		}
 
-		std::shared_ptr<Argent::Resource::Texture> GetTexture(uint64_t uniqueId) const 
+		std::shared_ptr<Texture> GetTexture(uint64_t uniqueId) const 
 		{
-			const auto it = resources.find(uniqueId);
-			if (it == resources.end()) _ASSERT_EXPR(FALSE, "missing id");
-			if (it->second.expired()) _ASSERT_EXPR(FALSE, "missing resource");
+			const auto it = textures.find(uniqueId);
+			if (it == textures.end()) _ASSERT_EXPR(FALSE, L"missing id");
+			if (it->second.expired()) _ASSERT_EXPR(FALSE, L"missing resource");
 
 			return it->second.lock();
 		}
 
+		void RegisterMaterial(std::shared_ptr<Material::MeshMaterial> m)
+		{
+			resources.emplace_back(m);
+			materials[m->GetUniqueId()] = m;
+		}
+
 		uint64_t LoadTexture(const char* filePath);
+
+		std::shared_ptr<Material::MeshMaterial> GetMaterial(const char* name);
 
 	private:
 
-		std::shared_ptr<Argent::Resource::Texture> FindResourceFromFilePath(const char* filePath) const
-		{
-			for(auto& res : resources)
-			{
-				if(res.second.lock()->CompareName(filePath) && !res.second.expired())
-				{
-					return res.second.lock();
-				}
-			}
-			return nullptr;
-		}
+		std::shared_ptr<Texture> FindResourceFromFilePath(const char* filePath) const;
+		
 
-		std::unordered_map<uint64_t, std::weak_ptr<Resource::Texture>> resources;
+		std::vector<std::shared_ptr<ArResource>> resources;	//ÉfÅ[É^ï€éùÇÃÇΩÇﬂÇ¡Ç€Ç¢Ç≈Ç∑
+		std::unordered_map<uint64_t, std::weak_ptr<Texture>> textures;
+		std::unordered_map<uint64_t, std::weak_ptr<Material::MeshMaterial>> materials;
 
-		std::vector<std::shared_ptr<Argent::Resource::Texture>> rowTextureData;
+
 	public:
 		static ResourceManager& Instance()
 		{

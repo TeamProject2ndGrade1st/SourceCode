@@ -28,17 +28,20 @@ namespace Argent::Graphics
 		virtual ~FrameBuffer() = default;
 
 
-		void Begin(const Graphics* gfx) const;
+		void Begin(const Graphics* gfx, ID3D12GraphicsCommandList* cList);
 		void End(const Graphics* gfx) const;
 		void Draw(const Graphics* gfx) const;
 	private:
-		Microsoft::WRL::ComPtr<ID3D12Resource> resource;
-		std::unique_ptr<Argent::Resource::Shader> vertexShader;
-		std::unique_ptr<Argent::Resource::Shader> pixelShader;
+		Microsoft::WRL::ComPtr<ID3D12Resource> resource;	//レンダーターゲットorシェーダーリソース
+		Microsoft::WRL::ComPtr<ID3D12Resource> depthResource;	//深度バッファ
+		std::unique_ptr<Resource::Shader> vertexShader;
+		std::unique_ptr<Resource::Shader> pixelShader;
 		std::unique_ptr<RenderingPipeline> renderingPipeline;
-		std::shared_ptr<Argent::Dx12::ArVertexBuffer<Vertex>> vertexBuffer;
+		std::shared_ptr<Dx12::ArVertexBuffer<Vertex>> vertexBuffer;
 		Dx12::Descriptor* srvDescriptor;
 		Dx12::Descriptor* rtvDescriptor;
+		Dx12::Descriptor* dsvDescriptor;
 		float clearColor[4];
+		ID3D12GraphicsCommandList* cmdList;
 	};
 }

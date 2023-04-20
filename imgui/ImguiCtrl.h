@@ -12,5 +12,5 @@ namespace ImguiCtrl
 	void Begin(const char* windowName = "ImGui Window");
 	void End(ID3D12GraphicsCommandList* cmdList, ID3D12DescriptorHeap* heap);
 
-	void CallBeforSwap(ID3D12GraphicsCommandList* cmdList);
+	void CallBeforeSwap(ID3D12GraphicsCommandList* cmdList);
 }

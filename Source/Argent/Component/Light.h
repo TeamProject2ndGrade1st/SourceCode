@@ -10,6 +10,7 @@ public:
 	virtual ~Light() = default;
 
 
+    void Initialize() override;
     void Reset() override;
     void End() override;
 

@@ -18,6 +18,12 @@
 #include "Dx12/DescriptorHeap.h"
 
 
+struct FrameContext
+{
+	ID3D12CommandAllocator* CommandAllocator;
+    UINT64                  FenceValue;
+};
+
 namespace Argent::Graphics
 {
 	class Graphics
@@ -36,7 +42,8 @@ namespace Argent::Graphics
 		Graphics(HWND hWnd);
 		virtual ~Graphics()
 		{
-			renderingQueue->SetFence(1);
+			//renderingQueue->SetFence(1);
+			
 		}
 		Graphics(const Graphics&) = delete;
 		Graphics(const Graphics&&) = delete;
@@ -56,16 +63,16 @@ namespace Argent::Graphics
 		void SetSceneConstant(UINT rootParameterIndex = 0);
 	public:
 		static Graphics* Instance() { return instance; }
-		[[nodiscard]] ID3D12Device* GetDevice() const { return mDevice.Get(); }
-		[[nodiscard]] ID3D12GraphicsCommandList* GetCommandList(RenderType type) const { return curFrameResource->GetCmdList(type); }
+		ID3D12Device* GetDevice() const { return device.Get(); }
+		ID3D12GraphicsCommandList* GetCommandList(RenderType type) const { return curFrameResource->GetCmdList(type); }
 		
-		[[nodiscard]] float GetWidth() const { return windowWidth; }
-		[[nodiscard]] float GetHeight() const { return windowHeight; }
+		float GetWidth() const { return windowWidth; }
+		float GetHeight() const { return windowHeight; }
 		
 		[[nodiscard]] ID3D12DescriptorHeap* GetGUIHeap() const { return imGuiHeap->GetHeapPointer(); }
 
-		[[nodiscard]] D3D12_VIEWPORT GetViewport() const { return viewport; }
-		[[nodiscard]] D3D12_RECT GetRect() const { return scissorRect; }
+		D3D12_VIEWPORT GetViewport() const { return viewport; }
+		D3D12_RECT GetRect() const { return scissorRect; }
 
 		float* GetClearColor() { return clearColor; }
 
@@ -93,8 +100,8 @@ namespace Argent::Graphics
 		}
 
 		[[nodiscard]] Dx12::DescriptorHeap* GetImGuiHeap() const { return imGuiHeap.get(); }
-		[[nodiscard]] Dx12::ArCommandBundle* GetResourceCmdBundle() const { return resourceCmdBundle.get(); }
-		[[nodiscard]] Dx12::ArCommandQueue* GetResourceCmdQueue() const { return resourceQueue.get(); }
+		[[nodiscard]] Dx12::CommandBundle* GetResourceCmdBundle() const { return resourceCmdBundle.get(); }
+		[[nodiscard]] Dx12::CommandQueue* GetResourceCmdQueue() const { return resourceQueue.get(); }
 
 
 		const FrameResource* GetCurrentFrameResource() const { return curFrameResource;  }
@@ -111,22 +118,23 @@ namespace Argent::Graphics
 		void SetLightColor(const DirectX::XMFLOAT4& f) { sceneConstant.lightColor = f; }
 	private:
 		static Graphics* instance;
-		static constexpr int NumBackBuffers = 2;
-		static constexpr int NumCmdLists = 8;
-		Microsoft::WRL::ComPtr<ID3D12Device> mDevice;
-		Microsoft::WRL::ComPtr<ID3D12DebugDevice> mDebugDevice;
-		Microsoft::WRL::ComPtr<IDXGIFactory6> mFactory;
-		Microsoft::WRL::ComPtr<IDXGISwapChain4> mSwapChain;
+		static constexpr int NumBackBuffers = 3;
+		static constexpr int NumCmdLists = static_cast<int>(RenderType::Count);
+		Microsoft::WRL::ComPtr<ID3D12Device> device;
+		Microsoft::WRL::ComPtr<ID3D12DebugDevice> debugDevice;
+		Microsoft::WRL::ComPtr<IDXGIFactory6> factory;
+		Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain;
 		std::vector<std::unique_ptr<FrameResource>> frameResources;
 		FrameResource* curFrameResource;
 
-		std::unique_ptr<Dx12::ArCommandQueue> resourceQueue;
-		std::unique_ptr<Dx12::ArCommandBundle> resourceCmdBundle;
-		std::unique_ptr<Dx12::ArCommandQueue> renderingQueue;
+		std::unique_ptr<Dx12::CommandQueue> resourceQueue;
+		std::unique_ptr<Dx12::CommandBundle> resourceCmdBundle;
+		std::unique_ptr<Dx12::CommandQueue> renderingQueue;
 		std::unique_ptr<Dx12::DescriptorHeap> rtvHeap;
 		std::unique_ptr<Dx12::DescriptorHeap> srvCbvHeap;
 		std::unique_ptr<Dx12::DescriptorHeap> dsvHeap;
 		std::unique_ptr<Dx12::DescriptorHeap> imGuiHeap;
+
 
 		D3D12_VIEWPORT viewport;
 		D3D12_RECT scissorRect;
@@ -137,6 +145,7 @@ namespace Argent::Graphics
 		float windowHeight;
 		SceneConstant sceneConstant;
 	
+		UINT backBufferIndex = -1;
 	public:
 		std::unique_ptr<FrameBuffer> frameBuffer[8];
 	};
@@ -144,5 +153,5 @@ namespace Argent::Graphics
 	HRESULT CreateDevice(IDXGIFactory6* factory, ID3D12Device** device);
 
 	HRESULT CreateSwapChain(HWND hWnd, IDXGIFactory2* factory, UINT windowWidth, UINT windowHeight, 
-	                        UINT NumBackBuffers, ID3D12CommandQueue* cmdQueue, IDXGISwapChain4** ppSwapChain);
+	                        UINT NumBackBuffers, ID3D12CommandQueue* cmdQueue, IDXGISwapChain3** ppSwapChain);
 }
