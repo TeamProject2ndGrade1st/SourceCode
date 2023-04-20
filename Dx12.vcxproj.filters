@@ -235,7 +235,7 @@
     <ClCompile Include="Source\Argent\Component\Collider.cpp">
       <Filter>Work In Progress\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\Component\ColliderManager.cpp">
+    <ClCompile Include="Source\Argent\Component\ArColliderManager.cpp">
       <Filter>Work In Progress</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Component\Light.cpp">
@@ -277,7 +277,21 @@
     <ClCompile Include="Source\Argent\Component\RayCast.cpp">
       <Filter>Work In Progress\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Demo.cpp" />
+    <ClCompile Include="Source\BaseFriend.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RayCastDemo.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateDerived.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BaseState.cpp">
+      <Filter>Game\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -451,7 +465,7 @@
     <ClInclude Include="Source\Argent\Component\Collider.h">
       <Filter>Work In Progress\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Argent\Component\ColliderManager.h">
+    <ClInclude Include="Source\Argent\Component\ArColliderManager.h">
       <Filter>Work In Progress</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Argent.h">
@@ -499,7 +513,21 @@
     <ClInclude Include="Source\Argent\Component\RayCast.h">
       <Filter>Work In Progress\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Demo.h" />
+    <ClInclude Include="Source\BaseState.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseFriend.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RayCastDemo.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateDerived.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine.h">
+      <Filter>Game\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
