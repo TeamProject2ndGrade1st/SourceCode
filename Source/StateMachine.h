@@ -11,8 +11,8 @@ public:
     void SetState(int setState);
     void ChangeState(int newState);
 
-    void RegisterState(State* state);
     //ƒXƒe[ƒg“o˜^
+    void RegisterState(State* state);
 
     int GetStateIndex();
 

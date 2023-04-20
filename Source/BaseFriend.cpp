@@ -3,13 +3,13 @@
 #include "StateDerived.h"
 
 BaseFriend::BaseFriend():
-    BaseActor("BaseFriend")
+    Character("BaseFriend")
 {
     
 }
 
 BaseFriend::BaseFriend(DirectX::XMFLOAT3 setPos)
-    : BaseActor("BaseFriend")
+    : Character("BaseFriend")
 {
     GetOwner()->GetTransform()->SetPosition(setPos);
 }
@@ -21,7 +21,10 @@ void BaseFriend::Initialize()
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     BaseActor::Initialize();
 
-    GetOwner()->GetTransform()->SetScaleFactor(0.03f);
+    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
+    acceleration = init_acceleration;
+    maxMoveSpeed = init_maxMoveSpeed;
+    friction = init_friction;
 
     stateMachine.reset(new StateMachine);
 
@@ -53,17 +56,20 @@ void BaseFriend::Update()
 
     UpdateVelocity();
     UpdateMove();
-    
-    //GetOwner()->GetTransform()->AddPosition(velocity);
 }
 
 void BaseFriend::DrawDebug()
 {
     if (ImGui::TreeNode(GetName().c_str()))
     {
-        ImGui::SliderFloat("Friction", &friction,0.0f,1.0f);
-        ImGui::SliderFloat("Acceleration", &acceleration,0.0f,10.0f);
-        ImGui::InputFloat3("Velocity", &velocity.x);
+        if (ImGui::TreeNode("Move"))
+        {
+            ImGui::SliderFloat("Friction", &friction, 0.0f, 5.0f);
+            ImGui::SliderFloat("Acceleration", &acceleration, 0.0f, 10.0f);
+            ImGui::InputFloat3("Velocity", &velocity.x);
+            ImGui::TreePop();
+        }
+        
 
         if (ImGui::TreeNode("State"))
         {
@@ -87,37 +93,17 @@ void BaseFriend::DrawDebug()
     }
 }
 
-void BaseFriend::UpdateVelocity()
-{
-    float length = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);
-    if (length <= maxMoveSpeed)
-    {
-        
-        float acceleration = this->acceleration * Argent::Timer::GetDeltaTime();
 
-        velocity.x += moveVec.x * acceleration;
-        velocity.z += moveVec.z * acceleration;   
-    }
-    //‘¬“x§ŒÀ
-    length = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);
-    if (length > maxMoveSpeed)
-    {
-        DirectX::XMVECTOR vec = { moveVec.x,moveVec.z };
-        vec = DirectX::XMVector2Normalize(vec);
-        DirectX::XMVECTOR velo = DirectX::XMVectorScale(vec, maxMoveSpeed);
-        velocity.x = DirectX::XMVectorGetX(velo);
-        velocity.z = DirectX::XMVectorGetY(velo);
-    }
-    moveVec.x = {};
-    moveVec.z = {};
-}
 
-void BaseFriend::UpdateMove()
+void BaseFriend::MoveToTarget()
 {
-    GetOwner()->GetTransform()->AddPosition(DirectX::XMFLOAT3(
-        velocity.x * Argent::Timer::GetDeltaTime(),
-        0.0f,
-        velocity.z * Argent::Timer::GetDeltaTime()
-    ));
+    float vx = targetPosition.x - GetOwner()->GetTransform()->GetPosition().x;
+    float vz = targetPosition.z - GetOwner()->GetTransform()->GetPosition().z;
+    float length = sqrtf(vx * vx + vz * vz);
+    vx /= length;
+    vz /= length;
+
+    moveVec.x = vx;
+    moveVec.z = vz;
 }
 

@@ -35,10 +35,11 @@ void ActionState::Execute()
 {
 	if (!owner->isAnimationEnd())return;
 
-	if (true)
+	/*float owner->GetTargetPosition().x;
+	if ()
 	{
 
-	}
+	}*/
 }
 
 void ActionState::Exit()
@@ -70,24 +71,27 @@ void WalkState::Execute()
 	case static_cast<int>(FriendAnimation::Walk_ChangeFrom_Action):
 		if (owner->isAnimationEnd())
 		{
-			owner->SetAccelaration(acceleration);
-			owner->SetMaxSpeed(maxSpeed_late);
+			
+			owner->SetMaxSpeed(maxSpeed);
 			owner->SetAnimation(static_cast<int>(FriendAnimation::Walk));
 		}
 		break;
 
 	case static_cast<int>(FriendAnimation::Walk):
 		
-		//‘«‚ðˆø‚«‚¸‚éŽž‚ÍˆÚ“®‘¬“x‚ð—Ž‚Æ‚·
+		//‘«‚ðˆø‚«‚¸‚Á‚Ä‚¢‚é‚©‚çˆÚ“®‘¬“x‚É•Ï‰»‚ð•t‚¯‚é
 		if (animationFrame == startMovingFastFrame)
 		{
-			owner->SetMaxSpeed(maxSpeed_fast);
+			//owner->SetMaxSpeed(maxSpeed_fast);
+			owner->SetAccelaration(acceleration);
+			
 		}
 		if (animationFrame == endMovingFastFrame)
 		{
-			owner->SetMaxSpeed(maxSpeed_late);
-
+			//owner->SetMaxSpeed(maxSpeed_late);
+			owner->SetAccelaration(0.0f);
 		}
+		
 
 		if (timer < 0.0f)
 		{

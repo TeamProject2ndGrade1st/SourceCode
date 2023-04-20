@@ -1,6 +1,8 @@
 #pragma once
 #include <DirectXMath.h>
 #include "Argent/Argent.h"
+#include "Argent/Argent.h"
+#include "Character.h"
 #include "StateMachine.h"
 
 enum class FriendAnimation
@@ -13,11 +15,9 @@ enum class FriendAnimation
     Walk_End
 };
 
-class BaseFriend
-    : public Argent::Component::BaseActor
+class BaseFriend : public Character
 {
 public:
-
     BaseFriend();
     BaseFriend(DirectX::XMFLOAT3 pos);
     virtual ~BaseFriend() {}
@@ -27,11 +27,14 @@ public:
     virtual void Update()override;
     virtual void DrawDebug()override;
 
-    //速力処理(水平のみ)
-    void UpdateVelocity();
+    ////速力処理(水平のみ)
+    //void UpdateVelocity();
 
-    //移動処理
-    void UpdateMove();
+    ////移動処理
+    //void UpdateMove();
+
+    //ターゲットに向かって移動
+    void MoveToTarget();
 
     void SetAnimation(int index)
     {
@@ -39,7 +42,7 @@ public:
         auto com = g->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
 
         com->SetAnimation(index);
-       // GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetAnimation(index);
+       
     }
     bool isAnimationEnd()
     {
@@ -48,10 +51,9 @@ public:
 
     void SetStateTimer(float timer) { stateTimer = timer; }
     float GetStateTimer() { return stateTimer; }
-    void SetVelocity(DirectX::XMFLOAT3 velo) { velocity = velo; }
-    void SetAccelaration(float accel) { acceleration = accel; }
-    void SetMaxSpeed(float speed) { maxMoveSpeed = speed; }
-    void SetFriction(float fric) { friction = fric; }
+    
+    void SetTargetPosition(DirectX::XMFLOAT3 pos) { targetPosition = pos; }
+    DirectX::XMFLOAT3 GetTargetPosition() { return targetPosition; }
 
     float Init_GetAccelaration() { return init_acceleration; }
 
@@ -66,17 +68,13 @@ public:
     };
 
 protected:
-    DirectX::XMFLOAT3 velocity{};
-    DirectX::XMFLOAT3 moveVec{};
+    //目標座標
+    DirectX::XMFLOAT3 targetPosition{};
   
     //初期値
     const float init_acceleration{ 0.0f };
     const float init_maxMoveSpeed{ 5.0f };
-    const float init_friction{ 0.5f };
-    
-    float acceleration{ init_acceleration };
-    float maxMoveSpeed{ init_maxMoveSpeed };
-    float friction{ init_friction };
+    const float init_friction{ 5.0f };
 
     float stateTimer{};
 
