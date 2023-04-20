@@ -34,7 +34,7 @@ void Title::Initialize()
 
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 	// player ‚Â‚¢‚©
-	//GetGameObject("player")->AddComponent(new Player);
+	GetGameObject("player")->AddComponent(new Player);
 	//AddObject(new GameObject("Stage1", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Cube.fbx");
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));

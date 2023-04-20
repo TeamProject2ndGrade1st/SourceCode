@@ -49,6 +49,13 @@ inline DirectX::XMFLOAT4 operator+(const DirectX::XMFLOAT4& f1, const DirectX::X
 	return ret;
 }
 
+inline DirectX::XMFLOAT3 Normalize(const DirectX::XMFLOAT3& f)
+{
+	DirectX::XMFLOAT3 r;
+	DirectX::XMStoreFloat3(&r, DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&f)));
+	return r;
+}
+
 inline DirectX::XMFLOAT4 operator-(const DirectX::XMFLOAT4& f1, const DirectX::XMFLOAT4& f2)
 {
 	DirectX::XMFLOAT4 ret{};

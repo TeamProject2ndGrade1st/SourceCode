@@ -26,12 +26,8 @@ private:
 
 	DirectX::XMFLOAT2 mousePos;
 
-	void MoveCamera();
 
-	DirectX::XMFLOAT3 GetMoveVec()const;
-	void InputMove(float elapsedTime);
-	void Move(float elapsedTime, float vx, float vz, float speed);
-	void Turn(float elapsedTime, float vx, float vz, float speed);
+	void MoveCamera();
 
 	Argent::Component::Collision::RayCast* ray;
 protected:
