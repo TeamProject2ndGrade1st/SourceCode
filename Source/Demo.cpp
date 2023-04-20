@@ -33,7 +33,7 @@ void RayCastDemo::Update()
 	}
 	if (Argent::Input::GetKey(KeyCode::K))
 	{
-		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcForward(), moveSpeed * Argent::Timer::GetDeltaTime());
+		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcForward() * -1, moveSpeed * Argent::Timer::GetDeltaTime());
 		HitResult hitResult;
 		if (Argent::Collider::ArColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
 		{
@@ -41,7 +41,36 @@ void RayCastDemo::Update()
 		}
 		else
 		{
-			const auto p = GetTransform()->GetPosition() * -moveSpeed * Argent::Timer::GetDeltaTime();
+			const auto p = GetTransform()->GetPosition() + GetTransform()->CalcForward() * -1  * moveSpeed * Argent::Timer::GetDeltaTime();
+			GetTransform()->SetPosition(p);
+		}
+	}
+	if (Argent::Input::GetKey(KeyCode::J))
+	{
+		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcRight() * -1, moveSpeed * Argent::Timer::GetDeltaTime());
+		HitResult hitResult;
+		if (Argent::Collider::ArColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
+		{
+			GetTransform()->SetPosition(hitResult.position);
+		}
+		else
+		{
+			const auto p = GetTransform()->GetPosition() + GetTransform()->CalcRight() * -1  * moveSpeed * Argent::Timer::GetDeltaTime();
+			GetTransform()->SetPosition(p);
+		}
+	}
+	if (Argent::Input::GetKey(KeyCode::L))
+	{
+		auto r = GetTransform()->CalcRight();
+		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcRight(), moveSpeed * Argent::Timer::GetDeltaTime());
+		HitResult hitResult;
+		if (Argent::Collider::ArColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
+		{
+			GetTransform()->SetPosition(hitResult.position);
+		}
+		else
+		{
+			const auto p = GetTransform()->GetPosition() + GetTransform()->CalcRight() * moveSpeed * Argent::Timer::GetDeltaTime();
 			GetTransform()->SetPosition(p);
 		}
 	}
