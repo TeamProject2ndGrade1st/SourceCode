@@ -83,6 +83,7 @@
     <ClCompile Include="Source\BaseGun.cpp" />
     <ClCompile Include="Source\BaseState.cpp" />
     <ClCompile Include="Source\Character.cpp" />
+    <ClCompile Include="Source\FriendCreature.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Result.cpp" />
     <ClCompile Include="Source\Stage.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Source\BaseState.h" />
     <ClInclude Include="Source\Character.h" />
     <ClInclude Include="Source\DemoShaderMacro.h" />
+    <ClInclude Include="Source\FriendCreature.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Result.h" />
     <ClInclude Include="Source\Stage.h" />

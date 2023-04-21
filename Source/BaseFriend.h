@@ -5,21 +5,10 @@
 #include "Character.h"
 #include "StateMachine.h"
 
-enum class FriendAnimation
-{
-    Idle,
-    Action,
-    Attack,
-    Walk_ChangeFrom_Action,
-    Walk,
-    Walk_End
-};
-
 class BaseFriend : public Character
 {
 public:
-    BaseFriend();
-    BaseFriend(DirectX::XMFLOAT3 pos);
+    BaseFriend(const char* name);
     virtual ~BaseFriend() {}
 
     virtual void Initialize()override;
@@ -50,23 +39,22 @@ public:
     void SetAttackTimer(float timer) { attackTimer = timer; }
     float GetAttackTimer() { return attackTimer; }
 
-    GameObject* GetTarget() { return target; }
+    float Init_GetAccelaration() { return init_acceleration; }
+    void Init_SetAccelaration(float accel) { init_acceleration = accel; }
+    float Init_GetMaxMoveSpeed() { return init_maxMoveSpeed; }
+    void Init_SetMaxMoveSpeed(float speed) { init_maxMoveSpeed = speed; }
+    float Init_GetFriction() { return init_friction; }
+    void Init_SetFriction(float fric) { init_friction = fric; }
+
     
     void SetTargetPosition(DirectX::XMFLOAT3 pos) { targetPosition = pos; }
     DirectX::XMFLOAT3 GetTargetPosition() { return targetPosition; }
     float GetAttackAreaRadius() { return attackAreaRadius; }
 
-    float Init_GetAccelaration() { return init_acceleration; }
-
     StateMachine* GetStateMachine() { return stateMachine.get(); }
+    GameObject* GetTarget() { return target; }
 
-    enum class State
-    {
-        Idle,
-        Action,
-        Walk,
-        Attack,
-    };
+    
 
 protected:
     //ñ⁄ïWç¿ïW

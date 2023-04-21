@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseState.h"
 
-namespace Friend
+namespace Friend::Creature
 {
     class IdleState : public FriendState
     {

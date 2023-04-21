@@ -1,12 +1,12 @@
 #include "FriendStateDerived.h"
 #include "Argent/Argent.h"
-#include "BaseFriend.h"
+#include "FriendCreature.h"
 
-namespace Friend 
+namespace Friend::Creature 
 {
 	void IdleState::Enter()
 	{
-		owner->SetAnimation(static_cast<int>(FriendAnimation::Idle));
+		owner->SetAnimation(static_cast<int>(CreatureAnimation::Idle));
 
 	}
 
@@ -23,7 +23,7 @@ namespace Friend
 		}
 		
 		
-		owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Action));
+		owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Action));
 	}
 
 	void IdleState::Exit()
@@ -32,7 +32,7 @@ namespace Friend
 
 	void ActionState::Enter()
 	{
-		owner->SetAnimation(static_cast<int>(FriendAnimation::Action));
+		owner->SetAnimation(static_cast<int>(CreatureAnimation::Action));
 	}
 
 	void ActionState::Execute()
@@ -42,18 +42,18 @@ namespace Friend
 		//“G‚ª‚¢‚È‚¢
 		if (0)//TODO:‚ ‚Æ‚ÅŽÀ‘•
 		{
-			owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Idle));
+			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Idle));
 		}
 
 		//“G‚ªUŒ‚”ÍˆÍ“à‚É‚¢‚é‚©‚Ç‚¤‚©
 		if (owner->IsTargetInAttackArea())
 		{
-			owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Attack));
+			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Attack));
 			return;
 		}
 		else
 		{
-			owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Walk));
+			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Walk));
 		}
 
 
@@ -65,7 +65,7 @@ namespace Friend
 
 	void WalkState::Enter()
 	{
-		owner->SetAnimation(static_cast<int>(FriendAnimation::Walk_ChangeFrom_Action));
+		owner->SetAnimation(static_cast<int>(CreatureAnimation::Walk_ChangeFrom_Action));
 		//owner->SetStateTimer(10.0f);
 	}
 
@@ -78,16 +78,16 @@ namespace Friend
 
 		switch (owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimation())
 		{
-		case static_cast<int>(FriendAnimation::Walk_ChangeFrom_Action):
+		case static_cast<int>(CreatureAnimation::Walk_ChangeFrom_Action):
 			if (owner->IsAnimationEnd())
 			{
 
 				owner->SetMaxSpeed(maxSpeed);
-				owner->SetAnimation(static_cast<int>(FriendAnimation::Walk));
+				owner->SetAnimation(static_cast<int>(CreatureAnimation::Walk));
 			}
 			break;
 
-		case static_cast<int>(FriendAnimation::Walk):
+		case static_cast<int>(CreatureAnimation::Walk):
 
 			owner->MoveToTarget();
 
@@ -112,21 +112,21 @@ namespace Friend
 				{
 					owner->SetAccelaration(owner->Init_GetAccelaration());
 					owner->SetVelocity(DirectX::XMFLOAT3(0, 0, 0));
-					owner->SetAnimation(static_cast<int>(FriendAnimation::Walk_End));
+					owner->SetAnimation(static_cast<int>(CreatureAnimation::Walk_End));
 				}
 			}
 
 			break;
 
-		case static_cast<int>(FriendAnimation::Walk_End):
+		case static_cast<int>(CreatureAnimation::Walk_End):
 			if (owner->IsAnimationEnd())
 			{
-				owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Idle));
+				owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Idle));
 			}
 			break;
 
 		default:
-			owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Idle));
+			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Idle));
 			break;
 		}
 
@@ -138,14 +138,14 @@ namespace Friend
 
 	void AttackState::Enter()
 	{
-		owner->SetAnimation(static_cast<int>(FriendAnimation::Attack));
+		owner->SetAnimation(static_cast<int>(CreatureAnimation::Attack));
 	}
 
 	void AttackState::Execute()
 	{
 		if (owner->IsAnimationEnd())
 		{
-			owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Idle));
+			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Idle));
 		}
 	}
 

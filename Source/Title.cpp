@@ -1,7 +1,7 @@
 #include "Title.h"
 
 #include "Argent/Argent.h"
-#include "BaseFriend.h"
+#include "FriendCreature.h"
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
 #include "Demo.h"
@@ -21,7 +21,7 @@ void Title::Initialize()
 	//AddObject(new GameObject("enemy_ver03", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver3.fbx", false)));
 
 	//AddObject(new GameObject("nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
-	AddObject(new GameObject("friend", new BaseFriend()));
+	AddObject(new GameObject("friend", new FriendCreature()));
 	AddObject(new GameObject("target", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
 
 	

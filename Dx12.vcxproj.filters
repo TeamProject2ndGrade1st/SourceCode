@@ -321,6 +321,9 @@
     <ClCompile Include="Source\FriendStateDerived.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FriendCreature.cpp">
+      <Filter>Game\善晃</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -569,6 +572,9 @@
       <Filter>Game\善晃</Filter>
     </ClInclude>
     <ClInclude Include="Source\FriendStateDerived.h">
+      <Filter>Game\善晃</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FriendCreature.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
   </ItemGroup>

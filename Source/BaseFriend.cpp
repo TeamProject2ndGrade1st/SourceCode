@@ -2,21 +2,15 @@
 #include "Argent/Argent.h"
 #include "FriendStateDerived.h"
 
-BaseFriend::BaseFriend():
-    Character("BaseFriend")
+BaseFriend::BaseFriend(const char* name):
+    Character(name)
 {
     
 }
 
-BaseFriend::BaseFriend(DirectX::XMFLOAT3 setPos)
-    : Character("BaseFriend")
-{
-    GetOwner()->GetTransform()->SetPosition(setPos);
-}
-
 void BaseFriend::Initialize()
 {
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
+   /* GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     
     target = GetOwner()->FindByName("target");
     target->GetTransform()->SetScaleFactor(0.01f);
@@ -40,7 +34,7 @@ void BaseFriend::Initialize()
     stateMachine.get()->RegisterState(new Friend::WalkState(this));
     stateMachine.get()->RegisterState(new Friend::AttackState(this));
 
-    stateMachine.get()->SetState(static_cast<int>(State::Idle));
+    stateMachine.get()->SetState(static_cast<int>(State::Idle));*/
 }
 
 void BaseFriend::Begin()
@@ -71,12 +65,12 @@ void BaseFriend::DrawDebug()
             ImGui::SliderFloat("Friction", &friction, 0.0f, 5.0f);
             ImGui::SliderFloat("Acceleration", &acceleration, 0.0f, 10.0f);
             ImGui::InputFloat3("Velocity", &velocity.x);
-            ImGui::DragFloat3("TargetPosition", &targetPosition.x,1.0f,-100.0f,100.0f);
+            ImGui::DragFloat3("TargetPosition", &targetPosition.x,0.1f,-100.0f,100.0f);
             ImGui::TreePop();
         }
         
 
-        if (ImGui::TreeNode("State"))
+        /*if (ImGui::TreeNode("State"))
         {
             switch (stateMachine.get()->GetStateIndex())
             {
@@ -95,7 +89,7 @@ void BaseFriend::DrawDebug()
             }
             ImGui::SliderFloat("State Timer", &stateTimer, 0.0f, 30.0f);
             ImGui::TreePop();
-        }
+        }*/
         
         BaseActor::DrawDebug();
         ImGui::TreePop();
