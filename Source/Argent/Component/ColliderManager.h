@@ -2,14 +2,18 @@
 #include "Collider.h"
 #include "RayCast.h"
 #include <vector>
+#include "../GameObject/GameObject.h"
 
+
+//レイキャストの衝突判定をすべてのオブジェクトと行う
+#define COLLISION_ALL_OBJECT (GameObject::Tag)(0x00)
 
 namespace Argent::Collider
 {
 	class ColliderManager
 	{
 	public:
-
+		
 		void RegisterCollider(Argent::Component::Collider::Collider* c)
 		{
 			collider.emplace_back(c);
@@ -58,7 +62,8 @@ namespace Argent::Collider
 			return instance;
 		}
 
-		bool CollisionDetectionRayCast(Component::Collision::RayCast* ray, Component::Collision::HitResult& hitResult);
+		bool CollisionDetectionRayCast(Component::Collision::RayCast* ray, Component::Collision::HitResult& hitResult, 
+			unsigned int tag);
 	private:
 		std::vector<Component::Collider::Collider*> collider{};
 		std::vector<Component::Collider::RayCastCollider*> rayCastCollider{};

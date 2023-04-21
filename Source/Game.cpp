@@ -15,7 +15,7 @@ void Game::Update()
 {
 	if(Argent::Input::GetKeyUp(KeyCode::Enter))
 	{
-		Argent::Scene::ArSceneManager::SetNextScene("Result");
+		Argent::Scene::SceneManager::SetNextScene("Result");
 	}
 	BaseScene::Update();
 }

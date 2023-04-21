@@ -1,5 +1,6 @@
 #pragma once
 #include "Argent/Argent.h"
+#include "BaseGun.h"
 
 class Player:
 	public Argent::Component::BaseActor
@@ -32,5 +33,6 @@ private:
 	Argent::Component::Collision::RayCast* ray;
 protected:
 	bool useCameraControl = true;
+	float offsetLength;
 };
 

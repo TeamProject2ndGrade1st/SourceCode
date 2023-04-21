@@ -24,6 +24,8 @@ void Stage::Initialize()
 	}
 
 	GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(mResource));
+
+	GetOwner()->SetTag(GameObject::Tag::Stage);
 	//GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube));
 
 	//GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(r->GetMesh()->meshResource));

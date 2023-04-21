@@ -18,7 +18,7 @@ void BaseFriend::Initialize()
 {
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     BaseActor::Initialize();
-
+    GetOwner()->SetTag(GameObject::Tag::Stage);
     GetOwner()->GetTransform()->SetScaleFactor(0.03f);
 
     stateMachine.reset(new StateMachine);

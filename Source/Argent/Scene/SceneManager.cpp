@@ -9,10 +9,10 @@
 
 namespace Argent::Scene
 {
-	ArSceneManager* ArSceneManager::instance = nullptr;
-	std::string ArSceneManager::nextScene;
+	SceneManager* SceneManager::instance = nullptr;
+	std::string SceneManager::nextScene;
 		
-	ArSceneManager::ArSceneManager():
+	SceneManager::SceneManager():
 		currentScene(nullptr)
 	{
 		if (instance) _ASSERT_EXPR(FALSE, L"Already instantiated");
@@ -34,25 +34,25 @@ namespace Argent::Scene
 		scenes[s->GetName()] = std::move(s);*/
 	}
 
-	void ArSceneManager::Initialize()
+	void SceneManager::Initialize()
 	{
 		nextScene = "Title";
 	}
 		
-	void ArSceneManager::Finalize() const
+	void SceneManager::Finalize() const
 	{
 		if(currentScene)
 			currentScene->Finalize();
 	}
 
-	void ArSceneManager::Begin()
+	void SceneManager::Begin()
 	{
 		ChangeScene();
 		if (currentScene)
 			currentScene->Begin();
 	}
 
-	void ArSceneManager::Update()
+	void SceneManager::Update()
 	{
 		start = end;
 		end = GetTickCount();   
@@ -63,13 +63,13 @@ namespace Argent::Scene
 		}
 	}
 
-	void ArSceneManager::End() const
+	void SceneManager::End() const
 	{
 		if (currentScene)
 			currentScene->End();
 	}
 
-	void ArSceneManager::Render() const
+	void SceneManager::Render() const
 	{
 		if(currentScene)
 		{
@@ -77,7 +77,7 @@ namespace Argent::Scene
 		}
 	}
 
-	void ArSceneManager::DrawDebug() const
+	void SceneManager::DrawDebug() const
 	{
 		if(currentScene)
 		{
@@ -87,7 +87,7 @@ namespace Argent::Scene
 		}
 	}
 
-	void ArSceneManager::ChangeScene()
+	void SceneManager::ChangeScene()
 	{
 		if(!nextScene.empty())
 		{

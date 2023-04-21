@@ -16,7 +16,7 @@ void Player::Initialize()
 	g->AddComponent(ray);
 
 
-    camera = GameObject::FindGameObject("Camera"); // ‚±‚Á‚¿‚Å
+    camera = GameObject::FindByName("Camera"); // ‚±‚Á‚¿‚Å
     movement = 10.5f;
     {
         auto c = camera->GetComponent<Camera>();
@@ -31,8 +31,8 @@ void Player::Update()
     switch (state)
     {
     case 0:
-        //camera = Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->GetGameObject("Camera");
-        camera = GameObject::FindGameObject("Camera"); // ‚±‚Á‚¿‚Å
+        //camera = Argent::Scene::SceneManager::Instance()->GetCurrentScene()->GetGameObject("Camera");
+        camera = GameObject::FindByName("Camera"); // ‚±‚Á‚¿‚Å
         movement = 10.5f;
 
         {
@@ -90,6 +90,10 @@ void Player::Update()
 
     }
 
+
+    std::vector<GameObject*> array;
+    GameObject::FindByTag(GameObject::Tag::Stage, array);
+
     GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
 
 #ifdef _DEBUG
@@ -108,7 +112,8 @@ void Player::DrawDebug()
         ImGui::SliderFloat("movement", &movement, 0.1f, 10.0);
         ImGui::DragFloat2("mouse", &mousePos.x);
         ImGui::SliderFloat("sensitivity", &sensitivity, 0.1f, 2.0f);
-		BaseActor::DrawDebug();
+        ImGui::SliderFloat("OffsetLength", &offsetLength, 0.0f, 10.0f);
+    	BaseActor::DrawDebug();
         ImGui::TreePop();
     }
 }
@@ -139,20 +144,22 @@ void Player::MoveCamera()
     cameraRight = Normalize(cameraRight);
     cameraFront = Normalize(cameraFront);
 
+    DirectX::XMFLOAT3 direction = Normalize(cameraRight + cameraFront);
     cameraRight = cameraRight* ax ;
     cameraFront = cameraFront * ay;
     cameraRight = cameraRight * movement * Argent::Timer::GetDeltaTime();
     cameraFront = cameraFront * movement * Argent::Timer::GetDeltaTime();
-    
+
+    direction = direction * offsetLength;
     p = p + cameraRight + cameraFront;
 
     auto pos = t->GetPosition();
-    ray->SetRayData(pos, p);
+    ray->SetRayData(pos + direction, p + direction);
     HitResult hitResult{};
-    if(Argent::Collision::RayCollisionDetection(ray, hitResult))
+    if(Argent::Collision::RayCollisionDetection(ray, hitResult, GameObject::Tag::Stage))
     {
-	    p = hitResult.position;
-    }
+	    p = hitResult.position - direction;
+    } 
 
     t->SetPosition(p);
 }

@@ -77,7 +77,7 @@
     <ClCompile Include="Source\Argent\Resource\EffectManager.cpp" />
     <ClCompile Include="Source\Argent\Scene\BaseScene.cpp" />
     <ClCompile Include="Source\Argent\Scene\SceneManager.cpp" />
-    <ClCompile Include="Source\BaseBullet.cpp" />
+    <ClCompile Include="Source\Bullet.cpp" />
     <ClCompile Include="Source\BaseBulletManager.cpp" />
     <ClCompile Include="Source\BaseFriend.cpp" />
     <ClCompile Include="Source\BaseGun.cpp" />
@@ -162,7 +162,7 @@
     <ClInclude Include="Source\Argent\Resource\EffectManager.h" />
     <ClInclude Include="Source\Argent\Scene\BaseScene.h" />
     <ClInclude Include="Source\Argent\Scene\SceneManager.h" />
-    <ClInclude Include="Source\BaseBullet.h" />
+    <ClInclude Include="Source\Bullet.h" />
     <ClInclude Include="Source\BaseBulletManager.h" />
     <ClInclude Include="Source\BaseFriend.h" />
     <ClInclude Include="Source\BaseGun.h" />

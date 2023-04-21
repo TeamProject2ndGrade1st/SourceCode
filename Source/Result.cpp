@@ -4,7 +4,7 @@ void Result::Update()
 {
 	if(Argent::Input::GetKeyUp(KeyCode::Enter))
 	{
-		Argent::Scene::ArSceneManager::SetNextScene("Title");
+		Argent::Scene::SceneManager::SetNextScene("Title");
 	}
 	BaseScene::Update();
 }

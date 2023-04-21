@@ -1,10 +1,10 @@
 #pragma once
-#include "Argent/Component/BaseActor.h"
+#include "Argent/Argent.h"
 
 /**
  * \brief 弾丸の基底クラス　
  */
-class BaseBullet:
+class Bullet:
 	public Argent::Component::BaseActor
 {
 public:
@@ -14,15 +14,14 @@ public:
 	 * \param damage ダメージ
 　	 * \param speed 弾丸の速度 
 	 */
-	BaseBullet(const DirectX::XMFLOAT3& direction, float damage, float speed);
-	virtual ~BaseBullet() override = default;
+	Bullet(const DirectX::XMFLOAT3& direction, float damage, float speed);
+	virtual ~Bullet() override = default;
 
 
 	void Initialize() override;
 	void Update() override;
 
-	void OnCollision(const Argent::Component::Collider::Collider* collider) override;
-	static void Shot(BaseBullet* bulletActor, const Transform& t);
+	static void Shot(Bullet* bulletActor, const Transform& t);
 
 	void DrawDebug() override;
 
@@ -30,5 +29,6 @@ protected:
 	float damage;
 	float speed;
 	DirectX::XMFLOAT3 direction;
+	Argent::Component::Collision::RayCast* ray; 
 };
 

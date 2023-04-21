@@ -51,7 +51,7 @@ namespace Argent
 	{
 		inline BaseScene* GetCurrentScene()
 		{
-			return Scene::ArSceneManager::Instance()->GetCurrentScene();
+			return Scene::SceneManager::Instance()->GetCurrentScene();
 		}
 	}
 
@@ -115,9 +115,10 @@ namespace Argent
 
 	namespace Collision
 	{
-		inline bool RayCollisionDetection(Component::Collision::RayCast* ray, HitResult& hitResult)
+		inline bool RayCollisionDetection(Component::Collision::RayCast* ray, HitResult& hitResult, 
+			GameObject::Tag tag = GameObject::Tag::MainCamera)
 		{
-			return Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult);
+			return Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult, static_cast<unsigned>(tag));
 		}
 	}
 

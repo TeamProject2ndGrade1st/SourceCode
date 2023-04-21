@@ -8,12 +8,15 @@
 #include "../Component/Transform.h"
 #include "../Component/BaseActor.h"
 
-
-// todo orderInUpdate
-
 class GameObject
 {
 public:
+	enum class Tag : unsigned int
+	{
+		UnTagged =		0x01 << 1,
+		MainCamera =	0x01 << 2,
+		Stage =			0x01 << 3,
+	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);
 	GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com);
 	GameObject(std::initializer_list<Argent::Component::BaseComponent*> components, std::string name = "gameObject");
@@ -80,9 +83,36 @@ public:
 	void CloseWindow() { isSelected = false; }
 	void CloseAllWindow();
 
-	static void DestroyGameObject(GameObject* object);
+
+	Tag GetTag() const { return tag; }
+	void SetTag(Tag t) { tag = t; }
+
+
+	/**
+	 * \brief ゲームオブジェクトを破壊する
+	 * \param object 破壊したいゲームオブジェクト
+	 */
+	static void Destroy(GameObject* object);
+	/**
+	 * \brief ゲームオブジェクトの生成
+	 * \param name オブジェクトの名称
+	 * \param com 追加したいコンポーネント
+	 * \return 生成したオブジェクト
+	 */
 	static GameObject* Instantiate(const char* name, Argent::Component::BaseComponent* com);
-	static GameObject* FindGameObject(const char* name);
+	/**
+	 * \brief 最初に見つけたオブジェクトのみ戻す
+	 * \param name 探したいオブジェクトの名前
+	 * \return 
+	 */
+	static GameObject* FindByName(const char* name);
+	/**
+	 * \brief 特定のタグを持ったゲームオブジェクトの配列を返す
+	 * \param tag 
+	 * \param objArray [out] 発見したゲームオブジェクトを入れる配列
+	 * \return 発見したかどうか
+	 */
+	static bool FindByTag(Tag tag, std::vector<GameObject*>& objArray);
 
 protected:
 	std::string name;
@@ -94,6 +124,9 @@ protected:
 	Argent::Component::BaseActor* actor{};
 
 	int orderInUpdate = 10;
+
+	//std::string tag = "UnTagged";
+	Tag tag;
 
 	bool isSelected;
 	bool isInitialized;

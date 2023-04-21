@@ -1,12 +1,9 @@
 #include "Title.h"
 
 #include "Argent/Argent.h"
-#include "BaseBullet.h"
-#include "BaseGun.h"
 #include "BaseFriend.h"
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
-#include "Argent/Component/RayCast.h"
 #include "Demo.h"
 
 #include "Stage.h"
@@ -44,7 +41,7 @@ void Title::Initialize()
 	// spikeBot
 	//AddObject(new GameObject("spikeBot", Argent::Loader::Fbx::LoadFbx("./Resources/Model/spike_bot_0419_1.fbx")));
 	AddObject(new GameObject("spikeBot", new SpikeBot()));
-	AddObject(new GameObject("Demo", new RayCastDemo));
+	//AddObject(new GameObject("Demo", new RayCastDemo));
 
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/barike-do_0419_1.fbx")));
 
@@ -92,7 +89,7 @@ void Title::Update()
 
 	if(Argent::Input::GetKeyUp(KeyCode::F2))
 	{
-		Argent::Scene::ArSceneManager::SetNextScene("StageSelect");
+		Argent::Scene::SceneManager::SetNextScene("StageSelect");
 	}
 }
 

@@ -34,7 +34,7 @@ namespace Argent::App
 	{
 		Initialize();
 			
-		Scene::ArSceneManager arSceneManager;
+		Scene::SceneManager arSceneManager;
 		arSceneManager.Initialize();
 		Argent::Resource::Audio::AudioManager::Instance().Initialize();
 		while (MainLoop(arWindow->GetHandle()))

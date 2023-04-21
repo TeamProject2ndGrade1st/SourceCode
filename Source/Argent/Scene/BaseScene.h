@@ -44,14 +44,15 @@ namespace Argent::Scene
 
 
 		void DeleteDestroyedObject();
-		//void DestroyGameObject(GameObject* object);
+		//void Destroy(GameObject* object);
 
+		std::vector<GameObject*>::iterator begin() { return gameObject.begin(); }
+		std::vector<GameObject*>::iterator end() { return gameObject.end(); }
 
 		const std::string& GetName() const { return sceneName; }
 		void CloseAllDebugWindow() const;
 		void AddObject(GameObject* obj);
 		
-
 		std::string ObjectNameCheck(std::string name, int num = 0, bool isChecked = false)
 		{
 			for(const auto& object : gameObject)

@@ -113,11 +113,8 @@ namespace Argent::Component
 
 
 			void SetRayStartPosition(const DirectX::XMFLOAT3& f) { start = f; }
-			//void SetRayDirection(const DirectX::XMFLOAT3& f) { direction = f; }
-			//void SetRayLength(float f) { length = f; }
 
 			bool CollisionDetection(Collider::RayCastCollider* other, HitResult& hitResult) const;
-
 
 			void DrawDebug() override;
 

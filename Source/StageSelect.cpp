@@ -4,7 +4,7 @@ void StageSelect::Update()
 {
 	if(Argent::Input::GetKeyUp(KeyCode::Enter))
 	{
-		Argent::Scene::ArSceneManager::SetNextScene("Game");
+		Argent::Scene::SceneManager::SetNextScene("Game");
 	}
 	BaseScene::Update();
 }

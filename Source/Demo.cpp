@@ -17,63 +17,63 @@ void RayCastDemo::Update()
 {
 	BaseActor::Update();
 	
-	if (Argent::Input::GetKey(KeyCode::I))
-	{
-		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcForward(), moveSpeed * Argent::Timer::GetDeltaTime());
-		HitResult hitResult;
-		if(Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
-		{
-			GetTransform()->SetPosition(hitResult.position);
-		}
-		else
-		{
-			const auto p = GetTransform()->GetPosition() + GetTransform()->CalcForward() * moveSpeed * Argent::Timer::GetDeltaTime();
-			GetTransform()->SetPosition(p);
-		}
-	}
-	if (Argent::Input::GetKey(KeyCode::K))
-	{
-		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcForward() * -1, moveSpeed * Argent::Timer::GetDeltaTime());
-		HitResult hitResult;
-		if (Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
-		{
-			GetTransform()->SetPosition(hitResult.position);
-		}
-		else
-		{
-			const auto p = GetTransform()->GetPosition() + GetTransform()->CalcForward() * -1  * moveSpeed * Argent::Timer::GetDeltaTime();
-			GetTransform()->SetPosition(p);
-		}
-	}
-	if (Argent::Input::GetKey(KeyCode::J))
-	{
-		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcRight() * -1, moveSpeed * Argent::Timer::GetDeltaTime());
-		HitResult hitResult;
-		if (Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
-		{
-			GetTransform()->SetPosition(hitResult.position);
-		}
-		else
-		{
-			const auto p = GetTransform()->GetPosition() + GetTransform()->CalcRight() * -1  * moveSpeed * Argent::Timer::GetDeltaTime();
-			GetTransform()->SetPosition(p);
-		}
-	}
-	if (Argent::Input::GetKey(KeyCode::L))
-	{
-		auto r = GetTransform()->CalcRight();
-		ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcRight(), moveSpeed * Argent::Timer::GetDeltaTime());
-		HitResult hitResult;
-		if (Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult))
-		{
-			GetTransform()->SetPosition(hitResult.position);
-		}
-		else
-		{
-			const auto p = GetTransform()->GetPosition() + GetTransform()->CalcRight() * moveSpeed * Argent::Timer::GetDeltaTime();
-			GetTransform()->SetPosition(p);
-		}
-	}
+	//if (Argent::Input::GetKey(KeyCode::I))
+	//{
+	//	ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcForward(), moveSpeed * Argent::Timer::GetDeltaTime());
+	//	HitResult hitResult;
+	//	if(Argent::Collision::RayCollisionDetection(ray, hitResult))
+	//	{
+	//		GetTransform()->SetPosition(hitResult.position);
+	//	}
+	//	else
+	//	{
+	//		const auto p = GetTransform()->GetPosition() + GetTransform()->CalcForward() * moveSpeed * Argent::Timer::GetDeltaTime();
+	//		GetTransform()->SetPosition(p);
+	//	}
+	//}
+	//if (Argent::Input::GetKey(KeyCode::K))
+	//{
+	//	ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcForward() * -1, moveSpeed * Argent::Timer::GetDeltaTime());
+	//	HitResult hitResult;
+	//	if(Argent::Collision::RayCollisionDetection(ray, hitResult))
+	//	{
+	//		GetTransform()->SetPosition(hitResult.position);
+	//	}
+	//	else
+	//	{
+	//		const auto p = GetTransform()->GetPosition() + GetTransform()->CalcForward() * -1  * moveSpeed * Argent::Timer::GetDeltaTime();
+	//		GetTransform()->SetPosition(p);
+	//	}
+	//}
+	//if (Argent::Input::GetKey(KeyCode::J))
+	//{
+	//	ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcRight() * -1, moveSpeed * Argent::Timer::GetDeltaTime());
+	//	HitResult hitResult;
+	//	if(Argent::Collision::RayCollisionDetection(ray, hitResult))
+	//	{
+	//		GetTransform()->SetPosition(hitResult.position);
+	//	}
+	//	else
+	//	{
+	//		const auto p = GetTransform()->GetPosition() + GetTransform()->CalcRight() * -1  * moveSpeed * Argent::Timer::GetDeltaTime();
+	//		GetTransform()->SetPosition(p);
+	//	}
+	//}
+	//if (Argent::Input::GetKey(KeyCode::L))
+	//{
+	//	auto r = GetTransform()->CalcRight();
+	//	ray->SetRayData(GetTransform()->GetPosition(), GetTransform()->CalcRight(), moveSpeed * Argent::Timer::GetDeltaTime());
+	//	HitResult hitResult;
+	//	if(Argent::Collision::RayCollisionDetection(ray, hitResult))
+	//	{
+	//		GetTransform()->SetPosition(hitResult.position);
+	//	}
+	//	else
+	//	{
+	//		const auto p = GetTransform()->GetPosition() + GetTransform()->CalcRight() * moveSpeed * Argent::Timer::GetDeltaTime();
+	//		GetTransform()->SetPosition(p);
+	//	}
+	//}
 }
 
 void RayCastDemo::DrawDebug()
@@ -90,7 +90,7 @@ void RayCastDemo::DrawDebug()
 		ImGui::SliderFloat("moveSpeed", &moveSpeed, 0, 10.0f);
 		if(ImGui::Button("Destroy"))
 		{
-			GameObject::DestroyGameObject(GetOwner());
+			GameObject::Destroy(GetOwner());
 		}
 		BaseActor::DrawDebug();
 		ImGui::TreePop();
