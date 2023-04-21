@@ -100,6 +100,9 @@
     <Filter Include="Lib\Work In Progress">
       <UniqueIdentifier>{3988f51d-b8fb-42fb-8614-b3d1763570a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\mame">
+      <UniqueIdentifier>{2b87db98-51b1-44af-b5ab-7c02606c8265}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -278,9 +281,6 @@
     <ClCompile Include="Source\BaseFriend.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FriendStateDerived.cpp">
-      <Filter>Game\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Source\StateMachine.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
@@ -291,9 +291,6 @@
       <Filter>Game\Stage</Filter>
     </ClCompile>
     <ClCompile Include="Source\Character.cpp" />
-    <ClCompile Include="Source\Game.cpp">
-      <Filter>Game\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Result.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
@@ -318,6 +315,13 @@
     </ClCompile>
     <ClCompile Include="Source\Argent\Graphic\RenderContext.cpp">
       <Filter>Lib\Work In Progress</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FriendStateDerived.cpp" />
+    <ClCompile Include="Source\Game.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BaseEnemy.cpp">
+      <Filter>Game\mame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -529,9 +533,6 @@
     <ClInclude Include="Source\BaseFriend.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FriendStateDerived.h">
-      <Filter>Game\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\StateMachine.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
@@ -566,6 +567,10 @@
     </ClInclude>
     <ClInclude Include="Source\Argent\Graphic\RenderContext.h">
       <Filter>Lib\Work In Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FriendStateDerived.h" />
+    <ClInclude Include="Source\BaseEnemy.h">
+      <Filter>Game\mame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

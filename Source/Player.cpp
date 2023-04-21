@@ -48,6 +48,24 @@ void Player::Update()
         // 移動
         MoveCamera();
 
+        // デバッグ用
+#ifdef _DEBUG
+        if (Argent::Input::GetKey(KeyCode::Space))
+        {
+            auto t = camera->GetTransform();
+            auto pos = t->GetPosition();
+            pos.y += movement;
+            t->SetPosition(pos);
+        }
+        if (Argent::Input::GetKey(KeyCode::M))
+        {
+            auto t = camera->GetTransform();
+            auto pos = t->GetPosition();
+            pos.y -= movement;
+            t->SetPosition(pos);
+        }
+#endif
+
         // マウスのポジション
 #if 1
         // マウスの位置を取る

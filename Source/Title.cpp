@@ -2,6 +2,7 @@
 
 #include "Argent/Argent.h"
 #include "BaseFriend.h"
+#include "BaseEnemy.h"
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
 #include "Demo.h"
@@ -41,14 +42,15 @@ void Title::Initialize()
 
 	// spikeBot
 	//AddObject(new GameObject("spikeBot", Argent::Loader::Fbx::LoadFbx("./Resources/Model/spike_bot_0419_1.fbx")));
-	AddObject(new GameObject("spikeBot", new SpikeBot()));
+	//AddObject(new GameObject("spikeBot", new SpikeBot()));
+	AddObject(new GameObject("BaseEnemy", new BaseEnemy));
 	//AddObject(new GameObject("Demo", new RayCastDemo));
 
-	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/barike-do_0419_1.fbx")));
 
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 	// player ‚Â‚¢‚©
-	//GetGameObject("player")->AddComponent(new Player);
+	AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/barike-do_0419_1.fbx")));
+	GetGameObject("player")->AddComponent(new Player);
 	//AddObject(new GameObject("Stage1", Argent::Loader::Fbx::LoadFbx("./Resources/Model/capsule.fbx", true)));
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Cube.fbx");
 	//AddObject(new GameObject("Debug", new Argent::Debug::Debug()));

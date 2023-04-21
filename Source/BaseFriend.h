@@ -1,7 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
 #include "Argent/Argent.h"
-#include "Argent/Argent.h"
 #include "Character.h"
 #include "StateMachine.h"
 
