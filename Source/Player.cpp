@@ -25,7 +25,6 @@ void Player::Initialize()
     }
 }
 
-
 void Player::Update()
 {
     switch (state)
@@ -90,10 +89,6 @@ void Player::Update()
 
     }
 
-
-    std::vector<GameObject*> array;
-    GameObject::FindByTag(GameObject::Tag::Stage, array);
-
     GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
 
 #ifdef _DEBUG
@@ -133,6 +128,7 @@ void Player::MoveCamera()
     // カメラ方向とスティック入力値によって進行方向を計算する
     Transform* t = camera->GetTransform();
     auto p = t->GetPosition();
+								
 
     DirectX::XMFLOAT3 cameraRight = t->CalcRight();
     DirectX::XMFLOAT3 cameraFront = t->CalcForward();
@@ -162,5 +158,10 @@ void Player::MoveCamera()
     } 
 
     t->SetPosition(p);
+}
+
+void Tmp::Update()
+{
+	
 }
 
