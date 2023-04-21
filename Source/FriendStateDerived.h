@@ -1,10 +1,10 @@
 #pragma once
 #include "BaseState.h"
 
-class IdleState : public State
+class IdleState : public FriendState
 {
 public:
-    IdleState(BaseFriend* _friend) : State(_friend, "idle") {}
+    IdleState(BaseFriend* _friend) : FriendState(_friend, "idle") {}
     ~IdleState() {}
 
     void Enter()override;
@@ -13,10 +13,10 @@ public:
 };
 
 //叫び　基本的に色々な行動の予備動作になる
-class ActionState : public State
+class ActionState : public FriendState
 {
 public:
-    ActionState(BaseFriend* _friend) : State(_friend, "action") {}
+    ActionState(BaseFriend* _friend) : FriendState(_friend, "action") {}
     ~ActionState() {}
 
     void Enter()override;
@@ -25,10 +25,10 @@ public:
 };
 
 //前進
-class WalkState : public State
+class WalkState : public FriendState
 {
 public:
-    WalkState(BaseFriend* _friend) : State(_friend, "walk") {}
+    WalkState(BaseFriend* _friend) : FriendState(_friend, "walk") {}
     ~WalkState() {}
 
     void Enter()override;
@@ -41,15 +41,15 @@ private:
     float maxSpeed_late{ 0.8f };
     float maxSpeed{ 2.0f };
 
-    //アニメーション3~18フレーム間で動きが早くなる
+    //アニメーション20~32フレーム間で動きが早くなる
     int startMovingFastFrame{ 20 };
     int endMovingFastFrame{ 32 };
 };
 
-class AttackState : public State
+class AttackState : public FriendState
 {
 public:
-    AttackState(BaseFriend* _friend) : State(_friend, "attack") {}
+    AttackState(BaseFriend* _friend) : FriendState(_friend, "attack") {}
     ~AttackState() {}
 
     void Enter()override;
@@ -57,6 +57,7 @@ public:
     void Exit()override;
 };
 
+//階層構造のステート（いらん）
 class H_MoveState : public HierarchicalState
 {
 public:

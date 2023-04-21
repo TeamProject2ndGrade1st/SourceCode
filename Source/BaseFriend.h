@@ -54,6 +54,7 @@ public:
     
     void SetTargetPosition(DirectX::XMFLOAT3 pos) { targetPosition = pos; }
     DirectX::XMFLOAT3 GetTargetPosition() { return targetPosition; }
+    float GetAttackAreaRadius() { return attackAreaRadius; }
 
     float Init_GetAccelaration() { return init_acceleration; }
 
@@ -70,11 +71,15 @@ public:
 protected:
     //目標座標
     DirectX::XMFLOAT3 targetPosition{};
+
+    //攻撃始動範囲
+    float attackAreaRadius{ 2.0f };
+    float attackInterval{ 3.0f };
   
     //初期値
-    const float init_acceleration{ 0.0f };
-    const float init_maxMoveSpeed{ 5.0f };
-    const float init_friction{ 5.0f };
+    float init_acceleration{ 0.0f };
+    float init_maxMoveSpeed{ 5.0f };
+    float init_friction{ 5.0f };
 
     float stateTimer{};
 

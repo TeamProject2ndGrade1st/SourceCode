@@ -1,4 +1,4 @@
-#include "StateDerived.h"
+#include "FriendStateDerived.h"
 #include "Argent/Argent.h"
 #include "BaseFriend.h"
 
@@ -17,7 +17,7 @@ void IdleState::Execute()
 	{
 		if (owner->isAnimationEnd())
 		{
-			owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Walk));
+			owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Action));
 		}
 	}
 }
@@ -35,11 +35,27 @@ void ActionState::Execute()
 {
 	if (!owner->isAnimationEnd())return;
 
-	/*float owner->GetTargetPosition().x;
-	if ()
+	//ìGÇ™Ç¢Ç»Ç¢
+	if (0)//TODO:Ç†Ç∆Ç≈é¿ëï
 	{
+		owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Idle));
+	}
 
-	}*/
+	//ìGÇ™çUåÇîÕàÕì‡Ç…Ç¢ÇÈÇ©Ç«Ç§Ç©
+	float vx = owner->GetTargetPosition().x - owner->GetOwner()->GetTransform()->GetPosition().x;
+	float vz = owner->GetTargetPosition().z - owner->GetOwner()->GetTransform()->GetPosition().z;
+	float length = sqrtf(vx * vx + vz * vz);
+	if (length < owner->GetAttackAreaRadius())
+	{
+		owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Attack));
+		return;
+	}
+	else
+	{
+		owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Walk));
+	}
+
+	
 }
 
 void ActionState::Exit()
@@ -48,8 +64,8 @@ void ActionState::Exit()
 
 void WalkState::Enter()
 {
-	owner->SetAnimation(static_cast<int>(FriendAnimation::Action));
-	owner->SetStateTimer(10.0f);
+	owner->SetAnimation(static_cast<int>(FriendAnimation::Walk_ChangeFrom_Action));
+	//owner->SetStateTimer(10.0f);
 }
 
 void WalkState::Execute()
@@ -61,13 +77,6 @@ void WalkState::Execute()
 
 	switch (owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimation())
 	{
-	case static_cast<int>(FriendAnimation::Action):
-		if (owner->isAnimationEnd())
-		{
-			owner->SetAnimation(static_cast<int>(FriendAnimation::Walk_ChangeFrom_Action));
-		}
-		break;
-
 	case static_cast<int>(FriendAnimation::Walk_ChangeFrom_Action):
 		if (owner->isAnimationEnd())
 		{
@@ -79,6 +88,8 @@ void WalkState::Execute()
 
 	case static_cast<int>(FriendAnimation::Walk):
 		
+		owner->MoveToTarget();
+
 		//ë´Çà¯Ç´Ç∏Ç¡ÇƒÇ¢ÇÈÇ©ÇÁà⁄ìÆë¨ìxÇ…ïœâªÇïtÇØÇÈ
 		if (animationFrame == startMovingFastFrame)
 		{
@@ -91,14 +102,19 @@ void WalkState::Execute()
 			//owner->SetMaxSpeed(maxSpeed_late);
 			owner->SetAccelaration(0.0f);
 		}
-		
 
-		if (timer < 0.0f)
 		{
-			owner->SetAccelaration(owner->Init_GetAccelaration());
-			owner->SetVelocity(DirectX::XMFLOAT3(0,0,0));
-			owner->SetAnimation(static_cast<int>(FriendAnimation::Walk_End));
+			float vx = owner->GetTargetPosition().x - owner->GetOwner()->GetTransform()->GetPosition().x;
+			float vz = owner->GetTargetPosition().z - owner->GetOwner()->GetTransform()->GetPosition().z;
+			float length = sqrtf(vx * vx + vz * vz);
+			if (length < owner->GetAttackAreaRadius())
+			{
+				owner->SetAccelaration(owner->Init_GetAccelaration());
+				owner->SetVelocity(DirectX::XMFLOAT3(0, 0, 0));
+				owner->SetAnimation(static_cast<int>(FriendAnimation::Walk_End));
+			}
 		}
+		
 		break;
 
 	case static_cast<int>(FriendAnimation::Walk_End):
@@ -121,16 +137,22 @@ void WalkState::Exit()
 
 void AttackState::Enter()
 {
+	owner->SetAnimation(static_cast<int>(FriendAnimation::Attack));
 }
 
 void AttackState::Execute()
 {
+	if (owner->isAnimationEnd())
+	{
+		owner->GetStateMachine()->ChangeState(static_cast<int>(BaseFriend::State::Idle));
+	}
 }
 
 void AttackState::Exit()
 {
 }
 
+//äKëwç\ë¢ÇÃÉXÉeÅ[ÉgÅiÇ¢ÇÁÇÒÇ©Ç‡Åj
 void H_MoveState::Enter()
 {
 }

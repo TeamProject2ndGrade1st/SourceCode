@@ -21,6 +21,7 @@ void Title::Initialize()
 	//AddObject(new GameObject("nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
 	AddObject(new GameObject("friend", new BaseFriend()));
 
+	
 	//AddObject(new GameObject("DemoGun", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx", false)));
 
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Plane.fbx");

@@ -2,7 +2,7 @@
 
 StateMachine::~StateMachine()
 {
-	for (State* state : statePool)
+	for (FriendState* state : statePool)
 	{
 		delete state;
 	}
@@ -26,7 +26,7 @@ void StateMachine::ChangeState(int newState)
 	SetState(newState);
 }
 
-void StateMachine::RegisterState(State* state)
+void StateMachine::RegisterState(FriendState* state)
 {
 	statePool.emplace_back(state);
 }
@@ -34,7 +34,7 @@ void StateMachine::RegisterState(State* state)
 int StateMachine::GetStateIndex()
 {
 	int i = 0;
-	for (State* state : statePool)
+	for (FriendState* state : statePool)
 	{
 		if (state == currentState)
 		{

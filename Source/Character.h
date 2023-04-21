@@ -19,8 +19,6 @@ protected:
     //ˆÚ“®ˆ—
     void UpdateMove();
 
-
-
 protected:
     DirectX::XMFLOAT3 velocity{};
     DirectX::XMFLOAT3 moveVec{};

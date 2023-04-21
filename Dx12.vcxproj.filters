@@ -290,7 +290,7 @@
     <ClCompile Include="Source\BaseFriend.cpp">
       <Filter>Game\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StateDerived.cpp">
+    <ClCompile Include="Source\FriendStateDerived.cpp">
       <Filter>Game\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\StateMachine.cpp">
@@ -303,6 +303,7 @@
     <ClCompile Include="Source\Stage.cpp">
       <Filter>Game\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Character.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -531,7 +532,7 @@
     <ClInclude Include="Source\BaseFriend.h">
       <Filter>Game\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StateDerived.h">
+    <ClInclude Include="Source\FriendStateDerived.h">
       <Filter>Game\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\StateMachine.h">
@@ -541,6 +542,7 @@
     <ClInclude Include="Source\Stage.h">
       <Filter>Game\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Character.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
