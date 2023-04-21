@@ -1,5 +1,6 @@
 #pragma once
 #include "Argent/Argent.h"
+#include "BaseGun.h"
 
 class Player:
 	public Argent::Component::BaseActor
@@ -26,14 +27,12 @@ private:
 
 	DirectX::XMFLOAT2 mousePos;
 
+
 	void MoveCamera();
 
 	Argent::Component::Collision::RayCast* ray;
 protected:
-	DWORD start;
-	DWORD end;
-	double deltaTime;
-
 	bool useCameraControl = true;
+	float offsetLength;
 };
 

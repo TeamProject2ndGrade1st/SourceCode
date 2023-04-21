@@ -17,8 +17,6 @@ namespace Argent::Scene
 		,	isInitialized(false)
 		{
 			gameObject.clear();
-			AddObject(new GameObject("Camera", new Camera(true, Argent::Graphics::Graphics::Instance()->GetWidth(), Argent::Graphics::Graphics::Instance()->GetHeight())));
-			AddObject(new GameObject("Light", new Light));
 		}
 		virtual ~BaseScene() = default;
 		BaseScene(const BaseScene&) = delete;
@@ -26,7 +24,8 @@ namespace Argent::Scene
 		BaseScene& operator=(const BaseScene&) = delete;
 		BaseScene& operator=(const BaseScene&&) = delete;
 
-		
+
+		void ClearGameObject();
 		virtual void Initialize();
 		virtual void Finalize();
 		/**
@@ -45,14 +44,15 @@ namespace Argent::Scene
 
 
 		void DeleteDestroyedObject();
-		//void DestroyGameObject(GameObject* object);
+		//void Destroy(GameObject* object);
 
+		std::vector<GameObject*>::iterator begin() { return gameObject.begin(); }
+		std::vector<GameObject*>::iterator end() { return gameObject.end(); }
 
 		const std::string& GetName() const { return sceneName; }
 		void CloseAllDebugWindow() const;
 		void AddObject(GameObject* obj);
 		
-
 		std::string ObjectNameCheck(std::string name, int num = 0, bool isChecked = false)
 		{
 			for(const auto& object : gameObject)

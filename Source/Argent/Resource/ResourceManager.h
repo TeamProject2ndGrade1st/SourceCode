@@ -6,7 +6,8 @@
 #include "ArResource.h"
 #include "Texture.h"
 #include "Material.h"
-
+#include "Mesh.h"
+#include "SkinnedMesh.h"
 
 
 namespace Argent::Resource
@@ -65,9 +66,23 @@ namespace Argent::Resource
 			materials[m->GetUniqueId()] = m;
 		}
 
+		void RegisterMesh(std::shared_ptr<Mesh::Mesh> m)
+		{
+			resources.emplace_back(m);
+			meshes[m->GetUniqueId()] = m;
+		}
+
+		void RegisterSkinnedMesh(std::shared_ptr<Mesh::SkinnedMesh> m)
+		{
+			resources.emplace_back(m);
+			skinnedMeshes[m->GetUniqueId()] = m;
+		}
+
 		uint64_t LoadTexture(const char* filePath);
 
 		std::shared_ptr<Material::MeshMaterial> GetMaterial(const char* name);
+		std::shared_ptr<Mesh::Mesh> GetMesh(const char* name);
+		std::shared_ptr<Mesh::SkinnedMesh> GetSkinnedMesh(const char* name);
 
 	private:
 
@@ -77,6 +92,8 @@ namespace Argent::Resource
 		std::vector<std::shared_ptr<ArResource>> resources;	//ƒf[ƒ^•Û‚Ì‚½‚ß‚Á‚Û‚¢‚Å‚·
 		std::unordered_map<uint64_t, std::weak_ptr<Texture>> textures;
 		std::unordered_map<uint64_t, std::weak_ptr<Material::MeshMaterial>> materials;
+		std::unordered_map<uint64_t, std::weak_ptr<Mesh::Mesh>> meshes;
+		std::unordered_map<uint64_t, std::weak_ptr<Mesh::SkinnedMesh>> skinnedMeshes;
 
 
 	public:

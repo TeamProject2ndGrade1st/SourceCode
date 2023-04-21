@@ -5,8 +5,8 @@ class Game final:
     public Argent::Scene::BaseScene
 {
 public:
-    Game(const std::string& sceneName):
-        Argent::Scene::BaseScene(sceneName)
+    Game():
+        Argent::Scene::BaseScene("Game")
     {}
     ~Game() override = default;
 

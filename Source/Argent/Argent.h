@@ -35,6 +35,7 @@
 
 #include "Component/Collider.h"
 #include "Component/RayCast.h"
+#include "Component/ColliderManager.h"
 
 #include "Math/MathHelper.h"
 
@@ -43,13 +44,14 @@
 using KeyCode = Argent::Input::Keyboard::KeyCode;
 using HitResult = Argent::Component::Collision::HitResult;
 using MouseButton = Argent::Input::Mouse::Button;
+
 namespace Argent
 {
 	namespace Scene
 	{
 		inline BaseScene* GetCurrentScene()
 		{
-			return Scene::ArSceneManager::Instance()->GetCurrentScene();
+			return Scene::SceneManager::Instance()->GetCurrentScene();
 		}
 	}
 
@@ -108,6 +110,15 @@ namespace Argent
 		inline bool GetButtonUp(Mouse::Button button)
 		{
 			return Mouse::Instance().GetButtonUp(button);
+		}
+	}
+
+	namespace Collision
+	{
+		inline bool RayCollisionDetection(Component::Collision::RayCast* ray, HitResult& hitResult, 
+			GameObject::Tag tag = GameObject::Tag::MainCamera)
+		{
+			return Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult, static_cast<unsigned>(tag));
 		}
 	}
 

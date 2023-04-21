@@ -25,7 +25,7 @@ namespace Argent::Component::Renderer
 
 	public:
 		MeshRenderer(ID3D12Device* device, const char* fileName, 
-			std::shared_ptr<Resource::Mesh::ArMesh> meshes
+			std::shared_ptr<Resource::Mesh::Mesh> meshes
 			);
 		~MeshRenderer() override = default;
 
@@ -45,7 +45,7 @@ namespace Argent::Component::Renderer
 
 		void DrawDebug() override;
 
-		std::shared_ptr<Resource::Mesh::ArMesh> GetMesh() const { return mesh; }
+		std::shared_ptr<Resource::Mesh::Mesh> GetMesh() const { return mesh; }
 
 		void CreateComObject(ID3D12Device* device);
 
@@ -53,7 +53,7 @@ namespace Argent::Component::Renderer
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> constantBuffer{};
 
 	protected:
-		std::shared_ptr<Resource::Mesh::ArMesh> mesh{};
+		std::shared_ptr<Resource::Mesh::Mesh> mesh{};
 	public:
 	};
 }

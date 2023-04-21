@@ -36,16 +36,20 @@ namespace Argent::Window
 		Input::Mouse::Instance().SetIsWheelRotateOff();
 		Input::Mouse::Instance().SetRowWheelRotateValue(0);
 
+		if(Argent::Input::Keyboard::Instance().GetKeyUp(Input::Keyboard::F11))
+		{
+			PostQuitMessage(0);
+		}
 		switch (msg)
 		{
 		case WM_DESTROY:
+		case VK_F11:
 			PostQuitMessage(0);
 			break;
 
 		case WM_MOUSEWHEEL:
 			Input::Mouse::Instance().SetRowWheelRotateValue(GET_WHEEL_DELTA_WPARAM(wParam));
 			Input::Mouse::Instance().SetIsWheelRotateOn();
-
 			break;
 
 		default:

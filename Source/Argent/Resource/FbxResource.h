@@ -13,7 +13,7 @@ namespace Argent::Resource::FBX
 		{}
 
 
-		std::vector<std::shared_ptr<Mesh::ArSkinnedMesh>> meshes;
+		std::vector<std::shared_ptr<Mesh::SkinnedMesh>> meshes;
 		std::vector<Animation::AnimationClip> animationClips;
 	};
 }

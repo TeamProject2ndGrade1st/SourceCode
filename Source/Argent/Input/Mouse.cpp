@@ -1,5 +1,9 @@
 #include "Mouse.h"
 #include "../Graphic/Graphics.h"
+
+#include "Keyboard.h"
+
+
 namespace Argent::Input
 {
 	Mouse::Mouse()
@@ -11,13 +15,30 @@ namespace Argent::Input
 
 	void Mouse::Update()
 	{
+		if(Argent::Input::Keyboard::Instance().GetKeyUp(Keyboard::F1))
+		{
+			resetPositionToCenter = !resetPositionToCenter;
+		}
 		POINT p{};
 		GetCursorPos(&p);
-		ScreenToClient(Argent::Graphics::Graphics::Instance()->hWnd, &p);
-		postPosition = position;
+		//ScreenToClient(Argent::Graphics::Graphics::Instance()->hWnd, &p);
+		if(resetPositionToCenter)
+		{
+			postPosition =DirectX::XMFLOAT2(width / 2, height / 2);
+			ShowCursor(false);
+		}
+		else
+		{
+			ShowCursor(true);
+			postPosition = position;
+		}
 		position = DirectX::XMFLOAT2(static_cast<float>(p.x), static_cast<float>(p.y));
 		moveVec = DirectX::XMFLOAT2(position.x - postPosition.x, position.y - postPosition.y);
 
+		if(resetPositionToCenter)
+		{
+			SetCursorPos(width / 2, height / 2);
+		}
 
 		for (auto& m : mouseState)
 		{

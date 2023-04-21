@@ -21,10 +21,15 @@ void BaseFriend::Initialize()
 
     BaseActor::Initialize();
 
+
     GetOwner()->GetTransform()->SetScaleFactor(0.01f);
     acceleration = init_acceleration;
     maxMoveSpeed = init_maxMoveSpeed;
     friction = init_friction;
+
+    GetOwner()->SetTag(GameObject::Tag::Stage);
+    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
+
 
     stateMachine.reset(new StateMachine);
 

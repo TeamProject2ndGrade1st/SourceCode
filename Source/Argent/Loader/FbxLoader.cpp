@@ -48,6 +48,7 @@ namespace Argent::Loader::Fbx
 	void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<std::vector<ArBoneInfluence>>& boneInfluences);
 
 
+	//ÉçÅ[É_Å[
 	std::vector<Component::BaseComponent*> LoadFbx(const char* filePath, bool triangulate)
 	{
 		ArFbxScene sceneView{};
@@ -73,13 +74,6 @@ namespace Argent::Loader::Fbx
 					}
 				}
 			}
-			/*for(auto& m : fbxResource.materials)
-			{
-				for(int i = 0; i < Material::MeshMaterial::NumTextures; ++i)
-				{
-					m.second->CreateTexture(m.second->textureNames[i].c_str(),static_cast<Material::MeshMaterial::TextureType>(i));
-				}
-			}*/
 		}
 		else
 		{
@@ -129,15 +123,22 @@ namespace Argent::Loader::Fbx
 
 		if (!hasBone)
 		{
-			std::vector<std::shared_ptr<Resource::Mesh::ArMesh>> meshes;
+			std::vector<std::shared_ptr<Resource::Mesh::Mesh>> meshes;
 			meshes.resize(fbxResource.tmpMeshes.size());
 			for (size_t i = 0; i < meshes.size(); ++i)
 			{
-				meshes.at(i) = std::make_shared<Resource::Mesh::ArMesh>(
-					fbxResource.tmpMeshes.at(i).name.c_str(),
-					fbxResource.tmpMeshes.at(i).meshResource,
-					fbxResource.tmpMeshes.at(i).subsets,
-					fbxResource.tmpMeshes.at(i).defaultGlobalTransform);
+				meshes.at(i) = Resource::ResourceManager::Instance().GetMesh(fbxResource.tmpMeshes.at(i).name.c_str());
+
+				if(!meshes.at(i))
+				{
+					meshes.at(i) = std::make_shared<Resource::Mesh::Mesh>(
+						fbxResource.tmpMeshes.at(i).name.c_str(),
+						fbxResource.tmpMeshes.at(i).meshResource,
+						fbxResource.tmpMeshes.at(i).subsets,
+						fbxResource.tmpMeshes.at(i).defaultGlobalTransform);
+
+					Resource::ResourceManager::Instance().RegisterMesh(meshes.at(i));
+				}
 			}
 
 			ret.resize(meshes.size());
@@ -146,20 +147,22 @@ namespace Argent::Loader::Fbx
 				ret.at(i) = new Component::Renderer::MeshRenderer(device,
 					filePath, meshes.at(i));
 			}
-			/*ret = new Component::Renderer::MeshRenderer(device,
-				filePath, meshes, fbxResource.materials);*/
 		}
 		else
 		{
-			std::vector<std::shared_ptr<Resource::Mesh::ArSkinnedMesh>> skinnedMeshes;
+			std::vector<std::shared_ptr<Resource::Mesh::SkinnedMesh>> skinnedMeshes;
 			skinnedMeshes.resize(fbxResource.tmpMeshes.size());
 			for (size_t i = 0; i < skinnedMeshes.size(); ++i)
 			{
-				//std::vector<Argent::Resource::Mesh::Vertex> vertices = fbxResource.tmpMeshes.at(i).vertices;
-				skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::ArSkinnedMesh>(
-					fbxResource.tmpMeshes.at(i).name.c_str(), fbxResource.tmpMeshes.at(i).meshResource,
-					fbxResource.tmpMeshes.at(i).vertexBones,
-					fbxResource.tmpMeshes.at(i).subsets, fbxResource.tmpMeshes.at(i).bindPose);
+				skinnedMeshes.at(i) = Resource::ResourceManager::Instance().GetSkinnedMesh(fbxResource.tmpMeshes.at(i).name.c_str());
+				if(!skinnedMeshes.at(i))
+				{
+					skinnedMeshes.at(i) = std::make_shared<Resource::Mesh::SkinnedMesh>(
+						fbxResource.tmpMeshes.at(i).name.c_str(), fbxResource.tmpMeshes.at(i).meshResource,
+						fbxResource.tmpMeshes.at(i).vertexBones,
+						fbxResource.tmpMeshes.at(i).subsets, fbxResource.tmpMeshes.at(i).bindPose);
+					Resource::ResourceManager::Instance().RegisterSkinnedMesh(skinnedMeshes.at(i));
+				}
 			}
 
 			ret.resize(skinnedMeshes.size());
@@ -169,8 +172,6 @@ namespace Argent::Loader::Fbx
 					skinnedMeshes.at(i), fbxResource.animationClips);
 
 			}
-			//ret = new Component::Renderer::SkinnedMeshRenderer(device, filePath,
-			//	skinnedMeshes, fbxResource.materials, fbxResource.animationClips);
 		}
 
 		return ret;

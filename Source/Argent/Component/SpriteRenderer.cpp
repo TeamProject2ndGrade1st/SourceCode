@@ -15,7 +15,6 @@ namespace Argent::Component::Renderer
 		renderingPipeline = Argent::Graphics::RenderingPipeline::CreateDefaultSpritePipeline();
 	}
 
-
 	SpriteRenderer::~SpriteRenderer()
 	{
 

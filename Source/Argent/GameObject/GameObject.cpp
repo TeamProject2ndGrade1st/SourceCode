@@ -11,7 +11,6 @@ GameObject::GameObject(std::string name, Argent::Component::BaseComponent* c) :
 ,	isInitialized(false)
 ,	isActive(true)
 {
-	
 	transform = new Transform();
 	AddComponent(transform);
 	if (c)
@@ -197,42 +196,10 @@ void GameObject::DrawDebug()
 			if(!isInitialized)
 				Initialize();
 		}
+
 		for(size_t i = 0; i < components.size(); ++i)
 		{
-			
 			components.at(i)->DrawDebug();
-		}
-
-		//AddComponent
-		{
-		//static bool addComponent;
-		//if(ImGui::Button("Add CubeComponent", ImVec2(200, 30)))
-		//{
-		//	addComponent = true;
-		//	//AddComponent(new Cube);
-		//}
-
-		//if(addComponent)
-		//{
-		//	ImGui::SetNextWindowPos(ImVec2( ImGui::GetWindowPos().x,
-		//		ImGui::GetWindowPos().y + ImGui::GetWindowSize().y / 2.0f), ImGuiCond_::ImGuiCond_Once);
-		//	ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_::ImGuiCond_Once);
-		//	ImGui::Begin("Component");
-
-		//	if(ImGui::Button("Cube"))
-		//	{
-		//		AddComponent(new Cube);
-		//		addComponent = false;
-		//	}
-		//	if(ImGui::Button("Sphere"))
-		//	{
-		//		AddComponent(new Sphere);
-		//		addComponent = false;
-		//	}
-
-		//	ImGui::End();
-		//}
-
 		}
 		ImGui::End();
 	}
@@ -284,67 +251,36 @@ void GameObject::CloseAllWindow()
 	}
 }
 
-void GameObject::DestroyGameObject(GameObject* object)
+void GameObject::Destroy(GameObject* object)
 {
 	object->willDestroy = true;
-	//Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->DestroyGameObject(object);
+	//Argent::Scene::SceneManager::Instance()->GetCurrentScene()->Destroy(object);
 }
 
 GameObject* GameObject::Instantiate(const char* name, Argent::Component::BaseComponent* com)
 {
 	GameObject* ret = new GameObject(name, com);
 
-	Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->AddObject(ret);
+	Argent::Scene::SceneManager::Instance()->GetCurrentScene()->AddObject(ret);
 	return ret;
 }
 
-GameObject* GameObject::FindGameObject(const char* name)
+GameObject* GameObject::FindByName(const char* name)
 {
-	return Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->GetGameObject(name);
+	return Argent::Scene::SceneManager::Instance()->GetCurrentScene()->GetGameObject(name);
 }
 
-//if(isOpenNewDebugWindow)
+bool GameObject::FindByTag(Tag tag, std::vector<GameObject*>& objArray)
+{
+	const unsigned int t = static_cast<unsigned>(tag);
+	auto s = Argent::Scene::SceneManager::Instance()->GetCurrentScene();
+	for(auto it = s->begin(); it != s->end(); ++it)
+	{
+		if(static_cast<unsigned>((*it)->GetTag()) & t)
+		{
+			objArray.emplace_back((*it	));
+		}
+	}
 
-	//if (ImGui::BeginMenuBar()) {
- //       if (ImGui::BeginMenu("File"))
- //       {
- //           if (ImGui::MenuItem("Save")) {
-
- //           }
- //           if (ImGui::MenuItem("Load")) {
-
- //           }
-
- //           ImGui::EndMenu();
- //       }
- //       ImGui::EndMenuBar();
-	//}
-
-	//ImGui::BeginChild(ImGui::GetID(static_cast<void*>(0)), ImVec2(250, 100), ImGuiWindowFlags_NoTitleBar);
-	//ImGui::Text("Child");
- //   ImGui::EndChild();
-
-	//if(!isOpenNewDebugWindow)
-	//{
-	//	if(ImGui::TreeNode(name.c_str()))
-	//	{
-	//		for(const auto& com : components)
-	//		{
-	//			com->DrawDebug();
-	//		}
-
-	//		if(!childObjects.empty())
-	//		{
-	//			if(ImGui::TreeNode("ChildObject"))
-	//			{
-	//				for(const auto& obj : childObjects)
-	//				{
-	//					obj->DrawDebug();
-	//				}
-	//				ImGui::TreePop();
-	//			}
-	//		}
-	//		ImGui::TreePop();
-	//	}
-	//}
-
+	return objArray.size() == 0;
+}
