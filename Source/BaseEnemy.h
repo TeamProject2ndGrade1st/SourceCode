@@ -19,8 +19,3 @@ public:
 protected:
     
 };
-
-class IdleState :public FriendState
-{
-
-};

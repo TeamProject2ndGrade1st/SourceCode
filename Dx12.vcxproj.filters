@@ -316,11 +316,16 @@
     <ClCompile Include="Source\Argent\Graphic\RenderContext.cpp">
       <Filter>Lib\Work In Progress</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FriendStateDerived.cpp" />
     <ClCompile Include="Source\Game.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\BaseEnemy.cpp">
+      <Filter>Game\mame</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FriendStateDerived.cpp">
+      <Filter>Game\善晃</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyStateDerivad.cpp">
       <Filter>Game\mame</Filter>
     </ClCompile>
   </ItemGroup>
@@ -568,9 +573,14 @@
     <ClInclude Include="Source\Argent\Graphic\RenderContext.h">
       <Filter>Lib\Work In Progress</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FriendStateDerived.h" />
     <ClInclude Include="Source\BaseEnemy.h">
       <Filter>Game\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyStateDerivad.h">
+      <Filter>Game\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FriendStateDerived.h">
+      <Filter>Game\善晃</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
