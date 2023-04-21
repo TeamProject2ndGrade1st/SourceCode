@@ -19,6 +19,8 @@ protected:
     //ˆÚ“®ˆ—
     void UpdateMove();
 
+    void Turn(float vx, float vz,float rollSpeed);
+
 protected:
     DirectX::XMFLOAT3 velocity{};
     DirectX::XMFLOAT3 moveVec{};

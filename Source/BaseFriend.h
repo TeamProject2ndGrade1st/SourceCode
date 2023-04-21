@@ -36,21 +36,21 @@ public:
     //ターゲットに向かって移動
     void MoveToTarget();
 
-    void SetAnimation(int index)
-    {
-        GameObject* g = GetOwner();
-        auto com = g->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
-
-        com->SetAnimation(index);
-       
-    }
-    bool isAnimationEnd()
+    void SetAnimation(int index);
+    bool IsAnimationEnd()
     {
         return GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->IsAnimationEnd();
     }
 
+    //ターゲットが攻撃範囲内にいるか
+    bool IsTargetInAttackArea();
+
     void SetStateTimer(float timer) { stateTimer = timer; }
     float GetStateTimer() { return stateTimer; }
+    void SetAttackTimer(float timer) { attackTimer = timer; }
+    float GetAttackTimer() { return attackTimer; }
+
+    GameObject* GetTarget() { return target; }
     
     void SetTargetPosition(DirectX::XMFLOAT3 pos) { targetPosition = pos; }
     DirectX::XMFLOAT3 GetTargetPosition() { return targetPosition; }
@@ -71,10 +71,10 @@ public:
 protected:
     //目標座標
     DirectX::XMFLOAT3 targetPosition{};
+    GameObject* target{ nullptr };
 
     //攻撃始動範囲
     float attackAreaRadius{ 2.0f };
-    float attackInterval{ 3.0f };
   
     //初期値
     float init_acceleration{ 0.0f };
@@ -83,6 +83,9 @@ protected:
 
     float stateTimer{};
 
-    std::unique_ptr<StateMachine> stateMachine = nullptr;
+    //攻撃後のインターバル計測用
+    float attackTimer{};
+
+    std::unique_ptr<StateMachine> stateMachine{ nullptr };
 };
 

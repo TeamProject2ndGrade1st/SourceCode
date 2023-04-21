@@ -18,6 +18,8 @@ void BaseFriend::Initialize()
 {
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     
+    target = GetOwner()->FindByName("target");
+    target->GetTransform()->SetScaleFactor(0.01f);
 
     BaseActor::Initialize();
 
@@ -33,10 +35,10 @@ void BaseFriend::Initialize()
 
     stateMachine.reset(new StateMachine);
 
-    stateMachine.get()->RegisterState(new IdleState(this));
-    stateMachine.get()->RegisterState(new ActionState(this));
-    stateMachine.get()->RegisterState(new WalkState(this));
-    stateMachine.get()->RegisterState(new AttackState(this));
+    stateMachine.get()->RegisterState(new Friend::IdleState(this));
+    stateMachine.get()->RegisterState(new Friend::ActionState(this));
+    stateMachine.get()->RegisterState(new Friend::WalkState(this));
+    stateMachine.get()->RegisterState(new Friend::AttackState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
 }
@@ -48,17 +50,15 @@ void BaseFriend::Begin()
 
 void BaseFriend::Update()
 {
-    DirectX::XMVECTOR moveVec = {
-        sinf(DirectX::XMConvertToRadians(GetOwner()->GetTransform()->GetRotation().y)),
-        0.0f,
-        cosf(DirectX::XMConvertToRadians(GetOwner()->GetTransform()->GetRotation().y))
-    };
-    moveVec = DirectX::XMVector3Normalize(moveVec);
-    DirectX::XMStoreFloat3(&this->moveVec,moveVec);
+    if (attackTimer > 0)attackTimer -= Argent::Timer::GetDeltaTime();
+
     stateMachine.get()->Update();
 
     UpdateVelocity();
     UpdateMove();
+
+    //仮置きターゲットの座標更新
+    target->GetTransform()->SetPosition(targetPosition);
 }
 
 void BaseFriend::DrawDebug()
@@ -112,5 +112,25 @@ void BaseFriend::MoveToTarget()
 
     moveVec.x = vx;
     moveVec.z = vz;
+    Turn(vx, vz, 180.0f);
+}
+
+void BaseFriend::SetAnimation(int index)
+{
+    
+    GameObject* g = GetOwner();
+    auto com = g->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
+    
+    com->SetAnimation(index);
+}
+
+//ターゲットが攻撃範囲内にいるかどうか
+bool BaseFriend::IsTargetInAttackArea()
+{
+    float vx = targetPosition.x - GetOwner()->GetTransform()->GetPosition().x;
+    float vz = targetPosition.z - GetOwner()->GetTransform()->GetPosition().z;
+    float length = sqrtf(vx * vx + vz * vz);
+    if (length < attackAreaRadius)return true;
+    else return false;
 }
 

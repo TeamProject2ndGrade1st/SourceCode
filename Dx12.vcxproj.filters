@@ -278,9 +278,6 @@
     <ClCompile Include="Source\BaseFriend.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FriendStateDerived.cpp">
-      <Filter>Game\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Source\StateMachine.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
@@ -290,7 +287,6 @@
     <ClCompile Include="Source\Stage.cpp">
       <Filter>Game\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\Game.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
@@ -318,6 +314,12 @@
     </ClCompile>
     <ClCompile Include="Source\Argent\Graphic\RenderContext.cpp">
       <Filter>Lib\Work In Progress</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Character.cpp">
+      <Filter>Game\善晃</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FriendStateDerived.cpp">
+      <Filter>Game\善晃</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -529,16 +531,12 @@
     <ClInclude Include="Source\BaseFriend.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FriendStateDerived.h">
-      <Filter>Game\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\StateMachine.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
     <ClInclude Include="Source\Stage.h">
       <Filter>Game\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Character.h" />
     <ClInclude Include="Source\Game.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
@@ -566,6 +564,12 @@
     </ClInclude>
     <ClInclude Include="Source\Argent\Graphic\RenderContext.h">
       <Filter>Lib\Work In Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Character.h">
+      <Filter>Game\善晃</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FriendStateDerived.h">
+      <Filter>Game\善晃</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

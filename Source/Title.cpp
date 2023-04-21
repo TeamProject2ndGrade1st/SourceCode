@@ -22,6 +22,7 @@ void Title::Initialize()
 
 	//AddObject(new GameObject("nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
 	AddObject(new GameObject("friend", new BaseFriend()));
+	AddObject(new GameObject("target", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
 
 	
 	//AddObject(new GameObject("DemoGun", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx", false)));
@@ -41,7 +42,7 @@ void Title::Initialize()
 
 	// spikeBot
 	//AddObject(new GameObject("spikeBot", Argent::Loader::Fbx::LoadFbx("./Resources/Model/spike_bot_0419_1.fbx")));
-	AddObject(new GameObject("spikeBot", new SpikeBot()));
+	//AddObject(new GameObject("spikeBot", new SpikeBot()));
 	//AddObject(new GameObject("Demo", new RayCastDemo));
 
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/barike-do_0419_1.fbx")));
@@ -72,7 +73,7 @@ void Title::Initialize()
 	//AddObject(new GameObject("Stage", new Stage));
 
 
-	AddObject(new GameObject("Stage", new Stage));
+	//AddObject(new GameObject("Stage", new Stage));
 
 	BaseScene::Initialize();
 }
