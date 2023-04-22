@@ -54,14 +54,14 @@ void Player::Update()
         {
             auto t = camera->GetTransform();
             auto pos = t->GetPosition();
-            pos.y += movement;
+            pos.y += 0.1f;
             t->SetPosition(pos);
         }
         if (Argent::Input::GetKey(KeyCode::M))
         {
             auto t = camera->GetTransform();
             auto pos = t->GetPosition();
-            pos.y -= movement;
+            pos.y -= 0.1f;
             t->SetPosition(pos);
         }
 #endif

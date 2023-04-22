@@ -6,12 +6,14 @@
 
 void EnemyIdleState::Enter()
 {
+    // 待機アニメーションをセット
     owner->SetAnimation(static_cast<int>(EnemyAnimation::Idle));
     owner->SetStateTimer(5.0f);
 }
 
 void EnemyIdleState::Execute()
 {
+    // タイマーが０になったら攻撃に移る
     float timer = owner->GetStateTimer();
     owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
     if (timer < 0.0f)
@@ -66,11 +68,17 @@ bool EnemyIdleState::SearchPlayer()
 
 void EnemyAttackState::Enter()
 {
+    // 攻撃アニメーションをセット
     owner->SetAnimation(static_cast<int>(EnemyAnimation::Attack));
 }
 
 void EnemyAttackState::Execute()
 {
+    // 攻撃のアニメーションが終わったら待機に戻る
+    if (owner->isAnimationEnd())
+    {
+        owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyAnimation::Idle));
+    }
 }
 
 void EnemyAttackState::Exit()

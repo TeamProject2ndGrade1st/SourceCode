@@ -28,7 +28,8 @@ void BaseFriend::Initialize()
     friction = init_friction;
 
     GetOwner()->SetTag(GameObject::Tag::Stage);
-    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
+    //GetOwner()->GetTransform()->SetScaleFactor(0.01f);
+    GetOwner()->GetTransform()->SetScaleFactor(0.1f);
 
 
     stateMachine.reset(new StateMachine);
