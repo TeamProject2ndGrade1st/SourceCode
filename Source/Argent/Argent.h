@@ -47,6 +47,13 @@ using MouseButton = Argent::Input::Mouse::Button;
 
 namespace Argent
 {
+	namespace App
+	{
+		inline void Quit()
+		{
+			ArApp::Quit();
+		}
+	}
 	namespace Scene
 	{
 		inline BaseScene* GetCurrentScene()

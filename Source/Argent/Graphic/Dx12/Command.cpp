@@ -54,6 +54,7 @@ namespace Argent::Dx12
 
 	void CommandBundle::Reset() const
 	{
+		if (!isClosed) return;
 		cmdAlloc.Get()->Reset();
 		cmdList.Get()->Reset(cmdAlloc.Get(), nullptr);
 	}

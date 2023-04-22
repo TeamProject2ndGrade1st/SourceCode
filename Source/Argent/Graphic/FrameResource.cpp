@@ -122,7 +122,7 @@ namespace Argent::Graphics
 	{
 		for(auto& bundle : cmdBundle)
 		{
-			bundle.get()->cmdList->Close();
+			bundle.get()->Close();
 		}
 		this->Reset();
 	}

@@ -63,7 +63,16 @@ namespace Argent::Dx12
 			const D3D12_CPU_DESCRIPTOR_HANDLE& dsvHandle, const D3D12_CPU_DESCRIPTOR_HANDLE& rtvHandle,
 			float clearColor[4]) const;
 		void Reset() const;
+		void Close()
+		{
+			if(!isClosed)
+			{
+				cmdList->Close();
+				isClosed = true;
+			}
+		}
 
+		bool isClosed;
 		Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAlloc{};
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList{};
 		Microsoft::WRL::ComPtr<ID3D12CommandList> executeCmdLists{};

@@ -20,7 +20,7 @@ public:
 
     BaseFriend();
     BaseFriend(DirectX::XMFLOAT3 pos);
-    ~BaseFriend() {}
+    virtual ~BaseFriend() {}
 
     void Initialize()override;
     void Begin() override;

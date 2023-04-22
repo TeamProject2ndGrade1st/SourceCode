@@ -40,14 +40,12 @@ namespace Argent::Scene
 	private:
 		void ChangeScene();
 
-		
-		
+
 	private:
 		static SceneManager* instance;
 		static std::string nextScene;
 		BaseScene* currentScene;
+		BaseScene* postScene;
 		std::unordered_map<std::string, std::unique_ptr<BaseScene>> scenes{};
-		DWORD end;
-		DWORD start;
 	};
 }

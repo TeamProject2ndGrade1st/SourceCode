@@ -17,13 +17,6 @@
 #include "Dx12/Command.h"
 #include "Dx12/DescriptorHeap.h"
 
-
-struct FrameContext
-{
-	ID3D12CommandAllocator* CommandAllocator;
-    UINT64                  FenceValue;
-};
-
 namespace Argent::Graphics
 {
 	class Graphics
@@ -76,32 +69,11 @@ namespace Argent::Graphics
 
 		float* GetClearColor() { return clearColor; }
 
-		[[nodiscard]] Dx12::DescriptorHeap* GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE type) const
-		{
-			Dx12::DescriptorHeap* heapPointer = nullptr;
-			switch (type)
-			{
-			case D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV:
-				heapPointer = srvCbvHeap.get();
-				break;
-			case D3D12_DESCRIPTOR_HEAP_TYPE_RTV:
-				heapPointer = rtvHeap.get();
-				break;
-			case D3D12_DESCRIPTOR_HEAP_TYPE_DSV:
-				heapPointer = dsvHeap.get();
-				break;
-			case D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER:
-				heapPointer = nullptr;
-				break;
-			default:
-				heapPointer = nullptr;
-			}
-			return heapPointer;
-		}
+		[[nodiscard]] Dx12::DescriptorHeap* GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE type) const;
 
-		[[nodiscard]] Dx12::DescriptorHeap* GetImGuiHeap() const { return imGuiHeap.get(); }
-		[[nodiscard]] Dx12::CommandBundle* GetResourceCmdBundle() const { return resourceCmdBundle.get(); }
-		[[nodiscard]] Dx12::CommandQueue* GetResourceCmdQueue() const { return resourceQueue.get(); }
+		Dx12::DescriptorHeap* GetImGuiHeap() const { return imGuiHeap.get(); }
+		Dx12::CommandBundle* GetResourceCmdBundle() const { return resourceCmdBundle.get(); }
+		Dx12::CommandQueue* GetResourceCmdQueue() const { return resourceQueue.get(); }
 
 
 		const FrameResource* GetCurrentFrameResource() const { return curFrameResource;  }

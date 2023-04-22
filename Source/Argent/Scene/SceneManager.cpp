@@ -14,6 +14,7 @@ namespace Argent::Scene
 		
 	SceneManager::SceneManager():
 		currentScene(nullptr)
+	,	postScene(nullptr)
 	{
 		if (instance) _ASSERT_EXPR(FALSE, L"Already instantiated");
 		instance = this;
@@ -48,15 +49,27 @@ namespace Argent::Scene
 	void SceneManager::Begin()
 	{
 		ChangeScene();
+		if(postScene)
+		{
+			static int count = 0;
+			//todo 
+			if(count > 3)
+			{
+				//todo シーン遷移するときにGPUにリソースがある状態で消し飛ばすと不正アクセスエラーを吐くので
+				//もっといい方法を考える
+				postScene->Finalize();
+				postScene = nullptr;
+				count = 0;
+			}
+			++count;
+		}
+
 		if (currentScene)
 			currentScene->Begin();
 	}
 
 	void SceneManager::Update()
 	{
-		start = end;
-		end = GetTickCount();   
-		
 		if(currentScene)
 		{
 			currentScene->Update();
@@ -82,8 +95,6 @@ namespace Argent::Scene
 		if(currentScene)
 		{
 			currentScene->DrawDebug();
-			double elapsedTime = (double)(end - start) / 1000;
-			ImGui::InputDouble("Deltatime", &elapsedTime);
 		}
 	}
 
@@ -92,7 +103,10 @@ namespace Argent::Scene
 		if(!nextScene.empty())
 		{
 			if(currentScene)
-				currentScene->Finalize();
+			{
+				//currentScene->Finalize();
+				postScene = currentScene;
+			}
 		
 			currentScene = scenes[nextScene].get();
 			nextScene.clear();
