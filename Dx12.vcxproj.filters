@@ -328,6 +328,12 @@
     <ClCompile Include="Source\EnemyStateDerivad.cpp">
       <Filter>Game\mame</Filter>
     </ClCompile>
+    <ClCompile Include="Source\BaseEnemyState.cpp">
+      <Filter>Game\mame</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyStateMachine.cpp">
+      <Filter>Game\mame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -581,6 +587,12 @@
     </ClInclude>
     <ClInclude Include="Source\FriendStateDerived.h">
       <Filter>Game\善晃</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseEnemyState.h">
+      <Filter>Game\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyStateMachine.h">
+      <Filter>Game\mame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

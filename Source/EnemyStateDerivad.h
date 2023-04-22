@@ -1,21 +1,29 @@
 #pragma once
-#include "BaseState.h"
+#include "BaseEnemyState.h"
 
 
-class EnemyIdleState : public FriendState
+class EnemyIdleState : public EnemyState
 {
 public:
     // コンストラクタ
-    EnemyIdleState(BaseFriend* _friend) :FriendState(_friend, "idle") {}
+    EnemyIdleState(BaseEnemy* _friend) :EnemyState(_friend, "idle") {}
     // デストラクタ
     ~EnemyIdleState() {}
-
 
     void Enter()override;
     void Execute()override;
     void Exit()override;
 
-    bool SearchPlayer();
+    bool SearchPlayer();    
+};
 
-    
+class EnemyAttackState :public EnemyState
+{
+public:
+    EnemyAttackState(BaseEnemy* _friend) :EnemyState(_friend, "attack") {}
+    ~EnemyAttackState() {}
+
+    void Enter()override;
+    void Execute()override;
+    void Exit()override;
 };

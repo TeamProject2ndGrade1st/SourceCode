@@ -78,6 +78,7 @@
     <ClCompile Include="Source\Argent\Scene\BaseScene.cpp" />
     <ClCompile Include="Source\Argent\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\BaseEnemy.cpp" />
+    <ClCompile Include="Source\BaseEnemyState.cpp" />
     <ClCompile Include="Source\Bullet.cpp" />
     <ClCompile Include="Source\BaseBulletManager.cpp" />
     <ClCompile Include="Source\BaseFriend.cpp" />
@@ -85,6 +86,7 @@
     <ClCompile Include="Source\BaseState.cpp" />
     <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\EnemyStateDerivad.cpp" />
+    <ClCompile Include="Source\EnemyStateMachine.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Result.cpp" />
     <ClCompile Include="Source\Stage.cpp" />
@@ -166,6 +168,7 @@
     <ClInclude Include="Source\Argent\Scene\BaseScene.h" />
     <ClInclude Include="Source\Argent\Scene\SceneManager.h" />
     <ClInclude Include="Source\BaseEnemy.h" />
+    <ClInclude Include="Source\BaseEnemyState.h" />
     <ClInclude Include="Source\Bullet.h" />
     <ClInclude Include="Source\BaseBulletManager.h" />
     <ClInclude Include="Source\BaseFriend.h" />
@@ -174,6 +177,7 @@
     <ClInclude Include="Source\Character.h" />
     <ClInclude Include="Source\DemoShaderMacro.h" />
     <ClInclude Include="Source\EnemyStateDerivad.h" />
+    <ClInclude Include="Source\EnemyStateMachine.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Result.h" />
     <ClInclude Include="Source\Stage.h" />

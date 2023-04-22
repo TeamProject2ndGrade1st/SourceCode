@@ -1,16 +1,26 @@
 #include "EnemyStateDerivad.h"
 #include "Argent/Argent.h"
+#include "BaseEnemy.h"
 #include "BaseFriend.h"
 
 
 void EnemyIdleState::Enter()
 {
-
+    owner->SetAnimation(static_cast<int>(EnemyAnimation::Idle));
+    owner->SetStateTimer(5.0f);
 }
 
 void EnemyIdleState::Execute()
 {
-
+    float timer = owner->GetStateTimer();
+    owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
+    if (timer < 0.0f)
+    {
+        if (owner->isAnimationEnd())
+        {
+            owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyAnimation::Attack));
+        }
+    }
 }
 
 void EnemyIdleState::Exit()
@@ -52,4 +62,17 @@ bool EnemyIdleState::SearchPlayer()
     //	}
     //}
     return false;
+}
+
+void EnemyAttackState::Enter()
+{
+    owner->SetAnimation(static_cast<int>(EnemyAnimation::Attack));
+}
+
+void EnemyAttackState::Execute()
+{
+}
+
+void EnemyAttackState::Exit()
+{
 }
