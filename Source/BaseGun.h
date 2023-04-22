@@ -1,5 +1,6 @@
 #pragma once
 #include "Argent/Argent.h"
+#include "Bullet.h"
 
 class BaseGun:
 	public Argent::Component::BaseComponent
@@ -11,15 +12,14 @@ public:
 	
 	void Update() final;
 
-	template <class T>
-	void Shot(DirectX::XMFLOAT3& start, DirectX::XMFLOAT3& direction);
+
+	void DrawDebug() override;
 
 	float fireRate;
-};
+	int damage;
+	float speed;
 
-template <class T>
-void BaseGun::Shot(DirectX::XMFLOAT3& start, DirectX::XMFLOAT3& direction)
-{
-	T* bulletActor = new T(direction, 0, 0.1f);
-	GameObject::Instantiate("bullet", bulletActor);
-}
+#ifdef _DEBUG
+	bool enableShot = false;
+#endif
+};

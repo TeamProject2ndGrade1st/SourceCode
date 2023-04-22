@@ -23,6 +23,8 @@ void Player::Initialize()
         c->SetMaxRotation(DirectX::XMFLOAT4(100, 0, 0, 0));
 	    	c->SetMinRotation(DirectX::XMFLOAT4(-100, 0, 0, 0));
     }
+
+    GetOwner()->AddComponent(new BaseGun("BaseGun"));
 }
 
 void Player::Update()

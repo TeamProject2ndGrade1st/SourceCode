@@ -108,6 +108,7 @@ public:
 	static GameObject* FindByName(const char* name);
 	/**
 	 * \brief 特定のタグを持ったゲームオブジェクトの配列を返す
+	 *ビット演算で見つけるため2つ以上のタグを組み合わせることも可能なはず…
 	 * \param tag 
 	 * \param objArray [out] 発見したゲームオブジェクトを入れる配列
 	 * \return 発見したかどうか

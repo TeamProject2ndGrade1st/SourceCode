@@ -123,7 +123,7 @@ namespace Argent
 	namespace Collision
 	{
 		inline bool RayCollisionDetection(Component::Collision::RayCast* ray, HitResult& hitResult, 
-			GameObject::Tag tag = GameObject::Tag::MainCamera)
+			GameObject::Tag tag = COLLISION_ALL_OBJECT)
 		{
 			return Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult, static_cast<unsigned>(tag));
 		}

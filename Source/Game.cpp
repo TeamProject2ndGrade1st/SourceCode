@@ -65,6 +65,7 @@ void Game::Initialize()
 	//AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
 
 	AddObject(new GameObject("Stage", new Stage));
+
 	BaseScene::Initialize();
 }
 

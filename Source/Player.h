@@ -9,8 +9,8 @@ public:
 	Player();
 	virtual ~Player() override = default;
 
-	void Update() override;
 	void Initialize() override;
+	void Update() override;
 
 
 	void DrawDebug() override;

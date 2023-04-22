@@ -106,8 +106,6 @@ namespace Argent::Component
 
 		void RayCastCollider::Initialize()
 		{
-			auto t = GetOwner()->GetTransform();
-			t->SetPosition(DirectX::XMFLOAT3(0, 1, 3));
 		}
 
 		DirectX::XMMATRIX RayCastCollider::GetWorldTransform()
@@ -148,8 +146,6 @@ namespace Argent::Component
 		{
 			bool ret = false;
 		//	DirectX::XMFLOAT3 end = start + direction * length;
-			auto g = GetOwner();
-			auto og = other->GetOwner();
 			if(other->type != Collider::RayCastCollider::MeshType::Mesh)
 			{
 				if(Helper::Collision::IntersectRayVsModel(start, end, other->GetMeshResource(), 

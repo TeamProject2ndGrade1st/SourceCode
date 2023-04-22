@@ -1,24 +1,27 @@
 #include "Bullet.h"
 
 Bullet::Bullet(const DirectX::XMFLOAT3& direction, 
-	float damage, float speed):
+	int damage, float speed):
 	BaseActor("bullet")
 ,	damage(damage)
 ,	speed(speed)
 ,	direction(direction)
 {
+	ray = new Argent::Component::Collision::RayCast();
 }
 
 void Bullet::Initialize()
 {
-	
+	auto* rC = new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Sphere);
+	rC->scale = DirectX::XMFLOAT3(0.05f, 0.05f, 0.05f);
+	GetOwner()->AddComponent(rC);
 }
 
 void Bullet::Update()
 {
 	Transform* t = GetTransform();
 	DirectX::XMFLOAT3 pos = t->GetPosition();
-	pos = direction * speed;
+	pos = direction * speed * Argent::Timer::GetDeltaTime();
 	t->AddPosition(pos);
 
 	ray->SetRayData(pos, direction, speed);
@@ -29,21 +32,34 @@ void Bullet::Update()
 	{
 		GameObject::Destroy(GetOwner());
 	}
+
+	elapsedTime += Argent::Timer::GetDeltaTime();
+	if(elapsedTime > validTime)
+	{
+		GameObject::Destroy(GetOwner());
+	}
 }
 
-void Bullet::Shot(Bullet* bulletActor, const Transform& t)
+void Bullet::Shot(const DirectX::XMFLOAT3& position,
+	const DirectX::XMFLOAT3& direction, int damage, float speed)
 {
-	const auto g = GameObject::Instantiate("bullet", bulletActor);
-	g->GetTransform()->SetTransform(t);
+	auto* b = new Bullet(direction, damage, speed);
+	const auto g = GameObject::Instantiate("Bullet", b);
+	g->GetTransform()->SetPosition(position);
 }
 
 void Bullet::DrawDebug()
 {
 	if(ImGui::TreeNode(GetName().c_str()))
 	{
-		ImGui::SliderFloat("Damage", &damage, 0, 10.0f);
+		ImGui::SliderInt("Damage", &damage, 0, 10.0f);
 		ImGui::SliderFloat("Speed", &speed, 0, 100.0f);
 		ImGui::InputFloat3("Direction", &direction.x);
+		ImGui::SliderFloat("ElapsedTime", &elapsedTime, 0.0f, validTime);
+		if(ray)
+		{
+			ray->DrawDebug();
+		}
 		BaseActor::DrawDebug();
 		ImGui::TreePop();
 	}

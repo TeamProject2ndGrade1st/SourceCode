@@ -272,13 +272,13 @@ GameObject* GameObject::FindByName(const char* name)
 
 bool GameObject::FindByTag(Tag tag, std::vector<GameObject*>& objArray)
 {
-	const unsigned int t = static_cast<unsigned>(tag);
-	auto s = Argent::Scene::SceneManager::Instance()->GetCurrentScene();
+	const auto t = static_cast<unsigned>(tag);
+	const auto s = Argent::Scene::SceneManager::Instance()->GetCurrentScene();
 	for(auto it = s->begin(); it != s->end(); ++it)
 	{
 		if(static_cast<unsigned>((*it)->GetTag()) & t)
 		{
-			objArray.emplace_back((*it	));
+			objArray.emplace_back((*it));
 		}
 	}
 
