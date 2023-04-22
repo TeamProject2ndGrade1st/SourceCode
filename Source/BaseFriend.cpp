@@ -2,14 +2,16 @@
 #include "Argent/Argent.h"
 #include "FriendStateDerived.h"
 
-BaseFriend::BaseFriend(const char* name):
-    Character(name)
+BaseFriend::BaseFriend(const char* name, DirectX::XMFLOAT3 pos) :
+    Character(name,pos)
 {
     
 }
 
 void BaseFriend::Initialize()
 {
+    Character::Initialize();
+
    /* GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     
     target = GetOwner()->FindByName("target");
@@ -50,9 +52,6 @@ void BaseFriend::Update()
 
     UpdateVelocity();
     UpdateMove();
-
-    //仮置きターゲットの座標更新
-    target->GetTransform()->SetPosition(targetPosition);
 }
 
 void BaseFriend::DrawDebug()

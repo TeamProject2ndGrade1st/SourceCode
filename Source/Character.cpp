@@ -1,5 +1,11 @@
 #include "Character.h"
 
+void Character::Initialize()
+{
+    BaseActor::Initialize();
+    GetOwner()->GetTransform()->SetPosition(init_position);
+}
+
 void Character::UpdateVelocity()
 {
     if (moveVec.x == 0.0f && moveVec.z == 0.0f)

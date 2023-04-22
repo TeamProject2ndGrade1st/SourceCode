@@ -4,9 +4,12 @@ class Character :
     public Argent::Component::BaseActor
 {
 public:
-    Character(const char* name):BaseActor(name) {}
+    Character(const char* name, DirectX::XMFLOAT3 pos = { 0.0f,0.0f,0.0f }) 
+        :BaseActor(name) ,init_position(pos) {}
     virtual ~Character() {}
 
+    void Initialize()override;
+    
     void SetVelocity(DirectX::XMFLOAT3 velo) { velocity = velo; }
     void SetAccelaration(float accel) { acceleration = accel; }
     void SetMaxSpeed(float speed) { maxMoveSpeed = speed; }
@@ -28,5 +31,9 @@ protected:
     float acceleration{ 3.0f };
     float maxMoveSpeed{ 5.0f };
     float friction{ 2.0f };
+
+private:
+    //èâä˙ç¿ïW
+    DirectX::XMFLOAT3 init_position{};
 };
 

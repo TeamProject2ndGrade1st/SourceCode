@@ -15,7 +15,7 @@ class FriendCreature :
     public BaseFriend
 {
 public:
-    FriendCreature();
+    FriendCreature(DirectX::XMFLOAT3 pos = {0.0f,0.0f,0.0f});
     ~FriendCreature() {}
     
     void Initialize() override;

@@ -1,12 +1,14 @@
 #include "FriendCreature.h"
 #include "FriendStateDerived.h"
 
-FriendCreature::FriendCreature() : BaseFriend("Creature")
+FriendCreature::FriendCreature(DirectX::XMFLOAT3 pos) : BaseFriend("Creature",pos)
 {
 }
 
 void FriendCreature::Initialize()
 {
+    BaseFriend::Initialize();
+
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
 
     //攻撃範囲の視覚化
@@ -21,7 +23,6 @@ void FriendCreature::Initialize()
     target = GetOwner()->FindByName("target");
     target->GetTransform()->SetScaleFactor(0.01f);
 
-    BaseActor::Initialize();
 
 
     GetOwner()->GetTransform()->SetScaleFactor(0.01f);
@@ -46,6 +47,9 @@ void FriendCreature::Initialize()
 void FriendCreature::Update()
 {
     BaseFriend::Update();
+
+    //仮置きターゲットの座標更新
+    target->GetTransform()->SetPosition(targetPosition);
 }
 
 void FriendCreature::DrawDebug()

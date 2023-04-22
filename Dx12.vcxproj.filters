@@ -324,6 +324,7 @@
     <ClCompile Include="Source\FriendCreature.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FriendManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -577,6 +578,7 @@
     <ClInclude Include="Source\FriendCreature.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
+    <ClInclude Include="Source\FriendManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

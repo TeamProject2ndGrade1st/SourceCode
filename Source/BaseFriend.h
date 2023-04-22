@@ -1,14 +1,13 @@
 #pragma once
 #include <DirectXMath.h>
-#include "Argent/Argent.h"
-#include "Argent/Argent.h"
 #include "Character.h"
 #include "StateMachine.h"
+#include "FriendManager.h"
 
 class BaseFriend : public Character
 {
 public:
-    BaseFriend(const char* name);
+    BaseFriend(const char* name, DirectX::XMFLOAT3 pos);
     virtual ~BaseFriend() {}
 
     virtual void Initialize()override;
@@ -35,26 +34,27 @@ public:
     bool IsTargetInAttackArea();
 
     void SetStateTimer(float timer) { stateTimer = timer; }
-    float GetStateTimer() { return stateTimer; }
+    float GetStateTimer() const { return stateTimer; }
     void SetAttackTimer(float timer) { attackTimer = timer; }
-    float GetAttackTimer() { return attackTimer; }
+    float GetAttackTimer() const { return attackTimer; }
 
-    float Init_GetAccelaration() { return init_acceleration; }
+    //初期値ゲッター、セッター
+    float Init_GetAccelaration() const { return init_acceleration; }
     void Init_SetAccelaration(float accel) { init_acceleration = accel; }
-    float Init_GetMaxMoveSpeed() { return init_maxMoveSpeed; }
+    float Init_GetMaxMoveSpeed() const { return init_maxMoveSpeed; }
     void Init_SetMaxMoveSpeed(float speed) { init_maxMoveSpeed = speed; }
-    float Init_GetFriction() { return init_friction; }
-    void Init_SetFriction(float fric) { init_friction = fric; }
+    float Init_GetFriction() const { return init_friction; }
+    void Init_SetFriction(float friction) { init_friction = friction; }
 
     
     void SetTargetPosition(DirectX::XMFLOAT3 pos) { targetPosition = pos; }
-    DirectX::XMFLOAT3 GetTargetPosition() { return targetPosition; }
-    float GetAttackAreaRadius() { return attackAreaRadius; }
+    DirectX::XMFLOAT3 GetTargetPosition() const { return targetPosition; }
+    float GetAttackAreaRadius() const { return attackAreaRadius; }
 
-    StateMachine* GetStateMachine() { return stateMachine.get(); }
-    GameObject* GetTarget() { return target; }
+    StateMachine* GetStateMachine() const { return stateMachine.get(); }
+    GameObject* GetTarget() const { return target; }
 
-    
+    void SetTag(FriendManager::Tag tag) { this->tag = tag; }
 
 protected:
     //目標座標
@@ -75,5 +75,8 @@ protected:
     float attackTimer{};
 
     std::unique_ptr<StateMachine> stateMachine{ nullptr };
+
+    //タグ
+    FriendManager::Tag tag{};
 };
 
