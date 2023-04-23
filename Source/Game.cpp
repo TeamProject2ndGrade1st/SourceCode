@@ -21,6 +21,7 @@ void Game::Initialize()
 	ClearGameObject();
 	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
 
+	GameObject::Instantiate("Reticle", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/ReticleRed.png"));
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 	// player ‚Â‚¢‚©
 	AddObject(new GameObject("player", new Player));

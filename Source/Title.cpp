@@ -24,8 +24,6 @@ void Title::Finalize()
 	BaseScene::Finalize();
 }
 
-
-
 void Title::Update()
 {
 	BaseScene::Update();

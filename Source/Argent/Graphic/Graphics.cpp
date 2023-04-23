@@ -112,8 +112,6 @@ namespace Argent::Graphics
 		}
 
 		device->SetName(L"Device");
-		resourceCmdBundle->Begin();
-		resourceCmdBundle.get()->Reset();
 	}
 
 	void Graphics::Initialize()

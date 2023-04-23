@@ -17,6 +17,7 @@ namespace Argent::Scene
 		,	isInitialized(false)
 		{
 			gameObject.clear();
+			gameObject.resize(100);
 		}
 		virtual ~BaseScene() = default;
 		BaseScene(const BaseScene&) = delete;
@@ -57,6 +58,7 @@ namespace Argent::Scene
 		{
 			for(const auto& object : gameObject)
 			{
+				if (!object) continue;
 				if(object->GetName() == name)
 				{
 					if(isChecked)
@@ -85,6 +87,7 @@ namespace Argent::Scene
 			return nullptr;
 		}
 
+		UINT FindNullObjectIndex() const;
 	protected:
 		const std::string sceneName;
 		std::vector<GameObject*> gameObject{};

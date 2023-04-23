@@ -15,6 +15,7 @@ void Player::Initialize()
 	auto g = GetOwner();
 	g->AddComponent(ray);
 
+    
 
     camera = GameObject::FindByName("Camera"); // ‚±‚Á‚¿‚Å
     movement = 10.5f;
