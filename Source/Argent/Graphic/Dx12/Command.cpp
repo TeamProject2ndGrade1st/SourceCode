@@ -36,7 +36,7 @@ namespace Argent::Dx12
 		cmdAlloc->SetName(L"CmdAlloc");
 		executeCmdLists->SetName(L"ExeCmdLists");
 
-		cmdList->Close();
+		Close();
 	}
 
 
