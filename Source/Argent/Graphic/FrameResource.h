@@ -48,7 +48,7 @@ namespace Argent::Graphics
 		DirectX::XMFLOAT4X4 GetSceneView() const { return cbScene->view;  }
 		DirectX::XMFLOAT4X4 GetSceneProjection() const { return cbScene->projection;  }
 
-		void Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect, float clearColor[4]) const;
+		void Begin() const;
 		void End() const;
 		void SetRenderTarget(const D3D12_VIEWPORT& viewport, const D3D12_RECT& rect, float clearColor[4]);
 		void UpdateSceneConstant(const SceneConstant& sceneConstant) const;

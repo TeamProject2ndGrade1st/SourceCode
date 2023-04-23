@@ -1,15 +1,13 @@
 #include "Title.h"
 
 #include "Argent/Argent.h"
-<<<<<<< HEAD
+
 #include "BaseFriend.h"
 #include "BaseEnemy.h"
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
 #include "Demo.h"
-=======
->>>>>>> origin/TanaDsk_merge
-
+#include "Stage.h"
 
 
 
@@ -17,13 +15,12 @@ void Title::Initialize()
 {
 	ClearGameObject();
 
-<<<<<<< HEAD
 	//AddObject(new GameObject("plane", Argent::Loader::Fbx::LoadFbx("./Resources/Model/plane.fbx", true)));
 	
 	//AddObject(new GameObject("enemy_ver03", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver3.fbx", false)));
 
 	//AddObject(new GameObject("nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
-	AddObject(new GameObject("friend", new BaseFriend()));
+	//AddObject(new GameObject("friend", new BaseFriend()));
 
 	
 	//AddObject(new GameObject("DemoGun", Argent::Loader::Fbx::LoadFbx("./Resources/Model/StageBlender.fbx", false)));
@@ -72,13 +69,13 @@ void Title::Initialize()
 	//AddObject(new GameObject("Debug", new Argent::Component::Collider::RayCastCollider()));
 
 
+	AddObject(new GameObject("Stage", new Stage));
+
+
 	//AddObject(new GameObject("Stage", new Stage));
 
-
-	AddObject(new GameObject("Stage", new Stage));
-=======
 	AddObject(new GameObject("TitleSprite", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Title.png")));
->>>>>>> origin/TanaDsk_merge
+
 
 	BaseScene::Initialize();
 }

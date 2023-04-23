@@ -138,11 +138,11 @@ namespace Argent::Graphics
 	}
 
 
-	void FrameResource::Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect, float clearColor[4]) const
+	void FrameResource::Begin() const
 	{
 		for(auto& bundle : cmdBundle)
 		{
-			bundle->Begin(viewport, scissorRect, dsv->GetCPUHandle(), rtv->GetCPUHandle(), clearColor);
+			bundle->Begin();
 		}
 	}
 

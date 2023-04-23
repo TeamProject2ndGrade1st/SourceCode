@@ -1,9 +1,7 @@
 #pragma once
 #include <DirectXMath.h>
-<<<<<<< HEAD
+
 #include "Argent/Argent.h"
-=======
->>>>>>> origin/TanaDsk_merge
 #include "Character.h"
 #include "StateMachine.h"
 #include "FriendManager.h"

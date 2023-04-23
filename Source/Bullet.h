@@ -21,7 +21,7 @@ public:
 
 	void Initialize() override;
 	void Update() override;
-
+	void DrawDebug() override;
 
 	/**
 	 * \brief 弾丸発射用の関数
@@ -33,8 +33,12 @@ public:
 	static void Shot(const DirectX::XMFLOAT3& position,
 	                 const DirectX::XMFLOAT3& direction, int damage, float speed);
 
-	void DrawDebug() override;
-
+	/**
+	 * \brief 存在時間の管理　超えた場合はこのクラスを所有するゲームオブジェクトを破壊する
+	 */
+	void ManageDuration();
+	void Move();
+	void OnCollision();
 protected:
 	int damage;
 	float speed;

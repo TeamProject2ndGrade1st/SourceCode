@@ -101,7 +101,7 @@
       <UniqueIdentifier>{3988f51d-b8fb-42fb-8614-b3d1763570a4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\mame">
-      <UniqueIdentifier>{2b87db98-51b1-44af-b5ab-7c02606c8265}</UniqueIdentifier>
+      <UniqueIdentifier>{461c5171-5e51-4739-a613-1f70f2300a77}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -290,13 +290,9 @@
     <ClCompile Include="Source\Stage.cpp">
       <Filter>Game\Stage</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="Source\Character.cpp" />
-=======
     <ClCompile Include="Source\Game.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
->>>>>>> origin/TanaDsk_merge
     <ClCompile Include="Source\Result.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
@@ -322,39 +318,30 @@
     <ClCompile Include="Source\Argent\Graphic\RenderContext.cpp">
       <Filter>Lib\Work In Progress</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="Source\Game.cpp">
-      <Filter>Game\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\BaseEnemy.cpp">
-      <Filter>Game\mame</Filter>
-=======
     <ClCompile Include="Source\Character.cpp">
       <Filter>Game\善晃</Filter>
->>>>>>> origin/TanaDsk_merge
     </ClCompile>
     <ClCompile Include="Source\FriendStateDerived.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
-<<<<<<< HEAD
+    <ClCompile Include="Source\FriendCreature.cpp">
+      <Filter>Game\善晃</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FriendManager.cpp" />
+    <ClCompile Include="Source\EnemyStateMachine.cpp">
+      <Filter>Game\mame</Filter>
+    </ClCompile>
     <ClCompile Include="Source\EnemyStateDerivad.cpp">
       <Filter>Game\mame</Filter>
     </ClCompile>
     <ClCompile Include="Source\BaseEnemyState.cpp">
       <Filter>Game\mame</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EnemyStateMachine.cpp">
+    <ClCompile Include="Source\BaseEnemy.cpp">
       <Filter>Game\mame</Filter>
-=======
-    <ClCompile Include="Source\FriendCreature.cpp">
-      <Filter>Game\善晃</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\FriendManager.cpp">
-      <Filter>Game\善晃</Filter>
     </ClCompile>
     <ClCompile Include="Source\FriendDrone.cpp">
       <Filter>Game\善晃</Filter>
->>>>>>> origin/TanaDsk_merge
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -600,36 +587,30 @@
     <ClInclude Include="Source\Argent\Graphic\RenderContext.h">
       <Filter>Lib\Work In Progress</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="Source\BaseEnemy.h">
-      <Filter>Game\mame</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EnemyStateDerivad.h">
-      <Filter>Game\mame</Filter>
-=======
     <ClInclude Include="Source\Character.h">
       <Filter>Game\善晃</Filter>
->>>>>>> origin/TanaDsk_merge
     </ClInclude>
     <ClInclude Include="Source\FriendStateDerived.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="Source\BaseEnemyState.h">
-      <Filter>Game\mame</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EnemyStateMachine.h">
-      <Filter>Game\mame</Filter>
-=======
     <ClInclude Include="Source\FriendCreature.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FriendManager.h">
-      <Filter>Game\善晃</Filter>
+    <ClInclude Include="Source\FriendManager.h" />
+    <ClInclude Include="Source\EnemyStateMachine.h">
+      <Filter>Game\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyStateDerivad.h">
+      <Filter>Game\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseEnemyState.h">
+      <Filter>Game\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseEnemy.h">
+      <Filter>Game\mame</Filter>
     </ClInclude>
     <ClInclude Include="Source\FriendDrone.h">
       <Filter>Game\善晃</Filter>
->>>>>>> origin/TanaDsk_merge
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
