@@ -3,20 +3,27 @@
 
 class BaseFriend;
 
-class FriendManager : public Argent::Component::BaseComponent
+class FriendManager : public Argent::Component::BaseActor
 {
 public:
     //味方のタイプに合わせてタグ付けする
     enum class Tag : unsigned int
     {
-        UnTagged    = 0x00,
-        Creature    = 0x01 << 0,
-        Drone       = 0x01 << 1
+        UnTagged    = 0x01,
+        Creature    = 0x01 << 1,
+        Drone       = 0x01 << 2
+    };
+
+    enum class Type
+    {
+        Creature,
+        Drone,
+        End,
     };
 
 
     FriendManager(Argent::Scene::BaseScene* currentScene) : 
-        BaseComponent("FriendManager"), scene(currentScene){}
+        BaseActor("FriendManager"), scene(currentScene){}
     ~FriendManager() {}
 
     void Initialize()override;
@@ -24,10 +31,10 @@ public:
     void DrawDebug()override;
 
     void AddFriend(BaseFriend* _friend);
-    std::unique_ptr<BaseFriend> FindByTag(Tag tag,std::vector<std::unique_ptr<BaseFriend>>& array);
+    BaseFriend* FindByTag(Tag tag, std::vector<BaseFriend*>& array);
 
 private:
-    std::vector<std::unique_ptr<BaseFriend>> friendArray;
+    std::vector<BaseFriend*> friendArray;
     Argent::Scene::BaseScene* scene;
 };
 

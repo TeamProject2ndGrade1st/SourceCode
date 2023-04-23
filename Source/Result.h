@@ -10,6 +10,7 @@ public:
 		BaseScene("Result")
 	{};
 
+	void Initialize() override;
 	void Update() override;
 	~Result() override = default;
 

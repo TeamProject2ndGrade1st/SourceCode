@@ -9,8 +9,8 @@ public:
 	Player();
 	virtual ~Player() override = default;
 
-	void Update() override;
 	void Initialize() override;
+	void Update() override;
 
 
 	void DrawDebug() override;
@@ -36,3 +36,9 @@ protected:
 	float offsetLength;
 };
 
+class Tmp : public Argent::Component::BaseActor
+{
+	void Initialize() override;
+	void Finalize() override;
+	void Update() override;
+};

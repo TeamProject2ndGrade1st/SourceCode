@@ -148,7 +148,7 @@ namespace Argent::Scene
 	{
 		if (ImGui::Button(obj->GetName().c_str()))
 		{
-			CloseAllDebugWindow();
+			//CloseAllDebugWindow();
 			obj->SetIsSelected(true);
 		}
 

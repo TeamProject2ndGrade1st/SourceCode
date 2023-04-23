@@ -6,7 +6,7 @@
 
 
 //レイキャストの衝突判定をすべてのオブジェクトと行う
-#define COLLISION_ALL_OBJECT (GameObject::Tag)(0x00)
+#define COLLISION_ALL_OBJECT (GameObject::Tag)(0x01)
 
 namespace Argent::Collider
 {

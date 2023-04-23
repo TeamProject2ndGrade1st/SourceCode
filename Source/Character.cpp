@@ -6,6 +6,7 @@ void Character::Initialize()
     GetOwner()->GetTransform()->SetPosition(init_position);
 }
 
+
 void Character::UpdateVelocity()
 {
     if (moveVec.x == 0.0f && moveVec.z == 0.0f)
@@ -88,4 +89,50 @@ void Character::Turn(float vx, float vz,float rollSpeed)
     rotation.y += (cross < 0.0f) ? -rollSpeed : rollSpeed;
     GetOwner()->GetTransform()->SetRotation(rotation);
     
+}
+
+void Character::AddImpulse(const DirectX::XMFLOAT3& impulse)
+{
+    //ëÃèdÇ…ÇÊÇÈíÔçRíl
+    float registance = 1.0f - weight * 0.01f;
+    DirectX::XMVECTOR Impulse = {
+        impulse.x * registance,
+        impulse.y * registance,
+        impulse.z * registance
+    };
+
+    //ë¨óÕÇ…óÕÇâ¡Ç¶ÇÈ
+    DirectX::XMVECTOR Velocity = DirectX::XMLoadFloat3(&velocity);
+    Velocity = DirectX::XMVectorAdd(Velocity, Impulse);
+    DirectX::XMStoreFloat3(&velocity, Velocity);
+}
+
+bool Character::ApplyDamage(float damage)
+{
+    if (damage <= 0)return false;
+    if (health <= 0)return false;
+    
+    health -= damage;
+    if (health <= 0)
+    {
+        OnDead();
+    }
+    else
+    {
+        OnDamaged();
+    }
+
+    return true;
+}
+
+bool Character::ApplyHeal(float heal)
+{
+    if (heal <= 0)return false;
+    if (health >= maxHealth)return false;
+
+    health += heal;
+
+    OnHeal();
+    
+    return true;
 }

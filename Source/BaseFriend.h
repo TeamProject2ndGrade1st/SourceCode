@@ -10,10 +10,13 @@ public:
     BaseFriend(const char* name, DirectX::XMFLOAT3 pos);
     virtual ~BaseFriend() {}
 
+    //BaseFriend(DirectX::XMFLOAT3 pos);
+
+
     virtual void Initialize()override;
     virtual void Begin() override;
     virtual void Update()override;
-    virtual void DrawDebug()override;
+    void DrawDebug() override;
 
     ////‘¬—Íˆ—(…•½‚Ì‚İ)
     //void UpdateVelocity();

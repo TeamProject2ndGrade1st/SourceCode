@@ -1,6 +1,7 @@
 #include "FriendStateDerived.h"
 #include "Argent/Argent.h"
 #include "FriendCreature.h"
+#include "FriendDrone.h"
 
 namespace Friend::Creature 
 {
@@ -181,5 +182,95 @@ namespace Friend::Creature
 
 
 
+}
+
+namespace Friend::Drone
+{
+	void IdleState::Enter()
+	{
+		
+	}
+
+	void IdleState::Execute()
+	{
+		float timer = owner->GetStateTimer();
+		owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
+		if (!owner->GetTarget())return;
+
+		if (owner->IsTargetInAttackArea())
+		{
+			if (owner->GetAttackTimer() > 0)return;
+		}
+
+		//“G‚ª‚¢‚È‚¢
+		if (0)//TODO:‚ ‚Æ‚ÅŽÀ‘•
+		{
+			return;
+		}
+
+		//“G‚ªUŒ‚”ÍˆÍ“à‚É‚¢‚é‚©‚Ç‚¤‚©
+		if (owner->IsTargetInAttackArea())
+		{
+			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Attack));
+			return;
+		}
+		else
+		{
+			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Walk));
+		}
+	}
+
+	void IdleState::Exit()
+	{
+	}
+
+	void WalkState::Enter()
+	{
+		owner->SetMaxSpeed(maxSpeed);
+		owner->SetAccelaration(acceleration);
+	}
+
+	void WalkState::Execute()
+	{
+		float timer = owner->GetStateTimer();
+		owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
+
+		owner->MoveToTarget();
+
+		float vx = owner->GetTargetPosition().x - owner->GetOwner()->GetTransform()->GetPosition().x;
+		float vz = owner->GetTargetPosition().z - owner->GetOwner()->GetTransform()->GetPosition().z;
+		float length = sqrtf(vx * vx + vz * vz);
+		if (length < owner->GetAttackAreaRadius())
+		{
+			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Attack));
+		}
+	}
+
+	void WalkState::Exit()
+	{
+		owner->SetAccelaration(0.0f);
+		owner->SetVelocity(DirectX::XMFLOAT3(0, 0, 0));
+	}
+
+	void AttackState::Enter()
+	{
+		if (owner->GetAttackTimer() > 0)owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Idle));
+		owner->SetStateTimer(3.0f);
+	}
+
+	void AttackState::Execute()
+	{
+		float timer = owner->GetStateTimer();
+		owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
+		if (owner->GetStateTimer() <= 0)
+		{
+			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Idle));
+		}
+	}
+
+	void AttackState::Exit()
+	{
+		owner->SetAttackTimer(attackInterval);
+	}
 }
 

@@ -8,6 +8,7 @@ BaseFriend::BaseFriend(const char* name, DirectX::XMFLOAT3 pos) :
     
 }
 
+
 void BaseFriend::Initialize()
 {
     Character::Initialize();

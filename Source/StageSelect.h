@@ -9,6 +9,7 @@ public:
 		BaseScene("StageSelect")
 	{}
 
+	void Initialize() override;
 	void Update() override;
 
 	~StageSelect()override = default;

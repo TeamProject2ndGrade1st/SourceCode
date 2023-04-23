@@ -86,4 +86,51 @@ namespace Friend::Creature
     };
 }
 
+namespace Friend::Drone 
+{
+    class IdleState : public FriendState
+    {
+    public:
+        IdleState(BaseFriend* _friend) : FriendState(_friend, "idle") {}
+        ~IdleState() {}
 
+        void Enter()override;
+        void Execute()override;
+        void Exit()override;
+    };
+
+    //前進
+    class WalkState : public FriendState
+    {
+    public:
+        WalkState(BaseFriend* _friend) : FriendState(_friend, "walk") {}
+        ~WalkState() {}
+
+        void Enter()override;
+        void Execute()override;
+        void Exit()override;
+
+    private:
+        float acceleration{ 10.0f };
+        float maxSpeed{ 6.0f };
+
+        //アニメーション20~32フレーム間で動きが早くなる
+        int startMovingFastFrame{ 20 };
+        int endMovingFastFrame{ 32 };
+    };
+
+    class AttackState : public FriendState
+    {
+    public:
+        AttackState(BaseFriend* _friend) : FriendState(_friend, "attack") {}
+        ~AttackState() {}
+
+        void Enter()override;
+        void Execute()override;
+        void Exit()override;
+
+    private:
+        float attackInterval{ 3.0f };
+    };
+
+}
