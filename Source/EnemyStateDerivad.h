@@ -14,7 +14,7 @@ public:
     void Execute()override;
     void Exit()override;
 
-    bool SearchPlayer();    
+    bool SearchFriend();    
 };
 
 class EnemyAttackState :public EnemyState

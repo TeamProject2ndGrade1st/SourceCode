@@ -30,13 +30,9 @@ void EnemyIdleState::Exit()
 
 }
 
-bool EnemyIdleState::SearchPlayer()
+bool EnemyIdleState::SearchFriend()
 {
-    // タグを追加する
-    owner->GetOwner()->SetTag(GameObject::Tag::SpikeBot);
-    
     //GameObject::FindByTag()
-
 
 
     // プレイヤーとの高低差を考慮して3Dで距離判定をする
