@@ -24,7 +24,7 @@ public:
     void DrawDebug()override;
 
     void AddFriend(BaseFriend* _friend);
-    std::unique_ptr<BaseFriend> FindByTag(Tag tag,std::vector<std::unique_ptr<BaseFriend>>& array);
+    BaseFriend* FindByTag(Tag tag, std::vector<BaseFriend*>& array);
 
 private:
     std::vector<BaseFriend*> friendArray;

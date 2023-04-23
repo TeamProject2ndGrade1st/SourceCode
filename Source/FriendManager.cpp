@@ -37,8 +37,8 @@ void FriendManager::AddFriend(BaseFriend* _friend)
     //タグ登録はそれぞれのフレンド本体で行っている
 }
 
-std::unique_ptr<BaseFriend> FriendManager::FindByTag(Tag tag, std::vector<std::unique_ptr<BaseFriend>>& array)
+BaseFriend* FriendManager::FindByTag(Tag tag, std::vector<BaseFriend*>& array)
 {
-
-    return std::unique_ptr<BaseFriend>();
+    return nullptr;
+    //return std::unique_ptr<BaseFriend>();
 }
