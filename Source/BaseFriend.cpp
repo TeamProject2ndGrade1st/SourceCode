@@ -11,7 +11,7 @@ BaseFriend::BaseFriend(const char* name, DirectX::XMFLOAT3 pos) :
 void BaseFriend::Initialize()
 {
     Character::Initialize();
-
+    GetOwner()->SetTag(GameObject::Tag::Friend);
    /* GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     
     target = GetOwner()->FindByName("target");

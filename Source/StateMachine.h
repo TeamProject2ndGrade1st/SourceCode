@@ -11,8 +11,14 @@ public:
     void SetState(int setState);
     void ChangeState(int newState);
 
-    //ステート登録
     void RegisterState(FriendState* state);
+    /// <summary>
+    /// ステート登録
+    /// </summary>
+    /// ステートマシンも持たせたクラスのイニシャライザで必要な
+    /// ステート分だけ呼ぶ
+    /// 注意：enumで作ったステート定数と同じ順番で登録すること
+    /// <returns></returns>
 
     int GetStateIndex();
 

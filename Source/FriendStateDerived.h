@@ -62,7 +62,7 @@ namespace Friend::Creature
         float attackInterval{ 3.0f };
     };
 
-    //階層構造のステート（いらん）
+    //階層構造のステート（多分つかわん）
     class H_MoveState : public HierarchicalState
     {
     public:
