@@ -13,11 +13,16 @@ class GameObject
 public:
 	enum class Tag : unsigned int
 	{
-		UnTagged =		0x01 << 1,
+		UnTagged   =	0x01 << 1,
 		MainCamera =	0x01 << 2,
+<<<<<<< HEAD
 		Stage =			0x01 << 3,
 		Friend =		0x01 << 4,
 		SpikeBot =		0x01 << 5
+=======
+		Stage      =	0x01 << 3,
+		Friend     =	0x01 << 4,
+>>>>>>> origin/TanaDsk_merge
 	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);
 	GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com);
@@ -110,6 +115,7 @@ public:
 	static GameObject* FindByName(const char* name);
 	/**
 	 * \brief 特定のタグを持ったゲームオブジェクトの配列を返す
+	 *ビット演算で見つけるため2つ以上のタグを組み合わせることも可能なはず…
 	 * \param tag 
 	 * \param objArray [out] 発見したゲームオブジェクトを入れる配列
 	 * \return 発見したかどうか

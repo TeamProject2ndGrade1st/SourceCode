@@ -356,6 +356,30 @@ namespace Argent::Graphics
 		curFrameResource->SetSceneConstant(rootParameterIndex);
 	}
 
+	Dx12::DescriptorHeap* Graphics::GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE type) const
+	{
+		Dx12::DescriptorHeap* heapPointer = nullptr;
+		switch (type)
+		{
+		case D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV:
+			heapPointer = srvCbvHeap.get();
+			break;
+		case D3D12_DESCRIPTOR_HEAP_TYPE_RTV:
+			heapPointer = rtvHeap.get();
+			break;
+		case D3D12_DESCRIPTOR_HEAP_TYPE_DSV:
+			heapPointer = dsvHeap.get();
+			break;
+		case D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER:
+			heapPointer = nullptr;
+			break;
+		default:
+			heapPointer = nullptr;
+		}
+		return heapPointer;
+	}
+
+
 	HRESULT FindAdapter(IDXGIFactory6* factory, IDXGIAdapter1** adapter)
 	{
 		HRESULT hr{ S_OK };

@@ -1,22 +1,23 @@
 #include "Title.h"
 
 #include "Argent/Argent.h"
+<<<<<<< HEAD
 #include "BaseFriend.h"
 #include "BaseEnemy.h"
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
 #include "Demo.h"
+=======
+>>>>>>> origin/TanaDsk_merge
 
-#include "Stage.h"
 
-#include "spikeBot.h"
 
 
 void Title::Initialize()
 {
 	ClearGameObject();
-	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
 
+<<<<<<< HEAD
 	//AddObject(new GameObject("plane", Argent::Loader::Fbx::LoadFbx("./Resources/Model/plane.fbx", true)));
 	
 	//AddObject(new GameObject("enemy_ver03", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver3.fbx", false)));
@@ -75,6 +76,9 @@ void Title::Initialize()
 
 
 	AddObject(new GameObject("Stage", new Stage));
+=======
+	AddObject(new GameObject("TitleSprite", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Title.png")));
+>>>>>>> origin/TanaDsk_merge
 
 	BaseScene::Initialize();
 }
