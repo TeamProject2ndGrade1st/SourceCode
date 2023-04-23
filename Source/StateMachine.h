@@ -11,15 +11,15 @@ public:
     void SetState(int setState);
     void ChangeState(int newState);
 
-    void RegisterState(State* state);
     //ステート登録
+    void RegisterState(FriendState* state);
 
     int GetStateIndex();
 
 private:
-    State* currentState = nullptr;
+    FriendState* currentState = nullptr;
 
     //各ステートを保持する配列
-    std::vector<State*> statePool;
+    std::vector<FriendState*> statePool;
 };
 

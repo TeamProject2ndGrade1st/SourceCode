@@ -1,62 +1,85 @@
 #pragma once
 #include <DirectXMath.h>
-#include "Argent/Argent.h"
+#include "Character.h"
 #include "StateMachine.h"
+#include "FriendManager.h"
 
-enum class FriendAnimation
-{
-    Idle,
-    Action,
-    Attack,
-    Walk_ChangeFrom_Action,
-    Walk,
-    Walk_End
-};
-
-class BaseFriend
-    : public Argent::Component::BaseActor
+class BaseFriend : public Character
 {
 public:
-
-    BaseFriend();
-    BaseFriend(DirectX::XMFLOAT3 pos);
+    BaseFriend(const char* name, DirectX::XMFLOAT3 pos);
     virtual ~BaseFriend() {}
 
-    void Initialize()override;
-    void Begin() override;
-    void Update()override;
-    void DrawDebug()override;
+    //BaseFriend(DirectX::XMFLOAT3 pos);
 
-    void SetAnimation(int index)
-    {
-        GameObject* g = GetOwner();
-        auto com = g->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
 
-        com->SetAnimation(index);
-       // GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetAnimation(index);
-    }
-    bool isAnimationEnd()
+    virtual void Initialize()override;
+    virtual void Begin() override;
+    virtual void Update()override;
+    void DrawDebug() override;
+
+    ////速力処理(水平のみ)
+    //void UpdateVelocity();
+
+    ////移動処理
+    //void UpdateMove();
+
+    //ターゲットに向かって移動
+    void MoveToTarget();
+
+    void SetAnimation(int index);
+    bool IsAnimationEnd()
     {
         return GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->IsAnimationEnd();
     }
 
+    //ターゲットが攻撃範囲内にいるか
+    bool IsTargetInAttackArea();
+
     void SetStateTimer(float timer) { stateTimer = timer; }
-    float GetStateTimer() { return stateTimer; }
+    float GetStateTimer() const { return stateTimer; }
+    void SetAttackTimer(float timer) { attackTimer = timer; }
+    float GetAttackTimer() const { return attackTimer; }
 
-    StateMachine* GetStateMachine() { return stateMachine.get(); }
+    //初期値ゲッター、セッター
+    float Init_GetAccelaration() const { return init_acceleration; }
+    void Init_SetAccelaration(float accel) { init_acceleration = accel; }
+    float Init_GetMaxMoveSpeed() const { return init_maxMoveSpeed; }
+    void Init_SetMaxMoveSpeed(float speed) { init_maxMoveSpeed = speed; }
+    float Init_GetFriction() const { return init_friction; }
+    void Init_SetFriction(float friction) { init_friction = friction; }
 
-    enum class State
-    {
-        Idle,
-        Action,
-        Walk,
-        Attack,
-    };
+    
+    void SetTargetPosition(DirectX::XMFLOAT3 pos) { targetPosition = pos; }
+    DirectX::XMFLOAT3 GetTargetPosition() const { return targetPosition; }
+    float GetAttackAreaRadius() const { return attackAreaRadius; }
 
-private:
-    DirectX::XMFLOAT3 speed = {0,0,0.02f};
+    StateMachine* GetStateMachine() const { return stateMachine.get(); }
+    GameObject* GetTarget() const { return target; }
+
+    void SetTag(FriendManager::Tag tag) { this->tag = tag; }
+
+protected:
+    //目標座標
+    DirectX::XMFLOAT3 targetPosition{};
+    GameObject* target{ nullptr };
+
+    //攻撃始動範囲
+    float attackAreaRadius{ 2.0f };
+  
+    //初期値
+    float init_acceleration{ 0.0f };
+    float init_maxMoveSpeed{ 5.0f };
+    float init_friction{ 5.0f };
+
     float stateTimer{};
 
-    std::unique_ptr<StateMachine> stateMachine = nullptr;
+    //攻撃後のインターバル計測用
+    float attackTimer{};
+
+    std::unique_ptr<StateMachine> stateMachine{ nullptr };
+
+    //タグ
+    FriendManager::Tag tag{};
 };
 

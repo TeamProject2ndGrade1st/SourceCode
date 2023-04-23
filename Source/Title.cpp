@@ -4,10 +4,13 @@
 
 
 
+
 void Title::Initialize()
 {
 	ClearGameObject();
+
 	AddObject(new GameObject("TitleSprite", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Title.png")));
+
 	BaseScene::Initialize();
 }
 

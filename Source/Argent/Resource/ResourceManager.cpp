@@ -65,7 +65,7 @@ namespace Argent::Resource
 		{
 			if(m.second.lock()->CompareName(name) && !m.second.expired())
 			{
-				return m.second.lock();
+			//	return m.second.lock();
 			}
 		}
 		return nullptr;

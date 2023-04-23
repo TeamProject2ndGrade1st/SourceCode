@@ -12,7 +12,7 @@ void HierarchicalState::ChangeSubState(int newState)
     SetSubState(newState);
 }
 
-void HierarchicalState::RegisterSubState(State* state)
+void HierarchicalState::RegisterSubState(FriendState* state)
 {
     subStatePool.emplace_back(state);
 }
@@ -20,7 +20,7 @@ void HierarchicalState::RegisterSubState(State* state)
 int HierarchicalState::GetSubStateIndex()
 {
     int i = 0;
-    for (State* state : subStatePool)
+    for (FriendState* state : subStatePool)
     {
         if (subState == state)return i;
         ++i;

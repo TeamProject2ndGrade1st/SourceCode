@@ -278,9 +278,6 @@
     <ClCompile Include="Source\BaseFriend.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StateDerived.cpp">
-      <Filter>Game\善晃</Filter>
-    </ClCompile>
     <ClCompile Include="Source\StateMachine.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
@@ -318,6 +315,16 @@
     <ClCompile Include="Source\Argent\Graphic\RenderContext.cpp">
       <Filter>Lib\Work In Progress</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Character.cpp">
+      <Filter>Game\善晃</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FriendStateDerived.cpp">
+      <Filter>Game\善晃</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FriendCreature.cpp">
+      <Filter>Game\善晃</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FriendManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -528,9 +535,6 @@
     <ClInclude Include="Source\BaseFriend.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StateDerived.h">
-      <Filter>Game\善晃</Filter>
-    </ClInclude>
     <ClInclude Include="Source\StateMachine.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
@@ -565,6 +569,16 @@
     <ClInclude Include="Source\Argent\Graphic\RenderContext.h">
       <Filter>Lib\Work In Progress</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Character.h">
+      <Filter>Game\善晃</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FriendStateDerived.h">
+      <Filter>Game\善晃</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FriendCreature.h">
+      <Filter>Game\善晃</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FriendManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
