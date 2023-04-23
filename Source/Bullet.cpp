@@ -12,8 +12,9 @@ Bullet::Bullet(const DirectX::XMFLOAT3& direction,
 
 void Bullet::Initialize()
 {
+	//todo デバッグ表示用の何かを作ろうや
 	auto* rC = new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Sphere);
-	rC->scale = DirectX::XMFLOAT3(0.05f, 0.05f, 0.05f);
+	rC->scale = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
 	GetOwner()->AddComponent(rC);
 }
 
@@ -21,16 +22,22 @@ void Bullet::Update()
 {
 	Transform* t = GetTransform();
 	DirectX::XMFLOAT3 pos = t->GetPosition();
-	pos = direction * speed * Argent::Timer::GetDeltaTime();
+	/*pos = direction * speed * Argent::Timer::GetDeltaTime();
 	t->AddPosition(pos);
 
+	*/
 	ray->SetRayData(pos, direction, speed);
+
 	HitResult hitResult{};
 
 	//todo レイキャストのコリジョン対象を絞れるようにする
 	if(Argent::Collision::RayCollisionDetection(ray, hitResult))
 	{
 		GameObject::Destroy(GetOwner());
+	}
+	else
+	{
+		GetTransform()->SetPosition(pos + direction * speed);
 	}
 
 	elapsedTime += Argent::Timer::GetDeltaTime();
