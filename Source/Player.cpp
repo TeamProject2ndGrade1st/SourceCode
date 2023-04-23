@@ -92,6 +92,7 @@ void Player::Update()
     }
 
     GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
+    GetTransform()->SetRotation(camera->GetTransform()->GetRotation());
 
 #ifdef _DEBUG
     if(Argent::Input::GetKeyDown(KeyCode::O))
@@ -156,14 +157,9 @@ void Player::MoveCamera()
     HitResult hitResult{};
     if(Argent::Collision::RayCollisionDetection(ray, hitResult, GameObject::Tag::Stage))
     {
+       // hitResult.position.y = GetTransform()->GetPosition().y;
 	    p = hitResult.position - direction;
     } 
 
     t->SetPosition(p);
 }
-
-void Tmp::Update()
-{
-	
-}
-

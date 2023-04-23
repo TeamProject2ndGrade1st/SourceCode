@@ -40,16 +40,9 @@ namespace Argent::Dx12
 	}
 
 
-	void CommandBundle::Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect,
-	                          const D3D12_CPU_DESCRIPTOR_HANDLE& dsvHandle, const D3D12_CPU_DESCRIPTOR_HANDLE& rtvHandle,
-	                          float clearColor[4]) const
+	void CommandBundle::Begin() const
 	{
 		this->Reset();
-		//cmdList->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
-		//cmdList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-		//cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-		//cmdList->RSSetViewports(1, viewport);
-		//cmdList->RSSetScissorRects(1, scissorRect);
 	}
 
 	void CommandBundle::Reset() const

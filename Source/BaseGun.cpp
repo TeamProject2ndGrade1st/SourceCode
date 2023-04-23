@@ -18,7 +18,9 @@ void BaseGun::Update()
 	elapsedTime += Argent::Timer::GetDeltaTime();
 	if(Argent::Input::GetButton(MouseButton::LeftButton))
 	{
+#ifdef _DEBUG
 		if (!enableShot) return;
+#endif
 		if(elapsedTime > fireRate)
 		{
 			elapsedTime = 0;
@@ -35,8 +37,8 @@ void BaseGun::DrawDebug()
 	if(ImGui::TreeNode(GetName().c_str()))
 	{
 		//Apex R-99‚ÌƒŒ[ƒg‚ªÅ’á’l
-		ImGui::SliderFloat("Fire Rate", &fireRate, 0.05f, 10.0f);
-		ImGui::SliderInt("Damage", &damage, 0.1f, 10.0f);
+		ImGui::DragFloat("Fire Rate", &fireRate, 0.05f, 0.05f, 10.0f);
+		ImGui::SliderInt("Damage", &damage, 0, 10);
 		ImGui::SliderFloat("Speed", &speed, 1.0f, 100.0f);
 #ifdef _DEBUG
 		ImGui::Checkbox("Enable Shot", &enableShot);

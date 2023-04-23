@@ -20,31 +20,9 @@ void Bullet::Initialize()
 
 void Bullet::Update()
 {
-	Transform* t = GetTransform();
-	DirectX::XMFLOAT3 pos = t->GetPosition();
-	/*pos = direction * speed * Argent::Timer::GetDeltaTime();
-	t->AddPosition(pos);
+	Move();
 
-	*/
-	ray->SetRayData(pos, direction, speed);
-
-	HitResult hitResult{};
-
-	//todo レイキャストのコリジョン対象を絞れるようにする
-	if(Argent::Collision::RayCollisionDetection(ray, hitResult))
-	{
-		GameObject::Destroy(GetOwner());
-	}
-	else
-	{
-		GetTransform()->SetPosition(pos + direction * speed);
-	}
-
-	elapsedTime += Argent::Timer::GetDeltaTime();
-	if(elapsedTime > validTime)
-	{
-		GameObject::Destroy(GetOwner());
-	}
+	ManageDuration();
 }
 
 void Bullet::Shot(const DirectX::XMFLOAT3& position,
@@ -53,6 +31,35 @@ void Bullet::Shot(const DirectX::XMFLOAT3& position,
 	auto* b = new Bullet(direction, damage, speed);
 	const auto g = GameObject::Instantiate("Bullet", b);
 	g->GetTransform()->SetPosition(position);
+}
+
+void Bullet::ManageDuration()
+{
+	elapsedTime += Argent::Timer::GetDeltaTime();
+	if (elapsedTime > validTime)
+	{
+		GameObject::Destroy(GetOwner());
+	}
+}
+
+void Bullet::Move()
+{
+	const DirectX::XMFLOAT3 curPos = GetTransform()->GetPosition();
+	ray->SetRayData(curPos, direction, speed);
+	HitResult hitResult{};
+	if (Argent::Collision::RayCollisionDetection(ray, hitResult))
+	{
+		OnCollision();
+	}
+	else
+	{
+		GetTransform()->SetPosition(curPos + direction * speed);
+	}
+}
+
+void Bullet::OnCollision()
+{
+	GameObject::Destroy(GetOwner());
 }
 
 void Bullet::DrawDebug()

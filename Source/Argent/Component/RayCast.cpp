@@ -142,91 +142,98 @@ namespace Argent::Component
 			//Argent::Collider::ColliderManager::Instance().RegisterRay(this);
 		}
 
+		void CalcComplementPosition(Collider::RayCastCollider* other,
+			const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end,
+			HitResult& hitResult)
+		{
+			//壁までのベクトル
+			const DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&start);
+			const DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
+			const DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
+
+			//壁の法線
+			DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hitResult.normal);
+
+			//入射ベクトルを法線に射影
+			const DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(DirectX::XMVectorNegate(Vec), Normal);
+
+			//補正位置の計算　
+			const DirectX::XMVECTOR CollectPosition = DirectX::XMVectorMultiplyAdd(Normal, Dot, End);
+			DirectX::XMFLOAT3 collectPosition{};
+			DirectX::XMStoreFloat3(&collectPosition, CollectPosition);
+
+			//壁ズリ位置を計算
+			HitResult hitResult2;
+			if (!Helper::Collision::IntersectRayVsModel(hitResult.position, collectPosition, other->GetMeshResource(),
+				other->GetWorldTransform(), hitResult2))
+			{
+				hitResult.position = collectPosition;
+			}
+			else
+			{
+				hitResult.position = hitResult2.position;
+			}
+		}
+
 		bool RayCast::CollisionDetection(Collider::RayCastCollider* other, HitResult& hitResult) const
 		{
 			bool ret = false;
-		//	DirectX::XMFLOAT3 end = start + direction * length;
 			if(other->type != Collider::RayCastCollider::MeshType::Mesh)
 			{
 				if(Helper::Collision::IntersectRayVsModel(start, end, other->GetMeshResource(), 
 					other->GetWorldTransform(), hitResult))
 				{
-					//壁までのベクトル
-					DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&start);
-					DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
-					DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
-
-					//壁の法線
-					DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hitResult.normal);
-
-					//入射ベクトルを法線に射影
-					DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(DirectX::XMVectorNegate(Vec), Normal);
-
-					//補正位置の計算　
-					DirectX::XMVECTOR CollectPosition = DirectX::XMVectorMultiplyAdd(Normal, Dot, End);
-					DirectX::XMFLOAT3 collectPosition{};
-					DirectX::XMStoreFloat3(&collectPosition, CollectPosition);
-
-					HitResult hitResult2;
-					if(!Helper::Collision::IntersectRayVsModel(hitResult.position, collectPosition, other->GetMeshResource(), 
-						other->GetWorldTransform(), hitResult2))
-					{
-						hitResult.position = collectPosition;
-					}
-					else
-					{
-						hitResult.position = hitResult2.position;
-					}
-					/*
-					GetOwner()->GetTransform()->SetPosition(p);
-					auto actor = GetOwner()->GetActor();
-					if(actor)
-						actor->OnRayCollision(other);*/
+					hitResult.collider = other;
+					CalcComplementPosition(other, start, end, hitResult);
 					ret = true;
-					
 				}
 			}
 			else
 			{
-				auto m = other->GetMeshResourceVec();
-
-				for(auto& mR : m)
+				for(auto& m : other->GetMeshResourceVec())
 				{
-					if(Helper::Collision::IntersectRayVsModel(start, end, mR, 
+					if(Helper::Collision::IntersectRayVsModel(start, end, m, 
 						other->GetWorldTransform(), hitResult))
 					{
-						//壁までのベクトル
-						DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&start);
-						DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
-						DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
+						hitResult.collider = other;
 
-						//壁の法線
-						DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hitResult.normal);
-
-						//入射ベクトルを法線に射影
-						DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(DirectX::XMVectorNegate(Vec), Normal);
-
-						//補正位置の計算　
-						DirectX::XMVECTOR CollectPosition = DirectX::XMVectorMultiplyAdd(Normal, Dot, End);
-						DirectX::XMFLOAT3 collectPosition{};
-						DirectX::XMStoreFloat3(&collectPosition, CollectPosition);
-
-						HitResult hitResult2;
-						if(!Helper::Collision::IntersectRayVsModel(hitResult.position, collectPosition, other->GetMeshResource(), 
-							other->GetWorldTransform(), hitResult2))
+						/*if (Helper::Collision::IntersectRayVsModel(start, end, other->GetMeshResource(),
+							other->GetWorldTransform(), hitResult))
 						{
-							hitResult.position = collectPosition;
-						}
-						else
-						{
-							hitResult.position = hitResult2.position;
-						}
-						/*
-						GetOwner()->GetTransform()->SetPosition(p);
-						auto actor = GetOwner()->GetActor();
-						if(actor)
-							actor->OnRayCollision(other);*/
-						ret = true;
+							hitResult.collider = other;
+
+						}*/
+							CalcComplementPosition(other, start, end, hitResult);
+							ret = true;
+
+						////壁までのベクトル
+						//DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&start);
+						//DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
+						//DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
+
+						////壁の法線
+						//DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hitResult.normal);
+
+						////入射ベクトルを法線に射影
+						//DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(DirectX::XMVectorNegate(Vec), Normal);
+
+						////補正位置の計算　
+						//DirectX::XMVECTOR CollectPosition = DirectX::XMVectorMultiplyAdd(Normal, Dot, End);
+						//DirectX::XMFLOAT3 collectPosition{};
+						//DirectX::XMStoreFloat3(&collectPosition, CollectPosition);
+
+						//HitResult hitResult2;
+						//if(!Helper::Collision::IntersectRayVsModel(hitResult.position, collectPosition, other->GetMeshResource(), 
+						//	other->GetWorldTransform(), hitResult2))
+						//{
+						//	hitResult.position = collectPosition;
+						//}
+						//else
+						//{
+						//	hitResult.position = hitResult2.position;
+						//}
+
+						//ret = true;
 						
 					}
 				}

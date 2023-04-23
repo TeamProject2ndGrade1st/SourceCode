@@ -35,10 +35,3 @@ protected:
 	bool useCameraControl = true;
 	float offsetLength;
 };
-
-class Tmp : public Argent::Component::BaseActor
-{
-	void Initialize() override;
-	void Finalize() override;
-	void Update() override;
-};

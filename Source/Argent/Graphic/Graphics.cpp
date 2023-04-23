@@ -112,6 +112,7 @@ namespace Argent::Graphics
 		}
 
 		device->SetName(L"Device");
+		resourceCmdBundle->Begin();
 		resourceCmdBundle.get()->Reset();
 	}
 
@@ -135,7 +136,7 @@ namespace Argent::Graphics
 		curFrameResource = frameResources.at(backBufferIndex).get();
 		
 		curFrameResource->UpdateSceneConstant(sceneConstant);
-		curFrameResource->Begin(&viewport, &scissorRect, clearColor);
+		curFrameResource->Begin();
 
 		frameBuffer[0]->Begin(this, GetCommandList(RenderType::Mesh));
 		frameBuffer[1]->Begin(this, GetCommandList(RenderType::Sprite));
