@@ -59,7 +59,7 @@ void FriendCreature::Update()
     BaseFriend::Update();
 
     //仮置きターゲットの座標更新
-    target->GetTransform()->SetPosition(targetPosition);
+    targetPosition = target->GetTransform()->GetPosition();
 }
 
 void FriendCreature::DrawDebug()
