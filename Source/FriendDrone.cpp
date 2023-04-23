@@ -27,6 +27,7 @@ void FriendDrone::Initialize()
     acceleration = init_acceleration;
     maxMoveSpeed = init_maxMoveSpeed;
     friction = init_friction;
+    attackAreaRadius = init_attackAreaRadius;
 
     //タグ付け
     GetOwner()->SetTag(GameObject::Tag::Friend);
@@ -58,6 +59,13 @@ void FriendDrone::Update()
 
     //仮置きターゲットの座標更新
     target->GetTransform()->SetPosition(targetPosition);
+
+    //上下に動かしてふわふわ浮遊させてるだけ
+    pos = GetTransform()->GetPosition();
+    huwahuwaDegree += huwahuwaSpeed;
+    if (huwahuwaDegree > 360)huwahuwaDegree = 0;
+    float huwahuwa = sinf(DirectX::XMConvertToRadians(huwahuwaDegree)) * 0.2f;
+    GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 1.5f + huwahuwa, pos.z));
 }
 
 void FriendDrone::DrawDebug()

@@ -17,5 +17,10 @@ public:
         Walk,
         Attack,
     };
+
+private:
+    float huwahuwaDegree{ 0 };//ã‰º‚É“®‚­‚½‚ß‚Ì“x”
+    float huwahuwaSpeed{ 1.5f };//ã‰º‚É“®‚­‘¬“x@
+    float init_attackAreaRadius{ 5.0f };//UŒ‚”ÍˆÍ
 };
 
