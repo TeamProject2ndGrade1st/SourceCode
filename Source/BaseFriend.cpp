@@ -13,6 +13,33 @@ void BaseFriend::Initialize()
 {
     Character::Initialize();
     GetOwner()->SetTag(GameObject::Tag::Friend);
+
+   /* GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
+    
+    target = GetOwner()->FindByName("target");
+    target->GetTransform()->SetScaleFactor(0.01f);
+
+    BaseActor::Initialize();
+
+
+    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
+    acceleration = init_acceleration;
+    maxMoveSpeed = init_maxMoveSpeed;
+    friction = init_friction;
+
+    GetOwner()->SetTag(GameObject::Tag::Stage);
+    //GetOwner()->GetTransform()->SetScaleFactor(0.01f);
+    GetOwner()->GetTransform()->SetScaleFactor(0.1f);
+
+
+    stateMachine.reset(new StateMachine);
+
+    stateMachine.get()->RegisterState(new Friend::IdleState(this));
+    stateMachine.get()->RegisterState(new Friend::ActionState(this));
+    stateMachine.get()->RegisterState(new Friend::WalkState(this));
+    stateMachine.get()->RegisterState(new Friend::AttackState(this));
+
+    stateMachine.get()->SetState(static_cast<int>(State::Idle));*/
 }
 
 void BaseFriend::Begin()
