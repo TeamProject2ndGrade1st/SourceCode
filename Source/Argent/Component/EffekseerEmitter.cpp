@@ -1,4 +1,4 @@
-#include "EffectRenderer.h"
+#include "EffekseerEmitter.h"
 #include "Transform.h"
 #include "../GameObject/GameObject.h"
 #include "../Other/Helper.h"
@@ -6,13 +6,13 @@
 
 namespace Argent::Component::Renderer
 {
-	EffectRenderer::EffectRenderer(const char* filePath, const char* materialPath):
+	EffekseerEmitter::EffekseerEmitter(const char* filePath, const char* materialPath):
 		BaseComponent(Helper::String::ExtractFileName(filePath, false))
 	{
 		effect = std::make_shared<Argent::Resource::Effect::EffectResource>(filePath, materialPath);
 	}
 
-	void EffectRenderer::Update()
+	void EffekseerEmitter::Update()
 	{
 		if (!effect) return;
 
@@ -31,7 +31,7 @@ namespace Argent::Component::Renderer
 		isPlay = true;
 	}
 
-	void EffectRenderer::Render() const
+	void EffekseerEmitter::Render() const
 	{
 		if (!effect) return;
 		const Transform* t = GetOwner()->GetTransform();
@@ -42,7 +42,7 @@ namespace Argent::Component::Renderer
 		effect->Play(t->GetPosition(), t->GetScale(), t->GetRotation());
 	}
 
-	void EffectRenderer::DrawDebug()
+	void EffekseerEmitter::DrawDebug()
 	{
 		if(ImGui::TreeNode(GetName().c_str()))
 		{

@@ -5,12 +5,12 @@
 
 namespace Argent::Component::Renderer
 {
-	class EffectRenderer:
+	class EffekseerEmitter:
 		public BaseComponent
 	{
 	public:
-		EffectRenderer(const char* filePath, const char* materialPath);
-		~EffectRenderer() override = default;
+		EffekseerEmitter(const char* filePath, const char* materialPath);
+		~EffekseerEmitter() override = default;
 
 		void Update() override;
 		void Render() const override;
@@ -22,6 +22,8 @@ namespace Argent::Component::Renderer
 	private:
 		bool isPlay;
 		Argent::Color color;
+
+		bool isLooping;
 
 		std::shared_ptr<Argent::Resource::Effect::EffectResource> effect;
 	};
