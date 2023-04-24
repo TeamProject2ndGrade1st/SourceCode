@@ -1,8 +1,11 @@
 #include "Character.h"
+#include "Argent/Argent.h"
 
 void Character::Initialize()
 {
     BaseActor::Initialize();
+    GetOwner()->AddComponent(new Argent::Component::Collider::SphereCollider);
+
     GetOwner()->GetTransform()->SetPosition(init_position);
 }
 

@@ -40,8 +40,6 @@ void FriendCreature::Initialize()
     stateMachine.get()->RegisterState(new Friend::Creature::AttackState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
-
-    
 }
 
 void FriendCreature::Update()

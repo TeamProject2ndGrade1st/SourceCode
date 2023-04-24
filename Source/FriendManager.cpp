@@ -9,7 +9,13 @@ void FriendManager::Initialize()
 
 void FriendManager::Update()
 {
-    
+    for (auto activer = friendArray.begin();activer != friendArray.end();++activer)
+    {
+        for (auto passiver = activer + 1; passiver != friendArray.end(); ++passiver)
+        {
+            (*activer)->OnCollision((*passiver)->GetOwner()->GetComponent<Argent::Component::Collider::SphereCollider>());
+        }
+    }
 }
 
 void FriendManager::DrawDebug()
