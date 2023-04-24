@@ -19,8 +19,8 @@ void EnemySpikeBot::Initialize()
     // ステートマシンをセット
     stateMachine.reset(new EnemyStateMachine);
 
-    stateMachine.get()->RegisterState(new EnemyIdleState(this));
-    stateMachine.get()->RegisterState(new EnemyAttackState(this));
+    stateMachine.get()->RegisterState(new Enemy::SpikeBot::IdleState(this));
+    stateMachine.get()->RegisterState(new Enemy::SpikeBot::AttackState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
 

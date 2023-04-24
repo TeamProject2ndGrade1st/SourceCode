@@ -11,6 +11,7 @@
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
 #include "spikeBot.h"
+#include "FriendCreature.h"
 
 
 void Title::Initialize()
@@ -48,6 +49,7 @@ void Title::Initialize()
 
 	// ‰¼‚ÌGameObject
 	AddObject(new GameObject("spikeBot", new SpikeBot));
+	//AddObject(new GameObject("Creature", new FriendCreature));
 
 	//AddObject(new GameObject("Demo", new RayCastDemo));
 

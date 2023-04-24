@@ -1,32 +1,35 @@
 #pragma once
 #include "BaseEnemyState.h"
 
-
-class EnemyIdleState : public EnemyState
+namespace Enemy::SpikeBot
 {
-public:
-    // コンストラクタ
-    EnemyIdleState(BaseEnemy* _friend) :EnemyState(_friend, "idle") {}
-    // デストラクタ
-    ~EnemyIdleState() {}
 
-    void Enter()override;
-    void Execute()override;
-    void Exit()override;
+    class IdleState : public EnemyState
+    {
+    public:
+        // コンストラクタ
+        IdleState(BaseEnemy* _friend) :EnemyState(_friend, "idle") {}
+        // デストラクタ
+        ~IdleState() {}
 
-    bool SearchFriend(); 
+        void Enter()override;
+        void Execute()override;
+        void Exit()override;
 
-private:
-    float searchRange = 50.0f;
-};
+        bool SearchFriend();
 
-class EnemyAttackState :public EnemyState
-{
-public:
-    EnemyAttackState(BaseEnemy* _friend) :EnemyState(_friend, "attack") {}
-    ~EnemyAttackState() {}
+    private:
+        float searchRange = 50.0f;
+    };
 
-    void Enter()override;
-    void Execute()override;
-    void Exit()override;
-};
+    class AttackState :public EnemyState
+    {
+    public:
+        AttackState(BaseEnemy* _friend) :EnemyState(_friend, "attack") {}
+        ~AttackState() {}
+
+        void Enter()override;
+        void Execute()override;
+        void Exit()override;
+    };
+}
