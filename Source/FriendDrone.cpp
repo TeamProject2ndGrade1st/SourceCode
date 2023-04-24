@@ -58,7 +58,7 @@ void FriendDrone::Update()
     BaseFriend::Update();
 
     //仮置きターゲットの座標更新
-    target->GetTransform()->SetPosition(targetPosition);
+    targetPosition = target->GetTransform()->GetPosition();
 
     //上下に動かしてふわふわ浮遊させてるだけ
     pos = GetTransform()->GetPosition();
