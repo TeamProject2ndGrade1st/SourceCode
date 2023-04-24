@@ -3,6 +3,7 @@
 #include "Argent/Argent.h"
 #include "Character.h"
 #include "EnemyStateMachine.h"
+#include "BaseFriend.h"
 
 enum class EnemyAnimation
 {
@@ -31,10 +32,9 @@ public:
         com->SetAnimation(index);
     }
 
-    bool isAnimationEnd()
+    bool IsAnimationEnd()
     {
-        return GetOwner()->GetComponent < Argent::Component::Renderer::SkinnedMeshRenderer>()->IsAnimationEnd();
-
+        return GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->IsAnimationEnd();
     }
 
     void SetStateTimer(float timer) { stateTimer = timer; }
@@ -50,6 +50,12 @@ public:
         Idle,
         Attack,
     };
+
+public:
+    BaseFriend* _friend;
+
+    BaseFriend* GetFriend() { return _friend; }
+    void SetFriend(BaseFriend* f) { _friend = f; }
 
 protected:
     // –Ú“IÀ•W

@@ -1,5 +1,7 @@
 #pragma once
 #include "BaseEnemyState.h"
+#include "Argent/Argent.h"
+#include "BaseFriend.h"
 
 namespace Enemy::SpikeBot
 {
@@ -17,6 +19,7 @@ namespace Enemy::SpikeBot
         void Exit()override;
 
         bool SearchFriend();
+        BaseFriend* SearchFriend1();
 
     private:
         float searchRange = 50.0f;
@@ -31,5 +34,28 @@ namespace Enemy::SpikeBot
         void Enter()override;
         void Execute()override;
         void Exit()override;
+
+    public:
+        float attackTime{ 30 };
+        bool once = false;  // ノックバック一回だけ入るための変数
+                            // falseがまだ入っていない
+    };
+}
+
+namespace Enemy::Turret
+{
+    class IdleState :public EnemyState
+    {
+    public:
+        IdleState(BaseEnemy* _friend) :EnemyState(_friend, "idle") {}
+        ~IdleState() {}
+
+        void Enter()override;
+        void Execute()override;
+        void Exit()override;
+
+        bool SearchFriend();
+
+
     };
 }

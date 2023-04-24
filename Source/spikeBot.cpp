@@ -11,8 +11,9 @@ SpikeBot::SpikeBot() :BaseActor("spikeBot")
 void SpikeBot::Initialize()
 {
     BaseActor::Initialize();
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/spike_bot_0419_1.fbx"));
-    GetOwner()->GetTransform()->SetScaleFactor(0.1f);
+    //GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/spike_bot_0419_1.fbx"));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/pack/pack_0424_3.fbx"));
+    //GetOwner()->GetTransform()->SetScaleFactor(0.1f);
     GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube));
 
     // ‰¼‚Ìƒ^ƒO

@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseEnemy.h"
+#include "Argent/Argent.h"
 class EnemySpikeBot :
     public BaseEnemy
 {
@@ -11,5 +12,7 @@ public:
     void Begin()override;
     void Update()override;
     void DrawDebug()override;
+
+    
 };
 

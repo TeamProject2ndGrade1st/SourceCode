@@ -8,6 +8,7 @@ EnemySpikeBot::EnemySpikeBot() : BaseEnemy("EnemySpikeBot")
 void EnemySpikeBot::Initialize()
 {
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/spike.fbx"));
+    
 
     // スケーリング
     GetOwner()->GetTransform()->SetScaleFactor(0.1f);
