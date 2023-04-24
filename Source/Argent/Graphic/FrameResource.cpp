@@ -118,8 +118,9 @@ namespace Argent::Graphics
 		}
 	}
 
-	void FrameResource::Terminate()
+	void FrameResource::Terminate(Dx12::CommandQueue* cmdQueue)
 	{
+		cmdQueue->WaitForLastFrame();
 		for(auto& bundle : cmdBundle)
 		{
 			bundle.get()->Close();
@@ -150,7 +151,7 @@ namespace Argent::Graphics
 	{
 		for(const auto& bundle : cmdBundle)
 		{
-			bundle->cmdList->Close();
+			bundle->Close();
 		}
 	}
 

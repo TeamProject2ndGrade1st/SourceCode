@@ -101,10 +101,11 @@ namespace Argent::Scene
 		for(auto it = gameObject.begin(); it != gameObject.end(); ++it)
 		{
 			if (!(*it)) continue;
-			
 
 			if((*it)->GetDestroyFlag())
 			{
+				(*it)->elapsedTimeFromDestroyed += 1;
+				if((*it)->elapsedTimeFromDestroyed < 3) continue;
 				(*it)->Finalize();
 				delete (*it);
 				(*it) = nullptr;

@@ -254,6 +254,11 @@ void GameObject::CloseAllWindow()
 void GameObject::Destroy(GameObject* object)
 {
 	object->willDestroy = true;
+	object->SetActive(false);
+	for(auto it = object->begin(); it != object->end(); ++it)
+	{
+		Destroy((*it));
+	}
 	//Argent::Scene::SceneManager::Instance()->GetCurrentScene()->Destroy(object);
 }
 

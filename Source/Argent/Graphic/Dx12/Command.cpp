@@ -41,15 +41,17 @@ namespace Argent::Dx12
 	}
 
 
-	void CommandBundle::Begin() const
+	void CommandBundle::Begin()
 	{
+		Close();
 		this->Reset();
 	}
 
-	void CommandBundle::Reset() const
+	void CommandBundle::Reset()
 	{
 		if (!isClosed) return;
 		cmdAlloc.Get()->Reset();
 		cmdList.Get()->Reset(cmdAlloc.Get(), nullptr);
+		isClosed = false;
 	}
 }

@@ -39,7 +39,14 @@ namespace Argent::Dx12
 		uint64_t					fenceValue;
 
 		void SetFence(UINT numCmdList = 1, Graphics::FrameResource* resource = nullptr);
-		
+		void WaitForLastFrame()
+		{
+			cmdQueue->Signal(fence.Get(), ++fenceValue);
+			HANDLE lastEvent{};
+			fence->SetEventOnCompletion(fenceValue, lastEvent);
+			WaitForSingleObject(lastEvent, INFINITE);
+			
+		}
 
 		void WaitForFence(int numCount = 1)
 		{
@@ -59,8 +66,8 @@ namespace Argent::Dx12
 	struct CommandBundle
 	{
 		CommandBundle(ID3D12Device* device);
-		void Begin() const;
-		void Reset() const;
+		void Begin();
+		void Reset();
 		void Close()
 		{
 			if(!isClosed)

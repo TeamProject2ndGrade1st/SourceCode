@@ -115,6 +115,8 @@ public:
 	 */
 	static bool FindByTag(Tag tag, std::vector<GameObject*>& objArray);
 
+	//todo ‚à‚Á‚Æ‚¢‚¢•û–@‚ğl‚¦‚é
+	float elapsedTimeFromDestroyed;
 protected:
 	std::string name;
 	std::vector<Argent::Component::BaseComponent*> components;
