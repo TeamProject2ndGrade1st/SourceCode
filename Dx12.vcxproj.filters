@@ -100,6 +100,9 @@
     <Filter Include="Lib\Work In Progress">
       <UniqueIdentifier>{3988f51d-b8fb-42fb-8614-b3d1763570a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\mame">
+      <UniqueIdentifier>{461c5171-5e51-4739-a613-1f70f2300a77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -324,11 +327,27 @@
     <ClCompile Include="Source\FriendCreature.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FriendManager.cpp">
-      <Filter>Game\善晃</Filter>
+    <ClCompile Include="Source\FriendManager.cpp" />
+    <ClCompile Include="Source\EnemyStateMachine.cpp">
+      <Filter>Game\mame</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyStateDerivad.cpp">
+      <Filter>Game\mame</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BaseEnemyState.cpp">
+      <Filter>Game\mame</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BaseEnemy.cpp">
+      <Filter>Game\mame</Filter>
     </ClCompile>
     <ClCompile Include="Source\FriendDrone.cpp">
       <Filter>Game\善晃</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemySpikeBot.cpp">
+      <Filter>Game\mame</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyTurret.cpp">
+      <Filter>Game\mame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -583,11 +602,27 @@
     <ClInclude Include="Source\FriendCreature.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FriendManager.h">
-      <Filter>Game\善晃</Filter>
+    <ClInclude Include="Source\FriendManager.h" />
+    <ClInclude Include="Source\EnemyStateMachine.h">
+      <Filter>Game\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyStateDerivad.h">
+      <Filter>Game\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseEnemyState.h">
+      <Filter>Game\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseEnemy.h">
+      <Filter>Game\mame</Filter>
     </ClInclude>
     <ClInclude Include="Source\FriendDrone.h">
       <Filter>Game\善晃</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemySpikeBot.h">
+      <Filter>Game\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyTurret.h">
+      <Filter>Game\mame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

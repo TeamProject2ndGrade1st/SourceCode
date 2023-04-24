@@ -30,5 +30,9 @@ namespace Argent::Component::Renderer
 	private:
 		std::unique_ptr<Resource::Sprite::Sprite> sprite;
 		std::shared_ptr<Material::SpriteMaterial> material;
+
+		DirectX::XMFLOAT3 offset;
+		DirectX::XMFLOAT3 scale{ 1, 1, 1 };
+		DirectX::XMFLOAT2 texPos{};
 	};
 }

@@ -29,6 +29,9 @@ namespace Argent::Collider
 		{
 			const auto collider = rayCastCollider.at(j);
 
+			//オブジェクトがアクティブかどうかの確認 todo childObjectだった場合はどうなる???
+			if(!collider->GetOwner()->GetIsActive()) continue;
+
 			//衝突判定を行うオブジェクトのタグが指定されていた場合
 			bool isSpecified = tag & static_cast<unsigned>(COLLISION_ALL_OBJECT);
 			if(!isSpecified)

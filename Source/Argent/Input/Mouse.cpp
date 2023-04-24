@@ -24,7 +24,7 @@ namespace Argent::Input
 		//ScreenToClient(Argent::Graphics::Graphics::Instance()->hWnd, &p);
 		if(resetPositionToCenter)
 		{
-			postPosition =DirectX::XMFLOAT2(width / 2, height / 2);
+			postPosition =DirectX::XMFLOAT2(static_cast<float>(width) / 2, static_cast<float>(height) / 2);
 			ShowCursor(false);
 		}
 		else

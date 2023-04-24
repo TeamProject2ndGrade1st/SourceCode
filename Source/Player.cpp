@@ -15,6 +15,7 @@ void Player::Initialize()
 	auto g = GetOwner();
 	g->AddComponent(ray);
 
+    
 
     camera = GameObject::FindByName("Camera"); // こっちで
     movement = 10.5f;
@@ -48,6 +49,24 @@ void Player::Update()
 
         // 移動
         MoveCamera();
+
+        // デバッグ用
+#ifdef _DEBUG
+        if (Argent::Input::GetKey(KeyCode::Space))
+        {
+            auto t = camera->GetTransform();
+            auto pos = t->GetPosition();
+            pos.y += 0.1f;
+            t->SetPosition(pos);
+        }
+        if (Argent::Input::GetKey(KeyCode::M))
+        {
+            auto t = camera->GetTransform();
+            auto pos = t->GetPosition();
+            pos.y -= 0.1f;
+            t->SetPosition(pos);
+        }
+#endif
 
         // マウスのポジション
 #if 1
@@ -92,6 +111,7 @@ void Player::Update()
     }
 
     GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
+    GetTransform()->SetRotation(camera->GetTransform()->GetRotation());
 
 #ifdef _DEBUG
     if(Argent::Input::GetKeyDown(KeyCode::O))
@@ -156,14 +176,9 @@ void Player::MoveCamera()
     HitResult hitResult{};
     if(Argent::Collision::RayCollisionDetection(ray, hitResult, GameObject::Tag::Stage))
     {
+       // hitResult.position.y = GetTransform()->GetPosition().y;
 	    p = hitResult.position - direction;
     } 
 
     t->SetPosition(p);
 }
-
-void Tmp::Update()
-{
-	
-}
-

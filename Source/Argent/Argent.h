@@ -136,4 +136,17 @@ namespace Argent
 			return ArTimer::Instance().DeltaTime();
 		}
 	}
+
+	namespace Graphics
+	{
+		inline float GetWindowWidth()
+		{
+			return Graphics::Instance()->GetWidth();
+		}
+
+		inline float GetWindowHeight()
+		{
+			return Graphics::Instance()->GetHeight();
+		}
+	}
 }

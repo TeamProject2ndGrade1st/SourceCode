@@ -118,8 +118,9 @@ namespace Argent::Graphics
 		}
 	}
 
-	void FrameResource::Terminate()
+	void FrameResource::Terminate(Dx12::CommandQueue* cmdQueue)
 	{
+		cmdQueue->WaitForLastFrame();
 		for(auto& bundle : cmdBundle)
 		{
 			bundle.get()->Close();
@@ -138,11 +139,11 @@ namespace Argent::Graphics
 	}
 
 
-	void FrameResource::Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect, float clearColor[4]) const
+	void FrameResource::Begin() const
 	{
 		for(auto& bundle : cmdBundle)
 		{
-			bundle->Begin(viewport, scissorRect, dsv->GetCPUHandle(), rtv->GetCPUHandle(), clearColor);
+			bundle->Begin();
 		}
 	}
 
@@ -150,7 +151,7 @@ namespace Argent::Graphics
 	{
 		for(const auto& bundle : cmdBundle)
 		{
-			bundle->cmdList->Close();
+			bundle->Close();
 		}
 	}
 
