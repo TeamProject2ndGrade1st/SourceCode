@@ -30,9 +30,9 @@ void Game::Initialize()
 
 	// spikeBot
 	//AddObject(new GameObject("spikeBot", Argent::Loader::Fbx::LoadFbx("./Resources/Model/spike_bot_0419_1.fbx")));
-	AddObject(new GameObject("spikeBot", new SpikeBot()));
+	//AddObject(new GameObject("spikeBot", new SpikeBot()));
 
-	AddObject(new GameObject("friend", new FriendCreature()));
+	//AddObject(new GameObject("friend", new FriendCreature()));
 	AddObject(new GameObject("target", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 

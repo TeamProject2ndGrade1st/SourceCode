@@ -3,7 +3,7 @@
 
 class BaseFriend;
 
-class FriendManager : public Argent::Component::BaseComponent
+class FriendManager : public Argent::Component::BaseActor
 {
 public:
     //味方のタイプに合わせてタグ付けする
@@ -14,9 +14,16 @@ public:
         Drone       = 0x01 << 2
     };
 
+    enum class Type
+    {
+        Creature,
+        Drone,
+        End,
+    };
+
 
     FriendManager(Argent::Scene::BaseScene* currentScene) : 
-        BaseComponent("FriendManager"), scene(currentScene){}
+        BaseActor("FriendManager"), scene(currentScene){}
     ~FriendManager() {}
 
     void Initialize()override;

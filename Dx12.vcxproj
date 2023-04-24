@@ -84,6 +84,7 @@
     <ClCompile Include="Source\BaseState.cpp" />
     <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\FriendCreature.cpp" />
+    <ClCompile Include="Source\FriendDrone.cpp" />
     <ClCompile Include="Source\FriendManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Result.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Source\Character.h" />
     <ClInclude Include="Source\DemoShaderMacro.h" />
     <ClInclude Include="Source\FriendCreature.h" />
+    <ClInclude Include="Source\FriendDrone.h" />
     <ClInclude Include="Source\FriendManager.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Result.h" />

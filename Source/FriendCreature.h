@@ -15,7 +15,8 @@ class FriendCreature :
     public BaseFriend
 {
 public:
-    FriendCreature(DirectX::XMFLOAT3 pos = {0.0f,0.0f,0.0f});
+    FriendCreature(DirectX::XMFLOAT3 pos = {0.0f,0.0f,0.0f}) 
+        : BaseFriend("Creature", pos) {}
     ~FriendCreature() {}
     
     void Initialize() override;
@@ -29,8 +30,6 @@ public:
         Walk,
         Attack,
     };
-
-    float Init_GetAccelaration() { return init_acceleration; }
 
 private:
 };
