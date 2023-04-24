@@ -14,7 +14,10 @@ public:
     void Execute()override;
     void Exit()override;
 
-    bool SearchFriend();    
+    bool SearchFriend(); 
+
+private:
+    float searchRange = 10.0f;
 };
 
 class EnemyAttackState :public EnemyState
