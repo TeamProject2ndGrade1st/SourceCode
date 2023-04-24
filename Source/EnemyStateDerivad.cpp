@@ -32,8 +32,15 @@ void EnemyIdleState::Exit()
 
 bool EnemyIdleState::SearchFriend()
 {
-    //GameObject::FindByTag()
+    // Friendタグが付いているGameObjectを探す
+    std::vector<GameObject*> Friend;
+    GameObject::FindByTag(GameObject::Tag::Friend, Friend);
 
+    // TO DO 途中
+    for (auto f : Friend)
+    {
+
+    }
 
     // プレイヤーとの高低差を考慮して3Dで距離判定をする
     //const DirectX::XMFLOAT3& playerPosition = Player::Instance().GetPosition();

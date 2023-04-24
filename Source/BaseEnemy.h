@@ -15,6 +15,7 @@ class BaseEnemy : public Character
 public:
     BaseEnemy();
     BaseEnemy(DirectX::XMFLOAT3 pos);
+    BaseEnemy(const char* name);
     virtual ~BaseEnemy() {}
 
     virtual void Initialize()override;

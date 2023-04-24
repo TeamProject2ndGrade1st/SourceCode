@@ -85,8 +85,10 @@
     <ClCompile Include="Source\BaseGun.cpp" />
     <ClCompile Include="Source\BaseState.cpp" />
     <ClCompile Include="Source\Character.cpp" />
+    <ClCompile Include="Source\EnemySpikeBot.cpp" />
     <ClCompile Include="Source\EnemyStateDerivad.cpp" />
     <ClCompile Include="Source\EnemyStateMachine.cpp" />
+    <ClCompile Include="Source\EnemyTurret.cpp" />
     <ClCompile Include="Source\FriendCreature.cpp" />
     <ClCompile Include="Source\FriendDrone.cpp" />
     <ClCompile Include="Source\FriendManager.cpp" />
@@ -179,8 +181,10 @@
     <ClInclude Include="Source\BaseState.h" />
     <ClInclude Include="Source\Character.h" />
     <ClInclude Include="Source\DemoShaderMacro.h" />
+    <ClInclude Include="Source\EnemySpikeBot.h" />
     <ClInclude Include="Source\EnemyStateDerivad.h" />
     <ClInclude Include="Source\EnemyStateMachine.h" />
+    <ClInclude Include="Source\EnemyTurret.h" />
     <ClInclude Include="Source\FriendCreature.h" />
     <ClInclude Include="Source\FriendDrone.h" />
     <ClInclude Include="Source\FriendManager.h" />

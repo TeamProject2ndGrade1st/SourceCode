@@ -8,6 +8,8 @@
 #include "Argent/Debug/DebugRenderer.h"
 #include "Demo.h"
 #include "Stage.h"
+#include "EnemySpikeBot.h"
+#include "EnemyTurret.h"
 
 
 
@@ -41,7 +43,8 @@ void Title::Initialize()
 	// spikeBot
 	//AddObject(new GameObject("spikeBot", Argent::Loader::Fbx::LoadFbx("./Resources/Model/spike_bot_0419_1.fbx")));
 	//AddObject(new GameObject("spikeBot", new SpikeBot()));
-	AddObject(new GameObject("BaseEnemy", new BaseEnemy));
+	AddObject(new GameObject("EnemySpikeBot", new EnemySpikeBot));
+	AddObject(new GameObject("EnemyTurret", new EnemyTurret));
 	//AddObject(new GameObject("Demo", new RayCastDemo));
 
 
