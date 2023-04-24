@@ -17,7 +17,7 @@ public:
     bool SearchFriend(); 
 
 private:
-    float searchRange = 10.0f;
+    float searchRange = 50.0f;
 };
 
 class EnemyAttackState :public EnemyState

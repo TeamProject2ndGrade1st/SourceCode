@@ -10,7 +10,7 @@
 #include "Stage.h"
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
-
+#include "spikeBot.h"
 
 
 void Title::Initialize()
@@ -45,6 +45,10 @@ void Title::Initialize()
 	//AddObject(new GameObject("spikeBot", new SpikeBot()));
 	AddObject(new GameObject("EnemySpikeBot", new EnemySpikeBot));
 	AddObject(new GameObject("EnemyTurret", new EnemyTurret));
+
+	// ‰¼‚ÌGameObject
+	AddObject(new GameObject("spikeBot", new SpikeBot));
+
 	//AddObject(new GameObject("Demo", new RayCastDemo));
 
 

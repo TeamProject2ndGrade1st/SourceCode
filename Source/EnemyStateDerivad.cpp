@@ -68,6 +68,9 @@ bool EnemyIdleState::SearchFriend()
             float dot = (frontX * vx) + (frontZ * vz);
             if (dot > 0.0f)
             {
+                friendPos.z -= 10;
+                f->GetTransform()->SetPosition(friendPos);
+
                 return true;
             }
         }
