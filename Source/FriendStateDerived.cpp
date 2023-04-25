@@ -262,6 +262,8 @@ namespace Friend::Drone
 	{
 		if (owner->GetAttackTimer() > 0)owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Idle));
 		owner->SetStateTimer(3.0f);
+
+		//owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
 	}
 
 	void AttackState::Execute()

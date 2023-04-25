@@ -9,6 +9,7 @@ public:
     virtual ~Character() {}
 
     void Initialize()override;
+    void DrawDebug()override;
     
     void SetVelocity(DirectX::XMFLOAT3 velo) { velocity = velo; }
     void SetAccelaration(float accel) { acceleration = accel; }
@@ -47,7 +48,7 @@ protected:
 
     float maxHealth = { 5.0f };//‘Ì—Í
     float health = { maxHealth };//‘Ì—Í
-    float Attack = { 1.0f };//UŒ‚—Í
+    float attack = { 1.0f };//UŒ‚—Í
 
     float weight = { 30.0f };//‘Ìd(Å‘å‚Å100)
 

@@ -63,38 +63,12 @@ void BaseFriend::DrawDebug()
 
     if (ImGui::TreeNode(GetName().c_str()))
     {
-        if (ImGui::TreeNode("Move"))
-        {
-            ImGui::SliderFloat("Friction", &friction, 0.0f, 5.0f);
-            ImGui::SliderFloat("Acceleration", &acceleration, 0.0f, 10.0f);
-            ImGui::InputFloat3("Velocity", &velocity.x);
-            ImGui::DragFloat3("TargetPosition", &targetPosition.x,0.1f,-100.0f,100.0f);
-            ImGui::TreePop();
-        }
+       
         
 
-        /*if (ImGui::TreeNode("State"))
-        {
-            switch (stateMachine.get()->GetStateIndex())
-            {
-            case static_cast<int>(State::Idle):
-                ImGui::Text("State Idle");
-                break;
-            case static_cast<int>(State::Action):
-                ImGui::Text("State Action");
-                break;
-            case static_cast<int>(State::Walk):
-                ImGui::Text("State Walk");
-                break;
-            case static_cast<int>(State::Attack):
-                ImGui::Text("State Attack");
-                break;
-            }
-            ImGui::SliderFloat("State Timer", &stateTimer, 0.0f, 30.0f);
-            ImGui::TreePop();
-        }*/
+        Character::DrawDebug();
         
-        BaseActor::DrawDebug();
+        
         ImGui::TreePop();
     }
 }
@@ -119,6 +93,18 @@ void BaseFriend::SetAnimation(int index)
     auto com = g->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
     
     com->SetAnimation(index);
+}
+
+void BaseFriend::OnDamaged()
+{
+}
+
+void BaseFriend::OnDead()
+{
+}
+
+void BaseFriend::OnHeal()
+{
 }
 
 //ターゲットが攻撃範囲内にいるかどうか

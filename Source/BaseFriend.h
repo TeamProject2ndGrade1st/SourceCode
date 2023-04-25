@@ -35,6 +35,10 @@ public:
         return GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->IsAnimationEnd();
     }
 
+    virtual void OnDamaged() override;//被ダメージ時に呼ばれる
+    virtual void OnDead() override;//死亡時に呼ばれる
+    virtual void OnHeal() override;//回復時に呼ばれる
+
     //ターゲットが攻撃範囲内にいるか
     bool IsTargetInAttackArea();
     bool SerchEnemy();

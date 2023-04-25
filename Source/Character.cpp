@@ -13,10 +13,27 @@ void Character::Initialize()
     GetOwner()->AddComponent(new Argent::Component::Collider::SphereCollider);
 
     GetOwner()->GetTransform()->SetPosition(init_position);
+}
 
-    //‰e‚ª’n–Ê‚É–„‚Ü‚é‚Ì‚ð–h‚®
-    auto pos = GetOwner()->GetTransform()->GetPosition();
-    GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 0.01f, pos.z));
+void Character::DrawDebug()
+{
+    if (ImGui::TreeNode("Status"))
+    {
+        ImGui::SliderFloat("HP", &health, 0, maxHealth,"%.2f");
+        ImGui::SliderFloat("MAX_HP", &maxHealth, 0, 50,"%.2f");
+        ImGui::SliderFloat("Attack", &attack, 0, 30,"%.2f");
+        ImGui::SliderFloat("Weight", &weight, 0, 100,"%.2f");
+        ImGui::TreePop();
+    }
+    if (ImGui::TreeNode("Move"))
+    {
+        ImGui::SliderFloat("Friction", &friction, 0.0f, 5.0f);
+        ImGui::SliderFloat("Acceleration", &acceleration, 0.0f, 10.0f);
+        ImGui::InputFloat3("Velocity", &velocity.x);
+        ImGui::TreePop();
+    }
+
+    BaseActor::DrawDebug();
 }
 
 void Character::UpdateVelocity()
