@@ -4,11 +4,13 @@
 void Character::Initialize()
 {
     BaseActor::Initialize();
+
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow_ver3.fbx", false));
+
     GetOwner()->AddComponent(new Argent::Component::Collider::SphereCollider);
 
     GetOwner()->GetTransform()->SetPosition(init_position);
 }
-
 
 void Character::UpdateVelocity()
 {

@@ -19,15 +19,16 @@ void FriendCreature::Initialize()
 
     //仮置きのターゲット
     target = GetOwner()->FindByName("target");
-    target->GetTransform()->SetScaleFactor(0.01f);
+    //target->GetTransform()->SetScaleFactor(0.01f);
 
     //スケール変更
-    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
+    //GetOwner()->GetTransform()->SetScaleFactor(0.01f);
     acceleration = init_acceleration;
     maxMoveSpeed = init_maxMoveSpeed;
     friction = init_friction;
 
     //タグ付け
+
     GetOwner()->ReplaceTag(GameObject::Tag::Friend);
     GetOwner()->GetTransform()->SetScaleFactor(0.01f);
 
@@ -40,8 +41,6 @@ void FriendCreature::Initialize()
     stateMachine.get()->RegisterState(new Friend::Creature::AttackState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
-
-    
 }
 
 void FriendCreature::Update()

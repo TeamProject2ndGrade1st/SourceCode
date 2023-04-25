@@ -17,7 +17,7 @@ void SpikeBot::Initialize()
     GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube));
 
     // ‰¼‚Ìƒ^ƒO
-    GetOwner()->SetTag(GameObject::Tag::Friend);
+    GetOwner()->ReplaceTag(GameObject::Tag::Friend);
     // ‰¼
     DirectX::XMFLOAT3 pos{ 0,0,-50 };
     GetOwner()->GetTransform()->SetPosition(pos);

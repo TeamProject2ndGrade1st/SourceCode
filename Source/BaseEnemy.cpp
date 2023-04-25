@@ -59,7 +59,7 @@ void BaseEnemy::Update()
 
 void BaseEnemy::DrawDebug()
 {
-    if (ImGui::TreeNode(GetName().c_str()))
+    if (ImGui::TreeNode(GetName()))
     {
         ImGui::TreePop();
     }

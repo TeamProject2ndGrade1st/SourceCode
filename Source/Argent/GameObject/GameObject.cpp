@@ -368,6 +368,7 @@ bool GameObject::FindByTag(Tag tag, std::vector<GameObject*>& objArray)
 	const auto s = Argent::Scene::SceneManager::Instance()->GetCurrentScene();
 	for(auto it = s->begin(); it != s->end(); ++it)
 	{
+		if (!(*it))continue;
 		if(static_cast<unsigned>((*it)->GetTag()) & t)
 		{
 			objArray.emplace_back((*it).get());

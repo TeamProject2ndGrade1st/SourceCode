@@ -5,7 +5,7 @@
 void FriendManager::Initialize()
 {
     BaseActor::Initialize();
-    GetOwner()->SetTag(GameObject::Tag::FriendManager);
+    GetOwner()->ReplaceTag(GameObject::Tag::FriendManager);
 }
 
 void FriendManager::Update()
@@ -56,11 +56,6 @@ void FriendManager::AddFriend(BaseFriend* _friend)
     //タグ登録はそれぞれのフレンド本体で行っている
 }
 
-BaseFriend* FriendManager::FindByTag(Tag tag, std::vector<BaseFriend*>& array)
-{
-    return nullptr;
-    //return std::unique_ptr<BaseFriend>();
-}
 
 BaseFriend* FriendManager::FindFriendOwner(GameObject* wFriend) const
 {
@@ -73,3 +68,4 @@ BaseFriend* FriendManager::FindFriendOwner(GameObject* wFriend) const
 
     return nullptr;
 }
+

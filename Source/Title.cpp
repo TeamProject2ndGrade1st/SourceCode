@@ -1,12 +1,9 @@
 #include "Title.h"
-
 #include "Argent/Argent.h"
 
-<<<<<<< HEAD
 //#include "Argent/Debug/DebugRenderer.h"
 
 
-=======
 #include "BaseFriend.h"
 #include "BaseEnemy.h"
 #include "Player.h"
@@ -19,11 +16,13 @@
 #include "FriendCreature.h"
 #include "FriendManager.h"
 
+
 void Title::Initialize()
 {
 	ClearGameObject();
 	AddObject(new GameObject("TitleSprite", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Title.png")));
 
+	
 	BaseScene::Initialize();
 }
 
