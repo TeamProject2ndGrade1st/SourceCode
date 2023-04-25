@@ -23,6 +23,7 @@ public:
 		SpikeBot =		0x01 << 6,	
 		Turret =		0x01 << 7,
 		FriendManager = 0x01 << 8,
+		Core =			0x01 << 9,
 
 	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);

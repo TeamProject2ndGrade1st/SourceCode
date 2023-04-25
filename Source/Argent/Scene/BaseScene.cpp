@@ -8,9 +8,9 @@ namespace Argent::Scene
 {
 	void BaseScene::ClearGameObject()
 	{
-		gameObject.clear();
-		gameObject.resize(100);
-		for(auto& g : gameObject)
+		objects.clear();
+		objects.resize(100);
+		for(auto& g : objects)
 		{
 			g = nullptr;
 		}
@@ -22,12 +22,12 @@ namespace Argent::Scene
 		c->ReplaceTag(GameObject::Tag::MainCamera);
 		AddObject(c);
 		AddObject(new GameObject("Light", new Light));
-		for(size_t i = 0; i < gameObject.size(); ++i)
+		for(size_t i = 0; i < objects.size(); ++i)
 		{
-			if(gameObject.at(i))
+			if(objects.at(i))
 			{
-				if(gameObject.at(i)->GetIsActive())
-					gameObject.at(i)->Initialize();
+				if(objects.at(i)->GetIsActive())
+					objects.at(i)->Initialize();
 			}
 		}
 		isInitialized = true;
@@ -35,72 +35,72 @@ namespace Argent::Scene
 
 	void BaseScene::Finalize()
 	{
-		for(size_t i = 0; i < gameObject.size(); ++i)
+		for(size_t i = 0; i < objects.size(); ++i)
 		{
-			if(gameObject.at(i))
+			if(objects.at(i))
 			{
-				gameObject.at(i)->Finalize();
-				//delete gameObject.at(i);
+				objects.at(i)->Finalize();
+				//delete objects.at(i);
 			}
 		}
-		gameObject.clear();
+		objects.clear();
 		isInitialized = false;
 	}
 
 	void BaseScene::Begin()
 	{
 		//todo resizeÇµÇƒÇ©ÇÁÇÃÇŸÇ§Ç™èàóùåyÇ¢Ç©Ç‡
-		for(size_t i = 0; i < gameObject.size(); ++i)
+		for(size_t i = 0; i < objects.size(); ++i)
 		{
-			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
+			if (objects.at(i) && objects.at(i)->GetIsActive())
 			{
-				gameObject.at(i)->Begin();
+				objects.at(i)->Begin();
 			}
 		}
 	}
 
 	void BaseScene::End()
 	{
-		for(size_t i = 0; i < gameObject.size(); ++i)
+		for(size_t i = 0; i < objects.size(); ++i)
 		{
-			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
-				gameObject.at(i)->End();
+			if (objects.at(i) && objects.at(i)->GetIsActive())
+				objects.at(i)->End();
 		}
 	}
 
 	void BaseScene::Update()
 	{
-		for(size_t i = 0; i < gameObject.size(); ++i)
+		for(size_t i = 0; i < objects.size(); ++i)
 		{
-			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
-				gameObject.at(i)->EarlyUpdate();
+			if (objects.at(i) && objects.at(i)->GetIsActive())
+				objects.at(i)->EarlyUpdate();
 		}
 
-		for(size_t i = 0; i < gameObject.size(); ++i)
+		for(size_t i = 0; i < objects.size(); ++i)
 		{
-			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
-				gameObject.at(i)->Update();
+			if (objects.at(i) && objects.at(i)->GetIsActive())
+				objects.at(i)->Update();
 		}
 
-		for(size_t i = 0; i < gameObject.size(); ++i)
+		for(size_t i = 0; i < objects.size(); ++i)
 		{
-			if (gameObject.at(i) && gameObject.at(i)->GetIsActive())
-				gameObject.at(i)->LateUpdate();
+			if (objects.at(i) && objects.at(i)->GetIsActive())
+				objects.at(i)->LateUpdate();
 		}
 	}
 
 	void BaseScene::Render()
 	{
-		for(size_t i = 0; i < gameObject.size(); ++i)
+		for(size_t i = 0; i < objects.size(); ++i)
 		{
-			if(gameObject.at(i) && gameObject.at(i)->GetIsActive())
-				gameObject.at(i)->Render();
+			if(objects.at(i) && objects.at(i)->GetIsActive())
+				objects.at(i)->Render();
 		}
 	}
 
 	void BaseScene::DeleteDestroyedObject()
 	{
-		for(auto it = gameObject.begin(); it != gameObject.end(); ++it)
+		for(auto it = objects.begin(); it != objects.end(); ++it)
 		{
 			if (!(*it)) continue;
 
@@ -125,24 +125,24 @@ namespace Argent::Scene
 
 		if (ImGui::TreeNode("Object"))
 		{
-			for(size_t i = 0; i < gameObject.size(); ++i)
+			for(size_t i = 0; i < objects.size(); ++i)
 			{
-				if(!gameObject.at(i).get()) continue;
-					ImGuiCheckBox(gameObject.at(i).get());
+				if(!objects.at(i).get()) continue;
+					ImGuiCheckBox(objects.at(i).get());
 			}
 			ImGui::TreePop();
 		}
-		for(size_t i = 0; i < gameObject.size(); ++i)
+		for(size_t i = 0; i < objects.size(); ++i)
 		{
-			if (!gameObject.at(i)) continue;
-				gameObject.at(i)->DrawDebug();
+			if (!objects.at(i)) continue;
+				objects.at(i)->DrawDebug();
 		}
 	}
 
 	void BaseScene::DrawDebugNumGameObject() const
 	{
 		int numGameObject{};
-		for(auto& g : gameObject)
+		for(auto& g : objects)
 		{
 			if(g)
 			{
@@ -155,10 +155,10 @@ namespace Argent::Scene
 
 	void BaseScene::CloseAllDebugWindow() const
 	{
-		for(size_t i = 0; i < gameObject.size(); ++i)
+		for(size_t i = 0; i < objects.size(); ++i)
 		{
-			if (!gameObject.at(i)) continue;
-			gameObject.at(i)->CloseAllWindow();
+			if (!objects.at(i)) continue;
+			objects.at(i)->CloseAllWindow();
 		}
 	}
 
@@ -171,13 +171,13 @@ namespace Argent::Scene
 		int i = FindNullObjectIndex();
 		if(i < 0)
 		{
-			const UINT size = gameObject.size();
-			gameObject.resize(size + 100);
-			gameObject.at(size).reset(obj);
+			const UINT size = objects.size();
+			objects.resize(size + 100);
+			objects.at(size).reset(obj);
 		}
 		else
 		{
-			gameObject.at(i).reset(obj);
+			objects.at(i).reset(obj);
 		}
 	}
 
@@ -211,9 +211,9 @@ namespace Argent::Scene
 
 	int64_t BaseScene::FindNullObjectIndex() const
 	{
-		for(size_t i = 0; i < gameObject.size(); ++i)
+		for(size_t i = 0; i < objects.size(); ++i)
 		{
-			if(!gameObject.at(i))
+			if(!objects.at(i))
 			{
 				return i;
 			}

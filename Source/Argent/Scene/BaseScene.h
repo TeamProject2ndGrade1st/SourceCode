@@ -14,8 +14,8 @@ namespace Argent::Scene
 			sceneName(std::move(sceneName))
 		,	isInitialized(false)
 		{
-			gameObject.clear();
-			gameObject.resize(100);
+			objects.clear();
+			objects.resize(100);
 		}
 		virtual ~BaseScene() = default;
 		BaseScene(const BaseScene&) = delete;
@@ -45,8 +45,8 @@ namespace Argent::Scene
 
 		void DeleteDestroyedObject();
 
-		std::vector<std::unique_ptr<GameObject>>::iterator begin() { return gameObject.begin(); }
-		std::vector<std::unique_ptr<GameObject>>::iterator end() { return gameObject.end(); }
+		std::vector<std::unique_ptr<GameObject>>::iterator begin() { return objects.begin(); }
+		std::vector<std::unique_ptr<GameObject>>::iterator end() { return objects.end(); }
 
 		const std::string& GetName() const { return sceneName; }
 		void CloseAllDebugWindow() const;
@@ -54,7 +54,7 @@ namespace Argent::Scene
 		
 		std::string ObjectNameCheck(std::string name, int num = 0, bool isChecked = false)
 		{
-			for(const auto& object : gameObject)
+			for(const auto& object : objects)
 			{
 				if (!object) continue;
 				if(object->GetName() == name)
@@ -75,7 +75,7 @@ namespace Argent::Scene
 
 		GameObject* GetGameObject(const std::string& objectName) const
 		{
-			for(const auto& obj : gameObject)
+			for(const auto& obj : objects)
 			{
 				if(obj->GetName() == objectName)
 				{
@@ -89,7 +89,7 @@ namespace Argent::Scene
 	protected:
 		const std::string sceneName;
 	private:
-		std::vector<std::unique_ptr<GameObject>> gameObject{};
+		std::vector<std::unique_ptr<GameObject>> objects{};
 		bool isInitialized;
 	private:
 	};
