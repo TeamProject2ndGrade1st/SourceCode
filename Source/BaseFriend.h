@@ -54,7 +54,7 @@ public:
 
     
     void SetTargetPosition(DirectX::XMFLOAT3 pos) { targetPosition = pos; }
-    DirectX::XMFLOAT3 GetTargetPosition() const { return targetPosition; }
+    DirectX::XMFLOAT3 GetTargetPosition() const { return target->GetTransform()->GetPosition(); }
     float GetAttackAreaRadius() const { return attackAreaRadius; }
 
     StateMachine* GetStateMachine() const { return stateMachine.get(); }

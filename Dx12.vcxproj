@@ -94,6 +94,7 @@
     <ClCompile Include="Source\FriendManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Result.cpp" />
+    <ClCompile Include="Source\Shadow.cpp" />
     <ClCompile Include="Source\Stage.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Demo.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Source\FriendManager.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Result.h" />
+    <ClInclude Include="Source\Shadow.h" />
     <ClInclude Include="Source\Stage.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Demo.h" />

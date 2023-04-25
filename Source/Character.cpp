@@ -1,14 +1,22 @@
 #include "Character.h"
 #include "Argent/Argent.h"
+#include "Shadow.h"
 
 void Character::Initialize()
 {
     BaseActor::Initialize();
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow_ver3.fbx", false));
     
+    //‰e‚Ì•\Ž¦
+    //GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow0425_3.fbx", false));
+    GameObject::Instantiate("Shadow", new Shadow(this));
+
     GetOwner()->AddComponent(new Argent::Component::Collider::SphereCollider);
 
     GetOwner()->GetTransform()->SetPosition(init_position);
+
+    //‰e‚ª’n–Ê‚É–„‚Ü‚é‚Ì‚ð–h‚®
+    auto pos = GetOwner()->GetTransform()->GetPosition();
+    GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 0.01f, pos.z));
 }
 
 void Character::UpdateVelocity()
