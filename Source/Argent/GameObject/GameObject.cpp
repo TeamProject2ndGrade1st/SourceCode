@@ -17,6 +17,12 @@ GameObject::GameObject(std::string name, Argent::Component::BaseComponent* c) :
 	{
 		cObj.reset(nullptr);
 	}
+	components.clear();
+	components.resize(10);
+	for(auto& com : components)
+	{
+		com.reset(nullptr);
+	}
 	transform = new Transform();
 	AddComponent(transform);
 	if (c)
@@ -38,6 +44,12 @@ GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComp
 	{
 		cObj.reset(nullptr);
 	}
+	components.clear();
+	components.resize(10);
+	for(auto& com : components)
+	{
+		com.reset(nullptr);
+	}
 	transform = new Transform();
 	AddComponent(transform);
 
@@ -54,7 +66,7 @@ GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComp
 	}
 }
 
-GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> components, std::string name) :
+GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> coms, std::string name) :
 	isDrawDebug(false)
 	, name(name)
 	, isInitialized(false)
@@ -66,9 +78,15 @@ GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> 
 	{
 		cObj.reset(nullptr);
 	}
+	components.clear();
+	components.resize(10);
+	for(auto& com : components)
+	{
+		com.reset(nullptr);
+	}
 	transform = new Transform();
 	AddComponent(transform);
-	for (auto&& com : components)
+	for (auto&& com : coms)
 	{
 		AddComponent(com);
 	}
@@ -79,7 +97,8 @@ void GameObject::Initialize()
 	isInitialized = true;
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->Initialize();
+		if(components.at(i))
+			components.at(i)->Initialize();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
@@ -92,15 +111,14 @@ void GameObject::Finalize()
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->Finalize();
-		delete components.at(i);
+		if(components.at(i))
+			components.at(i)->Finalize();
 	}
 	components.clear();
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
 		if(childObjects.at(i))
 			childObjects.at(i)->Finalize();
-		//delete childObjects.at(i);
 	}
 	childObjects.clear();
 }
@@ -109,7 +127,8 @@ void GameObject::Begin()
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->Begin();
+		if(components.at(i))
+			components.at(i)->Begin();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
@@ -122,7 +141,8 @@ void GameObject::EarlyUpdate()
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->EarlyUpdate();
+		if(components.at(i))
+			components.at(i)->EarlyUpdate();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
@@ -135,7 +155,8 @@ void GameObject::End()
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->End();
+		if(components.at(i))
+			components.at(i)->End();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
@@ -148,7 +169,8 @@ void GameObject::Update()
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->Update();
+		if(components.at(i))
+			components.at(i)->Update();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
@@ -161,7 +183,8 @@ void GameObject::LateUpdate()
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->LateUpdate();
+		if(components.at(i))
+			components.at(i)->LateUpdate();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
@@ -174,7 +197,8 @@ void GameObject::Render() const
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->Render();
+		if(components.at(i))
+			components.at(i)->Render();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
@@ -226,7 +250,8 @@ void GameObject::DrawDebug()
 
 		for(size_t i = 0; i < components.size(); ++i)
 		{
-			components.at(i)->DrawDebug();
+			if(components.at(i))
+				components.at(i)->DrawDebug();	
 		}
 		ImGui::End();
 	}
@@ -243,7 +268,22 @@ void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 	com->SetOwner(this);
 	if (isInitialized)
 		com->Initialize();
-	components.emplace_back(com);
+
+	int64_t index = FindNullComponentIndex();
+	if(index < 0)
+	{
+		size_t size = components.size(); 
+		components.resize(size + 10);
+		for(size_t i = size; i < components.size(); ++i)
+		{
+			components.at(i).reset(nullptr);
+		}
+		components.at(size).reset(com);
+	}
+	else
+	{
+		components.at(index).reset(com);
+	}
 }
 
 void GameObject::AddComponent(std::vector<Argent::Component::BaseComponent*> com)
@@ -332,6 +372,15 @@ int64_t GameObject::FindNullChildIndex() const
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
 		if(!childObjects.at(i)) return i;
+	}
+	return -1;
+}
+
+int64_t GameObject::FindNullComponentIndex() const
+{
+	for(size_t i = 0; i < components.size(); ++i)
+	{
+		if(!components.at(i)) return i;
 	}
 	return -1;
 }

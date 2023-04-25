@@ -22,7 +22,7 @@ public:
 	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);
 	GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com);
-	GameObject(std::initializer_list<Argent::Component::BaseComponent*> components, std::string name = "gameObject");
+	GameObject(std::initializer_list<Argent::Component::BaseComponent*> coms, std::string name = "gameObject");
 
 	virtual ~GameObject() = default;
 	GameObject(const GameObject&) = delete;
@@ -49,7 +49,6 @@ public:
 	const std::string& GetName() const				{ return name; }
 	int GetOrderInUpdate() const { return orderInUpdate;  }
 	GameObject* GetParent() const					{ return parent; }
-	template <typename T> T* GetChild();
 	template <typename T> T* GetComponent();
 	Transform* GetTransform() const
 	{
@@ -120,7 +119,7 @@ public:
 	float elapsedTimeFromDestroyed;
 protected:
 	std::string name;
-	std::vector<Argent::Component::BaseComponent*> components;
+	std::vector<std::unique_ptr<Argent::Component::BaseComponent>> components;
 	std::vector<std::unique_ptr<GameObject>> childObjects;
 	GameObject* parent;
 	Transform* transform;
@@ -144,6 +143,7 @@ public:
 
 private:
 	int64_t FindNullChildIndex() const;
+	int64_t FindNullComponentIndex() const;
 };
 
 template <typename T>
@@ -151,21 +151,10 @@ T* GameObject::GetComponent()
 {
 	for(auto& com : components)
 	{
-		if(typeid(*com) != typeid(T)) continue;
+		if(typeid(*com.get()) != typeid(T)) continue;
 
-		return static_cast<T*>(com);
+		return static_cast<T*>(com.get());
 	}
 	return nullptr;
 }
 
-template <typename T>
-T* GameObject::GetChild()
-{
-	for(auto& obj : childObjects)
-	{
-		if(typeid(*obj.get()) != typeid(T)) continue;
-
-		return static_cast<T*>(obj);
-	}
-	return nullptr;
-}
