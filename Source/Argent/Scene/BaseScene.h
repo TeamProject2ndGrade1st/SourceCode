@@ -41,6 +41,7 @@ namespace Argent::Scene
 
 		virtual void DrawDebug();
 
+		void DrawDebugNumGameObject() const;
 
 		void DeleteDestroyedObject();
 		//void Destroy(GameObject* object);
@@ -85,7 +86,7 @@ namespace Argent::Scene
 			return nullptr;
 		}
 
-		UINT FindNullObjectIndex() const;
+		int64_t FindNullObjectIndex() const;
 	protected:
 		const std::string sceneName;
 	private:

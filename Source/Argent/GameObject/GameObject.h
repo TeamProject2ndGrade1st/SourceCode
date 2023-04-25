@@ -40,8 +40,6 @@ public:
 	virtual void Render() const;
 	virtual void End();
 
-
-
 	virtual void DrawDebug();
 
 	void AddComponent(Argent::Component::BaseComponent* com);
@@ -59,7 +57,7 @@ public:
 	}
 	Argent::Component::BaseActor* GetActor() const	{ return actor; }
 
-	bool GetIsSelected() const { return isSelected; }
+	bool GetIsSelected() const { return isDrawDebug; }
 	int GetChildCount() const { return static_cast<int>(childObjects.size()); }
 	bool GetIsActive() const { return isActive; }
 	bool GetDestroyFlag() const { return willDestroy; }
@@ -76,14 +74,14 @@ public:
 	}
 	
 
-	void SetIsSelected(bool b) { isSelected = b; }
+	void SetIsDrawDebug(bool b) { isDrawDebug = b; }
 
-	std::vector<GameObject*>::iterator begin() { return childObjects.begin(); }
-	std::vector<GameObject*>::iterator end() { return childObjects.end(); }
+	std::vector<std::unique_ptr<GameObject>>::iterator begin() { return childObjects.begin(); }
+	std::vector<std::unique_ptr<GameObject>>::iterator end() { return childObjects.end(); }
 
-	void ReverseIsSelected() { isSelected = !isSelected; }
+	void ReverseIsDrawDebug() { isDrawDebug = !isDrawDebug; }
 
-	void CloseWindow() { isSelected = false; }
+	void CloseWindow() { isDrawDebug = false; }
 	void CloseAllWindow();
 
 
@@ -123,7 +121,7 @@ public:
 protected:
 	std::string name;
 	std::vector<Argent::Component::BaseComponent*> components;
-	std::vector<GameObject*> childObjects;
+	std::vector<std::unique_ptr<GameObject>> childObjects;
 	GameObject* parent;
 	Transform* transform;
 
@@ -131,10 +129,9 @@ protected:
 
 	int orderInUpdate = 10;
 
-	//std::string tag = "UnTagged";
 	Tag tag;
 
-	bool isSelected;
+	bool isDrawDebug;
 	bool isInitialized;
 	bool willDestroy;
 	bool isActive;
@@ -144,6 +141,9 @@ public:
 	{
 		return this->orderInUpdate < g.orderInUpdate;
 	}
+
+private:
+	int64_t FindNullChildIndex() const;
 };
 
 template <typename T>
@@ -163,7 +163,7 @@ T* GameObject::GetChild()
 {
 	for(auto& obj : childObjects)
 	{
-		if(typeid(*obj) != typeid(T)) continue;
+		if(typeid(*obj.get()) != typeid(T)) continue;
 
 		return static_cast<T*>(obj);
 	}

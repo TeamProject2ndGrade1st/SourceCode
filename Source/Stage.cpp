@@ -16,6 +16,7 @@ void Stage::Initialize()
 
 	for(auto it = GetOwner()->begin(); it != GetOwner()->end(); ++it)
 	{
+		if(!(*it)) return;
 		auto r = (*it)->GetComponent<Argent::Component::Renderer::MeshRenderer>();
 		if(r)
 		{

@@ -6,25 +6,38 @@
 #include "../Input/Keyboard.h"
 
 GameObject::GameObject(std::string name, Argent::Component::BaseComponent* c) :
-	isSelected(false)
+	isDrawDebug(false)
 	, name(std::move(name))
 ,	isInitialized(false)
 ,	isActive(true)
 {
+	childObjects.clear();
+	childObjects.resize(10);
+	for(auto& cObj : childObjects)
+	{
+		cObj.reset(nullptr);
+	}
 	transform = new Transform();
 	AddComponent(transform);
 	if (c)
 	{
 		AddComponent(c);
 	}
+	
 }
 
 GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com) :
-	isSelected(false)
+	isDrawDebug(false)
 	, name(std::move(name))
 	, isInitialized(false)
 ,	isActive(true)
 {
+	childObjects.clear();
+	childObjects.resize(10);
+	for(auto& cObj : childObjects)
+	{
+		cObj.reset(nullptr);
+	}
 	transform = new Transform();
 	AddComponent(transform);
 
@@ -42,11 +55,17 @@ GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComp
 }
 
 GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> components, std::string name) :
-	isSelected(false)
+	isDrawDebug(false)
 	, name(name)
 	, isInitialized(false)
 ,	isActive(true)
 {
+	childObjects.clear();
+	childObjects.resize(10);
+	for(auto& cObj : childObjects)
+	{
+		cObj.reset(nullptr);
+	}
 	transform = new Transform();
 	AddComponent(transform);
 	for (auto&& com : components)
@@ -64,7 +83,8 @@ void GameObject::Initialize()
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->Initialize();
+		if(childObjects.at(i))
+			childObjects.at(i)->Initialize();
 	}
 }
 
@@ -78,8 +98,9 @@ void GameObject::Finalize()
 	components.clear();
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->Finalize();
-		delete childObjects.at(i);
+		if(childObjects.at(i))
+			childObjects.at(i)->Finalize();
+		//delete childObjects.at(i);
 	}
 	childObjects.clear();
 }
@@ -92,7 +113,8 @@ void GameObject::Begin()
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->Begin();
+		if(childObjects.at(i))
+			childObjects.at(i)->Begin();
 	}
 }
 
@@ -104,7 +126,8 @@ void GameObject::EarlyUpdate()
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->EarlyUpdate();
+		if(childObjects.at(i))
+			childObjects.at(i)->EarlyUpdate();
 	}
 }
 
@@ -116,7 +139,8 @@ void GameObject::End()
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->End();
+		if(childObjects.at(i))
+			childObjects.at(i)->End();
 	}
 }
 
@@ -128,7 +152,8 @@ void GameObject::Update()
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->Update();
+		if(childObjects.at(i))
+			childObjects.at(i)->Update();
 	}
 }
 
@@ -140,7 +165,8 @@ void GameObject::LateUpdate()
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->LateUpdate();
+		if(childObjects.at(i))
+			childObjects.at(i)->LateUpdate();
 	}
 }
 
@@ -152,14 +178,15 @@ void GameObject::Render() const
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->Render();
+		if(childObjects.at(i))
+			childObjects.at(i)->Render();
 	}
 }
 
 void GameObject::DrawDebug() 
 {
 
-	if(isSelected)
+	if(isDrawDebug)
 	{
 		ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_::ImGuiCond_Once);
 		ImGui::SetNextWindowPos(ImVec2( 900, 50), ImGuiCond_::ImGuiCond_Once);
@@ -174,7 +201,7 @@ void GameObject::DrawDebug()
 
 				if(ImGui::MenuItem("Close"))
 				{
-					SetIsSelected(false);
+					SetIsDrawDebug(false);
 				}
 		        ImGui::EndMenu();
 		    }
@@ -187,7 +214,7 @@ void GameObject::DrawDebug()
 			//ImGui::BulletText(oss.str().c_str());
 			if(ImGui::Button(oss.str().c_str()))
 			{
-				parent->SetIsSelected(true);
+				parent->SetIsDrawDebug(true);
 				CloseWindow();
 			}
 		}
@@ -206,10 +233,9 @@ void GameObject::DrawDebug()
 	
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->DrawDebug();
+		if(childObjects.at(i))
+			childObjects.at(i)->DrawDebug();
 	}
-
-	
 }
 
 void GameObject::AddComponent(Argent::Component::BaseComponent* com)
@@ -217,7 +243,6 @@ void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 	com->SetOwner(this);
 	if (isInitialized)
 		com->Initialize();
-	//addComponents.emplace_back(com);
 	components.emplace_back(com);
 }
 
@@ -239,27 +264,39 @@ void GameObject::AddComponent(std::vector<Argent::Component::BaseComponent*> com
 void GameObject::AddChild(GameObject* obj)
 {
 	obj->SetParent(this);
-	childObjects.emplace_back(obj);
+	const int64_t index = FindNullChildIndex();
+	if(index < 0)
+	{
+		const size_t size = childObjects.size();
+		childObjects.resize(size + 10);
+		childObjects.at(size).reset(obj);
+	}
+	else
+	{
+		childObjects.at(index).reset(obj);
+	}
 }
 
 void GameObject::CloseAllWindow()
 {
 	CloseWindow();
-	for (const auto& child : childObjects)
+	for (size_t i = 0; i < childObjects.size(); ++i)
 	{
-		child->CloseAllWindow();
+		if(childObjects.at(i))
+			childObjects.at(i)->CloseAllWindow();
 	}
 }
 
 void GameObject::Destroy(GameObject* object)
 {
+	if(!object) return;
 	object->willDestroy = true;
 	object->SetActive(false);
+	//すべての子オブジェクトもdestroy関数に入れる
 	for(auto it = object->begin(); it != object->end(); ++it)
 	{
-		Destroy((*it));
+		Destroy((*it).get());
 	}
-	//Argent::Scene::SceneManager::Instance()->GetCurrentScene()->Destroy(object);
 }
 
 GameObject* GameObject::Instantiate(const char* name, Argent::Component::BaseComponent* com)
@@ -288,4 +325,13 @@ bool GameObject::FindByTag(Tag tag, std::vector<GameObject*>& objArray)
 	}
 
 	return objArray.size() == 0;
+}
+
+int64_t GameObject::FindNullChildIndex() const
+{
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		if(!childObjects.at(i)) return i;
+	}
+	return -1;
 }
