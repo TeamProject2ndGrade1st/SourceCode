@@ -75,8 +75,8 @@ void BaseFriend::DrawDebug()
 
 void BaseFriend::MoveToTarget()
 {
-    float vx = targetPosition.x - GetOwner()->GetTransform()->GetPosition().x;
-    float vz = targetPosition.z - GetOwner()->GetTransform()->GetPosition().z;
+    float vx = target->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
+    float vz = target->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
     float length = sqrtf(vx * vx + vz * vz);
     vx /= length;
     vz /= length;
@@ -110,8 +110,8 @@ void BaseFriend::OnHeal()
 //ƒ^[ƒQƒbƒg‚ªUŒ‚”ÍˆÍ“à‚É‚¢‚é‚©‚Ç‚¤‚©
 bool BaseFriend::IsTargetInAttackArea()
 {
-    float vx = targetPosition.x - GetOwner()->GetTransform()->GetPosition().x;
-    float vz = targetPosition.z - GetOwner()->GetTransform()->GetPosition().z;
+    float vx = target->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
+    float vz = target->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
     float length = sqrtf(vx * vx + vz * vz);
     if (length < attackAreaRadius)return true;
     else return false;

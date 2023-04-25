@@ -57,7 +57,6 @@ public:
     void Init_SetFriction(float friction) { init_friction = friction; }
 
     
-    void SetTargetPosition(DirectX::XMFLOAT3 pos) { targetPosition = pos; }
     DirectX::XMFLOAT3 GetTargetPosition() const { return target->GetTransform()->GetPosition(); }
     float GetAttackAreaRadius() const { return attackAreaRadius; }
 
@@ -66,7 +65,6 @@ public:
 
 protected:
     //–Ú•WÀ•W
-    DirectX::XMFLOAT3 targetPosition{};
     GameObject* target{ nullptr };
 
     //UŒ‚n“®”ÍˆÍ
