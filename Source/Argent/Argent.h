@@ -13,6 +13,8 @@
 
 #include "Component/Component.h"
 #include "Component/Transform.h"
+#include "Component/Camera.h"
+#include "Component/Light.h"
 #include "Component/Collider.h"
 #include "Component/AudioPlayer.h"
 

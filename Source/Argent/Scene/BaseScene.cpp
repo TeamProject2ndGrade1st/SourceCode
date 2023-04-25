@@ -1,6 +1,8 @@
 #include "BaseScene.h"
 #include <algorithm>
 #include "../Graphic/Graphics.h"
+#include "../Component/Camera.h"
+#include "../Component/Light.h"
 
 namespace Argent::Scene
 {
@@ -38,7 +40,8 @@ namespace Argent::Scene
 			if(gameObject.at(i))
 			{
 				gameObject.at(i)->Finalize();
-				delete gameObject.at(i);
+				
+				//delete gameObject.at(i);
 			}
 		}
 		gameObject.clear();
@@ -104,11 +107,13 @@ namespace Argent::Scene
 
 			if((*it)->GetDestroyFlag())
 			{
+				//todo ゲームオブジェクトを破壊するまでの待ち時間をどうにかすること
 				(*it)->elapsedTimeFromDestroyed += 1;
 				if((*it)->elapsedTimeFromDestroyed < 3) continue;
 				(*it)->Finalize();
-				delete (*it);
-				(*it) = nullptr;
+				(*it).reset(nullptr);
+				//delete (*it);
+				//(*it) = nullptr;
 			}
 		}
 	}
@@ -130,7 +135,7 @@ namespace Argent::Scene
 			for(size_t i = 0; i < gameObject.size(); ++i)
 			{
 				if(!gameObject.at(i)) continue;
-				ImGuiCheckBox(gameObject.at(i));
+				ImGuiCheckBox(gameObject.at(i).get());
 			}
 			ImGui::TreePop();
 		}
@@ -162,11 +167,11 @@ namespace Argent::Scene
 		{
 			const UINT size = gameObject.size();
 			gameObject.resize(size + 100);
-			gameObject.at(size) = obj;
+			gameObject.at(size).reset(obj);
 		}
 		else
 		{
-			gameObject.at(i) = obj;
+			gameObject.at(i).reset(obj);
 		}
 	}
 

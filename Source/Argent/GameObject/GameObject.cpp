@@ -283,7 +283,7 @@ bool GameObject::FindByTag(Tag tag, std::vector<GameObject*>& objArray)
 	{
 		if(static_cast<unsigned>((*it)->GetTag()) & t)
 		{
-			objArray.emplace_back((*it));
+			objArray.emplace_back((*it).get());
 		}
 	}
 
