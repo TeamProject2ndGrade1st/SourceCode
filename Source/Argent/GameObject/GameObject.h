@@ -8,6 +8,7 @@
 #include "../Component/Transform.h"
 #include "../Component/BaseActor.h"
 
+
 class GameObject
 {
 public:
@@ -19,6 +20,7 @@ public:
 		Friend =		0x01 << 4,
 		SpikeBot =		0x01 << 5,
 		Turret =		0x01 << 6,
+		FriendManager = 0x01 << 7
 	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);
 	GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com);
@@ -118,6 +120,8 @@ public:
 	 */
 	static bool FindByTag(Tag tag, std::vector<GameObject*>& objArray);
 
+	//todo ‚à‚Á‚Æ‚¢‚¢•û–@‚ğl‚¦‚é
+	float elapsedTimeFromDestroyed;
 protected:
 	std::string name;
 	std::vector<Argent::Component::BaseComponent*> components;

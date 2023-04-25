@@ -4,6 +4,8 @@
 #include "Character.h"
 #include "EnemyStateMachine.h"
 #include "BaseFriend.h"
+#include "FriendManager.h"
+
 
 enum class EnemyAnimation
 {
@@ -57,6 +59,10 @@ public:
     BaseFriend* GetFriend() { return _friend; }
     void SetFriend(BaseFriend* f) { _friend = f; }
 
+    float friendAddSpeed = 0;
+    void addspeed();
+
+    BaseFriend* SearchFriend1();
 protected:
     // –Ú“IÀ•W
     DirectX::XMFLOAT3 targetPosition{};
@@ -64,4 +70,5 @@ protected:
     float stateTimer{};
 
     std::unique_ptr<EnemyStateMachine> stateMachine = nullptr;
+    FriendManager* fManager = nullptr;
 };

@@ -12,7 +12,7 @@
 #include "EnemyTurret.h"
 #include "spikeBot.h"
 #include "FriendCreature.h"
-
+#include "FriendManager.h"
 
 void Title::Initialize()
 {
@@ -22,7 +22,7 @@ void Title::Initialize()
 	
 	//AddObject(new GameObject("enemy_ver03", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver3.fbx", false)));
 
-	//AddObject(new GameObject("nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
+	AddObject(new GameObject("target", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
 	//AddObject(new GameObject("friend", new BaseFriend()));
 
 	
@@ -48,11 +48,11 @@ void Title::Initialize()
 	AddObject(new GameObject("EnemyTurret", new EnemyTurret));
 
 	// ‰¼‚ÌGameObject
-	AddObject(new GameObject("spikeBot", new SpikeBot));
+	//AddObject(new GameObject("spikeBot", new SpikeBot));
 	//AddObject(new GameObject("Creature", new FriendCreature));
 
 	//AddObject(new GameObject("Demo", new RayCastDemo));
-
+	AddObject(new GameObject("Friend", new FriendManager(this)));
 
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 	// player ‚Â‚¢‚©
@@ -98,8 +98,6 @@ void Title::Finalize()
 {
 	BaseScene::Finalize();
 }
-
-
 
 void Title::Update()
 {

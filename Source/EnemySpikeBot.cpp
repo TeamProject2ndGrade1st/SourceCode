@@ -27,17 +27,25 @@ void EnemySpikeBot::Initialize()
 
     // ƒ^ƒO‚ðÝ’è‚·‚é
     GetOwner()->SetTag(GameObject::Tag::SpikeBot);
+
+    SetAccelaration(0);
+    BaseEnemy::Initialize();
 }
 
 void EnemySpikeBot::Begin()
 {
+    BaseEnemy::Begin();
 }
 
 void EnemySpikeBot::Update()
 {
     stateMachine.get()->Update();
+    UpdateVelocity();
+    UpdateMove();
+    BaseEnemy::Update();
 }
 
 void EnemySpikeBot::DrawDebug()
 {
+    BaseEnemy::DrawDebug();
 }

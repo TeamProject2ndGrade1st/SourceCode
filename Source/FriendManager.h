@@ -33,6 +33,7 @@ public:
     void AddFriend(BaseFriend* _friend);
     BaseFriend* FindByTag(Tag tag, std::vector<BaseFriend*>& array);
 
+    BaseFriend* FindFriendOwner(GameObject* wFriend) const;
 private:
     std::vector<BaseFriend*> friendArray;
     Argent::Scene::BaseScene* scene;

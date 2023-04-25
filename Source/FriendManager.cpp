@@ -5,11 +5,18 @@
 void FriendManager::Initialize()
 {
     BaseActor::Initialize();
+    GetOwner()->SetTag(GameObject::Tag::FriendManager);
 }
 
 void FriendManager::Update()
 {
-    
+    for (auto activer = friendArray.begin();activer != friendArray.end();++activer)
+    {
+        for (auto passiver = activer + 1; passiver != friendArray.end(); ++passiver)
+        {
+            (*activer)->OnCollision((*passiver)->GetOwner()->GetComponent<Argent::Component::Collider::SphereCollider>());
+        }
+    }
 }
 
 void FriendManager::DrawDebug()
@@ -53,4 +60,16 @@ BaseFriend* FriendManager::FindByTag(Tag tag, std::vector<BaseFriend*>& array)
 {
     return nullptr;
     //return std::unique_ptr<BaseFriend>();
+}
+
+BaseFriend* FriendManager::FindFriendOwner(GameObject* wFriend) const
+{
+    for (auto& f : friendArray)
+    {
+        if (!f) continue;
+        if (wFriend == f->GetOwner())
+            return f;
+    }
+
+    return nullptr;
 }

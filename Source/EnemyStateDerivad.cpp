@@ -26,8 +26,15 @@ namespace Enemy::SpikeBot
         //    }
         //}
         //if (SearchFriend())
+
+        //owner->addspeed();
+
         
-        owner->SetFriend(SearchFriend1());
+        
+
+        
+        
+        owner->SetFriend(owner->SearchFriend1());
         if (owner->_friend != nullptr)
         {
             owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyAnimation::Attack));
@@ -39,6 +46,7 @@ namespace Enemy::SpikeBot
 
     }
 
+#if 1
     bool IdleState::SearchFriend()
     {
         // Friendƒ^ƒO‚ª•t‚¢‚Ä‚¢‚éGameObject‚ð’T‚·
@@ -118,13 +126,14 @@ namespace Enemy::SpikeBot
                 if (dot > 0.0f)
                 {
                     f->GetTransform()->SetPosition(friendPos);
-                    return reinterpret_cast<BaseFriend*>(f);
+                    return reinterpret_cast<BaseFriend*> (f);
                     //return f;
                 }
             }
         }
         return nullptr;
     }
+#endif
 
 
     void AttackState::Enter()
@@ -136,17 +145,21 @@ namespace Enemy::SpikeBot
 
     void AttackState::Execute()
     {
+        owner->addspeed();
+
         if (!once)
         {
-            int animationFrame = static_cast<int>(owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimationFrame());
+            //int animationFrame = static_cast<int>(owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimationFrame());
+            float anime = owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimationFrame();
 
-            if (animationFrame == attackTime)
+            if (anime >= attackTime)
             {
                 auto f = owner->GetFriend();
-                DirectX::XMFLOAT3 friendPos = f->GetOwner()->GetTransform()->GetPosition();
-                friendPos.z -= 10;
-                f->GetOwner()->GetTransform()->SetPosition(friendPos);
                 
+                //owner->friendAddSpeed = 3;
+                
+                
+                f->AddImpulse(DirectX::XMFLOAT3(0, 0, -1000000));
                 
                 once = true;
             }
