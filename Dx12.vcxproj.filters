@@ -157,9 +157,6 @@
     <ClCompile Include="Source\Argent\Core\ArWindow.cpp">
       <Filter>Lib\Argent\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\GameObject\GameObject.cpp">
-      <Filter>Lib\Argent\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Argent\Graphic\Dx12\Command.cpp">
       <Filter>Lib\Argent\Graphic\Dx12</Filter>
     </ClCompile>
@@ -352,6 +349,9 @@
     <ClCompile Include="Source\Argent\Component\EffekseerEmitter.cpp">
       <Filter>Lib\Argent\Component\Effekseer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Argent\GameObject\GameObject.cpp">
+      <Filter>Lib\Argent\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -407,9 +407,6 @@
     </ClInclude>
     <ClInclude Include="Source\Argent\Core\ArWindow.h">
       <Filter>Lib\Argent\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Argent\GameObject\GameObject.h">
-      <Filter>Lib\Argent\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Graphic\Dx12\Command.h">
       <Filter>Lib\Argent\Graphic\Dx12</Filter>
@@ -626,6 +623,9 @@
     </ClInclude>
     <ClInclude Include="Source\Argent\Component\EffekseerEmitter.h">
       <Filter>Lib\Argent\Component\Effekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\GameObject\GameObject.h">
+      <Filter>Lib\Argent\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

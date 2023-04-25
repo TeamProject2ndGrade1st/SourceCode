@@ -66,14 +66,10 @@ namespace Argent::Component::Renderer
 
 	void MeshRenderer::DrawDebug()
 	{
-		if (ImGui::TreeNode(GetName().c_str()))
+		if (ImGui::TreeNode(GetName()))
 		{
 			if (ImGui::TreeNode("Material"))
 			{
-				/*for (auto& m : materials)
-				{
-					m.second->DrawDebug();
-				}*/
 				for(auto& s : mesh->subsets)
 				{
 					s.material->DrawDebug();

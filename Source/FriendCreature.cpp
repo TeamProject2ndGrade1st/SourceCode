@@ -28,7 +28,7 @@ void FriendCreature::Initialize()
     friction = init_friction;
 
     //タグ付け
-    GetOwner()->SetTag(GameObject::Tag::Friend);
+    GetOwner()->ReplaceTag(GameObject::Tag::Friend);
     GetOwner()->GetTransform()->SetScaleFactor(0.01f);
 
     //ステートマシンへのステート登録

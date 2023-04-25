@@ -42,7 +42,7 @@ void Transform::Update()
 
 void Transform::DrawDebug()
 {
-	if(ImGui::TreeNode(GetName().c_str()))
+	if(ImGui::TreeNode(GetName()))
 	{
 		ImGui::DragFloat3("Position", &position.x, 1.0f, -FLT_MAX, FLT_MAX);
 		ImGui::DragFloat3("Scale", &scale.x, 0.001f, -FLT_MAX, FLT_MAX);

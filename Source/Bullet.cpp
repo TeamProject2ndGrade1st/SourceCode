@@ -64,7 +64,7 @@ void Bullet::OnCollision()
 
 void Bullet::DrawDebug()
 {
-	if(ImGui::TreeNode(GetName().c_str()))
+	if(ImGui::TreeNode(GetName()))
 	{
 		ImGui::SliderInt("Damage", &damage, 0, 10.0f);
 		ImGui::SliderFloat("Speed", &speed, 0, 100.0f);

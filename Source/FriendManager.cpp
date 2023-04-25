@@ -16,7 +16,7 @@ void FriendManager::DrawDebug()
 {
     static DirectX::XMFLOAT3 pos{};
     static int type{};
-    if (ImGui::TreeNode(GetName().c_str()))
+    if (ImGui::TreeNode(GetName()))
     {
         ImGui::SliderFloat3("SpawnPos", &pos.x, -100.0f, 100.0f);
         ImGui::SliderInt("FriendType", &type, 0, static_cast<int>(Type::End)-1);

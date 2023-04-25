@@ -36,7 +36,7 @@ void Light::End()
 
 void Light::DrawDebug()
 {
-	if(ImGui::TreeNode(GetName().c_str()))
+	if(ImGui::TreeNode(GetName()))
 	{
 		color.DrawDebug();
 		BaseComponent::DrawDebug();

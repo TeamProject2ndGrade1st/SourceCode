@@ -123,7 +123,7 @@ void Player::Update()
 
 void Player::DrawDebug()
 {
-    if(ImGui::TreeNode(GetName().c_str()))
+    if(ImGui::TreeNode(GetName()))
     {
         ImGui::Checkbox("UseCameraControl", &useCameraControl);
         ImGui::SliderFloat("movement", &movement, 0.1f, 10.0);

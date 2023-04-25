@@ -44,7 +44,6 @@ namespace Argent::Scene
 		void DrawDebugNumGameObject() const;
 
 		void DeleteDestroyedObject();
-		//void Destroy(GameObject* object);
 
 		std::vector<std::unique_ptr<GameObject>>::iterator begin() { return gameObject.begin(); }
 		std::vector<std::unique_ptr<GameObject>>::iterator end() { return gameObject.end(); }
@@ -91,7 +90,6 @@ namespace Argent::Scene
 		const std::string sceneName;
 	private:
 		std::vector<std::unique_ptr<GameObject>> gameObject{};
-		//std::vector<GameObject*> gameObject{};
 		bool isInitialized;
 	private:
 	};

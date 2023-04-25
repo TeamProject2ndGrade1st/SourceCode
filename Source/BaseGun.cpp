@@ -34,7 +34,7 @@ void BaseGun::Update()
 
 void BaseGun::DrawDebug()
 {
-	if(ImGui::TreeNode(GetName().c_str()))
+	if(ImGui::TreeNode(GetName()))
 	{
 		//Apex R-99‚ÌƒŒ[ƒg‚ªÅ’á’l
 		ImGui::DragFloat("Fire Rate", &fireRate, 0.05f, 0.05f, 10.0f);

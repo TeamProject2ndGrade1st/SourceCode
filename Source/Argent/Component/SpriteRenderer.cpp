@@ -72,7 +72,7 @@ namespace Argent::Component::Renderer
 
 	void SpriteRenderer::DrawDebug()
 	{
-		if(ImGui::TreeNode(GetName().c_str()))
+		if(ImGui::TreeNode(GetName()))
 		{
 			BaseRenderer::DrawDebug();
 			material->DrawDebug();

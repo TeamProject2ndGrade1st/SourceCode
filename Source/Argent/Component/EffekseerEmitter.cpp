@@ -32,7 +32,7 @@ namespace Argent::Component::Renderer
 
 	void EffekseerEmitter::DrawDebug()
 	{
-		if(ImGui::TreeNode(GetName().c_str()))
+		if(ImGui::TreeNode(GetName()))
 		{
 			color.DrawDebug();
 			BaseComponent::DrawDebug();

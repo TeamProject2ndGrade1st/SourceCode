@@ -38,7 +38,7 @@ float4 main(VS_OUT pin) : SV_TARGET
 	float3 N = normalTex.Sample(smpPoint, pin.texcoord).rgb;
 	N = normalize(mul(normal * 2.0f - 1.0f, CM));
 
-	float3 L = normalize(float3(pin.worldPosition.xyz - lightPosition.xyz));
+	float3 L = normalize(float3( - lightPosition.xyz));
 	float3 E = normalize(float3(cameraPosition.xyz - pin.worldPosition.xyz));
 
 

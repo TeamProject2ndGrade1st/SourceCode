@@ -30,7 +30,7 @@ void FriendDrone::Initialize()
     attackAreaRadius = init_attackAreaRadius;
 
     //タグ付け
-    GetOwner()->SetTag(GameObject::Tag::Friend);
+    GetOwner()->ReplaceTag(GameObject::Tag::Friend);
     GetOwner()->GetTransform()->SetScaleFactor(0.01f);
 
     //ステートマシンへのステート登録

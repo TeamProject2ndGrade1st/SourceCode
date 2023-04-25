@@ -6,9 +6,11 @@ class Stage:
 	public Argent::Component::BaseComponent
 {
 public:
-	Stage();
+	Stage(const char* filePath);
 	~Stage() override = default;
 
 	void Initialize() override;
+
+	std::string filePath;
 };
 

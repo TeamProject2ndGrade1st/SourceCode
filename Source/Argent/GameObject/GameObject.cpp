@@ -266,10 +266,13 @@ void GameObject::DrawDebug()
 void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 {
 	com->SetOwner(this);
+	std::string n = ComponentNameCheck(com->GetName());
+	com->SetName(n.c_str());
+
 	if (isInitialized)
 		com->Initialize();
 
-	int64_t index = FindNullComponentIndex();
+	const int64_t index = FindNullComponentIndex();
 	if(index < 0)
 	{
 		size_t size = components.size(); 
@@ -343,6 +346,13 @@ GameObject* GameObject::Instantiate(const char* name, Argent::Component::BaseCom
 {
 	GameObject* ret = new GameObject(name, com);
 
+	Argent::Scene::SceneManager::Instance()->GetCurrentScene()->AddObject(ret);
+	return ret;
+}
+
+GameObject* GameObject::Instantiate(const char* name, std::vector<Argent::Component::BaseComponent*> com)
+{
+	GameObject* ret = new GameObject(name, com);
 	Argent::Scene::SceneManager::Instance()->GetCurrentScene()->AddObject(ret);
 	return ret;
 }

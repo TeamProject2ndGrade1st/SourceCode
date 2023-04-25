@@ -25,7 +25,7 @@ void EnemySpikeBot::Initialize()
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
 
     // ƒ^ƒO‚ðÝ’è‚·‚é
-    GetOwner()->SetTag(GameObject::Tag::SpikeBot);
+    GetOwner()->ReplaceTag(GameObject::Tag::SpikeBot);
 }
 
 void EnemySpikeBot::Begin()

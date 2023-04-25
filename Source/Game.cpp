@@ -38,7 +38,13 @@ void Game::Initialize()
 	AddObject(g);
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 
-	AddObject(new GameObject("Stage", new Stage));
+
+
+	AddObject(new GameObject("Main Stage", new Stage("./Resources/Model/Stage/map_0419_1.fbx")));
+	AddObject(new GameObject("Box", new Stage("./Resources/Model/Stage/boxes_0419_1.fbx")));
+	AddObject(new GameObject("Core", new Stage("./Resources/Model/Stage/core_0419_1.fbx")));
+	AddObject(new GameObject("Own Camp", new Stage("./Resources/Model/Stage/zizin_0419_1.fbx")));
+	AddObject(new GameObject("Tutorial Stage", new Stage("./Resources/Model/StageBlender.fbx")));
 
 	BaseScene::Initialize();
 }
