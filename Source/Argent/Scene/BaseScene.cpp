@@ -1,6 +1,8 @@
 #include "BaseScene.h"
 #include <algorithm>
 #include "../Graphic/Graphics.h"
+#include "../Component/Camera.h"
+#include "../Component/Light.h"
 
 namespace Argent::Scene
 {
@@ -38,7 +40,7 @@ namespace Argent::Scene
 			if(gameObject.at(i))
 			{
 				gameObject.at(i)->Finalize();
-				delete gameObject.at(i);
+				//delete gameObject.at(i);
 			}
 		}
 		gameObject.clear();
@@ -104,11 +106,13 @@ namespace Argent::Scene
 
 			if((*it)->GetDestroyFlag())
 			{
+				//todo ゲームオブジェクトを破壊するまでの待ち時間をどうにかすること
 				(*it)->elapsedTimeFromDestroyed += 1;
 				if((*it)->elapsedTimeFromDestroyed < 3) continue;
 				(*it)->Finalize();
-				delete (*it);
-				(*it) = nullptr;
+				(*it).reset(nullptr);
+				//delete (*it);
+				//(*it) = nullptr;
 			}
 		}
 	}
@@ -116,6 +120,27 @@ namespace Argent::Scene
 	void BaseScene::DrawDebug()
 	{
 		ImGui::Text(GetName().c_str());
+
+		DrawDebugNumGameObject();
+
+		if (ImGui::TreeNode("Object"))
+		{
+			for(size_t i = 0; i < gameObject.size(); ++i)
+			{
+				if(!gameObject.at(i).get()) continue;
+					ImGuiCheckBox(gameObject.at(i).get());
+			}
+			ImGui::TreePop();
+		}
+		for(size_t i = 0; i < gameObject.size(); ++i)
+		{
+			if (!gameObject.at(i)) continue;
+				gameObject.at(i)->DrawDebug();
+		}
+	}
+
+	void BaseScene::DrawDebugNumGameObject() const
+	{
 		int numGameObject{};
 		for(auto& g : gameObject)
 		{
@@ -125,20 +150,6 @@ namespace Argent::Scene
 			}
 		}
 		ImGui::InputInt("Num GameObject", &numGameObject);
-		if (ImGui::TreeNode("Object"))
-		{
-			for(size_t i = 0; i < gameObject.size(); ++i)
-			{
-				if(!gameObject.at(i)) continue;
-				ImGuiCheckBox(gameObject.at(i));
-			}
-			ImGui::TreePop();
-		}
-		for(size_t i = 0; i < gameObject.size(); ++i)
-		{
-			if (!gameObject.at(i)) continue;
-			gameObject.at(i)->DrawDebug();
-		}
 	}
 
 
@@ -162,11 +173,11 @@ namespace Argent::Scene
 		{
 			const UINT size = gameObject.size();
 			gameObject.resize(size + 100);
-			gameObject.at(size) = obj;
+			gameObject.at(size).reset(obj);
 		}
 		else
 		{
-			gameObject.at(i) = obj;
+			gameObject.at(i).reset(obj);
 		}
 	}
 
@@ -174,23 +185,31 @@ namespace Argent::Scene
 	{
 		if (ImGui::Button(obj->GetName().c_str()))
 		{
-			//CloseAllDebugWindow();
-			obj->SetIsSelected(true);
+			if(obj)
+				obj->SetIsDrawDebug(true);
 		}
 
 		if (obj->GetChildCount() == 0) return;
+		int numValidChild = 0;
+		for(const auto& child : *obj)
+		{
+			if(child)
+				++numValidChild;
+		}
+		if(numValidChild == 0) return;
+
 		if (ImGui::TreeNode(obj->GetName().c_str()))
 		{
 			for (const auto& child : *obj)
 			{
-				if(!child)
-				ImGuiCheckBox(child);
+				if(child)
+					ImGuiCheckBox(child.get());
 			}
 			ImGui::TreePop();
 		}
 	}
 
-	UINT BaseScene::FindNullObjectIndex() const
+	int64_t BaseScene::FindNullObjectIndex() const
 	{
 		for(size_t i = 0; i < gameObject.size(); ++i)
 		{

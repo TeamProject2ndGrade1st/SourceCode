@@ -15,7 +15,7 @@ namespace Friend::Creature
 	{
 		float timer = owner->GetStateTimer();
 		owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
-		if (!owner->GetTarget())return;
+		if (!owner->SerchEnemy())return;
 		if (!owner->IsAnimationEnd())return;
 		
 		if (owner->IsTargetInAttackArea())
@@ -41,7 +41,7 @@ namespace Friend::Creature
 		if (!owner->IsAnimationEnd())return;
 
 		//“G‚ª‚¢‚È‚¢
-		if (0)//TODO:‚ ‚Æ‚ÅŽÀ‘•
+		if (!owner->SerchEnemy())//TODO:‚ ‚Æ‚ÅŽÀ‘•
 		{
 			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Idle));
 		}

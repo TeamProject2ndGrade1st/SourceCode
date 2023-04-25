@@ -5,12 +5,12 @@
 
 namespace Argent::Resource::Effect
 {
-	class EffectResource:
+	class EffekseerResource:
 		public Resource::ArImportedResource
 	{
 	public:
-		EffectResource(const char* filePath, const char* materialPath);
-		~EffectResource() override = default;
+		EffekseerResource(const char* filePath, const char* materialPath);
+		~EffekseerResource() override = default;
 
 		void Play(const DirectX::XMFLOAT3& position, 
 				const DirectX::XMFLOAT3& scale, 
@@ -20,9 +20,10 @@ namespace Argent::Resource::Effect
 			const DirectX::XMFLOAT4& rotate,
 			const DirectX::XMFLOAT4& color);
 		void Stop() const;
+		void Pause();
 		bool IsExist() const;
 	private:
-
+		float startFrame;
 		Effekseer::EffectRef effect{};
 		Effekseer::Handle handle;
 	};

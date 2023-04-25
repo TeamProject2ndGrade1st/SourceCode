@@ -14,6 +14,7 @@
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
 #include "Demo.h"
+#include "EnemyTurret.h"
 
 
 void Game::Initialize()
@@ -28,15 +29,23 @@ void Game::Initialize()
 	//GetGameObject("player")->AddComponent(new Player);
 //	AddObject(new GameObject("player", new Player));
 
-	// spikeBot
+	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_test.efk", "./Resources/Effects"));
+
 	//AddObject(new GameObject("spikeBot", Argent::Loader::Fbx::LoadFbx("./Resources/Model/spike_bot_0419_1.fbx")));
 	//AddObject(new GameObject("spikeBot", new SpikeBot()));
 
+	//AddObject(new GameObject("turret", new EnemyTurret()));
+
 	//AddObject(new GameObject("friend", new FriendCreature()));
-	AddObject(new GameObject("target", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
+	auto* g = new GameObject("target", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false));
+	AddObject(g);
+	auto* hoge0 = new GameObject("shadow", Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow.fbx", false));
+	AddObject(hoge0);
+	auto* hoge2 = new GameObject("shadow_ver2", Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow_ver2.fbx", false));
+	AddObject(hoge2);
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 
-	AddObject(new GameObject("Stage", new Stage));
+	//AddObject(new GameObject("Stage", new Stage));
 
 	BaseScene::Initialize();
 }

@@ -49,6 +49,7 @@ void BaseFriend::Begin()
 
 void BaseFriend::Update()
 {
+
     if (attackTimer > 0)attackTimer -= Argent::Timer::GetDeltaTime();
 
     stateMachine.get()->Update();
@@ -128,5 +129,35 @@ bool BaseFriend::IsTargetInAttackArea()
     float length = sqrtf(vx * vx + vz * vz);
     if (length < attackAreaRadius)return true;
     else return false;
+}
+
+bool BaseFriend::SerchEnemy()
+{
+    std::vector<GameObject*> enemyArray;
+    if (!GameObject::FindByTag(GameObject::Tag::Turret, enemyArray))
+    {
+        //”­Œ©‚µ‚È‚©‚Á‚½‚ç
+        target = nullptr;
+        return false;
+    }
+
+    float length0 = FLT_MAX;
+    for (auto enemy = enemyArray.begin(); enemy != enemyArray.end(); ++enemy)
+    {
+        DirectX::XMFLOAT3 enemyPos = (*enemy)->GetTransform()->GetPosition();
+        DirectX::XMFLOAT3 pos = GetTransform()->GetPosition();
+        DirectX::XMVECTOR EnemyPos = DirectX::XMLoadFloat3(&enemyPos);
+
+        DirectX::XMVECTOR Pos = DirectX::XMLoadFloat3(&pos);
+        DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(EnemyPos,Pos);
+        DirectX::XMVECTOR Length = DirectX::XMVector3Length(Vec);
+        float length1;
+        DirectX::XMStoreFloat(&length1, Length);
+        if (length1 < length0)
+        {
+            target = (*enemy);
+        }
+    }
+    return true;
 }
 

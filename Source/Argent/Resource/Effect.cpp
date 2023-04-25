@@ -7,8 +7,10 @@
 
 namespace Argent::Resource::Effect
 {
-	EffectResource::EffectResource(const char* filePath, const char* materialPath):
+	EffekseerResource::EffekseerResource(const char* filePath, const char* materialPath):
 		ArImportedResource(filePath, ResourceType::Effect)
+	,	startFrame(0.0f)
+	,	handle(0)
 	{
 		std::wstring fPath = Helper::String::GetWideStringFromString(filePath);
 		std::wstring mPath = Helper::String::GetWideStringFromString(materialPath);
@@ -18,19 +20,20 @@ namespace Argent::Resource::Effect
 
 	}
 
-	void EffectResource::Play(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& scale,
+	void EffekseerResource::Play(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& scale,
 		const DirectX::XMFLOAT4& rotate, float startFrame)
 	{
 		handle = EffectManager::Instance()->GetManager()->Play(effect, Helper::Effect::ToVector3D(position), static_cast<int32_t>(startFrame));
 	}
 
-	void EffectResource::Update(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& scale,
+	void EffekseerResource::Update(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& scale,
 		const DirectX::XMFLOAT4& rotate, const DirectX::XMFLOAT4& color)
 	{
 		EffectManager::Instance()->GetManager()->SetRotation(handle, rotate.x, rotate.y, rotate.z);
 		EffectManager::Instance()->GetManager()->SetScale(handle, scale.x, scale.y, scale.z);
 		EffectManager::Instance()->GetManager()->SetLocation(handle, position.x, position.y, position.z);
 
+		//Effekseer‚Ìcolor‚Í0~255‚ç‚µ‚¢
 		Effekseer::Color col{static_cast<unsigned char>(color.x * 255),
 			static_cast<unsigned char>(color.y * 255),
 		static_cast<unsigned char>(color.z * 255),
@@ -38,12 +41,17 @@ namespace Argent::Resource::Effect
 		EffectManager::Instance()->GetManager()->SetAllColor(handle, col);
 	}
 
-	void EffectResource::Stop() const
+	void EffekseerResource::Stop() const
 	{
 		EffectManager::Instance()->GetManager()->StopEffect(handle);
 	}
 
-	bool EffectResource::IsExist() const
+	void EffekseerResource::Pause()
+	{
+		EffectManager::Instance()->GetManager()->SetPaused(handle, true);
+	}
+
+	bool EffekseerResource::IsExist() const
 	{
 		return EffectManager::Instance()->GetManager()->Exists(handle);
 	}

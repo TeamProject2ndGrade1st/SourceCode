@@ -3,8 +3,6 @@
 #include <vector>
 
 #include "../GameObject/GameObject.h"
-#include "../Component/Camera.h"
-#include "../Component/Light.h"
 #include "../Graphic/Graphics.h"
 
 namespace Argent::Scene
@@ -43,12 +41,13 @@ namespace Argent::Scene
 
 		virtual void DrawDebug();
 
+		void DrawDebugNumGameObject() const;
 
 		void DeleteDestroyedObject();
 		//void Destroy(GameObject* object);
 
-		std::vector<GameObject*>::iterator begin() { return gameObject.begin(); }
-		std::vector<GameObject*>::iterator end() { return gameObject.end(); }
+		std::vector<std::unique_ptr<GameObject>>::iterator begin() { return gameObject.begin(); }
+		std::vector<std::unique_ptr<GameObject>>::iterator end() { return gameObject.end(); }
 
 		const std::string& GetName() const { return sceneName; }
 		void CloseAllDebugWindow() const;
@@ -81,17 +80,18 @@ namespace Argent::Scene
 			{
 				if(obj->GetName() == objectName)
 				{
-					return obj;
+					return obj.get();
 				}
 			}
 			return nullptr;
 		}
 
-		UINT FindNullObjectIndex() const;
+		int64_t FindNullObjectIndex() const;
 	protected:
 		const std::string sceneName;
-		std::vector<GameObject*> gameObject{};
-		//std::vector<GameObject*> destroyedGameObject{};
+	private:
+		std::vector<std::unique_ptr<GameObject>> gameObject{};
+		//std::vector<GameObject*> gameObject{};
 		bool isInitialized;
 	private:
 	};

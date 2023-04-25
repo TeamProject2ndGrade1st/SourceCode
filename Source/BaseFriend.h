@@ -37,6 +37,7 @@ public:
 
     //ターゲットが攻撃範囲内にいるか
     bool IsTargetInAttackArea();
+    bool SerchEnemy();
 
     void SetStateTimer(float timer) { stateTimer = timer; }
     float GetStateTimer() const { return stateTimer; }
@@ -59,8 +60,6 @@ public:
     StateMachine* GetStateMachine() const { return stateMachine.get(); }
     GameObject* GetTarget() const { return target; }
 
-    void SetTag(FriendManager::Tag tag) { this->tag = tag; }
-
 protected:
     //目標座標
     DirectX::XMFLOAT3 targetPosition{};
@@ -82,6 +81,5 @@ protected:
     std::unique_ptr<StateMachine> stateMachine{ nullptr };
 
     //タグ
-    FriendManager::Tag tag{};
 };
 

@@ -13,6 +13,8 @@
 
 #include "Component/Component.h"
 #include "Component/Transform.h"
+#include "Component/Camera.h"
+#include "Component/Light.h"
 #include "Component/Collider.h"
 #include "Component/AudioPlayer.h"
 
@@ -20,7 +22,7 @@
 #include "Component/SpriteRenderer.h"
 #include "Component/MeshRenderer.h"
 #include "Component/SkinnedMeshRenderer.h"
-#include "Component/EffectRenderer.h"
+#include "Component/EffekseerEmitter.h"
 
 #include "Component/BaseActor.h"
 
