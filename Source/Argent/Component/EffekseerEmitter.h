@@ -18,14 +18,16 @@ namespace Argent::Component::Renderer
 		void DrawDebug() override;
 
 		//エフェクトの再生
-		void OnPlay() { isPlay = true; }
+		void OnPlay(float startFrame = 0.0f);
+		void Pause();
 	private:
-		bool isPlay;
+
 		Argent::Color color;
-
+		DirectX::XMFLOAT3 offset;
+		DirectX::XMFLOAT3 scale;
+		DirectX::XMFLOAT4 rotation;
 		bool isLooping;
-
-		std::shared_ptr<Argent::Resource::Effect::EffectResource> effect;
+		std::shared_ptr<Argent::Resource::Effect::EffekseerResource> effect;
 	};
 	
 }

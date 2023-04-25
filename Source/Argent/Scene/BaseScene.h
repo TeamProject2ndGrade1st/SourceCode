@@ -90,6 +90,7 @@ namespace Argent::Scene
 		UINT FindNullObjectIndex() const;
 	protected:
 		const std::string sceneName;
+	private:
 		std::vector<GameObject*> gameObject{};
 		//std::vector<GameObject*> destroyedGameObject{};
 		bool isInitialized;

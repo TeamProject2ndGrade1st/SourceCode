@@ -2,44 +2,32 @@
 #include "Transform.h"
 #include "../GameObject/GameObject.h"
 #include "../Other/Helper.h"
+#include "../Math/MathHelper.h"
 
 
 namespace Argent::Component::Renderer
 {
 	EffekseerEmitter::EffekseerEmitter(const char* filePath, const char* materialPath):
-		BaseComponent(Helper::String::ExtractFileName(filePath, false))
+		BaseComponent("Effekseer Emitter")
 	{
-		effect = std::make_shared<Argent::Resource::Effect::EffectResource>(filePath, materialPath);
+		effect = std::make_shared<Argent::Resource::Effect::EffekseerResource>(filePath, materialPath);
 	}
 
 	void EffekseerEmitter::Update()
 	{
 		if (!effect) return;
 
-		//todo
-		if (!effect->IsExist())
-		{
-			isPlay = false;
-		}
-		else
+		//todo 毎フレームはいらない気がする
+		//再生中だった場合はトランスフォームを毎フレームアップデートする
+		if(effect->IsExist())
 		{
 			const Transform* t = GetOwner()->GetTransform();
-
-			if (!t) return;
 			effect->Update(t->GetPosition(), t->GetScale(), t->GetRotation(), color.color);
 		}
-		isPlay = true;
 	}
 
 	void EffekseerEmitter::Render() const
 	{
-		if (!effect) return;
-		const Transform* t = GetOwner()->GetTransform();
-
-		if (!t) return;
-
-		if(!effect->IsExist())
-		effect->Play(t->GetPosition(), t->GetScale(), t->GetRotation());
 	}
 
 	void EffekseerEmitter::DrawDebug()
@@ -52,4 +40,22 @@ namespace Argent::Component::Renderer
 		}
 	}
 
+	void EffekseerEmitter::OnPlay(float startFrame)
+	{
+		if(!effect) return;
+
+		//エフェクトが再生中だった場合は停止する
+		if(effect->IsExist())	effect->Stop();
+
+		//再生
+		const auto* t = GetOwner()->GetTransform();
+		effect->Play(t->GetPosition() + offset, t->GetScale() + scale,
+			t->GetRotation() + rotation, startFrame);
+	}
+
+	void EffekseerEmitter::Pause()
+	{
+		if(effect && effect->IsExist())
+			effect->Pause();
+	}
 }
