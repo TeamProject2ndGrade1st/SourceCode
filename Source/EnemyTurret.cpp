@@ -16,17 +16,22 @@ void EnemyTurret::Initialize()
     GetOwner()->GetTransform()->SetPosition(pos);    
 
     // ƒ^ƒO‚ðÝ’è‚·‚é
+
     GetOwner()->ReplaceTag(GameObject::Tag::Turret);
+    BaseEnemy::Initialize();
 }
 
 void EnemyTurret::Begin()
 {
+    BaseEnemy::Begin();
 }
 
 void EnemyTurret::Update()
 {
+    BaseEnemy::Update();
 }
 
 void EnemyTurret::DrawDebug()
 {
+    BaseEnemy::DrawDebug();
 }

@@ -12,7 +12,9 @@ BaseFriend::BaseFriend(const char* name, DirectX::XMFLOAT3 pos) :
 void BaseFriend::Initialize()
 {
     Character::Initialize();
+
     GetOwner()->ReplaceTag(GameObject::Tag::Friend);
+
 
    /* GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     
@@ -40,6 +42,7 @@ void BaseFriend::Initialize()
     stateMachine.get()->RegisterState(new Friend::AttackState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));*/
+
 }
 
 void BaseFriend::Begin()

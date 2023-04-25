@@ -24,9 +24,9 @@ void FriendDrone::Initialize()
 
     //スケール変更
     GetOwner()->GetTransform()->SetScaleFactor(0.01f);
-    acceleration = init_acceleration;
-    maxMoveSpeed = init_maxMoveSpeed;
-    friction = init_friction;
+    acceleration     = init_acceleration;
+    maxMoveSpeed     = init_maxMoveSpeed;
+    friction         = init_friction;
     attackAreaRadius = init_attackAreaRadius;
 
     //タグ付け

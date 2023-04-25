@@ -8,11 +8,13 @@
 #include "../Component/Transform.h"
 #include "../Component/BaseActor.h"
 
+
 class GameObject
 {
 public:
 	enum class Tag : unsigned int
 	{
+
 		UnTagged   =	0x01 << 1,	//default 
 		MainCamera =	0x01 << 2,	//カメラが持ってる
 		Stage =			0x01 << 3,	//ステージ
@@ -20,6 +22,8 @@ public:
 		Enemy =			0x01 << 5,	//敵キャラ
 		SpikeBot =		0x01 << 6,	
 		Turret =		0x01 << 7,
+		FriendManager = 0x01 << 8,
+
 	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);
 	GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com);

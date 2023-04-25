@@ -2,9 +2,22 @@
 
 #include "Argent/Argent.h"
 
+<<<<<<< HEAD
 //#include "Argent/Debug/DebugRenderer.h"
 
 
+=======
+#include "BaseFriend.h"
+#include "BaseEnemy.h"
+#include "Player.h"
+#include "Argent/Debug/DebugRenderer.h"
+#include "Demo.h"
+#include "Stage.h"
+#include "EnemySpikeBot.h"
+#include "EnemyTurret.h"
+#include "spikeBot.h"
+#include "FriendCreature.h"
+#include "FriendManager.h"
 
 void Title::Initialize()
 {

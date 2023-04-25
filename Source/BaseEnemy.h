@@ -3,6 +3,9 @@
 #include "Argent/Argent.h"
 #include "Character.h"
 #include "EnemyStateMachine.h"
+#include "BaseFriend.h"
+#include "FriendManager.h"
+
 
 enum class EnemyAnimation
 {
@@ -31,10 +34,9 @@ public:
         com->SetAnimation(index);
     }
 
-    bool isAnimationEnd()
+    bool IsAnimationEnd()
     {
-        return GetOwner()->GetComponent < Argent::Component::Renderer::SkinnedMeshRenderer>()->IsAnimationEnd();
-
+        return GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->IsAnimationEnd();
     }
 
     void SetStateTimer(float timer) { stateTimer = timer; }
@@ -51,6 +53,16 @@ public:
         Attack,
     };
 
+public:
+    BaseFriend* _friend;
+
+    BaseFriend* GetFriend() { return _friend; }
+    void SetFriend(BaseFriend* f) { _friend = f; }
+
+    float friendAddSpeed = 0;
+    void addspeed();
+
+    BaseFriend* SearchFriend1();
 protected:
     // –Ú“IÀ•W
     DirectX::XMFLOAT3 targetPosition{};
@@ -58,4 +70,5 @@ protected:
     float stateTimer{};
 
     std::unique_ptr<EnemyStateMachine> stateMachine = nullptr;
+    FriendManager* fManager = nullptr;
 };

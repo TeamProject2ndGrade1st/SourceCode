@@ -1,5 +1,10 @@
 #include "BaseEnemyState.h"
 
+void EnemyHierarchicalState::Enter()
+{
+
+}
+
 void EnemyHierarchicalState::SetSubState(int newState)
 {
     subState = subStatePool.at(newState);

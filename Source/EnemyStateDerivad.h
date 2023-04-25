@@ -1,29 +1,61 @@
 #pragma once
 #include "BaseEnemyState.h"
+#include "Argent/Argent.h"
+#include "BaseFriend.h"
 
-
-class EnemyIdleState : public EnemyState
+namespace Enemy::SpikeBot
 {
-public:
-    // コンストラクタ
-    EnemyIdleState(BaseEnemy* _friend) :EnemyState(_friend, "idle") {}
-    // デストラクタ
-    ~EnemyIdleState() {}
 
-    void Enter()override;
-    void Execute()override;
-    void Exit()override;
+    class IdleState : public EnemyState
+    {
+    public:
+        // コンストラクタ
+        IdleState(BaseEnemy* _friend) :EnemyState(_friend, "idle") {}
+        // デストラクタ
+        ~IdleState() {}
 
-    bool SearchFriend();    
-};
+        void Enter()override;
+        void Execute()override;
+        void Exit()override;
 
-class EnemyAttackState :public EnemyState
+        bool SearchFriend();
+        BaseFriend* SearchFriend1();
+
+    private:
+        float searchRange = 50.0f;
+    };
+
+    class AttackState :public EnemyState
+    {
+    public:
+        AttackState(BaseEnemy* _friend) :EnemyState(_friend, "attack") {}
+        ~AttackState() {}
+
+        void Enter()override;
+        void Execute()override;
+        void Exit()override;
+
+    public:
+        float attackTime{ 30 };
+        bool once = false;  // ノックバック一回だけ入るための変数
+                            // falseがまだ入っていない
+    };
+}
+
+namespace Enemy::Turret
 {
-public:
-    EnemyAttackState(BaseEnemy* _friend) :EnemyState(_friend, "attack") {}
-    ~EnemyAttackState() {}
+    class IdleState :public EnemyState
+    {
+    public:
+        IdleState(BaseEnemy* _friend) :EnemyState(_friend, "idle") {}
+        ~IdleState() {}
 
-    void Enter()override;
-    void Execute()override;
-    void Exit()override;
-};
+        void Enter()override;
+        void Execute()override;
+        void Exit()override;
+
+        bool SearchFriend();
+
+
+    };
+}

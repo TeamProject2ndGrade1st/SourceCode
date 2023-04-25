@@ -1,5 +1,7 @@
 #pragma once
+#include "Argent/Argent.h"
 #include <vector>
+
 class BaseEnemy;
 
 class EnemyState
@@ -20,6 +22,8 @@ public:
 protected:
     BaseEnemy* owner;
     const char* name;
+
+   
 };
 
 class EnemyHierarchicalState :public EnemyState
