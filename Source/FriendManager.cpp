@@ -57,11 +57,11 @@ void FriendManager::AddFriend(BaseFriend* _friend)
 }
 
 
-BaseFriend* FriendManager::FindByTag(Tag tag, std::vector<BaseFriend*>& array)
-{
-    return nullptr;
-    //return std::unique_ptr<BaseFriend>();
-}
+//BaseFriend* FriendManager::FindByTag(Tag tag, std::vector<BaseFriend*>& array)
+//{
+//    return nullptr;
+//    //return std::unique_ptr<BaseFriend>();
+//}
 
 BaseFriend* FriendManager::FindFriendOwner(GameObject* wFriend) const
 {

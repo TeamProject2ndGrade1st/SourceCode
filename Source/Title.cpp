@@ -1,7 +1,7 @@
 #include "Title.h"
 #include "Argent/Argent.h"
 
-<<<<<<< HEAD
+
 #include "BaseFriend.h"
 #include "BaseEnemy.h"
 #include "Player.h"
@@ -13,7 +13,7 @@
 #include "spikeBot.h"
 #include "FriendCreature.h"
 #include "FriendManager.h"
-=======
+
 //#include "Argent/Debug/DebugRenderer.h"
 
 
