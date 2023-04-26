@@ -431,7 +431,7 @@ namespace Argent::Loader::Fbx
 
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
-				if(material.get()->textureNames[static_cast<int>(Material::MeshMaterial::TextureType::Normal)].empty())
+			//	if(material.get()->textureNames[static_cast<int>(Material::MeshMaterial::TextureType::Normal)].empty())
 				{
 					material->CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureType::Normal);
 					

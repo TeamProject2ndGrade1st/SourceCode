@@ -21,10 +21,10 @@ public:
 
 	DirectX::XMFLOAT3 offset;
 
+	Bullet::Mode mode;
+	GameObject* lmg;
 #ifdef _DEBUG
 	bool enableShot = false;
 
-	Bullet::Mode mode;
-	GameObject* lmg;
 #endif
 };

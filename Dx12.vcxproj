@@ -192,6 +192,7 @@
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\GunRenderer.h" />
     <ClInclude Include="Source\Result.h" />
+    <ClInclude Include="Source\Reticle.h" />
     <ClInclude Include="Source\Stage.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Demo.h" />
@@ -262,7 +263,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shader\DebugMesh.hlsli" />
+    <None Include="Source\Shader\LambertDiffuse.hlsli" />
     <None Include="Source\Shader\Pera.hlsli" />
+    <None Include="Source\Shader\PhongSpecular.hlsli" />
     <None Include="Source\Shader\SceneConstant.hlsli" />
     <None Include="Source\Shader\SkinnedMesh.hlsli" />
     <None Include="Source\Shader\Sprite.hlsli" />

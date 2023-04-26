@@ -1,4 +1,6 @@
 #include "StaticMesh.hlsli"
+#include "PhongSpecular.hlsli"
+#include "LambertDiffuse.hlsli"
 
 SamplerState smpPoint : register(s0);
 //SamplerState smpAniso : register(s1);
@@ -6,23 +8,23 @@ SamplerState smpPoint : register(s0);
 Texture2D albedoTex : register(t0);
 Texture2D normalTex : register(t1);
 
-float3 CalcLambertDiffuse(float3 normal, float3 lightVector, float3 lightColor, float3 kd)
-{
-	float d = max(0, dot(normal, -lightVector));
+//float3 CalcLambertDiffuse(float3 normal, float3 lightVector, float3 lightColor, float3 kd)
+//{
+//	float d = max(0, dot(normal, -lightVector));
 
-	return kd * lightColor * d;
-}
+//	return kd * lightColor * d;
+//}
 
-float3 CalcPhongSpecular(float3 normal, float3 lightVector, float3 lightColor,
-	float3 eyeVector, float shininess, float3 ks)
-{
-	float3 R = reflect(lightVector, normal);
+//float3 CalcPhongSpecular(float3 normal, float3 lightVector, float3 lightColor,
+//	float3 eyeVector, float shininess, float3 ks)
+//{
+//	float3 R = reflect(lightVector, normal);
 
-	float d = max(dot(-eyeVector, R), 0);
-	d = pow(d, shininess);
+//	float d = max(dot(-eyeVector, R), 0);
+//	d = pow(d, shininess);
 
-	return d * lightColor * ks;
-}
+//	return d * lightColor * ks;
+//}
 
 float4 main(VS_OUT pin) : SV_TARGET
 {

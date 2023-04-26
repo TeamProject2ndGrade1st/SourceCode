@@ -54,8 +54,8 @@ public:
 	{}
 
 	void Initialize() override;
-	void SubHp(float f) { hp -= f; }
-	void HealHp(float f) { hp += f; }
+	void SubHp(int f) { hp -= f; }
+	void HealHp(int f) { hp += f; }
 
 	void Update() override;
 private:

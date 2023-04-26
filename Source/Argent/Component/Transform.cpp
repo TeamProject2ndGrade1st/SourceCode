@@ -144,7 +144,10 @@ DirectX::XMMATRIX Transform::CalcWorldMatrix()
 
 	const DirectX::XMFLOAT4 dRotation = rotation - postRotation;
 	// Y to X to Z rotation
-	DirectX::XMVECTOR orientationVec = DirectX::XMLoadFloat4(&orientation);
+	const DirectX::XMVECTOR Axis = DirectX::XMVectorSet(1, 1, 1, 0);
+	DirectX::XMVECTOR orientationVec =  DirectX::XMQuaternionRotationAxis(Axis, 0);
+
+	//DirectX::XMVECTOR orientationVec = DirectX::XMLoadFloat4(&orientation);
 	auto q = DirectX::XMMatrixRotationQuaternion(orientationVec);
 	DirectX::XMVECTOR f = DirectX::XMVector3Normalize(q.r[2]);
 	DirectX::XMVECTOR u = DirectX::XMVector3Normalize(q.r[1]);
@@ -154,26 +157,17 @@ DirectX::XMMATRIX Transform::CalcWorldMatrix()
 		DirectX::XMMatrixScaling(scaleFactor, scaleFactor, scaleFactor) };
 	const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) };
 
-	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(u, DirectX::XMConvertToRadians(dRotation.y)));
-	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(r, DirectX::XMConvertToRadians(dRotation.x)));
-	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(f, DirectX::XMConvertToRadians(dRotation.z)));
+	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(u, DirectX::XMConvertToRadians(rotation.y)));
+	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(r, DirectX::XMConvertToRadians(rotation.x)));
+	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(f, DirectX::XMConvertToRadians(rotation.z)));
+	//orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(u, DirectX::XMConvertToRadians(dRotation.y)));
+	//orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(r, DirectX::XMConvertToRadians(dRotation.x)));
+	//orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(f, DirectX::XMConvertToRadians(dRotation.z)));
 
 	const DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(orientationVec);
 	const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(position.x,position.y, position.z) };
 	//const DirectX::XMMATRIX Dw = DirectX::XMLoadFloat4x4(&defaultWorld);
 
-	DirectX::XMFLOAT3 ang = DirectX::XMFLOAT3(3, 1, 2);
-	DirectX::XMFLOAT3 scl = DirectX::XMFLOAT3(2, 1, 3);
-	DirectX::XMFLOAT3 offset = DirectX::XMFLOAT3(2, 3, 4);
-
-	auto rM = DirectX::XMMatrixRotationRollPitchYaw(ang.x, ang.y, ang.z);
-	auto sM = DirectX::XMMatrixScaling(scl.x, scl.y, scl.z);
-	auto tM = DirectX::XMMatrixTranslation(offset.x, offset.y, offset.z);
-	auto m = sM * rM;
-	m = m * tM;
-	m = m * DirectX::XMMatrixInverse(nullptr, tM);
-	m = DirectX::XMMatrixInverse(nullptr, sM) * m;
-	int i = 0;
 
 	postRotation = rotation;
 	DirectX::XMStoreFloat4(&orientation, orientationVec);

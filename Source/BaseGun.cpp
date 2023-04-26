@@ -9,8 +9,9 @@ BaseGun::BaseGun(const char* name):
 void BaseGun::Initialize()
 {
 	lmg = new GameObject("LMG", 
-		Argent::Loader::Fbx::LoadFbx("./Resources/Model/LMG/LMG_low_0324_1.fbx"));
-	lmg->GetTransform()->SetPosition(DirectX::XMFLOAT3(2.0f, -1.5f, 2.0f));
+		Argent::Loader::Fbx::LoadFbx("./Resources/Model/LMG/LMG_0406_ver4.fbx"));
+	lmg->GetTransform()->SetPosition(DirectX::XMFLOAT3(-16.0f, -20.0f, 12.0f));
+	lmg->GetTransform()->SetRotation(DirectX::XMFLOAT4(-2.0f, -90.0f, 0.0f, 0.0f));
 	//g->GetTransform()->SetRotation(DirectX::XMFLOAT4(-9.0f, 80.0f, 0, 0));
 	GetOwner()->AddChild(lmg);
 }
@@ -22,7 +23,7 @@ void BaseGun::Update()
 	DirectX::XMFLOAT3 u = t->CalcUp() * offset.y;
 	DirectX::XMFLOAT3 r = t->CalcRight() * offset.x;
 
-	lmg->GetTransform()->SetPosition(f + u + r);
+	//lmg->GetTransform()->SetPosition(f + u + r);
 
 #ifdef _DEBUG
 	if(Argent::Input::GetKeyUp(KeyCode::F3))

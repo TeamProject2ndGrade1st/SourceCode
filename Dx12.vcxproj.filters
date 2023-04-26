@@ -633,6 +633,9 @@
     <ClInclude Include="Source\GunRenderer.h">
       <Filter>Game\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Reticle.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
@@ -695,6 +698,12 @@
       <Filter>Lib\Shader</Filter>
     </None>
     <None Include="Source\Shader\DebugMesh.hlsli">
+      <Filter>Lib\Shader</Filter>
+    </None>
+    <None Include="Source\Shader\LambertDiffuse.hlsli">
+      <Filter>Lib\Shader</Filter>
+    </None>
+    <None Include="Source\Shader\PhongSpecular.hlsli">
       <Filter>Lib\Shader</Filter>
     </None>
   </ItemGroup>
