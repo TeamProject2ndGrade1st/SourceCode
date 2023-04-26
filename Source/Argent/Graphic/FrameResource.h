@@ -55,7 +55,7 @@ namespace Argent::Graphics
 		void SetSceneConstant(UINT rootParameterIndex = 0);
 		void SetBarrier(D3D12_RESOURCE_STATES before, D3D12_RESOURCE_STATES after) const;
 		void Reset();
-		void Terminate();
+		void Terminate(Dx12::CommandQueue* cmdQueue);
 		Dx12::Descriptor* GetDsv() const { return dsv;  }
 
 		Microsoft::WRL::ComPtr<ID3D12Resource> backBuffer;

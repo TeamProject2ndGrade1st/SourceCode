@@ -35,20 +35,23 @@ namespace Argent::Dx12
 		cmdList->SetName(L"CmdLists");
 		cmdAlloc->SetName(L"CmdAlloc");
 		executeCmdLists->SetName(L"ExeCmdLists");
-
+		isClosed = false;
 		Close();
-	}
-
-
-	void CommandBundle::Begin() const
-	{
 		this->Reset();
 	}
 
-	void CommandBundle::Reset() const
+
+	void CommandBundle::Begin()
+	{
+		Close();
+		this->Reset();
+	}
+
+	void CommandBundle::Reset()
 	{
 		if (!isClosed) return;
 		cmdAlloc.Get()->Reset();
 		cmdList.Get()->Reset(cmdAlloc.Get(), nullptr);
+		isClosed = false;
 	}
 }

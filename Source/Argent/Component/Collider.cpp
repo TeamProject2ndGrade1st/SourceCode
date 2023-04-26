@@ -60,4 +60,8 @@ namespace Argent::Component::Collider
 		Collider::DrawDebug();
 	}
 
+	void Capsule::DrawDebug()
+	{
+	}
+
 }

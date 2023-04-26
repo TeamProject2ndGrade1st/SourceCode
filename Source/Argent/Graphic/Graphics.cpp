@@ -65,8 +65,6 @@ namespace Argent::Graphics
 		dDevice->Release();
 #endif
 
-
-		
 		renderingQueue = std::make_unique<Dx12::CommandQueue>(device.Get());
 		resourceQueue = std::make_unique<Dx12::CommandQueue>(device.Get());
 		resourceCmdBundle = std::make_unique<Dx12::CommandBundle>(device.Get());
@@ -85,6 +83,7 @@ namespace Argent::Graphics
 
 		frameResources.resize(NumBackBuffers);
 
+		//フレームリソースの作成
 		for(UINT i = 0; i < NumBackBuffers; ++i)
 		{
 			frameResources.at(i) = std::make_unique<FrameResource>(device.Get(), swapChain.Get(),
@@ -105,6 +104,7 @@ namespace Argent::Graphics
 		scissorRect.right = static_cast<LONG>(windowWidth);
 		scissorRect.bottom = static_cast<LONG>(windowHeight);
 
+		//フレームバッファの作成
 		for(auto& buffer : frameBuffer)
 		{
 			buffer = std::make_unique<FrameBuffer>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), 
@@ -112,8 +112,6 @@ namespace Argent::Graphics
 		}
 
 		device->SetName(L"Device");
-		resourceCmdBundle->Begin();
-		resourceCmdBundle.get()->Reset();
 	}
 
 	void Graphics::Initialize()
@@ -125,7 +123,7 @@ namespace Argent::Graphics
 		renderingQueue->WaitForFence(NumBackBuffers);
 		for(auto& buff : frameResources)
 		{
-			buff->Terminate();
+			buff->Terminate(renderingQueue.get());
 		}
 	}
 

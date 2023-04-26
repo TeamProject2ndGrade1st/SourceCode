@@ -15,7 +15,7 @@ namespace Friend::Creature
 	{
 		float timer = owner->GetStateTimer();
 		owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
-		if (!owner->GetTarget())return;
+		if (!owner->SerchEnemy())return;
 		if (!owner->IsAnimationEnd())return;
 		
 		if (owner->IsTargetInAttackArea())
@@ -41,7 +41,7 @@ namespace Friend::Creature
 		if (!owner->IsAnimationEnd())return;
 
 		//“G‚ª‚¢‚È‚¢
-		if (0)//TODO:‚ ‚Æ‚ÅŽÀ‘•
+		if (!owner->SerchEnemy())//TODO:‚ ‚Æ‚ÅŽÀ‘•
 		{
 			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Idle));
 		}
@@ -68,6 +68,7 @@ namespace Friend::Creature
 	{
 		owner->SetAnimation(static_cast<int>(CreatureAnimation::Walk_ChangeFrom_Action));
 		//owner->SetStateTimer(10.0f);
+		owner->AddImpulse(DirectX::XMFLOAT3(0,0,20));
 	}
 
 	void WalkState::Execute()
@@ -195,7 +196,7 @@ namespace Friend::Drone
 	{
 		float timer = owner->GetStateTimer();
 		owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
-		if (!owner->GetTarget())return;
+		if (!owner->SerchEnemy())return;
 
 		if (owner->IsTargetInAttackArea())
 		{
@@ -233,6 +234,11 @@ namespace Friend::Drone
 	void WalkState::Execute()
 	{
 		float timer = owner->GetStateTimer();
+		if (!owner->SerchEnemy())
+		{
+			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Idle));
+		}
+
 		owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
 
 		owner->MoveToTarget();
@@ -256,6 +262,8 @@ namespace Friend::Drone
 	{
 		if (owner->GetAttackTimer() > 0)owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Idle));
 		owner->SetStateTimer(3.0f);
+
+		//owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
 	}
 
 	void AttackState::Execute()

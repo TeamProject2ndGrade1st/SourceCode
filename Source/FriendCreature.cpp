@@ -1,12 +1,20 @@
 #include "FriendCreature.h"
 #include "FriendStateDerived.h"
 
+
 void FriendCreature::Initialize()
 {
+    //スケール変更
+    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
+
     BaseFriend::Initialize();
 
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
+    //GetOwner()->AddComponent(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects"));
 
+    //影の表示
+    //GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow0425_3.fbx", false));
+    
     
     //攻撃範囲の視覚化
     /*GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(
@@ -17,19 +25,13 @@ void FriendCreature::Initialize()
         attackAreaRadius * 100.0f,attackAreaRadius * 100.0f,attackAreaRadius * 100.0f 
     };*/
 
-    //仮置きのターゲット
-    target = GetOwner()->FindByName("target");
-    target->GetTransform()->SetScaleFactor(0.01f);
-
-    //スケール変更
-    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
+    
     acceleration = init_acceleration;
     maxMoveSpeed = init_maxMoveSpeed;
     friction = init_friction;
 
     //タグ付け
     GetOwner()->SetTag(GameObject::Tag::Friend);
-    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
 
     //ステートマシンへのステート登録
     stateMachine = std::make_unique<StateMachine>();
@@ -40,26 +42,23 @@ void FriendCreature::Initialize()
     stateMachine.get()->RegisterState(new Friend::Creature::AttackState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
-
-    
 }
 
 void FriendCreature::Update()
 {
     //レイキャストコンポーネントでY座標があげられるからその分落とす
     //(なぜかイニシャライザでやっても座標が戻される)
-    static bool once;
+    /*static bool once;
     auto pos = GetOwner()->GetTransform()->GetPosition();
     if (pos.y >= 0.0f && !once)
     {
         GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 0.0f, pos.z)); 
         once = true;
-    }
+    }*/
 
     BaseFriend::Update();
 
-    //仮置きターゲットの座標更新
-    targetPosition = target->GetTransform()->GetPosition();
+    
 }
 
 void FriendCreature::DrawDebug()

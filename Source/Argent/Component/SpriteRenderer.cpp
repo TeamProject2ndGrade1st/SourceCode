@@ -4,6 +4,7 @@
 #include "../GameObject/GameObject.h"
 #include "../Resource/Material.h"
 #include "../Other/Helper.h"
+#include "../Math/MathHelper.h"
 
 namespace Argent::Component::Renderer
 {
@@ -45,7 +46,9 @@ namespace Argent::Component::Renderer
 		const Transform* transform = GetOwner()->GetTransform();
 
 		//todo Center‚Ì’l‚ð‚Ç‚Á‚©‚Å’è‹`‚·‚é‚±‚Æ
-		sprite->UpdateVertexMap(transform->GetPosition(), transform->GetScale(), DirectX::XMFLOAT2(), transform->GetRotation().z, 
+		sprite->UpdateVertexMap(transform->GetPosition() + offset, 
+			transform->GetScale() * scale,
+			texPos, transform->GetRotation().z, 
 			material->texture->GetWidth(), material->texture->GetHeight(),
 			material->color.color);
 	}
@@ -73,6 +76,9 @@ namespace Argent::Component::Renderer
 		{
 			BaseRenderer::DrawDebug();
 			material->DrawDebug();
+			ImGui::DragFloat3("Offset", &offset.x, 0.05f, -FLT_MAX, FLT_MAX);
+			ImGui::DragFloat3("Scale", &scale.x, 0.05f, 0.0f, 10.0f);
+			ImGui::DragFloat2("TexPos", &texPos.x, 0.05f, -FLT_MAX, FLT_MAX);
 			ImGui::TreePop();
 		}
 	}

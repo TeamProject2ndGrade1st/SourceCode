@@ -103,6 +103,9 @@
     <Filter Include="Game\mame">
       <UniqueIdentifier>{461c5171-5e51-4739-a613-1f70f2300a77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lib\Argent\Component\Effekseer">
+      <UniqueIdentifier>{e11669fe-e05e-4c1c-938f-de867e3d2c73}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -194,9 +197,6 @@
       <Filter>Lib\Argent\Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Component\SpriteRenderer.cpp">
-      <Filter>Lib\Argent\Component\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Argent\Component\EffectRenderer.cpp">
       <Filter>Lib\Argent\Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Argent\Resource\Effect.cpp">
@@ -349,6 +349,9 @@
     <ClCompile Include="Source\EnemyTurret.cpp">
       <Filter>Game\mame</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Argent\Component\EffekseerEmitter.cpp">
+      <Filter>Lib\Argent\Component\Effekseer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -461,9 +464,6 @@
     </ClInclude>
     <ClInclude Include="Source\Argent\Graphic\Dx12\IndexBuffer.h">
       <Filter>Lib\Argent\Graphic\Dx12</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Argent\Component\EffectRenderer.h">
-      <Filter>Lib\Argent\Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Resource\Effect.h">
       <Filter>Lib\Argent\Resource\Effect</Filter>
@@ -623,6 +623,9 @@
     </ClInclude>
     <ClInclude Include="Source\EnemyTurret.h">
       <Filter>Game\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Argent\Component\EffekseerEmitter.h">
+      <Filter>Lib\Argent\Component\Effekseer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 #include "Title.h"
-
 #include "Argent/Argent.h"
 
+<<<<<<< HEAD
 #include "BaseFriend.h"
 #include "BaseEnemy.h"
 #include "Player.h"
@@ -13,10 +13,14 @@
 #include "spikeBot.h"
 #include "FriendCreature.h"
 #include "FriendManager.h"
+=======
+//#include "Argent/Debug/DebugRenderer.h"
+
 
 void Title::Initialize()
 {
 	ClearGameObject();
+
 
 	//AddObject(new GameObject("plane", Argent::Loader::Fbx::LoadFbx("./Resources/Model/plane.fbx", true)));
 	
@@ -85,7 +89,7 @@ void Title::Initialize()
 
 	AddObject(new GameObject("TitleSprite", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Title.png")));
 
-
+	
 	BaseScene::Initialize();
 }
 

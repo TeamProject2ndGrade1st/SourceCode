@@ -4,6 +4,9 @@
 
 void FriendDrone::Initialize()
 {
+    //スケール変更
+    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
+
     BaseFriend::Initialize();
 
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx", false));
@@ -17,6 +20,7 @@ void FriendDrone::Initialize()
     GetOwner()->GetComponent < Argent::Component::Collider::RayCastCollider>()->scale = {
         attackAreaRadius * 100.0f,attackAreaRadius * 100.0f,attackAreaRadius * 100.0f
     };*/
+
 
     //仮置きのターゲット
     target = GetOwner()->FindByName("target");
@@ -56,9 +60,6 @@ void FriendDrone::Update()
     }
 
     BaseFriend::Update();
-
-    //仮置きターゲットの座標更新
-    targetPosition = target->GetTransform()->GetPosition();
 
     //上下に動かしてふわふわ浮遊させてるだけ
     pos = GetTransform()->GetPosition();

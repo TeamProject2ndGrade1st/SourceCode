@@ -50,6 +50,7 @@ void BaseFriend::Begin()
 
 void BaseFriend::Update()
 {
+
     if (attackTimer > 0)attackTimer -= Argent::Timer::GetDeltaTime();
 
     stateMachine.get()->Update();
@@ -63,46 +64,20 @@ void BaseFriend::DrawDebug()
 
     if (ImGui::TreeNode(GetName().c_str()))
     {
-        if (ImGui::TreeNode("Move"))
-        {
-            ImGui::SliderFloat("Friction", &friction, 0.0f, 5.0f);
-            ImGui::SliderFloat("Acceleration", &acceleration, 0.0f, 10.0f);
-            ImGui::InputFloat3("Velocity", &velocity.x);
-            ImGui::DragFloat3("TargetPosition", &targetPosition.x,0.1f,-100.0f,100.0f);
-            ImGui::TreePop();
-        }
+       
         
 
-        /*if (ImGui::TreeNode("State"))
-        {
-            switch (stateMachine.get()->GetStateIndex())
-            {
-            case static_cast<int>(State::Idle):
-                ImGui::Text("State Idle");
-                break;
-            case static_cast<int>(State::Action):
-                ImGui::Text("State Action");
-                break;
-            case static_cast<int>(State::Walk):
-                ImGui::Text("State Walk");
-                break;
-            case static_cast<int>(State::Attack):
-                ImGui::Text("State Attack");
-                break;
-            }
-            ImGui::SliderFloat("State Timer", &stateTimer, 0.0f, 30.0f);
-            ImGui::TreePop();
-        }*/
+        Character::DrawDebug();
         
-        BaseActor::DrawDebug();
+        
         ImGui::TreePop();
     }
 }
 
 void BaseFriend::MoveToTarget()
 {
-    float vx = targetPosition.x - GetOwner()->GetTransform()->GetPosition().x;
-    float vz = targetPosition.z - GetOwner()->GetTransform()->GetPosition().z;
+    float vx = target->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
+    float vz = target->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
     float length = sqrtf(vx * vx + vz * vz);
     vx /= length;
     vz /= length;
@@ -121,13 +96,56 @@ void BaseFriend::SetAnimation(int index)
     com->SetAnimation(index);
 }
 
+void BaseFriend::OnDamaged()
+{
+}
+
+void BaseFriend::OnDead()
+{
+}
+
+void BaseFriend::OnHeal()
+{
+}
+
 //ƒ^[ƒQƒbƒg‚ªUŒ‚”ÍˆÍ“à‚É‚¢‚é‚©‚Ç‚¤‚©
 bool BaseFriend::IsTargetInAttackArea()
 {
-    float vx = targetPosition.x - GetOwner()->GetTransform()->GetPosition().x;
-    float vz = targetPosition.z - GetOwner()->GetTransform()->GetPosition().z;
+    float vx = target->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
+    float vz = target->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
     float length = sqrtf(vx * vx + vz * vz);
     if (length < attackAreaRadius)return true;
     else return false;
+}
+
+bool BaseFriend::SerchEnemy()
+{
+    std::vector<GameObject*> enemyArray;
+    GameObject::FindByTag(GameObject::Tag::Turret, enemyArray);
+    if (enemyArray.size() == 0)
+    {
+        //”­Œ©‚µ‚È‚©‚Á‚½‚ç
+        target = nullptr;
+        return false;
+    }
+
+    float length0 = FLT_MAX;
+    for (auto enemy = enemyArray.begin(); enemy != enemyArray.end(); ++enemy)
+    {
+        DirectX::XMFLOAT3 enemyPos = (*enemy)->GetTransform()->GetPosition();
+        DirectX::XMFLOAT3 pos = GetTransform()->GetPosition();
+        DirectX::XMVECTOR EnemyPos = DirectX::XMLoadFloat3(&enemyPos);
+
+        DirectX::XMVECTOR Pos = DirectX::XMLoadFloat3(&pos);
+        DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(EnemyPos,Pos);
+        DirectX::XMVECTOR Length = DirectX::XMVector3Length(Vec);
+        float length1;
+        DirectX::XMStoreFloat(&length1, Length);
+        if (length1 < length0)
+        {
+            target = (*enemy);
+        }
+    }
+    return true;
 }
 
