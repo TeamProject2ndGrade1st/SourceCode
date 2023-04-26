@@ -71,7 +71,8 @@ void Character::UpdateVelocity()
     }
     //‘¬“x§ŒÀ
     length = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);
-    if (length > maxMoveSpeed)
+    //‹­‚·‚¬‚é—Í‚ª“­‚¢‚½‚Æ‚«‚Í‘¬“x§ŒÀ‚ð‚µ‚È‚¢
+    if (length > maxMoveSpeed && length <= maxMoveSpeed + 10.0f)
     {
         DirectX::XMVECTOR vec = { moveVec.x,moveVec.z };
         vec = DirectX::XMVector2Normalize(vec);
@@ -86,9 +87,9 @@ void Character::UpdateVelocity()
 void Character::UpdateMove()
 {
     GetOwner()->GetTransform()->AddPosition(DirectX::XMFLOAT3(
-        velocity.x * Argent::Timer::GetDeltaTime(),
+        velocity.x * Argent::Timer::GetDeltaTime() * GetTransform()->GetScaleFactor(),
         0.0f,
-        velocity.z * Argent::Timer::GetDeltaTime()
+        velocity.z * Argent::Timer::GetDeltaTime() * GetTransform()->GetScaleFactor()
     ));
 }
 

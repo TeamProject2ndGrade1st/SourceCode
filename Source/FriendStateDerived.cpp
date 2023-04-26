@@ -68,7 +68,6 @@ namespace Friend::Creature
 	{
 		owner->SetAnimation(static_cast<int>(CreatureAnimation::Walk_ChangeFrom_Action));
 		//owner->SetStateTimer(10.0f);
-		owner->AddImpulse(DirectX::XMFLOAT3(0,0,20));
 	}
 
 	void WalkState::Execute()
@@ -148,6 +147,13 @@ namespace Friend::Creature
 		if (owner->IsAnimationEnd())
 		{
 			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Idle));
+		}
+
+		int animationFrame = static_cast<int>(owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimationFrame());
+		if (animationFrame = efeStartFrame)
+		{
+
+			owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
 		}
 	}
 
@@ -263,7 +269,7 @@ namespace Friend::Drone
 		if (owner->GetAttackTimer() > 0)owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Idle));
 		owner->SetStateTimer(3.0f);
 
-		//owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
+		
 	}
 
 	void AttackState::Execute()

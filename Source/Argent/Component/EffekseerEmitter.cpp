@@ -36,6 +36,10 @@ namespace Argent::Component::Renderer
 		{
 			color.DrawDebug();
 			BaseComponent::DrawDebug();
+			if (ImGui::Button("Play"))
+			{
+				OnPlay(0.0f);
+			}
 			ImGui::TreePop();
 		}
 	}
@@ -49,7 +53,8 @@ namespace Argent::Component::Renderer
 
 		//再生
 		const auto* t = GetOwner()->GetTransform();
-		effect->Play(t->GetPosition() + offset, t->GetScale() + scale,
+		//スケールファクターに影響されるようにした（なんか出来やん）
+		effect->Play(t->GetPosition() + offset, t->GetScale() * t->GetScaleFactor() + scale,
 			t->GetRotation() + rotation, startFrame);
 	}
 

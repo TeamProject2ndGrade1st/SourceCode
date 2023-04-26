@@ -42,9 +42,9 @@ protected:
     DirectX::XMFLOAT3 velocity{};
     DirectX::XMFLOAT3 moveVec{};
 
-    float acceleration{ 3.0f };//‰Á‘¬—Í
-    float maxMoveSpeed{ 5.0f };//Å‚‘¬“x
-    float friction{ 2.0f };//–€C—Í
+    float acceleration{ 300.0f };//‰Á‘¬—Í
+    float maxMoveSpeed{ 500.0f };//Å‚‘¬“x
+    float friction{ 200.0f };//–€C—Í
 
     float maxHealth = { 5.0f };//‘Ì—Í
     float health = { maxHealth };//‘Ì—Í

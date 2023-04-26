@@ -72,8 +72,8 @@ protected:
   
     //‰Šú’l
     float init_acceleration{ 0.0f };
-    float init_maxMoveSpeed{ 5.0f };
-    float init_friction{ 5.0f };
+    float init_maxMoveSpeed{ 500.0f };
+    float init_friction{ 500.0f };
 
     float stateTimer{};
 
