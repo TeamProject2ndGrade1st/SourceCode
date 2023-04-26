@@ -152,6 +152,7 @@ protected:
 
 	bool isDrawDebug;
 	bool isInitialized;
+	bool isFinInitialized = false;
 	bool willDestroy;
 	bool isActive;
 

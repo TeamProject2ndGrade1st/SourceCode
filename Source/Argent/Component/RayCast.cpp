@@ -110,8 +110,9 @@ namespace Argent::Component
 		DirectX::XMMATRIX RayCastCollider::GetWorldTransform() const
 		{
 			auto g = GetOwner();
-			auto t = g->GetTransform()->AdjustParentTransform();
-			auto m = t.CalcWorldMatrix();
+			/*auto t = g->GetTransform()->AdjustParentTransform();*/
+			//auto m = t.CalcWorldMatrix();
+			auto m = g->GetTransform()->CalcWorldMatrix();
 			const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) };
 			const DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
 			const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(offset.x,offset.y, offset.z) };

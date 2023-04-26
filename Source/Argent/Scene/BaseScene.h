@@ -91,6 +91,7 @@ namespace Argent::Scene
 	private:
 		std::vector<std::unique_ptr<GameObject>> objects{};
 		bool isInitialized;
+		int lightIndex = 0;
 	private:
 	};
 	

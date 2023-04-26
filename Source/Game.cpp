@@ -52,7 +52,7 @@ void Game::Initialize()
 	GameObject::Instantiate("Core", new Core("./Resources/Model/Stage/core_0419_1.fbx"));
 	GameObject::Instantiate("HoneyComb", new Honeycomb("./Resources/Model/Stage/hanikamu_0425_1.fbx"));
 	GameObject::Instantiate("Barricade", new Barricade("./Resources/Model/Stage/barike-do_0419_1.fbx"));
-	GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_0406_ver6.fbx"));
+	GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_1_0426_5.fbx"));
 
 	BaseScene::Initialize();
 }

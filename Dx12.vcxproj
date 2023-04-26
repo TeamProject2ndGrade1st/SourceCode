@@ -93,6 +93,7 @@
     <ClCompile Include="Source\FriendDrone.cpp" />
     <ClCompile Include="Source\FriendManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\GunRenderer.cpp" />
     <ClCompile Include="Source\Result.cpp" />
     <ClCompile Include="Source\Stage.cpp" />
     <ClCompile Include="Source\Player.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Source\FriendDrone.h" />
     <ClInclude Include="Source\FriendManager.h" />
     <ClInclude Include="Source\Game.h" />
+    <ClInclude Include="Source\GunRenderer.h" />
     <ClInclude Include="Source\Result.h" />
     <ClInclude Include="Source\Stage.h" />
     <ClInclude Include="Source\Player.h" />
@@ -211,11 +213,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Source\Shader\GeometricPrimitivePixel.hlsl" />
-    <FxCompile Include="Source\Shader\GeometricPrimitiveVertex.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Source\Shader\Pera2Pixel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -265,7 +262,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shader\DebugMesh.hlsli" />
-    <None Include="Source\Shader\GeometricPrimitive.hlsli" />
     <None Include="Source\Shader\Pera.hlsli" />
     <None Include="Source\Shader\SceneConstant.hlsli" />
     <None Include="Source\Shader\SkinnedMesh.hlsli" />

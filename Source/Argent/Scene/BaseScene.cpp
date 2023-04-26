@@ -24,7 +24,9 @@ namespace Argent::Scene
 
 		c->ReplaceTag(GameObject::Tag::MainCamera);
 		AddObject(c);
-		AddObject(new GameObject("Light", new Light));
+		AddObject(new GameObject("Light", new Light(lightIndex)));
+		++lightIndex;
+		AddObject(new GameObject("Light", new Light(lightIndex)));
 		for(size_t i = 0; i < objects.size(); ++i)
 		{
 			if(objects.at(i))

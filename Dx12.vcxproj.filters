@@ -352,6 +352,9 @@
     <ClCompile Include="Source\Argent\GameObject\GameObject.cpp">
       <Filter>Lib\Argent\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GunRenderer.cpp">
+      <Filter>Game\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -627,6 +630,9 @@
     <ClInclude Include="Source\Argent\GameObject\GameObject.h">
       <Filter>Lib\Argent\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GunRenderer.h">
+      <Filter>Game\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
@@ -639,12 +645,6 @@
       <Filter>Lib\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Source\Shader\SpriteVertex.hlsl">
-      <Filter>Lib\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Source\Shader\GeometricPrimitivePixel.hlsl">
-      <Filter>Lib\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Source\Shader\GeometricPrimitiveVertex.hlsl">
       <Filter>Lib\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Source\Shader\PeraPixel.hlsl">
@@ -680,9 +680,6 @@
       <Filter>Lib\Shader</Filter>
     </None>
     <None Include="Source\Shader\Sprite.hlsli">
-      <Filter>Lib\Shader</Filter>
-    </None>
-    <None Include="Source\Shader\GeometricPrimitive.hlsli">
       <Filter>Lib\Shader</Filter>
     </None>
     <None Include="Source\Shader\Pera.hlsli">

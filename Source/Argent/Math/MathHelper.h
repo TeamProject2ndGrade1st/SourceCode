@@ -96,3 +96,17 @@ inline float Length(const DirectX::XMFLOAT3& f1, const DirectX::XMFLOAT3&f2)
 				DirectX::XMLoadFloat3(&f2))));
 	return ret;
 }
+
+inline float Length(const DirectX::XMFLOAT3& f)
+{
+	float ret;
+	DirectX::XMStoreFloat(&ret, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&f)));
+	return ret;
+}
+
+inline float LengthV3(const DirectX::XMVECTOR& v)
+{
+	float ret;
+	DirectX::XMStoreFloat(&ret, DirectX::XMVector3Length(v));
+	return ret; 
+}

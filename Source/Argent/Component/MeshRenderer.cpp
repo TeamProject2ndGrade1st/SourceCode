@@ -53,9 +53,12 @@ namespace Argent::Component::Renderer
 
 	void MeshRenderer::Render() const 
 	{
+		DirectX::XMFLOAT4X4 world{};
+		DirectX::XMStoreFloat4x4(&world, GetOwner()->GetTransform()->CalcWorldMatrix());
 		const Transform* t = GetOwner()->GetTransform();
 		Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), 
-			t->AdjustParentTransform().GetWorld());
+			//t->AdjustParentTransform().GetWorld());
+			world);
 	}
 
 	void MeshRenderer::Update()

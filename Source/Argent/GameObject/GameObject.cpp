@@ -94,6 +94,7 @@ GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> 
 
 void GameObject::Initialize()
 {
+	if(isInitialized) return;
 	isInitialized = true;
 	for(size_t i = 0; i < components.size(); ++i)
 	{
@@ -105,6 +106,8 @@ void GameObject::Initialize()
 		if(childObjects.at(i))
 			childObjects.at(i)->Initialize();
 	}
+
+	isFinInitialized = true;
 }
 
 void GameObject::Finalize()
@@ -269,7 +272,7 @@ void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 	std::string n = ComponentNameCheck(com->GetName());
 	com->SetName(n.c_str());
 
-	if (isInitialized)
+	if (isInitialized && isFinInitialized)
 		com->Initialize();
 
 	const int64_t index = FindNullComponentIndex();

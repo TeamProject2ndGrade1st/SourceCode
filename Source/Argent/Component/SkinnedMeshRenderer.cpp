@@ -100,20 +100,23 @@ namespace Argent::Component::Renderer
 
 	void SkinnedMeshRenderer::Render() const 
 	{
-		Transform t = GetOwner()->GetTransform()->AdjustParentTransform();
+		//Transform t = GetOwner()->GetTransform()->AdjustParentTransform();
+	//	auto mat = GetOwner()->GetTransform()->CalcWorldMatrix();
+		DirectX::XMFLOAT4X4 world{};
+		DirectX::XMStoreFloat4x4(&world, GetOwner()->GetTransform()->CalcWorldMatrix());
 		if(animationClips.size() > 0)
 		{
 			const Resource::Animation::AnimationClip& animation{ this->animationClips.at(clipIndex) };
 			const Resource::Animation::AnimationClip::Keyframe& keyframe{ animation.sequence.at(static_cast<uint64_t>(frameIndex)) };
 
 			//todo マテリアルの適用
-			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), t.GetWorld(),
+			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), world,
 				 &keyframe);
 		}
 		else
 		{
 			Resource::Animation::AnimationClip::Keyframe key{};
-			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), t.GetWorld(),
+			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), world,
 			 &key);
 		}
 	}
