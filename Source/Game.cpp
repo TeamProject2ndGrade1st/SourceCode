@@ -29,7 +29,7 @@ void Game::Initialize()
 	//GetGameObject("player")->AddComponent(new Player);
 //	AddObject(new GameObject("player", new Player));
 
-	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_test.efk", "./Resources/Effects"));
+	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/heal.efk", "./Resources/Effects"));
 
 	//AddObject(new GameObject("spikeBot", Argent::Loader::Fbx::LoadFbx("./Resources/Model/spike_bot_0419_1.fbx")));
 	//AddObject(new GameObject("spikeBot", new SpikeBot()));

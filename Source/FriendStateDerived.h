@@ -38,10 +38,10 @@ namespace Friend::Creature
         void Exit()override;
 
     private:
-        float acceleration{ 10.0f };
-        float maxSpeed_fast{ 3.0f };
-        float maxSpeed_late{ 0.8f };
-        float maxSpeed{ 2.0f };
+        float acceleration{ 1000.0f };
+        float maxSpeed_fast{ 300.0f };
+        float maxSpeed_late{ 80.0f };
+        float maxSpeed{ 200.0f };
 
         //アニメーション20~32フレーム間で動きが早くなる
         int startMovingFastFrame{ 20 };
@@ -60,6 +60,7 @@ namespace Friend::Creature
 
     private:
         float attackInterval{ 3.0f };
+        int efeStartFrame{ 10 };
     };
 
     //階層構造のステート（多分つかわん）
@@ -111,8 +112,8 @@ namespace Friend::Drone
         void Exit()override;
 
     private:
-        float acceleration{ 10.0f };
-        float maxSpeed{ 6.0f };
+        float acceleration{ 1000.0f };
+        float maxSpeed{ 600.0f };
 
         //アニメーション20~32フレーム間で動きが早くなる
         int startMovingFastFrame{ 20 };
