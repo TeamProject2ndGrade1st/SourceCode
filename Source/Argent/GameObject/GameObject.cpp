@@ -375,7 +375,18 @@ bool GameObject::FindByTag(Tag tag, std::vector<GameObject*>& objArray)
 		}
 	}
 
-	return objArray.size() == 0;
+	return objArray.size() != 0;
+}
+
+bool GameObject::GetChildArray(std::vector<GameObject*>& array)
+{
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		if(childObjects.at(i))
+			array.emplace_back(childObjects.at(i).get());
+	}
+
+	return array.size() != 0;
 }
 
 int64_t GameObject::FindNullChildIndex() const

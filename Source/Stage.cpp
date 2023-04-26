@@ -23,22 +23,60 @@ void Box::Initialize()
 {
 	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx(filePath));
 	GetOwner()->ReplaceTag(GameObject::Tag::Stage);
+	GetOwner()->GetTransform()->SetScaleFactor(0.2f);
+
+	std::vector<GameObject*> objArray;
+	if(GetOwner()->GetChildArray(objArray))
+	{
+		for(auto& obj : objArray)
+		{
+			const auto* meshRenderer = obj->GetComponent<Argent::Component::Renderer::MeshRenderer>();
+			if(meshRenderer)
+			{
+				auto meshResource =	meshRenderer->GetMesh()->meshResource;
+				obj->AddComponent(new Argent::Component::Collider::RayCastCollider(meshResource));
+			}
+			obj->ReplaceTag(GameObject::Tag::Stage);
+		}
+	}
 }
 
 void OwnCamp::Initialize()
 {
 	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx(filePath));
 	GetOwner()->ReplaceTag(GameObject::Tag::Stage);
+	GetOwner()->GetTransform()->SetScaleFactor(0.2f);
 }
 
 void Core::Initialize()
 {
 	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx(filePath));
 	auto t = GetOwner()->GetTransform();
-	t->SetPosition(DirectX::XMFLOAT3(0, 0, 320));
+	//t->SetPosition(DirectX::XMFLOAT3(0, 0, 320));
 	t->SetScaleFactor(0.2f);
 }
 
 void Core::Update()
 {
+}
+
+void TutorialStage::Initialize()
+{
+	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx(filePath));
+	auto t = GetOwner()->GetTransform();
+	t->SetPosition(DirectX::XMFLOAT3(0, 0, -531.5f));
+	t->SetRotation(DirectX::XMFLOAT4(0, 90, 0, 0));
+	t->SetScaleFactor(0.2f);
+}
+
+void Barricade::Initialize()
+{
+	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx(filePath));
+	GetOwner()->GetTransform()->SetScaleFactor(0.2f);
+}
+
+void Honeycomb::Initialize()
+{
+	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx(filePath));
+	GetOwner()->GetTransform()->SetScaleFactor(0.2f);
 }

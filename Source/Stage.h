@@ -63,3 +63,51 @@ private:
 	const char* filePath;
 };
 
+class TutorialStage:
+	public Argent::Component::BaseComponent
+{
+public:
+	TutorialStage(const char* filePath):
+		BaseComponent("TutorialStage")
+	,	filePath(filePath)
+	{}
+
+	~TutorialStage() override = default;
+
+
+	void Initialize() override;
+
+private:
+	const char* filePath;
+};
+
+class Barricade:
+	public Argent::Component::BaseComponent
+{
+public:
+	Barricade(const char* filePath):
+		BaseComponent("Barricade")
+	,	filePath(filePath)
+	{}
+
+
+	void Initialize() override;
+
+private:
+	const char* filePath;
+};
+
+class Honeycomb:
+	public Argent::Component::BaseComponent
+{
+public:
+	Honeycomb(const char* filePath):
+		BaseComponent("HoneyComb")
+	,	filePath(filePath)
+	{}
+
+	void Initialize() override;
+
+private:
+	const char* filePath;
+};

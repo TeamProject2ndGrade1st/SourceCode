@@ -11,7 +11,7 @@ public:
 
 	
 	void Update() final;
-
+	void Finalize() override;
 
 	void DrawDebug() override;
 
@@ -21,5 +21,7 @@ public:
 
 #ifdef _DEBUG
 	bool enableShot = false;
+
+	Bullet::Mode mode;
 #endif
 };

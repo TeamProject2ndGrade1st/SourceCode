@@ -57,7 +57,7 @@ void FriendManager::AddFriend(BaseFriend* _friend)
 }
 
 
-BaseFriend* FriendManager::FindFriendOwner(GameObject* wFriend) const
+BaseFriend* FriendManager::FindFriendComponentFromOwner(GameObject* wFriend) const
 {
     for (auto& f : friendArray)
     {

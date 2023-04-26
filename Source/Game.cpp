@@ -49,14 +49,10 @@ void Game::Initialize()
 	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_0419_1.fbx"));
 	GameObject::Instantiate("Box", new Box("./Resources/Model/Stage/boxes_0419_1.fbx"));
 	GameObject::Instantiate("OwnCamp", new OwnCamp("./Resources/Model/Stage/zizin_0419_1.fbx"));
-	GameObject::Instantiate("Core", new Core("./Resources/Model/Stage/ore.fbx"));
-
-	//AddObject(new GameObject("Main Stage", new Stage("./Resources/Model/Stage/map_0419_1.fbx")));
-	//AddObject(new GameObject("Box", new Stage("./Resources/Model/Stage/boxes_0419_1.fbx")));
-	//AddObject(new GameObject("Core", new Stage("./Resources/Model/Stage/core_0419_1.fbx")));
-	//AddObject(new GameObject("Own Camp", new Stage("./Resources/Model/Stage/zizin_0419_1.fbx")));
-	//AddObject(new GameObject("Tutorial Stage", new Stage("./Resources/Model/StageBlender.fbx")));
-
+	GameObject::Instantiate("Core", new Core("./Resources/Model/Stage/core_0419_1.fbx"));
+	GameObject::Instantiate("HoneyComb", new Honeycomb("./Resources/Model/Stage/hanikamu_0425_1.fbx"));
+	GameObject::Instantiate("Barricade", new Barricade("./Resources/Model/Stage/barike-do_0419_1.fbx"));
+	GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_0406_ver6.fbx"));
 
 	BaseScene::Initialize();
 }

@@ -14,7 +14,7 @@ namespace Argent::Component::Renderer
 
 		void Update() override;
 		void Render() const override;
-
+		void Finalize() override;
 		void DrawDebug() override;
 
 		//エフェクトの再生

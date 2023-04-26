@@ -58,7 +58,12 @@ void FriendCreature::Update()
     BaseFriend::Update();
 
     //仮置きターゲットの座標更新
-    targetPosition = target->GetTransform()->GetPosition();
+    if(target)
+    {
+	    auto t = target->GetTransform();
+	    auto p = t->GetPosition();
+	    targetPosition = target->GetTransform()->GetPosition();
+    }
 }
 
 void FriendCreature::DrawDebug()

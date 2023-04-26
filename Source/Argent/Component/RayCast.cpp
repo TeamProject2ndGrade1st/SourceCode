@@ -97,12 +97,9 @@ namespace Argent::Component
 		{
 			if(debugRenderer)
 			{
-				auto t = *(GetOwner()->GetTransform());
-				const auto p = t.GetPosition();
-				t.SetPosition(offset + p);
-				t.SetScale(t.GetScale() * scale);
-				t.SetRotation(t.GetRotation() + rotation);
-				debugRenderer->Render(t.GetWorld());
+				DirectX::XMFLOAT4X4 w{};
+				DirectX::XMStoreFloat4x4(&w, GetWorldTransform());
+				debugRenderer->Render(w);
 			}
 		}
 
@@ -110,11 +107,13 @@ namespace Argent::Component
 		{
 		}
 
-		DirectX::XMMATRIX RayCastCollider::GetWorldTransform()
+		DirectX::XMMATRIX RayCastCollider::GetWorldTransform() const
 		{
 			auto g = GetOwner();
-			auto m = GetOwner()->GetTransform()->CalcWorldMatrix();
-			const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) };const DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+			auto t = g->GetTransform()->AdjustParentTransform();
+			auto m = t.CalcWorldMatrix();
+			const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) };
+			const DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
 			const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(offset.x,offset.y, offset.z) };
 
 			auto lm = S * R * T;

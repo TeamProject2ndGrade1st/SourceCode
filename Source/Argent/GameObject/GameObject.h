@@ -24,6 +24,8 @@ public:
 		Turret =		0x01 << 7,
 		FriendManager = 0x01 << 8,
 		Core =			0x01 << 9,
+		Creature =		0x01 << 10,	
+		Machine =		0x01 << 11,
 
 	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);
@@ -91,6 +93,7 @@ public:
 
 
 	Tag GetTag() const { return tag; }
+	unsigned GetUnsignedTag() const { return static_cast<unsigned>(tag); }
 	void ReplaceTag(Tag t) { tag = t; }
 	void AddTag(Tag t)
 	{
@@ -122,10 +125,16 @@ public:
 	 *ビット演算で見つけるため2つ以上のタグを組み合わせることも可能なはず…
 	 * \param tag 
 	 * \param objArray [out] 発見したゲームオブジェクトを入れる配列
-	 * \return 発見したかどうか
+	 * \return 発見したかどうか true した　false してない
 	 */
 	static bool FindByTag(Tag tag, std::vector<GameObject*>& objArray);
 
+	/**
+	 * \brief childの配列を取得
+	 * \param array childを入れる
+	 * \return 発見したかどうか　trueした　false してない
+	 */
+	bool GetChildArray(std::vector<GameObject*>& array);
 	//todo もっといい方法を考える
 	float elapsedTimeFromDestroyed;
 protected:

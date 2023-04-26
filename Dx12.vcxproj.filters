@@ -303,7 +303,7 @@
     <ClCompile Include="Source\Bullet.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BaseBulletManager.cpp">
+    <ClCompile Include="Source\BulletManager.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
     <ClCompile Include="Source\Player.cpp">
@@ -578,7 +578,7 @@
     <ClInclude Include="Source\Bullet.h">
       <Filter>Game\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Source\BaseBulletManager.h">
+    <ClInclude Include="Source\BulletManager.h">
       <Filter>Game\Player</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player.h">

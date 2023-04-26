@@ -121,7 +121,7 @@ BaseFriend* BaseEnemy::SearchFriend1()
             if (dot > 0.0f)
             {
                 f->GetTransform()->SetPosition(friendPos);
-                auto* ret = fManager->FindFriendOwner(f);
+                auto* ret = fManager->FindFriendComponentFromOwner(f);
                 return ret;
                 //return f;
             }

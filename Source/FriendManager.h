@@ -24,7 +24,7 @@ public:
 
     void AddFriend(BaseFriend* _friend);
 
-    BaseFriend* FindFriendOwner(GameObject* wFriend) const;
+    BaseFriend* FindFriendComponentFromOwner(GameObject* wFriend) const;
 private:
     std::vector<BaseFriend*> friendArray;
     Argent::Scene::BaseScene* scene;

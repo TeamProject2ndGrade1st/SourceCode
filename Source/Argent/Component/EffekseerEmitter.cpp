@@ -30,6 +30,11 @@ namespace Argent::Component::Renderer
 	{
 	}
 
+	void EffekseerEmitter::Finalize()
+	{
+		effect->Stop();
+	}
+
 	void EffekseerEmitter::DrawDebug()
 	{
 		if(ImGui::TreeNode(GetName()))

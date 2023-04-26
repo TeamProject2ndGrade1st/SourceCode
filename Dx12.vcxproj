@@ -80,7 +80,7 @@
     <ClCompile Include="Source\BaseEnemy.cpp" />
     <ClCompile Include="Source\BaseEnemyState.cpp" />
     <ClCompile Include="Source\Bullet.cpp" />
-    <ClCompile Include="Source\BaseBulletManager.cpp" />
+    <ClCompile Include="Source\BulletManager.cpp" />
     <ClCompile Include="Source\BaseFriend.cpp" />
     <ClCompile Include="Source\BaseGun.cpp" />
     <ClCompile Include="Source\BaseState.cpp" />
@@ -175,7 +175,7 @@
     <ClInclude Include="Source\BaseEnemy.h" />
     <ClInclude Include="Source\BaseEnemyState.h" />
     <ClInclude Include="Source\Bullet.h" />
-    <ClInclude Include="Source\BaseBulletManager.h" />
+    <ClInclude Include="Source\BulletManager.h" />
     <ClInclude Include="Source\BaseFriend.h" />
     <ClInclude Include="Source\BaseGun.h" />
     <ClInclude Include="Source\BaseState.h" />

@@ -26,9 +26,21 @@ void BaseGun::Update()
 			elapsedTime = 0;
 			auto t = GetOwner()->GetTransform();
 			Bullet::Shot(t->GetPosition(), t->CalcForward(),
-				damage, speed);
+				damage, speed, mode);
 		}
 	}
+
+	if(Argent::Input::GetButtonUp(MouseButton::RightButton))
+	{
+		if(mode == Bullet::Mode::Living) mode = Bullet::Mode::Machine;
+		if(mode == Bullet::Mode::Machine) mode = Bullet::Mode::Living;
+	}
+
+}
+
+void BaseGun::Finalize()
+{
+	Bullet::ClearFriendManager();
 }
 
 
