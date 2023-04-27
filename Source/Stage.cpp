@@ -4,7 +4,7 @@
 
 void Stage::Initialize()
 {
-	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx(filePath.c_str()));
+	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx(filePath.c_str(), true));
 
 	std::vector<Argent::Resource::Mesh::MeshResource> mResource;
 	Argent::Component::Renderer::MeshRenderer* r = GetOwner()->GetComponent<Argent::Component::Renderer::MeshRenderer>();
@@ -66,7 +66,6 @@ void TutorialStage::Initialize()
 	auto t = GetOwner()->GetTransform();
 	t->SetPosition(DirectX::XMFLOAT3(0, 0, -531.5f));
 	t->SetRotation(DirectX::XMFLOAT4(0, 90, 0, 0));
-	t->SetScaleFactor(0.2f);
 }
 
 void Barricade::Initialize()

@@ -23,7 +23,7 @@ void Game::Initialize()
 {
 	ClearGameObject();
 	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
-
+	
 	
 	GameObject::Instantiate("Reticle", new Reticle("./Resources/Image/ReticleYellow.png"));
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
@@ -42,7 +42,7 @@ void Game::Initialize()
 	//AddObject(new GameObject("friend", new FriendCreature()));
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 
-	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_0419_1.fbx"));
+	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_2_0427_3.fbx"));
 	GameObject::Instantiate("Box", new Box("./Resources/Model/Stage/boxes_0419_1.fbx"));
 	GameObject::Instantiate("OwnCamp", new OwnCamp("./Resources/Model/Stage/zizin_0419_1.fbx"));
 	GameObject::Instantiate("Core", new Core("./Resources/Model/Stage/core_0419_1.fbx"));
@@ -52,6 +52,10 @@ void Game::Initialize()
 
 
 	BaseScene::Initialize();
+	std::vector<GameObject*> lightArray;
+	GameObject::FindByTag(GameObject::Tag::Light, lightArray);
+	lightArray.at(0)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, -10.0f, 0));
+	lightArray.at(1)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 10.0f, 0));
 }
 
 void Game::Finalize()

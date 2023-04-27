@@ -18,6 +18,7 @@ void Player::Initialize()
     
 
     camera = GameObject::FindByName("Camera"); // ‚±‚Á‚¿‚Å
+    camera->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 16.0f, 0));
     movement = 10.5f;
     {
         auto c = camera->GetComponent<Camera>();
@@ -95,6 +96,9 @@ void Player::Update()
         if (setRotation.y > 360)setRotation.y -= 360;
         if (setRotation.y < 0)setRotation.y += 360;
 
+
+#endif
+#ifdef _DEBUG
         static bool use = false;
         if(Argent::Input::GetKeyUp(KeyCode::U))
         {
@@ -104,8 +108,9 @@ void Player::Update()
         {
     		t->SetRotation(setRotation);
         }
+#else
+        t->SetRotation(setRotation);
 #endif
-
         break;
 
     }

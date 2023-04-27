@@ -19,14 +19,18 @@ namespace Argent::Scene
 	void BaseScene::Initialize()
 	{
 		auto camera = new Camera(true, Argent::Graphics::Graphics::Instance()->GetWidth(), Argent::Graphics::Graphics::Instance()->GetHeight());
-		camera->SetFov(110.0f);
+		camera->SetFov(90.0f);
 		const auto c = new GameObject("Camera", camera);
 
 		c->ReplaceTag(GameObject::Tag::MainCamera);
 		AddObject(c);
-		AddObject(new GameObject("Light", new Light(lightIndex)));
+		auto l = new GameObject("Light", new Light(lightIndex));
+		l->ReplaceTag(GameObject::Tag::Light);
+		AddObject(l);
 		++lightIndex;
-		AddObject(new GameObject("Light", new Light(lightIndex)));
+		l = new GameObject("Light", new Light(lightIndex));
+		l->ReplaceTag(GameObject::Tag::Light);
+		AddObject(l);
 		for(size_t i = 0; i < objects.size(); ++i)
 		{
 			if(objects.at(i))

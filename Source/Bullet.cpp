@@ -35,13 +35,14 @@ void Bullet::Update()
 	ManageDuration();
 }
 
-void Bullet::Shot(const DirectX::XMFLOAT3& position,
+void Bullet::Shot(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT4& rotation,
 	const DirectX::XMFLOAT3& direction, int damage, float speed,
 	Mode mode)
 {
 	auto* b = new Bullet(direction, damage, speed, mode);
 	const auto g = GameObject::Instantiate("Bullet", b);
 	g->GetTransform()->SetPosition(position);
+	g->GetTransform()->SetRotation(rotation);
 }
 
 void Bullet::ManageDuration()

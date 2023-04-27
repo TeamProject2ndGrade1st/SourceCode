@@ -51,11 +51,20 @@ inline DirectX::XMFLOAT4 operator+(const DirectX::XMFLOAT4& f1, const DirectX::X
 
 inline DirectX::XMFLOAT3 Normalize(const DirectX::XMFLOAT3& f)
 {
-	DirectX::XMFLOAT3 r;
-	DirectX::XMStoreFloat3(&r, DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&f)));
-	return r;
+	DirectX::XMFLOAT3 ret{};
+	DirectX::XMStoreFloat3(&ret, DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&f)));
+	return ret;
 }
 
+inline DirectX::XMFLOAT4 ToRadians(const DirectX::XMFLOAT4& f)
+{
+	return DirectX::XMFLOAT4(
+		DirectX::XMConvertToRadians(f.x),
+		DirectX::XMConvertToRadians(f.y),
+		DirectX::XMConvertToRadians(f.z),
+		DirectX::XMConvertToRadians(f.w)
+	);
+}
 inline DirectX::XMFLOAT4 operator-(const DirectX::XMFLOAT4& f1, const DirectX::XMFLOAT4& f2)
 {
 	DirectX::XMFLOAT4 ret{};

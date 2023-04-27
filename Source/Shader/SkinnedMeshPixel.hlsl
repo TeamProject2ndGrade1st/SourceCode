@@ -7,14 +7,10 @@
 Texture2D albedoTex : register(t0);
 Texture2D normalTex : register(t1);
 SamplerState smpPoint : register(s0);
-//SamplerState smpAniso : register(s1);
-
-
 
 float4 main(VS_OUT pin) : SV_TARGET
 {
     float4 color = albedoTex.Sample(smpPoint, pin.texcoord);
-
     float3 normal = normalTex.Sample(smpPoint, pin.texcoord).rgb;
 
     float3 T = float3(1.0001, 0, 0);
@@ -30,16 +26,18 @@ float4 main(VS_OUT pin) : SV_TARGET
     float3 E = normalize(float3(cameraPosition.xyz - pin.worldPosition.xyz));
 
 
-    float3 diffuse1 = CalcLambertDiffuse(N, L1, light[0].color, kd);
-    float3 diffuse2 = CalcLambertDiffuse(N, L2, light[1].color, kd);
+    
     float3 specular1 = CalcPhongSpecular(N, L1, light[0].color, E, shininess, ks);
     float3 specular2 = CalcPhongSpecular(N, L2, light[1].color, E, shininess, ks);
 
-    float3 color1 = color.rgb * diffuse1.rgb;
-    float3 color2 = color.rgb * diffuse2.rgb;
-    float r = clamp(color1.r + color2.r, 0, 1);
-    float g = clamp(color1.g + color2.g, 0, 1);
-    float b = clamp(color1.b + color2.b, 0, 1);
+
+    float3 diffuseColor1 = CalcDiffuseColor(N, L1, light[0].color, kd, color.rgb);
+    float3 diffuseColor2 = CalcDiffuseColor(N, L2, light[1].color, kd, color.rgb);
+    float r = clamp(diffuseColor1.r + diffuseColor2.r, 0, 1);
+    float g = clamp(diffuseColor1.g + diffuseColor2.g, 0, 1);
+    float b = clamp(diffuseColor1.b + diffuseColor2.b, 0, 1);
+
+
 
     float sr = clamp(specular1.r + specular2.r, 0, 1);
     float sg = clamp(specular1.g + specular2.g, 0, 1);

@@ -37,7 +37,7 @@ public:
 	 * \param damage ダメージ
 	 * \param speed 進行速度
 	 */
-	static void Shot(const DirectX::XMFLOAT3& position,
+	static void Shot(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT4& rotation,
 		const DirectX::XMFLOAT3& direction, int damage, float speed,
 		Mode mode);
 

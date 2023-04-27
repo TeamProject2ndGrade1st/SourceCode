@@ -22,7 +22,7 @@ namespace Argent::Component::Renderer
 		if(effect->IsExist())
 		{
 			const Transform* t = GetOwner()->GetTransform();
-			effect->Update(t->GetPosition(), t->GetScale(), t->GetRotation(), color.color);
+			effect->Update(t->GetPosition(), t->GetScale(), ToRadians(t->GetRotation()), color.color);
 		}
 	}
 
