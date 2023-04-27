@@ -81,7 +81,7 @@ void Bullet::OnCollision(const HitResult& result)
 			auto g = friendCom->GetOwner();
 	 		switch (mode)
 			{
-	 		case Mode::Living:
+	 		case Mode::Creature:
 				if(g->GetUnsignedTag() & static_cast<unsigned>(GameObject::Tag::Creature))
 				{
 					friendCom->ApplyHeal(damage);

@@ -54,17 +54,40 @@ void Game::Initialize()
 	BaseScene::Initialize();
 	std::vector<GameObject*> lightArray;
 	GameObject::FindByTag(GameObject::Tag::Light, lightArray);
-	lightArray.at(0)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, -10.0f, 0));
-	lightArray.at(1)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 10.0f, 0));
+	lightArray.at(0)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, -10.0f, -50));
+	lightArray.at(1)->GetTransform()->SetPosition(DirectX::XMFLOAT3(-80.0f, 10.0f, 50.0f));
+	lightArray.at(2)->GetTransform()->SetPosition(DirectX::XMFLOAT3(35.0f, 18.0f, 30.0f));
+
+	std::vector<GameObject*> camera;
+	GameObject::FindByTag(GameObject::Tag::MainCamera, camera);
+	camera.at(0)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 27.0f, -500.0f));
+
+	Argent::Input::Mouse::Instance().resetPositionToCenter = true;
+
+#ifndef _DEBUG
+	ShowCursor(false);
+#endif
 }
 
 void Game::Finalize()
 {
+	ShowCursor(true);
+	Argent::Input::Mouse::Instance().resetPositionToCenter = false;
 	BaseScene::Finalize();
 }
 
 void Game::Update()
 {
+#ifdef _DEBUG
+	static bool b = false;
+	if(Argent::Input::GetKeyUp(KeyCode::F4))
+	{
+		b = !b;
+		ShowCursor(b);
+	}
+#else
+	ShowCursor(false);
+#endif
 	if(Argent::Input::GetKeyUp(KeyCode::F2))
 	{
 		Argent::Scene::SceneManager::SetNextScene("Result");

@@ -15,21 +15,21 @@ namespace Argent::Input
 
 	void Mouse::Update()
 	{
+#ifdef _DEBUG
 		if(Argent::Input::Keyboard::Instance().GetKeyUp(Keyboard::F1))
 		{
 			resetPositionToCenter = !resetPositionToCenter;
 		}
+#endif
 		POINT p{};
 		GetCursorPos(&p);
 		//ScreenToClient(Argent::Graphics::Graphics::Instance()->hWnd, &p);
 		if(resetPositionToCenter)
 		{
 			postPosition =DirectX::XMFLOAT2(static_cast<float>(width) / 2, static_cast<float>(height) / 2);
-			ShowCursor(false);
 		}
 		else
 		{
-			ShowCursor(true);
 			postPosition = position;
 		}
 		position = DirectX::XMFLOAT2(static_cast<float>(p.x), static_cast<float>(p.y));

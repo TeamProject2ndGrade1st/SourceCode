@@ -3,15 +3,17 @@
 BaseGun::BaseGun(const char* name):
 	BaseComponent(name)
 {
-	 
+	damage = 1;
+	speed = 20.0f;
+	fireRate = 1.0f;
 }
 
 void BaseGun::Initialize()
 {
 	lmg = new GameObject("LMG", 
 		Argent::Loader::Fbx::LoadFbx("./Resources/Model/LMG/LMG_0406_ver4.fbx"));
-	lmg->GetTransform()->SetPosition(DirectX::XMFLOAT3(-16.0f, -20.0f, 12.0f));
-	lmg->GetTransform()->SetRotation(DirectX::XMFLOAT4(-2.0f, -90.0f, 0.0f, 0.0f));
+	lmg->GetTransform()->SetPosition(DirectX::XMFLOAT3(-3.0f, -3.0f, 3.0f));
+	lmg->GetTransform()->SetRotation(DirectX::XMFLOAT4(-2.0f, -86.5f, 0.0f, 0.0f));
 	lmg->GetTransform()->SetScaleFactor(0.1f);
 	GetOwner()->AddChild(lmg);
 }
@@ -49,8 +51,8 @@ void BaseGun::Update()
 
 	if(Argent::Input::GetButtonUp(MouseButton::RightButton))
 	{
-		if(mode == Bullet::Mode::Living) mode = Bullet::Mode::Machine;
-		if(mode == Bullet::Mode::Machine) mode = Bullet::Mode::Living;
+		if(mode == Bullet::Mode::Creature) mode = Bullet::Mode::Machine;
+		if(mode == Bullet::Mode::Machine) mode = Bullet::Mode::Creature;
 	}
 
 }

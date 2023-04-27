@@ -64,7 +64,7 @@ void TutorialStage::Initialize()
 {
 	GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx(filePath));
 	auto t = GetOwner()->GetTransform();
-	t->SetPosition(DirectX::XMFLOAT3(0, 0, -531.5f));
+	t->SetPosition(DirectX::XMFLOAT3(0, 0, -527.0f));
 	t->SetRotation(DirectX::XMFLOAT4(0, 90, 0, 0));
 }
 

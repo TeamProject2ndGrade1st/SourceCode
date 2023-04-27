@@ -12,7 +12,7 @@ class Bullet:
 public:
 	enum class Mode
 	{
-		Living,
+		Creature,
 		Machine
 	};
 

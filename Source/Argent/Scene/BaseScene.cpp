@@ -3,6 +3,8 @@
 #include "../Graphic/Graphics.h"
 #include "../Component/Camera.h"
 #include "../Component/Light.h"
+#include "../Input/Keyboard.h"
+#include "../Core/App.h"
 
 namespace Argent::Scene
 {
@@ -24,6 +26,8 @@ namespace Argent::Scene
 
 		c->ReplaceTag(GameObject::Tag::MainCamera);
 		AddObject(c);
+
+
 		auto l = new GameObject("Light", new Light(lightIndex));
 		l->ReplaceTag(GameObject::Tag::Light);
 		AddObject(l);
@@ -31,6 +35,17 @@ namespace Argent::Scene
 		l = new GameObject("Light", new Light(lightIndex));
 		l->ReplaceTag(GameObject::Tag::Light);
 		AddObject(l);
+		++lightIndex;
+		l = new GameObject("Light", new Light(lightIndex));
+		l->ReplaceTag(GameObject::Tag::Light);
+		AddObject(l);
+		/*++lightIndex;
+		l = new GameObject("Light", new Light(lightIndex));
+		l->ReplaceTag(GameObject::Tag::Light);
+		AddObject(l);*/
+
+
+
 		for(size_t i = 0; i < objects.size(); ++i)
 		{
 			if(objects.at(i))
@@ -96,6 +111,11 @@ namespace Argent::Scene
 		{
 			if (objects.at(i) && objects.at(i)->GetIsActive())
 				objects.at(i)->LateUpdate();
+		}
+
+		if(Argent::Input::Keyboard::Instance().GetKeyUp(Input::Keyboard::Escape))
+		{
+			Argent::App::ArApp::Quit();
 		}
 	}
 
