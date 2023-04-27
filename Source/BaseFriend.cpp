@@ -24,7 +24,6 @@ void BaseFriend::Initialize()
     BaseActor::Initialize();
 
 
-    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
     acceleration = init_acceleration;
     maxMoveSpeed = init_maxMoveSpeed;
     friction = init_friction;
@@ -42,6 +41,8 @@ void BaseFriend::Initialize()
     stateMachine.get()->RegisterState(new Friend::AttackState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));*/
+
+    attackAreaRadius = init_attackAreaRadius * GetTransform()->GetScaleFactor();
 
 }
 

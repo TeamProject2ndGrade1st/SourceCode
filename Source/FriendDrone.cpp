@@ -27,11 +27,10 @@ void FriendDrone::Initialize()
     acceleration     = init_acceleration;
     maxMoveSpeed     = init_maxMoveSpeed;
     friction         = init_friction;
-    attackAreaRadius = init_attackAreaRadius;
+    attackAreaRadius = init_attackAreaRadius * GetTransform()->GetScaleFactor();
 
     //タグ付け
     GetOwner()->ReplaceTag(GameObject::Tag::Friend);
-    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
 
     //ステートマシンへのステート登録
     stateMachine = std::make_unique<StateMachine>();
