@@ -59,7 +59,7 @@ void BaseEnemy::Update()
 
 void BaseEnemy::DrawDebug()
 {
-    if (ImGui::TreeNode(GetName().c_str()))
+    if (ImGui::TreeNode(GetName()))
     {
         ImGui::TreePop();
     }
@@ -121,7 +121,7 @@ BaseFriend* BaseEnemy::SearchFriend1()
             if (dot > 0.0f)
             {
                 f->GetTransform()->SetPosition(friendPos);
-                auto* ret = fManager->FindFriendOwner(f);
+                auto* ret = fManager->FindFriendComponentFromOwner(f);
                 return ret;
                 //return f;
             }

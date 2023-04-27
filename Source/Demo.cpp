@@ -78,7 +78,7 @@ void RayCastDemo::Update()
 
 void RayCastDemo::DrawDebug()
 {
-	if (ImGui::TreeNode(GetName().c_str()))
+	if (ImGui::TreeNode(GetName()))
 	{
 		mousePos = Argent::Input::Mouse::Instance().GetPosition();
 		mousePostPos = Argent::Input::Mouse::Instance().GetPostPosition();

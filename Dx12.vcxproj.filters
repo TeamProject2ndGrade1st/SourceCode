@@ -157,9 +157,6 @@
     <ClCompile Include="Source\Argent\Core\ArWindow.cpp">
       <Filter>Lib\Argent\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Argent\GameObject\GameObject.cpp">
-      <Filter>Lib\Argent\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Argent\Graphic\Dx12\Command.cpp">
       <Filter>Lib\Argent\Graphic\Dx12</Filter>
     </ClCompile>
@@ -306,7 +303,7 @@
     <ClCompile Include="Source\Bullet.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BaseBulletManager.cpp">
+    <ClCompile Include="Source\BulletManager.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
     <ClCompile Include="Source\Player.cpp">
@@ -327,6 +324,7 @@
     <ClCompile Include="Source\FriendCreature.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FriendManager.cpp" />
     <ClCompile Include="Source\EnemyStateMachine.cpp">
       <Filter>Game\mame</Filter>
     </ClCompile>
@@ -351,11 +349,11 @@
     <ClCompile Include="Source\Argent\Component\EffekseerEmitter.cpp">
       <Filter>Lib\Argent\Component\Effekseer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FriendManager.cpp">
-      <Filter>Game\善晃</Filter>
+    <ClCompile Include="Source\Argent\GameObject\GameObject.cpp">
+      <Filter>Lib\Argent\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Shadow.cpp">
-      <Filter>Game\善晃</Filter>
+    <ClCompile Include="Source\GunRenderer.cpp">
+      <Filter>Game\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -412,9 +410,6 @@
     </ClInclude>
     <ClInclude Include="Source\Argent\Core\ArWindow.h">
       <Filter>Lib\Argent\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Argent\GameObject\GameObject.h">
-      <Filter>Lib\Argent\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Graphic\Dx12\Command.h">
       <Filter>Lib\Argent\Graphic\Dx12</Filter>
@@ -586,7 +581,7 @@
     <ClInclude Include="Source\Bullet.h">
       <Filter>Game\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Source\BaseBulletManager.h">
+    <ClInclude Include="Source\BulletManager.h">
       <Filter>Game\Player</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player.h">
@@ -607,6 +602,7 @@
     <ClInclude Include="Source\FriendCreature.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
+    <ClInclude Include="Source\FriendManager.h" />
     <ClInclude Include="Source\EnemyStateMachine.h">
       <Filter>Game\mame</Filter>
     </ClInclude>
@@ -631,11 +627,14 @@
     <ClInclude Include="Source\Argent\Component\EffekseerEmitter.h">
       <Filter>Lib\Argent\Component\Effekseer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FriendManager.h">
-      <Filter>Game\善晃</Filter>
+    <ClInclude Include="Source\Argent\GameObject\GameObject.h">
+      <Filter>Lib\Argent\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Shadow.h">
-      <Filter>Game\善晃</Filter>
+    <ClInclude Include="Source\GunRenderer.h">
+      <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Reticle.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -649,12 +648,6 @@
       <Filter>Lib\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Source\Shader\SpriteVertex.hlsl">
-      <Filter>Lib\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Source\Shader\GeometricPrimitivePixel.hlsl">
-      <Filter>Lib\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Source\Shader\GeometricPrimitiveVertex.hlsl">
       <Filter>Lib\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Source\Shader\PeraPixel.hlsl">
@@ -692,9 +685,6 @@
     <None Include="Source\Shader\Sprite.hlsli">
       <Filter>Lib\Shader</Filter>
     </None>
-    <None Include="Source\Shader\GeometricPrimitive.hlsli">
-      <Filter>Lib\Shader</Filter>
-    </None>
     <None Include="Source\Shader\Pera.hlsli">
       <Filter>Lib\Shader</Filter>
     </None>
@@ -708,6 +698,12 @@
       <Filter>Lib\Shader</Filter>
     </None>
     <None Include="Source\Shader\DebugMesh.hlsli">
+      <Filter>Lib\Shader</Filter>
+    </None>
+    <None Include="Source\Shader\LambertDiffuse.hlsli">
+      <Filter>Lib\Shader</Filter>
+    </None>
+    <None Include="Source\Shader\PhongSpecular.hlsli">
       <Filter>Lib\Shader</Filter>
     </None>
   </ItemGroup>

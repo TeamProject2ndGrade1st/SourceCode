@@ -6,7 +6,7 @@ class Light :
     public Argent::Component::BaseComponent
 {
 public:
-    Light(std::string name = "Light", DirectX::XMFLOAT4 color = DirectX::XMFLOAT4(1, 1, 1, 1));
+    Light(int index, std::string name = "Light", DirectX::XMFLOAT4 color = DirectX::XMFLOAT4(1, 1, 1, 1));
 	virtual ~Light() = default;
 
 
@@ -20,5 +20,6 @@ public:
 
 protected:
     Argent::Color color;
+    int index;
 };
 

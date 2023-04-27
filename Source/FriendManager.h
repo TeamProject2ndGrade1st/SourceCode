@@ -6,14 +6,6 @@ class BaseFriend;
 class FriendManager : public Argent::Component::BaseActor
 {
 public:
-    //‚¢‚ç‚ñ
-    /*enum class Tag : unsigned int
-    {
-        UnTagged    = 0x01,
-        Creature    = 0x01 << 1,
-        Drone       = 0x01 << 2
-    };*/
-
     enum class Type
     {
         Creature,
@@ -32,7 +24,7 @@ public:
 
     void AddFriend(BaseFriend* _friend);
 
-    BaseFriend* FindFriendOwner(GameObject* wFriend) const;
+    BaseFriend* FindFriendComponentFromOwner(GameObject* wFriend) const;
 private:
     std::vector<BaseFriend*> friendArray;
     Argent::Scene::BaseScene* scene;

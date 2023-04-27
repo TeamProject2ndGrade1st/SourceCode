@@ -12,8 +12,10 @@ BaseFriend::BaseFriend(const char* name, DirectX::XMFLOAT3 pos) :
 void BaseFriend::Initialize()
 {
     Character::Initialize();
-    GetOwner()->SetTag(GameObject::Tag::Friend);
 
+    GetOwner()->ReplaceTag(GameObject::Tag::Friend);
+
+    GetOwner()->GetTransform()->SetScaleFactor(0.15f);
    /* GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     
     target = GetOwner()->FindByName("target");
@@ -27,7 +29,7 @@ void BaseFriend::Initialize()
     maxMoveSpeed = init_maxMoveSpeed;
     friction = init_friction;
 
-    GetOwner()->SetTag(GameObject::Tag::Stage);
+    GetOwner()->ReplaceTag(GameObject::Tag::Stage);
     //GetOwner()->GetTransform()->SetScaleFactor(0.01f);
     GetOwner()->GetTransform()->SetScaleFactor(0.1f);
 
@@ -62,7 +64,7 @@ void BaseFriend::Update()
 void BaseFriend::DrawDebug()
 {
 
-    if (ImGui::TreeNode(GetName().c_str()))
+    if (ImGui::TreeNode(GetName()))
     {
        
         

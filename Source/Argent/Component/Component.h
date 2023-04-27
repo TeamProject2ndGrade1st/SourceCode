@@ -51,8 +51,8 @@ namespace Argent::Component
 			}
 		}
 
-		std::string GetName() const { return name; }
-
+		const char* GetName() const { return name.c_str(); }
+		void SetName(const char* n){ name = n; }
 	private:
 		std::string name;
 		GameObject* owner;

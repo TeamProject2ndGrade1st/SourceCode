@@ -52,7 +52,7 @@ namespace Argent::Component::Collider
 
 	void SphereCollider::DrawDebug()
 	{
-		if(ImGui::TreeNode(GetName().c_str()))
+		if(ImGui::TreeNode(GetName()))
 		{
 			ImGui::SliderFloat("Radius", &radius, 0.0, 10.0f);
 			ImGui::TreePop();

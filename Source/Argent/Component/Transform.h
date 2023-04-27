@@ -25,6 +25,8 @@ public:
 	,	coordinateSystem(static_cast<int>(CoordinateSystem::cRightYup))
 	{}
 
+
+	static DirectX::XMFLOAT3 CalcEulerAngleFromRotationMatrix(const DirectX::XMMATRIX& mat);
 	~Transform() override = default;
 	Transform(const Transform&) = default;
 	Transform& operator+=(const Transform& t);
@@ -39,9 +41,10 @@ public:
 	void Reset() override;
 	void SetWorld(const DirectX::XMFLOAT4X4& w);
 
-	[[nodiscard]] DirectX::XMMATRIX CalcWorldMatrix();
+	DirectX::XMMATRIX CalcWorldMatrix();
+	DirectX::XMMATRIX CalcLocalMatrix();
 
-	[[nodiscard]] DirectX::XMFLOAT4X4 GetWorld()
+	DirectX::XMFLOAT4X4 GetWorld()
 	{
 		DirectX::XMFLOAT4X4 tmp{};
 		DirectX::XMStoreFloat4x4(&tmp, CalcWorldMatrix());
@@ -63,7 +66,7 @@ public:
 		position.z += pos.z;
 	}
 
-	Transform AdjustParentTransform() const;
+	//Transform AdjustParentTransform() const;
 
 	float GetScaleFactor() const { return scaleFactor;  }
 	void SetScaleFactor(float f) { scaleFactor = f;  }
@@ -91,13 +94,13 @@ private:
 	float scaleFactor;
 
 	int coordinateSystem;
-	DirectX::XMFLOAT4X4 defaultWorld
+	/*DirectX::XMFLOAT4X4 defaultWorld
 	{
 		1, 0, 0, 0,
 		0, 1, 0, 0,
 		0, 0, 1, 0,
 		0, 0, 0, 1
-	};
+	};*/
 
 	const DirectX::XMFLOAT4X4 CoordinateSystemTransforms[static_cast<int>(CoordinateSystem::cNone)]
 	{

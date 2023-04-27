@@ -94,6 +94,7 @@ GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> 
 
 void GameObject::Initialize()
 {
+	if(isInitialized) return;
 	isInitialized = true;
 	for(size_t i = 0; i < components.size(); ++i)
 	{
@@ -105,6 +106,8 @@ void GameObject::Initialize()
 		if(childObjects.at(i))
 			childObjects.at(i)->Initialize();
 	}
+
+	isFinInitialized = true;
 }
 
 void GameObject::Finalize()
@@ -266,10 +269,13 @@ void GameObject::DrawDebug()
 void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 {
 	com->SetOwner(this);
-	if (isInitialized)
+	std::string n = ComponentNameCheck(com->GetName());
+	com->SetName(n.c_str());
+
+	if (isInitialized && isFinInitialized)
 		com->Initialize();
 
-	int64_t index = FindNullComponentIndex();
+	const int64_t index = FindNullComponentIndex();
 	if(index < 0)
 	{
 		size_t size = components.size(); 
@@ -347,6 +353,13 @@ GameObject* GameObject::Instantiate(const char* name, Argent::Component::BaseCom
 	return ret;
 }
 
+GameObject* GameObject::Instantiate(const char* name, std::vector<Argent::Component::BaseComponent*> com)
+{
+	GameObject* ret = new GameObject(name, com);
+	Argent::Scene::SceneManager::Instance()->GetCurrentScene()->AddObject(ret);
+	return ret;
+}
+
 GameObject* GameObject::FindByName(const char* name)
 {
 	return Argent::Scene::SceneManager::Instance()->GetCurrentScene()->GetGameObject(name);
@@ -365,7 +378,18 @@ bool GameObject::FindByTag(Tag tag, std::vector<GameObject*>& objArray)
 		}
 	}
 
-	return objArray.size() == 0;
+	return objArray.size() != 0;
+}
+
+bool GameObject::GetChildArray(std::vector<GameObject*>& array)
+{
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		if(childObjects.at(i))
+			array.emplace_back(childObjects.at(i).get());
+	}
+
+	return array.size() != 0;
 }
 
 int64_t GameObject::FindNullChildIndex() const

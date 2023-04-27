@@ -53,7 +53,7 @@ namespace Argent::Component
 			void Render() const override;
 			void Initialize() override;
 
-			DirectX::XMMATRIX GetWorldTransform();
+			DirectX::XMMATRIX GetWorldTransform() const;
 
 			void DrawDebug() override;
 

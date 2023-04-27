@@ -14,13 +14,19 @@ class GameObject
 public:
 	enum class Tag : unsigned int
 	{
-		UnTagged   =	0x01 << 1,
-		MainCamera =	0x01 << 2,
-		Stage =			0x01 << 3,
-		Friend =		0x01 << 4,
-		SpikeBot =		0x01 << 5,
-		Turret =		0x01 << 6,
-		FriendManager = 0x01 << 7
+
+		UnTagged   =	0x01 << 1,	//default 
+		MainCamera =	0x01 << 2,	//カメラが持ってる
+		Stage =			0x01 << 3,	//ステージ
+		Friend =		0x01 << 4,	//味方キャラ
+		Enemy =			0x01 << 5,	//敵キャラ
+		SpikeBot =		0x01 << 6,	
+		Turret =		0x01 << 7,
+		FriendManager = 0x01 << 8,
+		Core =			0x01 << 9,
+		Creature =		0x01 << 10,	
+		Machine =		0x01 << 11,
+
 	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);
 	GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com);
@@ -87,8 +93,12 @@ public:
 
 
 	Tag GetTag() const { return tag; }
-	void SetTag(Tag t) { tag = t; }
-
+	unsigned GetUnsignedTag() const { return static_cast<unsigned>(tag); }
+	void ReplaceTag(Tag t) { tag = t; }
+	void AddTag(Tag t)
+	{
+		tag = static_cast<Tag>(static_cast<unsigned>(tag) | static_cast<unsigned>(t));
+	}
 
 	/**
 	 * \brief ゲームオブジェクトを破壊する
@@ -102,6 +112,8 @@ public:
 	 * \return 生成したオブジェクト
 	 */
 	static GameObject* Instantiate(const char* name, Argent::Component::BaseComponent* com);
+	static GameObject* Instantiate(const char* name, std::vector<Argent::Component::BaseComponent*> com);
+
 	/**
 	 * \brief 最初に見つけたオブジェクトのみ戻す
 	 * \param name 探したいオブジェクトの名前
@@ -113,10 +125,16 @@ public:
 	 *ビット演算で見つけるため2つ以上のタグを組み合わせることも可能なはず…
 	 * \param tag 
 	 * \param objArray [out] 発見したゲームオブジェクトを入れる配列
-	 * \return 発見したかどうか
+	 * \return 発見したかどうか true した　false してない
 	 */
 	static bool FindByTag(Tag tag, std::vector<GameObject*>& objArray);
 
+	/**
+	 * \brief childの配列を取得
+	 * \param array childを入れる
+	 * \return 発見したかどうか　trueした　false してない
+	 */
+	bool GetChildArray(std::vector<GameObject*>& array);
 	//todo もっといい方法を考える
 	float elapsedTimeFromDestroyed;
 protected:
@@ -134,6 +152,7 @@ protected:
 
 	bool isDrawDebug;
 	bool isInitialized;
+	bool isFinInitialized = false;
 	bool willDestroy;
 	bool isActive;
 
@@ -146,6 +165,27 @@ public:
 private:
 	int64_t FindNullChildIndex() const;
 	int64_t FindNullComponentIndex() const;
+
+	std::string ComponentNameCheck(const char* name, int num = 0, bool isChecked = false)
+	{
+		std::string replaceName = name;
+		for(const auto& object : components)
+		{
+			if (!object) continue;
+			if(object->GetName() == replaceName)
+			{
+				if(isChecked)
+				{
+					replaceName.erase(replaceName.find('('));
+				}
+				std::string n = replaceName + "(" + std::to_string(num) + ")";
+				++num;
+				replaceName = ComponentNameCheck(n.c_str(), num, true);
+				int i = 0;
+			}
+		}
+		return replaceName;
+	}
 };
 
 template <typename T>
@@ -153,6 +193,7 @@ T* GameObject::GetComponent()
 {
 	for(auto& com : components)
 	{
+		if(!com.get()) continue;
 		if(typeid(*com.get()) != typeid(T)) continue;
 
 		return static_cast<T*>(com.get());

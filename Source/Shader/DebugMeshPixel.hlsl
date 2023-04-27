@@ -22,12 +22,12 @@ float3 CalcPhongSpecular(float3 normal, float3 lightVector, float3 lightColor,
 float4 main(VSOut pin) : SV_TARGET
 {
     return float4(1, 0, 0, 1);
-    float3 L = normalize(float3(pin.position - lightPosition.xyz));
+    float3 L = normalize(float3(pin.position - light[0].position.xyz));
     float3 E = normalize(float3(cameraPosition.xyz - pin.position.xyz));
     float3 N = pin.normal.xyz;
     float4 color = float4(1, 0, 0, 1);
 
-    float3 diffuse = CalcLambertDiffuse(N, L, lightColor, float3(1, 1, 1));
+    float3 diffuse = CalcLambertDiffuse(N, L, light[0].color, float3(1, 1, 1));
 
     float4 ret = float4(color.rgb * diffuse.rgb * color.rgb, 1);
 	return ret;

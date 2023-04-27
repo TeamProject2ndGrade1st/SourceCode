@@ -85,3 +85,28 @@ inline DirectX::XMFLOAT4 Min(const DirectX::XMFLOAT4& f1, const DirectX::XMFLOAT
 	ret.w = f1.w < f2.w ? f1.w : f2.w;
 	return ret;
 }
+
+inline float Length(const DirectX::XMFLOAT3& f1, const DirectX::XMFLOAT3&f2)
+{
+	float ret{};
+	DirectX::XMStoreFloat(
+		&ret, 
+		DirectX::XMVector3Length(
+			DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&f1), 
+				DirectX::XMLoadFloat3(&f2))));
+	return ret;
+}
+
+inline float Length(const DirectX::XMFLOAT3& f)
+{
+	float ret;
+	DirectX::XMStoreFloat(&ret, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&f)));
+	return ret;
+}
+
+inline float LengthV3(const DirectX::XMVECTOR& v)
+{
+	float ret;
+	DirectX::XMStoreFloat(&ret, DirectX::XMVector3Length(v));
+	return ret; 
+}

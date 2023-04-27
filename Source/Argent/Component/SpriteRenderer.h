@@ -27,6 +27,14 @@ namespace Argent::Component::Renderer
 
 		void DrawDebug() override;
 
+		void SetOffset(const DirectX::XMFLOAT3& f) { offset = f; }
+		void SetScale(const DirectX::XMFLOAT3& f) { scale = f; }
+		void SetTexPos(const DirectX::XMFLOAT2& f) { texPos = f; }
+
+		DirectX::XMFLOAT3 GetOffset() const { return offset; }
+		DirectX::XMFLOAT3 GetScale() const { return scale; }
+		DirectX::XMFLOAT2 GetTexPos() const { return texPos; }
+
 	private:
 		std::unique_ptr<Resource::Sprite::Sprite> sprite;
 		std::shared_ptr<Material::SpriteMaterial> material;

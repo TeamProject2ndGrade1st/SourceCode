@@ -5,7 +5,7 @@
 void FriendManager::Initialize()
 {
     BaseActor::Initialize();
-    GetOwner()->SetTag(GameObject::Tag::FriendManager);
+    GetOwner()->ReplaceTag(GameObject::Tag::FriendManager);
 }
 
 void FriendManager::Update()
@@ -23,7 +23,7 @@ void FriendManager::DrawDebug()
 {
     static DirectX::XMFLOAT3 pos{};
     static int type{};
-    if (ImGui::TreeNode(GetName().c_str()))
+    if (ImGui::TreeNode(GetName()))
     {
         ImGui::SliderFloat3("SpawnPos", &pos.x, -100.0f, 100.0f);
         ImGui::SliderInt("FriendType", &type, 0, static_cast<int>(Type::End)-1);
@@ -57,13 +57,7 @@ void FriendManager::AddFriend(BaseFriend* _friend)
 }
 
 
-//BaseFriend* FriendManager::FindByTag(Tag tag, std::vector<BaseFriend*>& array)
-//{
-//    return nullptr;
-//    //return std::unique_ptr<BaseFriend>();
-//}
-
-BaseFriend* FriendManager::FindFriendOwner(GameObject* wFriend) const
+BaseFriend* FriendManager::FindFriendComponentFromOwner(GameObject* wFriend) const
 {
     for (auto& f : friendArray)
     {
@@ -74,3 +68,4 @@ BaseFriend* FriendManager::FindFriendOwner(GameObject* wFriend) const
 
     return nullptr;
 }
+

@@ -8,7 +8,6 @@ void Character::Initialize()
     BaseActor::Initialize();
     
     //‰e‚Ì•\Ž¦
-    //GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow0425_3.fbx", false));
     GameObject::Instantiate("Shadow", new Shadow(this));
 
     GetOwner()->AddComponent(new Argent::Component::Collider::SphereCollider);

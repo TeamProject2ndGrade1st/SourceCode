@@ -70,16 +70,19 @@ namespace Argent::Component
 			Argent::Collider::ColliderManager::Instance().RegisterRayCastCollider(this);
 		}
 
-		RayCastCollider::RayCastCollider(std::vector<MeshResource> mResource):
+		RayCastCollider::RayCastCollider(std::vector<MeshResource> meshResource):
 			BaseComponent("RayCastCollider")
 		,	offset(DirectX::XMFLOAT3())
 		,	scale(DirectX::XMFLOAT3(1, 1, 1))
 		,	rotation(DirectX::XMFLOAT4())
 		,	type(MeshType::Mesh)
 		{
-			this->mResource = mResource;
-			debugRenderer = std::make_unique<Debug::DebugRenderer>(
-				mResource.at(0));
+			this->mResource = meshResource;
+			if(meshResource.size() > 0)
+			{
+				debugRenderer = std::make_unique<Debug::DebugRenderer>(
+					mResource.at(0));
+			}
 
 			Argent::Collider::ColliderManager::Instance().RegisterRayCastCollider(this);
 
@@ -90,17 +93,13 @@ namespace Argent::Component
 			Argent::Collider::ColliderManager::Instance().UnRegisterRayCastCollider(this);
 		}
 
-
 		void RayCastCollider::Render() const
 		{
 			if(debugRenderer)
 			{
-				auto t = *(GetOwner()->GetTransform());
-				const auto p = t.GetPosition();
-				t.SetPosition(offset + p);
-				t.SetScale(t.GetScale() * scale);
-				t.SetRotation(t.GetRotation() + rotation);
-				debugRenderer->Render(t.GetWorld());
+				DirectX::XMFLOAT4X4 w{};
+				DirectX::XMStoreFloat4x4(&w, GetWorldTransform());
+				debugRenderer->Render(w);
 			}
 		}
 
@@ -108,11 +107,14 @@ namespace Argent::Component
 		{
 		}
 
-		DirectX::XMMATRIX RayCastCollider::GetWorldTransform()
+		DirectX::XMMATRIX RayCastCollider::GetWorldTransform() const
 		{
 			auto g = GetOwner();
-			auto m = GetOwner()->GetTransform()->CalcWorldMatrix();
-			const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) };const DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+			/*auto t = g->GetTransform()->AdjustParentTransform();*/
+			//auto m = t.CalcWorldMatrix();
+			auto m = g->GetTransform()->CalcWorldMatrix();
+			const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) };
+			const DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
 			const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(offset.x,offset.y, offset.z) };
 
 			auto lm = S * R * T;
@@ -122,7 +124,7 @@ namespace Argent::Component
 
 		void RayCastCollider::DrawDebug()
 		{
-			if (ImGui::TreeNode(GetName().c_str()))
+			if (ImGui::TreeNode(GetName()))
 			{
 				ImGui::DragFloat3("Offset", &offset.x);
 				ImGui::DragFloat3("Scale", &scale.x);
@@ -180,12 +182,27 @@ namespace Argent::Component
 			bool ret = false;
 			if(other->type != Collider::RayCastCollider::MeshType::Mesh)
 			{
-				if(Helper::Collision::IntersectRayVsModel(start, end, other->GetMeshResource(), 
-					other->GetWorldTransform(), hitResult))
+				//todo　ザル計算　コライダーの位置が元の座標から大きくずらされていた場合は判定が入らないようになる
+				if(GetOwner())
 				{
-					hitResult.collider = other;
-					CalcComplementPosition(other, start, end, hitResult);
-					ret = true;
+					auto* t = GetOwner()->GetTransform();
+					auto* t2 = other->GetOwner()->GetTransform();
+
+					if(t && t2)
+					{
+						const float length = Length(t->GetPosition(), t2->GetPosition());
+						const float rayLength = Length(start, end);
+						//実際の距離とレイの距離を比べ　レイのほうが短かった場合は当たらないはずなので通らない
+						//todo レイのスタート地点がオーナーの座標と大きくずれていた場合はうまくいかない
+						if(length > rayLength) return false;
+					}
+					if(Helper::Collision::IntersectRayVsModel(start, end, other->GetMeshResource(), 
+						other->GetWorldTransform(), hitResult))
+					{
+						hitResult.collider = other;
+						CalcComplementPosition(other, start, end, hitResult);
+						ret = true;
+					}
 				}
 			}
 			else
@@ -197,44 +214,8 @@ namespace Argent::Component
 					{
 						hitResult.collider = other;
 
-						/*if (Helper::Collision::IntersectRayVsModel(start, end, other->GetMeshResource(),
-							other->GetWorldTransform(), hitResult))
-						{
-							hitResult.collider = other;
-
-						}*/
-							CalcComplementPosition(other, start, end, hitResult);
-							ret = true;
-
-						////壁までのベクトル
-						//DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&start);
-						//DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
-						//DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
-
-						////壁の法線
-						//DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hitResult.normal);
-
-						////入射ベクトルを法線に射影
-						//DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(DirectX::XMVectorNegate(Vec), Normal);
-
-						////補正位置の計算　
-						//DirectX::XMVECTOR CollectPosition = DirectX::XMVectorMultiplyAdd(Normal, Dot, End);
-						//DirectX::XMFLOAT3 collectPosition{};
-						//DirectX::XMStoreFloat3(&collectPosition, CollectPosition);
-
-						//HitResult hitResult2;
-						//if(!Helper::Collision::IntersectRayVsModel(hitResult.position, collectPosition, other->GetMeshResource(), 
-						//	other->GetWorldTransform(), hitResult2))
-						//{
-						//	hitResult.position = collectPosition;
-						//}
-						//else
-						//{
-						//	hitResult.position = hitResult2.position;
-						//}
-
-						//ret = true;
-						
+						CalcComplementPosition(other, start, end, hitResult);
+						ret = true;
 					}
 				}
 
@@ -244,7 +225,7 @@ namespace Argent::Component
 
 		void RayCast::DrawDebug()
 		{
-			if(ImGui::TreeNode(GetName().c_str()))
+			if(ImGui::TreeNode(GetName()))
 			{
 				ImGui::InputFloat3("Start", &start.x);
 				ImGui::InputFloat3("End", &end.x);

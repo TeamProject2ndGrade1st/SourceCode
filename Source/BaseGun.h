@@ -9,9 +9,9 @@ public:
 	BaseGun(const char* name);
 	virtual ~BaseGun() override = default;
 
-	
+	void Initialize() override;
 	void Update() final;
-
+	void Finalize() override;
 
 	void DrawDebug() override;
 
@@ -19,7 +19,12 @@ public:
 	int damage;
 	float speed;
 
+	DirectX::XMFLOAT3 offset;
+
+	Bullet::Mode mode;
+	GameObject* lmg;
 #ifdef _DEBUG
 	bool enableShot = false;
+
 #endif
 };

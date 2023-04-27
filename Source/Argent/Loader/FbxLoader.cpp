@@ -424,17 +424,19 @@ namespace Argent::Loader::Fbx
 			}
 			
 			
-			//if(PName == FbxSurfaceMaterial::sBump)
-			//{
-			//	const FbxFileTexture* fbxTexture{ fbxProp.GetSrcObject<FbxFileTexture>() };
-			//	const char* tmpFilePath = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
+			if(PName == FbxSurfaceMaterial::sBump)
+			{
+				const FbxFileTexture* fbxTexture{ fbxProp.GetSrcObject<FbxFileTexture>() };
+				const char* tmpFilePath = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
 
-			//	//tmpFilePath = "lambert1_Normal_OpenGL.png";
-			//	std::filesystem::path path(fbxFilePath);
-			//	path.replace_filename(tmpFilePath);
-
-			//	material.CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureType::Normal);
-			//}
+				std::filesystem::path path(fbxFilePath);
+				path.replace_filename(tmpFilePath);
+			//	if(material.get()->textureNames[static_cast<int>(Material::MeshMaterial::TextureType::Normal)].empty())
+				{
+					material->CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureType::Normal);
+					
+				}
+			}
 		}
 		else
 		{

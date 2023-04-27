@@ -16,7 +16,8 @@ void EnemyTurret::Initialize()
     GetOwner()->GetTransform()->SetPosition(pos);    
 
     // ƒ^ƒO‚ðÝ’è‚·‚é
-    GetOwner()->SetTag(GameObject::Tag::Turret);
+
+    GetOwner()->ReplaceTag(GameObject::Tag::Turret);
     BaseEnemy::Initialize();
 }
 

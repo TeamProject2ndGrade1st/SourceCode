@@ -12,13 +12,17 @@
 
 namespace Argent::Graphics
 {
+	struct Light
+	{
+		DirectX::XMFLOAT4 color;
+		DirectX::XMFLOAT4 position;
+	};
 	struct SceneConstant
 	{
 		DirectX::XMFLOAT4X4 view;
 		DirectX::XMFLOAT4X4 projection;
-		DirectX::XMFLOAT4 lightColor;
-		DirectX::XMFLOAT3 lightPosition;
-		DirectX::XMFLOAT3 cameraPosition;
+		DirectX::XMFLOAT4 cameraPosition;
+		Light light[2];
 	};
 
 	enum class RenderType
