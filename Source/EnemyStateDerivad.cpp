@@ -159,8 +159,10 @@ namespace Enemy::SpikeBot
                 //owner->friendAddSpeed = 3;
                 
                 
-                f->AddImpulse(DirectX::XMFLOAT3(0, 0, -1000000));
+                f->AddImpulse(DirectX::XMFLOAT3(0, 0, -1000));
+                owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
                 
+
                 once = true;
             }
         }
