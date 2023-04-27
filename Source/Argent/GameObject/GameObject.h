@@ -20,12 +20,12 @@ public:
 		Stage =			0x01 << 3,	//ステージ
 		Friend =		0x01 << 4,	//味方キャラ
 		Enemy =			0x01 << 5,	//敵キャラ
-		SpikeBot =		0x01 << 6,	
-		Turret =		0x01 << 7,
-		FriendManager = 0x01 << 8,
-		Core =			0x01 << 9,
-		Creature =		0x01 << 10,	
-		Machine =		0x01 << 11,
+
+		FriendManager = 0x01 << 6,
+		EnemyManager =	0x01 << 7,
+		Core =			0x01 << 8,
+		Creature =		0x01 << 9,	
+		Machine =		0x01 << 10,
 
 	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);

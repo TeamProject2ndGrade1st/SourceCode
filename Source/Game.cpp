@@ -7,7 +7,7 @@
 
 #include "Stage.h"
 
-#include "spikeBot.h"
+
 
 
 #include "FriendCreature.h"
@@ -16,6 +16,10 @@
 #include "Demo.h"
 #include "EnemyTurret.h"
 #include "Reticle.h"
+
+#include "EnemyManager.h"
+#include "EnemySpikeBot.h"
+#include "EnemyTurret.h"
 
 
 
@@ -35,12 +39,13 @@ void Game::Initialize()
 	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_test.efk", "./Resources/Effects"));
 
 	//AddObject(new GameObject("spikeBot", Argent::Loader::Fbx::LoadFbx("./Resources/Model/spike_bot_0419_1.fbx")));
-	//AddObject(new GameObject("spikeBot", new SpikeBot()));
-
+	
+	AddObject(new GameObject("spikebot", new EnemySpikeBot()));
 	AddObject(new GameObject("turret", new EnemyTurret()));
 
 	//AddObject(new GameObject("friend", new FriendCreature()));
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
+	AddObject(new GameObject("EnemyManager", new EnemyManager(this)));
 
 	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_0419_1.fbx"));
 	GameObject::Instantiate("Box", new Box("./Resources/Model/Stage/boxes_0419_1.fbx"));

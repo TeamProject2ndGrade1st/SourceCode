@@ -1,17 +1,13 @@
 #include "EnemySpikeBot.h"
 #include "EnemyStateDerivad.h"
 
-EnemySpikeBot::EnemySpikeBot() : BaseEnemy("EnemySpikeBot")
-{
-}
-
 void EnemySpikeBot::Initialize()
 {
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/spike.fbx"));
     
 
     // スケーリング
-    GetOwner()->GetTransform()->SetScaleFactor(0.1f);
+    GetOwner()->GetTransform()->SetScaleFactor(0.2f);
     
     // デバッグシリンダー
     GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cylinder));
@@ -29,7 +25,7 @@ void EnemySpikeBot::Initialize()
 
     // タグを設定する
 
-    GetOwner()->ReplaceTag(GameObject::Tag::SpikeBot);
+    GetOwner()->ReplaceTag(GameObject::Tag::Enemy);
 
     SetAccelaration(0);
     BaseEnemy::Initialize();

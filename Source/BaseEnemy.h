@@ -16,9 +16,8 @@ enum class EnemyAnimation
 class BaseEnemy : public Character
 {
 public:
-    BaseEnemy();
-    BaseEnemy(DirectX::XMFLOAT3 pos);
-    BaseEnemy(const char* name);
+    BaseEnemy(const char* name, DirectX::XMFLOAT3 pos);
+
     virtual ~BaseEnemy() {}
 
     virtual void Initialize()override;

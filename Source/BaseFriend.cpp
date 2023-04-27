@@ -124,7 +124,7 @@ bool BaseFriend::IsTargetInAttackArea()
 bool BaseFriend::SerchEnemy()
 {
     std::vector<GameObject*> enemyArray;
-    GameObject::FindByTag(GameObject::Tag::Turret, enemyArray);
+    GameObject::FindByTag(GameObject::Tag::Enemy, enemyArray);
     if (enemyArray.size() == 0)
     {
         //”­Œ©‚µ‚È‚©‚Á‚½‚ç
