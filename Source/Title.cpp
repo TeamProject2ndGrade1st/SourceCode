@@ -18,6 +18,7 @@
 #include "FriendManager.h"
 
 
+
 void Title::Initialize()
 {
 	ClearGameObject();

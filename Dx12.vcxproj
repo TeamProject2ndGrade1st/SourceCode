@@ -192,6 +192,7 @@
     <ClInclude Include="Source\FriendManager.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\GunRenderer.h" />
+    <ClInclude Include="Source\muzzleFlash.h" />
     <ClInclude Include="Source\Result.h" />
     <ClInclude Include="Source\Reticle.h" />
     <ClInclude Include="Source\Shadow.h" />
