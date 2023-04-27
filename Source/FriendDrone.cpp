@@ -60,8 +60,8 @@ void FriendDrone::Update()
     pos = GetTransform()->GetPosition();
     huwahuwaDegree += huwahuwaSpeed;
     if (huwahuwaDegree > 360)huwahuwaDegree = 0;
-    float huwahuwa = sinf(DirectX::XMConvertToRadians(huwahuwaDegree)) * 0.2f;
-    GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 1.5f + huwahuwa, pos.z));
+    float huwahuwa = sinf(DirectX::XMConvertToRadians(huwahuwaDegree)) * (20.0f * GetOwner()->GetTransform()->GetScaleFactor());
+    GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 150.0f * GetOwner()->GetTransform()->GetScaleFactor() + huwahuwa, pos.z));
 }
 
 void FriendDrone::DrawDebug()
