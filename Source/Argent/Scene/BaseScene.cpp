@@ -50,6 +50,7 @@ namespace Argent::Scene
 		}
 		objects.clear();
 		isInitialized = false;
+		lightIndex = 0;
 	}
 
 	void BaseScene::Begin()
