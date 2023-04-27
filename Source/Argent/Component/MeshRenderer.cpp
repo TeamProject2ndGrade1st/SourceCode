@@ -7,7 +7,7 @@
 namespace Argent::Component::Renderer
 {
 	MeshRenderer::MeshRenderer(ID3D12Device* device, const char* fileName,
-		std::shared_ptr<Resource::Mesh::ArMesh> meshes):
+		std::shared_ptr<Resource::Mesh::Mesh> meshes):
 		BaseRenderer("Mesh Renderer")
 	{
 		this->mesh = meshes;
@@ -53,9 +53,11 @@ namespace Argent::Component::Renderer
 
 	void MeshRenderer::Render() const 
 	{
-		const Transform* t = GetOwner()->GetTransform();
+		DirectX::XMFLOAT4X4 world{};
+		DirectX::XMStoreFloat4x4(&world, GetOwner()->GetTransform()->CalcWorldMatrix());
 		Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), 
-			t->AdjustParentTransform().GetWorld());
+			//t->AdjustParentTransform().GetWorld());
+			world);
 	}
 
 	void MeshRenderer::Update()
@@ -66,14 +68,10 @@ namespace Argent::Component::Renderer
 
 	void MeshRenderer::DrawDebug()
 	{
-		if (ImGui::TreeNode(GetName().c_str()))
+		if (ImGui::TreeNode(GetName()))
 		{
 			if (ImGui::TreeNode("Material"))
 			{
-				/*for (auto& m : materials)
-				{
-					m.second->DrawDebug();
-				}*/
 				for(auto& s : mesh->subsets)
 				{
 					s.material->DrawDebug();

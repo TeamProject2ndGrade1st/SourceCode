@@ -18,7 +18,7 @@ namespace Argent::Component::Collider
 		};
 
 		Collider(const char* name, ColliderType type);
-		virtual ~Collider() override = default;
+		virtual ~Collider() override;
 
 
 		void OnCollision(const Collider* collider);

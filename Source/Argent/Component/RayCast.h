@@ -4,6 +4,7 @@
 #include <vector>
 #include "../Resource/Mesh.h"
 #include "../Debug/DebugRenderer.h"
+#include "../Math/MathHelper.h"
 
 
 #include <cereal/archives/binary.hpp>
@@ -45,13 +46,14 @@ namespace Argent::Component
 					const DirectX::XMFLOAT4& rotation = DirectX::XMFLOAT4(1, 1, 1, 1));
 
 			RayCastCollider(const MeshResource& mResource);
+			RayCastCollider(std::vector<MeshResource> mResource);
 
-			~RayCastCollider() override = default;
+			~RayCastCollider() override;
 
 			void Render() const override;
 			void Initialize() override;
 
-			DirectX::XMMATRIX GetWorldTransform();
+			DirectX::XMMATRIX GetWorldTransform() const;
 
 			void DrawDebug() override;
 
@@ -62,9 +64,17 @@ namespace Argent::Component
 			DirectX::XMFLOAT3 scale;
 			DirectX::XMFLOAT4 rotation;
 
-			const MeshResource& GetMeshResource()const { return mResources[static_cast<int>(type)]; }
+			const MeshResource& GetMeshResource()const
+			{
+				return mResources[static_cast<int>(type)];
+			}
+
+			std::vector<MeshResource> GetMeshResourceVec() const
+			{
+				return mResource;
+			}
 		protected:
-			MeshResource mResource;
+			std::vector<MeshResource> mResource;
 			static MeshResource mResources[static_cast<int>(MeshType::Max)];
 		};
 		
@@ -78,6 +88,7 @@ namespace Argent::Component
 			DirectX::XMFLOAT3	normal = {};		//衝突したポリゴンの法線ベクトル
 			float				distance = 0.0f;	//レイの視点から交点までの距離
 			int					materialIndex = -1;	//衝突したポリゴンのマテリアル番号
+			Collider::RayCastCollider* collider = nullptr;	//衝突したコライダーのポインタ
 		};
 
 
@@ -90,22 +101,29 @@ namespace Argent::Component
 			void SetRayData(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& direction, float length)
 			{
 				this->start = start;
-				this->direction = direction;
-				this->length = length;
+				//this->direction = direction;
+				//this->length = length;
+				end = start + direction * length;
 			}
+
+			void SetRayData(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end)
+			{
+				this->start = start;
+				this->end = end;
+			}
+
+
 			void SetRayStartPosition(const DirectX::XMFLOAT3& f) { start = f; }
-			void SetRayDirection(const DirectX::XMFLOAT3& f) { direction = f; }
-			void SetRayLength(float f) { length = f; }
 
 			bool CollisionDetection(Collider::RayCastCollider* other, HitResult& hitResult) const;
-
 
 			void DrawDebug() override;
 
 		protected:
 			DirectX::XMFLOAT3 start;
-			DirectX::XMFLOAT3 direction;
-			float length;
+			/*DirectX::XMFLOAT3 direction;
+			float length;*/
+			DirectX::XMFLOAT3 end;
 		};
 	}
 

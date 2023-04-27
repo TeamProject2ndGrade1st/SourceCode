@@ -12,13 +12,17 @@
 
 namespace Argent::Graphics
 {
+	struct Light
+	{
+		DirectX::XMFLOAT4 color;
+		DirectX::XMFLOAT4 position;
+	};
 	struct SceneConstant
 	{
 		DirectX::XMFLOAT4X4 view;
 		DirectX::XMFLOAT4X4 projection;
-		DirectX::XMFLOAT4 lightColor;
-		DirectX::XMFLOAT3 lightPosition;
-		DirectX::XMFLOAT3 cameraPosition;
+		DirectX::XMFLOAT4 cameraPosition;
+		Light light[2];
 	};
 
 	enum class RenderType
@@ -48,14 +52,14 @@ namespace Argent::Graphics
 		DirectX::XMFLOAT4X4 GetSceneView() const { return cbScene->view;  }
 		DirectX::XMFLOAT4X4 GetSceneProjection() const { return cbScene->projection;  }
 
-		void Begin(const D3D12_VIEWPORT* viewport, const D3D12_RECT* scissorRect, float clearColor[4]) const;
+		void Begin() const;
 		void End() const;
 		void SetRenderTarget(const D3D12_VIEWPORT& viewport, const D3D12_RECT& rect, float clearColor[4]);
 		void UpdateSceneConstant(const SceneConstant& sceneConstant) const;
 		void SetSceneConstant(UINT rootParameterIndex = 0);
 		void SetBarrier(D3D12_RESOURCE_STATES before, D3D12_RESOURCE_STATES after) const;
 		void Reset();
-		void Terminate();
+		void Terminate(Dx12::CommandQueue* cmdQueue);
 		Dx12::Descriptor* GetDsv() const { return dsv;  }
 
 		Microsoft::WRL::ComPtr<ID3D12Resource> backBuffer;

@@ -13,6 +13,8 @@
 
 #include "Component/Component.h"
 #include "Component/Transform.h"
+#include "Component/Camera.h"
+#include "Component/Light.h"
 #include "Component/Collider.h"
 #include "Component/AudioPlayer.h"
 
@@ -20,7 +22,7 @@
 #include "Component/SpriteRenderer.h"
 #include "Component/MeshRenderer.h"
 #include "Component/SkinnedMeshRenderer.h"
-#include "Component/EffectRenderer.h"
+#include "Component/EffekseerEmitter.h"
 
 #include "Component/BaseActor.h"
 
@@ -35,6 +37,7 @@
 
 #include "Component/Collider.h"
 #include "Component/RayCast.h"
+#include "Component/ColliderManager.h"
 
 #include "Math/MathHelper.h"
 
@@ -43,13 +46,21 @@
 using KeyCode = Argent::Input::Keyboard::KeyCode;
 using HitResult = Argent::Component::Collision::HitResult;
 using MouseButton = Argent::Input::Mouse::Button;
+
 namespace Argent
 {
+	namespace App
+	{
+		inline void Quit()
+		{
+			ArApp::Quit();
+		}
+	}
 	namespace Scene
 	{
 		inline BaseScene* GetCurrentScene()
 		{
-			return Scene::ArSceneManager::Instance()->GetCurrentScene();
+			return Scene::SceneManager::Instance()->GetCurrentScene();
 		}
 	}
 
@@ -111,11 +122,33 @@ namespace Argent
 		}
 	}
 
+	namespace Collision
+	{
+		inline bool RayCollisionDetection(Component::Collision::RayCast* ray, HitResult& hitResult, 
+			GameObject::Tag tag = COLLISION_ALL_OBJECT)
+		{
+			return Argent::Collider::ColliderManager::Instance().CollisionDetectionRayCast(ray, hitResult, static_cast<unsigned>(tag));
+		}
+	}
+
 	namespace Timer
 	{
 		inline float GetDeltaTime()
 		{
 			return ArTimer::Instance().DeltaTime();
+		}
+	}
+
+	namespace Graphics
+	{
+		inline float GetWindowWidth()
+		{
+			return Graphics::Instance()->GetWidth();
+		}
+
+		inline float GetWindowHeight()
+		{
+			return Graphics::Instance()->GetHeight();
 		}
 	}
 }

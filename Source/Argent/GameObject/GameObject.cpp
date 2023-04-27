@@ -6,26 +6,50 @@
 #include "../Input/Keyboard.h"
 
 GameObject::GameObject(std::string name, Argent::Component::BaseComponent* c) :
-	isSelected(false)
+	isDrawDebug(false)
 	, name(std::move(name))
 ,	isInitialized(false)
 ,	isActive(true)
 {
-	
+	childObjects.clear();
+	childObjects.resize(10);
+	for(auto& cObj : childObjects)
+	{
+		cObj.reset(nullptr);
+	}
+	components.clear();
+	components.resize(10);
+	for(auto& com : components)
+	{
+		com.reset(nullptr);
+	}
 	transform = new Transform();
 	AddComponent(transform);
 	if (c)
 	{
 		AddComponent(c);
 	}
+	
 }
 
 GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com) :
-	isSelected(false)
+	isDrawDebug(false)
 	, name(std::move(name))
 	, isInitialized(false)
 ,	isActive(true)
 {
+	childObjects.clear();
+	childObjects.resize(10);
+	for(auto& cObj : childObjects)
+	{
+		cObj.reset(nullptr);
+	}
+	components.clear();
+	components.resize(10);
+	for(auto& com : components)
+	{
+		com.reset(nullptr);
+	}
 	transform = new Transform();
 	AddComponent(transform);
 
@@ -42,15 +66,27 @@ GameObject::GameObject(std::string name, std::vector<Argent::Component::BaseComp
 	}
 }
 
-GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> components, std::string name) :
-	isSelected(false)
+GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> coms, std::string name) :
+	isDrawDebug(false)
 	, name(name)
 	, isInitialized(false)
 ,	isActive(true)
 {
+	childObjects.clear();
+	childObjects.resize(10);
+	for(auto& cObj : childObjects)
+	{
+		cObj.reset(nullptr);
+	}
+	components.clear();
+	components.resize(10);
+	for(auto& com : components)
+	{
+		com.reset(nullptr);
+	}
 	transform = new Transform();
 	AddComponent(transform);
-	for (auto&& com : components)
+	for (auto&& com : coms)
 	{
 		AddComponent(com);
 	}
@@ -58,29 +94,34 @@ GameObject::GameObject(std::initializer_list<Argent::Component::BaseComponent*> 
 
 void GameObject::Initialize()
 {
+	if(isInitialized) return;
 	isInitialized = true;
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->Initialize();
+		if(components.at(i))
+			components.at(i)->Initialize();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->Initialize();
+		if(childObjects.at(i))
+			childObjects.at(i)->Initialize();
 	}
+
+	isFinInitialized = true;
 }
 
 void GameObject::Finalize()
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->Finalize();
-		delete components.at(i);
+		if(components.at(i))
+			components.at(i)->Finalize();
 	}
 	components.clear();
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->Finalize();
-		delete childObjects.at(i);
+		if(childObjects.at(i))
+			childObjects.at(i)->Finalize();
 	}
 	childObjects.clear();
 }
@@ -89,11 +130,13 @@ void GameObject::Begin()
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->Begin();
+		if(components.at(i))
+			components.at(i)->Begin();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->Begin();
+		if(childObjects.at(i))
+			childObjects.at(i)->Begin();
 	}
 }
 
@@ -101,11 +144,13 @@ void GameObject::EarlyUpdate()
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->EarlyUpdate();
+		if(components.at(i))
+			components.at(i)->EarlyUpdate();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->EarlyUpdate();
+		if(childObjects.at(i))
+			childObjects.at(i)->EarlyUpdate();
 	}
 }
 
@@ -113,11 +158,13 @@ void GameObject::End()
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->End();
+		if(components.at(i))
+			components.at(i)->End();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->End();
+		if(childObjects.at(i))
+			childObjects.at(i)->End();
 	}
 }
 
@@ -125,11 +172,13 @@ void GameObject::Update()
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->Update();
+		if(components.at(i))
+			components.at(i)->Update();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->Update();
+		if(childObjects.at(i))
+			childObjects.at(i)->Update();
 	}
 }
 
@@ -137,11 +186,13 @@ void GameObject::LateUpdate()
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->LateUpdate();
+		if(components.at(i))
+			components.at(i)->LateUpdate();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->LateUpdate();
+		if(childObjects.at(i))
+			childObjects.at(i)->LateUpdate();
 	}
 }
 
@@ -149,18 +200,20 @@ void GameObject::Render() const
 {
 	for(size_t i = 0; i < components.size(); ++i)
 	{
-		components.at(i)->Render();
+		if(components.at(i))
+			components.at(i)->Render();
 	}
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->Render();
+		if(childObjects.at(i))
+			childObjects.at(i)->Render();
 	}
 }
 
 void GameObject::DrawDebug() 
 {
 
-	if(isSelected)
+	if(isDrawDebug)
 	{
 		ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_::ImGuiCond_Once);
 		ImGui::SetNextWindowPos(ImVec2( 900, 50), ImGuiCond_::ImGuiCond_Once);
@@ -175,7 +228,7 @@ void GameObject::DrawDebug()
 
 				if(ImGui::MenuItem("Close"))
 				{
-					SetIsSelected(false);
+					SetIsDrawDebug(false);
 				}
 		        ImGui::EndMenu();
 		    }
@@ -188,7 +241,7 @@ void GameObject::DrawDebug()
 			//ImGui::BulletText(oss.str().c_str());
 			if(ImGui::Button(oss.str().c_str()))
 			{
-				parent->SetIsSelected(true);
+				parent->SetIsDrawDebug(true);
 				CloseWindow();
 			}
 		}
@@ -197,61 +250,46 @@ void GameObject::DrawDebug()
 			if(!isInitialized)
 				Initialize();
 		}
+
 		for(size_t i = 0; i < components.size(); ++i)
 		{
-			
-			components.at(i)->DrawDebug();
-		}
-
-		//AddComponent
-		{
-		//static bool addComponent;
-		//if(ImGui::Button("Add CubeComponent", ImVec2(200, 30)))
-		//{
-		//	addComponent = true;
-		//	//AddComponent(new Cube);
-		//}
-
-		//if(addComponent)
-		//{
-		//	ImGui::SetNextWindowPos(ImVec2( ImGui::GetWindowPos().x,
-		//		ImGui::GetWindowPos().y + ImGui::GetWindowSize().y / 2.0f), ImGuiCond_::ImGuiCond_Once);
-		//	ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_::ImGuiCond_Once);
-		//	ImGui::Begin("Component");
-
-		//	if(ImGui::Button("Cube"))
-		//	{
-		//		AddComponent(new Cube);
-		//		addComponent = false;
-		//	}
-		//	if(ImGui::Button("Sphere"))
-		//	{
-		//		AddComponent(new Sphere);
-		//		addComponent = false;
-		//	}
-
-		//	ImGui::End();
-		//}
-
+			if(components.at(i))
+				components.at(i)->DrawDebug();	
 		}
 		ImGui::End();
 	}
 	
 	for(size_t i = 0; i < childObjects.size(); ++i)
 	{
-		childObjects.at(i)->DrawDebug();
+		if(childObjects.at(i))
+			childObjects.at(i)->DrawDebug();
 	}
-
-	
 }
 
 void GameObject::AddComponent(Argent::Component::BaseComponent* com)
 {
 	com->SetOwner(this);
-	if (isInitialized)
+	std::string n = ComponentNameCheck(com->GetName());
+	com->SetName(n.c_str());
+
+	if (isInitialized && isFinInitialized)
 		com->Initialize();
-	//addComponents.emplace_back(com);
-	components.emplace_back(com);
+
+	const int64_t index = FindNullComponentIndex();
+	if(index < 0)
+	{
+		size_t size = components.size(); 
+		components.resize(size + 10);
+		for(size_t i = size; i < components.size(); ++i)
+		{
+			components.at(i).reset(nullptr);
+		}
+		components.at(size).reset(com);
+	}
+	else
+	{
+		components.at(index).reset(com);
+	}
 }
 
 void GameObject::AddComponent(std::vector<Argent::Component::BaseComponent*> com)
@@ -272,79 +310,102 @@ void GameObject::AddComponent(std::vector<Argent::Component::BaseComponent*> com
 void GameObject::AddChild(GameObject* obj)
 {
 	obj->SetParent(this);
-	childObjects.emplace_back(obj);
+	const int64_t index = FindNullChildIndex();
+	if(index < 0)
+	{
+		const size_t size = childObjects.size();
+		childObjects.resize(size + 10);
+		childObjects.at(size).reset(obj);
+	}
+	else
+	{
+		childObjects.at(index).reset(obj);
+	}
 }
 
 void GameObject::CloseAllWindow()
 {
 	CloseWindow();
-	for (const auto& child : childObjects)
+	for (size_t i = 0; i < childObjects.size(); ++i)
 	{
-		child->CloseAllWindow();
+		if(childObjects.at(i))
+			childObjects.at(i)->CloseAllWindow();
 	}
 }
 
-void GameObject::DestroyGameObject(GameObject* object)
+void GameObject::Destroy(GameObject* object)
 {
+	if(!object) return;
 	object->willDestroy = true;
-	//Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->DestroyGameObject(object);
+	object->SetActive(false);
+	//すべての子オブジェクトもdestroy関数に入れる
+	for(auto it = object->begin(); it != object->end(); ++it)
+	{
+		Destroy((*it).get());
+	}
 }
 
 GameObject* GameObject::Instantiate(const char* name, Argent::Component::BaseComponent* com)
 {
 	GameObject* ret = new GameObject(name, com);
 
-	Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->AddObject(ret);
+	Argent::Scene::SceneManager::Instance()->GetCurrentScene()->AddObject(ret);
 	return ret;
 }
 
-GameObject* GameObject::FindGameObject(const char* name)
+GameObject* GameObject::Instantiate(const char* name, std::vector<Argent::Component::BaseComponent*> com)
 {
-	return Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->GetGameObject(name);
+	GameObject* ret = new GameObject(name, com);
+	Argent::Scene::SceneManager::Instance()->GetCurrentScene()->AddObject(ret);
+	return ret;
 }
 
-//if(isOpenNewDebugWindow)
+GameObject* GameObject::FindByName(const char* name)
+{
+	return Argent::Scene::SceneManager::Instance()->GetCurrentScene()->GetGameObject(name);
+}
 
-	//if (ImGui::BeginMenuBar()) {
- //       if (ImGui::BeginMenu("File"))
- //       {
- //           if (ImGui::MenuItem("Save")) {
+bool GameObject::FindByTag(Tag tag, std::vector<GameObject*>& objArray)
+{
+	const auto t = static_cast<unsigned>(tag);
+	const auto s = Argent::Scene::SceneManager::Instance()->GetCurrentScene();
+	for(auto it = s->begin(); it != s->end(); ++it)
+	{
+		if (!(*it))continue;
+		if(static_cast<unsigned>((*it)->GetTag()) & t)
+		{
+			objArray.emplace_back((*it).get());
+		}
+	}
 
- //           }
- //           if (ImGui::MenuItem("Load")) {
+	return objArray.size() != 0;
+}
 
- //           }
+bool GameObject::GetChildArray(std::vector<GameObject*>& array)
+{
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		if(childObjects.at(i))
+			array.emplace_back(childObjects.at(i).get());
+	}
 
- //           ImGui::EndMenu();
- //       }
- //       ImGui::EndMenuBar();
-	//}
+	return array.size() != 0;
+}
 
-	//ImGui::BeginChild(ImGui::GetID(static_cast<void*>(0)), ImVec2(250, 100), ImGuiWindowFlags_NoTitleBar);
-	//ImGui::Text("Child");
- //   ImGui::EndChild();
+int64_t GameObject::FindNullChildIndex() const
+{
+	for(size_t i = 0; i < childObjects.size(); ++i)
+	{
+		if(!childObjects.at(i)) return i;
+	}
+	return -1;
+}
 
-	//if(!isOpenNewDebugWindow)
-	//{
-	//	if(ImGui::TreeNode(name.c_str()))
-	//	{
-	//		for(const auto& com : components)
-	//		{
-	//			com->DrawDebug();
-	//		}
-
-	//		if(!childObjects.empty())
-	//		{
-	//			if(ImGui::TreeNode("ChildObject"))
-	//			{
-	//				for(const auto& obj : childObjects)
-	//				{
-	//					obj->DrawDebug();
-	//				}
-	//				ImGui::TreePop();
-	//			}
-	//		}
-	//		ImGui::TreePop();
-	//	}
-	//}
-
+int64_t GameObject::FindNullComponentIndex() const
+{
+	for(size_t i = 0; i < components.size(); ++i)
+	{
+		if(!components.at(i)) return i;
+	}
+	return -1;
+}

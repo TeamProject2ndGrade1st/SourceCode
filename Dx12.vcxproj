@@ -30,7 +30,7 @@
     <ClCompile Include="Source\Argent\Component\AnimationPlayer.cpp" />
     <ClCompile Include="Source\Argent\Component\ColliderManager.cpp" />
     <ClCompile Include="Source\Argent\Component\Component.cpp" />
-    <ClCompile Include="Source\Argent\Component\EffectRenderer.cpp" />
+    <ClCompile Include="Source\Argent\Component\EffekseerEmitter.cpp" />
     <ClCompile Include="Source\Argent\Component\RayCast.cpp" />
     <ClCompile Include="Source\Argent\Component\Renderer.cpp" />
     <ClCompile Include="Source\Argent\Component\SkinnedMeshRenderer.cpp" />
@@ -77,16 +77,31 @@
     <ClCompile Include="Source\Argent\Resource\EffectManager.cpp" />
     <ClCompile Include="Source\Argent\Scene\BaseScene.cpp" />
     <ClCompile Include="Source\Argent\Scene\SceneManager.cpp" />
-    <ClCompile Include="Source\BaseBullet.cpp" />
-    <ClCompile Include="Source\BaseBulletManager.cpp" />
+    <ClCompile Include="Source\BaseEnemy.cpp" />
+    <ClCompile Include="Source\BaseEnemyState.cpp" />
+    <ClCompile Include="Source\Bullet.cpp" />
+    <ClCompile Include="Source\BulletManager.cpp" />
     <ClCompile Include="Source\BaseFriend.cpp" />
     <ClCompile Include="Source\BaseGun.cpp" />
     <ClCompile Include="Source\BaseState.cpp" />
+    <ClCompile Include="Source\Character.cpp" />
+    <ClCompile Include="Source\EnemySpikeBot.cpp" />
+    <ClCompile Include="Source\EnemyStateDerivad.cpp" />
+    <ClCompile Include="Source\EnemyStateMachine.cpp" />
+    <ClCompile Include="Source\EnemyTurret.cpp" />
+    <ClCompile Include="Source\FriendCreature.cpp" />
+    <ClCompile Include="Source\FriendDrone.cpp" />
+    <ClCompile Include="Source\FriendManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\GunRenderer.cpp" />
+    <ClCompile Include="Source\Result.cpp" />
+    <ClCompile Include="Source\Shadow.cpp" />
     <ClCompile Include="Source\Stage.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Demo.cpp" />
-    <ClCompile Include="Source\StateDerived.cpp" />
+    <ClCompile Include="Source\FriendStateDerived.cpp" />
+    <ClCompile Include="Source\StageSelect.cpp" />
+    <ClCompile Include="Source\spikeBot.cpp" />
     <ClCompile Include="Source\StateMachine.cpp" />
     <ClCompile Include="Source\Title.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
@@ -106,7 +121,7 @@
     <ClInclude Include="Source\Argent\Component\ColliderManager.h" />
     <ClInclude Include="Source\Argent\Component\Color.h" />
     <ClInclude Include="Source\Argent\Component\Component.h" />
-    <ClInclude Include="Source\Argent\Component\EffectRenderer.h" />
+    <ClInclude Include="Source\Argent\Component\EffekseerEmitter.h" />
     <ClInclude Include="Source\Argent\Component\RayCast.h" />
     <ClInclude Include="Source\Argent\Component\Renderer.h" />
     <ClInclude Include="Source\Argent\Component\SkinnedMeshRenderer.h" />
@@ -159,17 +174,33 @@
     <ClInclude Include="Source\Argent\Resource\EffectManager.h" />
     <ClInclude Include="Source\Argent\Scene\BaseScene.h" />
     <ClInclude Include="Source\Argent\Scene\SceneManager.h" />
-    <ClInclude Include="Source\BaseBullet.h" />
-    <ClInclude Include="Source\BaseBulletManager.h" />
+    <ClInclude Include="Source\BaseEnemy.h" />
+    <ClInclude Include="Source\BaseEnemyState.h" />
+    <ClInclude Include="Source\Bullet.h" />
+    <ClInclude Include="Source\BulletManager.h" />
     <ClInclude Include="Source\BaseFriend.h" />
     <ClInclude Include="Source\BaseGun.h" />
     <ClInclude Include="Source\BaseState.h" />
+    <ClInclude Include="Source\Character.h" />
     <ClInclude Include="Source\DemoShaderMacro.h" />
+    <ClInclude Include="Source\EnemySpikeBot.h" />
+    <ClInclude Include="Source\EnemyStateDerivad.h" />
+    <ClInclude Include="Source\EnemyStateMachine.h" />
+    <ClInclude Include="Source\EnemyTurret.h" />
+    <ClInclude Include="Source\FriendCreature.h" />
+    <ClInclude Include="Source\FriendDrone.h" />
+    <ClInclude Include="Source\FriendManager.h" />
     <ClInclude Include="Source\Game.h" />
+    <ClInclude Include="Source\GunRenderer.h" />
+    <ClInclude Include="Source\Result.h" />
+    <ClInclude Include="Source\Reticle.h" />
+    <ClInclude Include="Source\Shadow.h" />
     <ClInclude Include="Source\Stage.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Demo.h" />
-    <ClInclude Include="Source\StateDerived.h" />
+    <ClInclude Include="Source\FriendStateDerived.h" />
+    <ClInclude Include="Source\StageSelect.h" />
+    <ClInclude Include="Source\spikeBot.h" />
     <ClInclude Include="Source\StateMachine.h" />
     <ClInclude Include="Source\Title.h" />
   </ItemGroup>
@@ -185,11 +216,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Source\Shader\GeometricPrimitivePixel.hlsl" />
-    <FxCompile Include="Source\Shader\GeometricPrimitiveVertex.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Source\Shader\Pera2Pixel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -239,8 +265,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shader\DebugMesh.hlsli" />
-    <None Include="Source\Shader\GeometricPrimitive.hlsli" />
+    <None Include="Source\Shader\LambertDiffuse.hlsli" />
     <None Include="Source\Shader\Pera.hlsli" />
+    <None Include="Source\Shader\PhongSpecular.hlsli" />
     <None Include="Source\Shader\SceneConstant.hlsli" />
     <None Include="Source\Shader\SkinnedMesh.hlsli" />
     <None Include="Source\Shader\Sprite.hlsli" />

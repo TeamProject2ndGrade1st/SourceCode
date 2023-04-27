@@ -6,40 +6,35 @@
 Player::Player() :BaseActor("player")
 {
     movement = 10;
-
+    sensitivity = 0.3f;
 }
 
 void Player::Initialize()
 {
-    static bool b = false;
-    if(!b)
+	ray = new Argent::Component::Collision::RayCast();
+	auto g = GetOwner();
+	g->AddComponent(ray);
+
+    
+
+    camera = GameObject::FindByName("Camera"); // こっちで
+    movement = 10.5f;
     {
-	    ray = new Argent::Component::Collision::RayCast();
-	    auto g = GetOwner();
-	    g->AddComponent(ray);
-        b = true;
+        auto c = camera->GetComponent<Camera>();
+        c->SetMaxRotation(DirectX::XMFLOAT4(100, 0, 0, 0));
+	    	c->SetMinRotation(DirectX::XMFLOAT4(-100, 0, 0, 0));
     }
 
-    camera = GameObject::FindGameObject("Camera"); // こっちで
-        movement = 10.5f;
-
-        {
-            auto c = camera->GetComponent<Camera>();
-            c->SetMaxRotation(DirectX::XMFLOAT4(100, 0, 0, 0));
-			c->SetMinRotation(DirectX::XMFLOAT4(-100, 0, 0, 0));
-        }
+    GetOwner()->AddComponent(new BaseGun("BaseGun"));
 }
-
-
-
 
 void Player::Update()
 {
     switch (state)
     {
     case 0:
-        //camera = Argent::Scene::ArSceneManager::Instance()->GetCurrentScene()->GetGameObject("Camera");
-        camera = GameObject::FindGameObject("Camera"); // こっちで
+        //camera = Argent::Scene::SceneManager::Instance()->GetCurrentScene()->GetGameObject("Camera");
+        camera = GameObject::FindByName("Camera"); // こっちで
         movement = 10.5f;
 
         {
@@ -55,18 +50,35 @@ void Player::Update()
         // 移動
         MoveCamera();
 
+        // デバッグ用
+#ifdef _DEBUG
+        if (Argent::Input::GetKey(KeyCode::Space))
+        {
+            auto t = camera->GetTransform();
+            auto pos = t->GetPosition();
+            pos.y += 0.1f;
+            t->SetPosition(pos);
+        }
+        if (Argent::Input::GetKey(KeyCode::M))
+        {
+            auto t = camera->GetTransform();
+            auto pos = t->GetPosition();
+            pos.y -= 0.1f;
+            t->SetPosition(pos);
+        }
+#endif
 
         // マウスのポジション
 #if 1
         // マウスの位置を取る
         mousePos = Argent::Input::Mouse::Instance().GetPosition();
         // マウスの移動量を取る
-        DirectX::XMFLOAT2 mouseVec = Argent::Input::Mouse::Instance().GetMoveVec();        
+        DirectX::XMFLOAT2 mouseVec = Argent::Input::Mouse::Instance().GetMoveVec();
         
         
         // カメラのtransformを取る
         Transform* t = camera->GetTransform();
-        // カメラの回転値を取る
+        // カメラの回転値を取るw
         DirectX::XMFLOAT4 cameraRot = t->GetRotation();
 
         DirectX::XMFLOAT4 mouseMovement{ mouseVec.y * sensitivity,mouseVec.x * sensitivity,0,0 };
@@ -77,39 +89,29 @@ void Player::Update()
         setRotation.y += mouseMovement.y;
 
 
-        // 制限を作る
-        //if (setRotation.x >= 100.0f)
-        //{
-        //    cameraRot.x = 100;
-        //	mouseMovement.y = 0;
-        //    mouseMovement.x = 0;
-        //   // mouseMovement.x = -0.01;
-        //    setRotation.x = 100;
-        //}
+
 
         // カメラ横のやつ(回転できるようにする)
         if (setRotation.y > 360)setRotation.y -= 360;
         if (setRotation.y < 0)setRotation.y += 360;
-        
 
-        t->CalcForward();
-
-        if(useCameraControl)
-			t->SetRotation(setRotation);
-        //t->SetRotation(cameraRot + mouseMovement);
+        static bool use = false;
+        if(Argent::Input::GetKeyUp(KeyCode::U))
+        {
+	        use = !use;
+        }
+        if(use)
+        {
+    		t->SetRotation(setRotation);
+        }
 #endif
 
         break;
 
     }
-    start = end;
-    end = GetTickCount();
-	MoveCamera();
-    GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
 
-    ray->SetRayStartPosition(GetTransform()->GetPosition());
-    ray->SetRayDirection(GetTransform()->CalcForward());
-    ray->SetRayLength(movement * Argent::Timer::GetDeltaTime());
+    GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
+    GetTransform()->SetRotation(camera->GetTransform()->GetRotation());
 
 #ifdef _DEBUG
     if(Argent::Input::GetKeyDown(KeyCode::O))
@@ -121,26 +123,14 @@ void Player::Update()
 
 void Player::DrawDebug()
 {
-    if(ImGui::TreeNode(GetName().c_str()))
+    if(ImGui::TreeNode(GetName()))
     {
         ImGui::Checkbox("UseCameraControl", &useCameraControl);
-        static int frameTime = 0;
-        ++frameTime;
-        double elapsedTime = (double)(end - start) / 1000;
-        deltaTime += elapsedTime;
-        static int frame = 0;
-        if(deltaTime > 1.0f)
-        {
-            frame = frameTime;
-	        deltaTime = 0;
-            frameTime = 0;
-        }
-        ImGui::InputInt("FrameRate", &frame);
-        ImGui::InputDouble("ElapsedTime", &elapsedTime);
         ImGui::SliderFloat("movement", &movement, 0.1f, 10.0);
         ImGui::DragFloat2("mouse", &mousePos.x);
         ImGui::SliderFloat("sensitivity", &sensitivity, 0.1f, 2.0f);
-		BaseActor::DrawDebug();
+        ImGui::SliderFloat("OffsetLength", &offsetLength, 0.0f, 10.0f);
+    	BaseActor::DrawDebug();
         ImGui::TreePop();
     }
 }
@@ -148,83 +138,47 @@ void Player::DrawDebug()
 // カメラの移動
 void Player::MoveCamera()
 {
-#if 0
+    // 入力情報を取得
+    float ax = 0;
+    float ay = 0;
+
+    if (Argent::Input::GetKey(KeyCode::D))ax = 1.0f;
+    if (Argent::Input::GetKey(KeyCode::A))ax = -1.0f;
+    if (Argent::Input::GetKey(KeyCode::W))ay = 1.0f;
+    if (Argent::Input::GetKey(KeyCode::S))ay = -1.0f;
+
+    // カメラ方向とスティック入力値によって進行方向を計算する
     Transform* t = camera->GetTransform();
-    auto velocity = t->CalcForward();
-    auto pos = t->GetPosition();
-    auto rot = t->GetRotation();
+    auto p = t->GetPosition();
+								
 
-    float _speed = movement;
+    DirectX::XMFLOAT3 cameraRight = t->CalcRight();
+    DirectX::XMFLOAT3 cameraFront = t->CalcForward();
 
-    if (Argent::Input::GetKey(KeyCode::W) || Argent::Input::GetKey(KeyCode::S) ||
-        Argent::Input::GetKey(KeyCode::A) || Argent::Input::GetKey(KeyCode::D))
-    {
-        if (Argent::Input::GetKey(KeyCode::W))
-        {
-            velocity.z = _speed;
-        }
-        if (Argent::Input::GetKey(KeyCode::S))
-        {
-            velocity.z = -_speed;
-        }
-        if (Argent::Input::GetKey(KeyCode::D))
-        {
-            velocity.x = _speed;
-        }
-        if (Argent::Input::GetKey(KeyCode::A))
-        {
-            velocity.x = -_speed;
-        }
-        if (velocity.x != 0 || velocity.z != 0)
-        {
-            pos.x += rot.x * velocity.x;
-            pos.y = rot.y * velocity.y;
-            pos.z = rot.z * velocity.z;
-        };
-        t->SetPosition(pos);
-    }
-#endif
-
-    if(!useCameraControl) return;
-    // 前(W)
-	//if (GetAsyncKeyState('W') < 0)
-    if (Argent::Input::GetKey(KeyCode::W))
-    {
-        auto t = camera->GetTransform();
-        auto pos = t->GetPosition();
-        pos.z += movement * Argent::Timer::ArTimer::Instance().DeltaTime();
-        t->SetPosition(pos);
-        start = GetTickCount();
-    }
     
+    cameraRight.y = 0;
+    cameraFront.y = 0;
 
-    // 後ろ(S)
-    //if (GetAsyncKeyState('S') < 0)
-    if (Argent::Input::GetKey(KeyCode::S))
-    {
-        auto t = camera->GetTransform();
-        auto pos = t->GetPosition();
-        pos.z -= movement * Argent::Timer::ArTimer::Instance().DeltaTime();
-        t->SetPosition(pos);
-    }
-     
-    // 右(D)
-    //if (GetAsyncKeyState('D') < 0)
-    if (Argent::Input::GetKey(KeyCode::D))
-    {
-        auto t = camera->GetTransform();
-        auto pos = t->GetPosition();
-        pos.x += movement * Argent::Timer::ArTimer::Instance().DeltaTime();
-        t->SetPosition(pos);
-    }
+    cameraRight = Normalize(cameraRight);
+    cameraFront = Normalize(cameraFront);
 
-    // 左(A)
-    //if (GetAsyncKeyState('A') < 0)
-	if (Argent::Input::GetKey(KeyCode::A))
+    DirectX::XMFLOAT3 direction = Normalize(cameraRight + cameraFront);
+    cameraRight = cameraRight* ax ;
+    cameraFront = cameraFront * ay;
+    cameraRight = cameraRight * movement * Argent::Timer::GetDeltaTime();
+    cameraFront = cameraFront * movement * Argent::Timer::GetDeltaTime();
+
+    direction = direction * offsetLength;
+    p = p + cameraRight + cameraFront;
+
+    auto pos = t->GetPosition();
+    ray->SetRayData(pos + direction, p + direction);
+    HitResult hitResult{};
+    if(Argent::Collision::RayCollisionDetection(ray, hitResult, GameObject::Tag::Stage))
     {
-        auto t = camera->GetTransform();
-        auto pos = t->GetPosition();
-        pos.x -= movement * Argent::Timer::ArTimer::Instance().DeltaTime();
-        t->SetPosition(pos);
-    }
+       // hitResult.position.y = GetTransform()->GetPosition().y;
+	    p = hitResult.position - direction;
+    } 
+
+    t->SetPosition(p);
 }

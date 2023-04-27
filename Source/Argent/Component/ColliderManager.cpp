@@ -1,8 +1,10 @@
 #include "ColliderManager.h"
 
+#include "../GameObject/GameObject.h"
+
 namespace Argent::Collider
 {
-	void ArColliderManager::CollisionDetection()
+	void ColliderManager::CollisionDetection()
 	{
 		for(size_t i = 0; i < collider.size(); ++i)
 		{
@@ -19,12 +21,29 @@ namespace Argent::Collider
 		}
 	}
 
-	bool ArColliderManager::CollisionDetectionRayCast(Component::Collision::RayCast* ray, Component::Collision::HitResult& hitResult)
+	bool ColliderManager::CollisionDetectionRayCast(Component::Collision::RayCast* ray, Component::Collision::HitResult& hitResult,
+		unsigned int tag)
 	{
 		bool ret = false;
 		for (size_t j = 0; j < rayCastCollider.size(); ++j)
 		{
 			const auto collider = rayCastCollider.at(j);
+
+			//オブジェクトがアクティブかどうかの確認 todo childObjectだった場合はどうなる???
+			if(!collider->GetOwner()->GetIsActive()) continue;
+
+			//衝突判定を行うオブジェクトのタグが指定されていた場合
+			bool isSpecified = tag & static_cast<unsigned>(COLLISION_ALL_OBJECT);
+			if(!isSpecified)
+			{
+				auto g = collider->GetOwner();
+				if(!g) _ASSERT_EXPR(FALSE, L"return NULL Reference :: GetOwner()");
+
+				//指定されたタグとオブジェクトのタグが違う場合は処理を飛ばす
+				unsigned int tg = static_cast<unsigned>(g->GetTag());
+				bool result = tag & tg;
+				if(!result)	continue;
+			}
 			bool b = ray->CollisionDetection(collider, hitResult);
 			if(b && !ret)
 			{

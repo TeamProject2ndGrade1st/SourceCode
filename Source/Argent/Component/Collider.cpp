@@ -12,7 +12,12 @@ namespace Argent::Component::Collider
 		BaseComponent(name)
 		,	type(type)
 	{
-		Argent::Collider::ArColliderManager::Instance().RegisterCollider(this);
+		Argent::Collider::ColliderManager::Instance().RegisterCollider(this);
+	}
+
+	Collider::~Collider()
+	{
+		Argent::Collider::ColliderManager::Instance().UnRegisterCollider(this);
 	}
 
 	void Collider::OnCollision(const Collider* collider)
@@ -47,12 +52,16 @@ namespace Argent::Component::Collider
 
 	void SphereCollider::DrawDebug()
 	{
-		if(ImGui::TreeNode(GetName().c_str()))
+		if(ImGui::TreeNode(GetName()))
 		{
 			ImGui::SliderFloat("Radius", &radius, 0.0, 10.0f);
 			ImGui::TreePop();
 		}
 		Collider::DrawDebug();
+	}
+
+	void Capsule::DrawDebug()
+	{
 	}
 
 }

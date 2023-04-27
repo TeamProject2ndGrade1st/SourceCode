@@ -65,8 +65,6 @@ namespace Argent::Graphics
 		dDevice->Release();
 #endif
 
-
-		
 		renderingQueue = std::make_unique<Dx12::CommandQueue>(device.Get());
 		resourceQueue = std::make_unique<Dx12::CommandQueue>(device.Get());
 		resourceCmdBundle = std::make_unique<Dx12::CommandBundle>(device.Get());
@@ -85,6 +83,7 @@ namespace Argent::Graphics
 
 		frameResources.resize(NumBackBuffers);
 
+		//フレームリソースの作成
 		for(UINT i = 0; i < NumBackBuffers; ++i)
 		{
 			frameResources.at(i) = std::make_unique<FrameResource>(device.Get(), swapChain.Get(),
@@ -105,6 +104,7 @@ namespace Argent::Graphics
 		scissorRect.right = static_cast<LONG>(windowWidth);
 		scissorRect.bottom = static_cast<LONG>(windowHeight);
 
+		//フレームバッファの作成
 		for(auto& buffer : frameBuffer)
 		{
 			buffer = std::make_unique<FrameBuffer>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), 
@@ -112,7 +112,6 @@ namespace Argent::Graphics
 		}
 
 		device->SetName(L"Device");
-		resourceCmdBundle.get()->Reset();
 	}
 
 	void Graphics::Initialize()
@@ -124,19 +123,18 @@ namespace Argent::Graphics
 		renderingQueue->WaitForFence(NumBackBuffers);
 		for(auto& buff : frameResources)
 		{
-			buff->Terminate();
+			buff->Terminate(renderingQueue.get());
 		}
 	}
 
 	void Graphics::Begin()
 	{
-		if(curFrameResource)curFrameResource->WaitForEvent(renderingQueue.get());
 		++backBufferIndex;
 		backBufferIndex = backBufferIndex % NumBackBuffers;
 		curFrameResource = frameResources.at(backBufferIndex).get();
 		
 		curFrameResource->UpdateSceneConstant(sceneConstant);
-		curFrameResource->Begin(&viewport, &scissorRect, clearColor);
+		curFrameResource->Begin();
 
 		frameBuffer[0]->Begin(this, GetCommandList(RenderType::Mesh));
 		frameBuffer[1]->Begin(this, GetCommandList(RenderType::Sprite));
@@ -173,6 +171,9 @@ namespace Argent::Graphics
 		swapChain->Present(0, 0);
 
 		renderingQueue->SetFence(static_cast<int>(RenderType::Count), curFrameResource);
+
+		//todo シーン遷移時にオブジェクトの開放で落ちるので毎フレーム描画終了まで待つ　チーム制作終わったあとでもいいので駆らなず変更すること
+		if(curFrameResource)curFrameResource->WaitForEvent(renderingQueue.get());
 	}
 
 	HRESULT Graphics::CreateWhiteTexture(ID3D12Resource** resource)
@@ -353,6 +354,30 @@ namespace Argent::Graphics
 	{
 		curFrameResource->SetSceneConstant(rootParameterIndex);
 	}
+
+	Dx12::DescriptorHeap* Graphics::GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE type) const
+	{
+		Dx12::DescriptorHeap* heapPointer = nullptr;
+		switch (type)
+		{
+		case D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV:
+			heapPointer = srvCbvHeap.get();
+			break;
+		case D3D12_DESCRIPTOR_HEAP_TYPE_RTV:
+			heapPointer = rtvHeap.get();
+			break;
+		case D3D12_DESCRIPTOR_HEAP_TYPE_DSV:
+			heapPointer = dsvHeap.get();
+			break;
+		case D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER:
+			heapPointer = nullptr;
+			break;
+		default:
+			heapPointer = nullptr;
+		}
+		return heapPointer;
+	}
+
 
 	HRESULT FindAdapter(IDXGIFactory6* factory, IDXGIAdapter1** adapter)
 	{

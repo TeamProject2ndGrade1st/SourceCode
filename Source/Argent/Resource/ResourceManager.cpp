@@ -47,6 +47,30 @@ namespace Argent::Resource
 		return nullptr;
 	}
 
+	std::shared_ptr<Mesh::Mesh> ResourceManager::GetMesh(const char* name)
+	{
+		for(auto& m : meshes)
+		{
+			if(m.second.lock()->CompareName(name) && !m.second.expired())
+			{
+				return m.second.lock();
+			}
+		}
+		return nullptr;
+	}
+
+	std::shared_ptr<Mesh::SkinnedMesh> ResourceManager::GetSkinnedMesh(const char* name)
+	{
+		for(auto& m : skinnedMeshes)
+		{
+			if(m.second.lock()->CompareName(name) && !m.second.expired())
+			{
+			//	return m.second.lock();
+			}
+		}
+		return nullptr;
+	}
+
 	std::shared_ptr<Texture> ResourceManager::FindResourceFromFilePath(const char* filePath) const
 	{
 		for (auto& res : textures)
@@ -59,20 +83,5 @@ namespace Argent::Resource
 		return nullptr;
 	}
 
-	//bool ResourceManager::FindTexture(const wchar_t* filepath, ID3D12Resource** ppResource)
-	//{
-	//	const std::wstring tmp = filepath;
-	//	const auto it = textures.find(tmp);
-
-	//	if (it != textures.end())
-	//	{
-	//		*ppResource = (*it).second.Get();
-	//		(*it).second->AddRef();
-	//		return true;
-	//	}
-
-	//	*ppResource = nullptr;
-	//	return false;
-	//}
 	
 }

@@ -1,22 +1,37 @@
 #include "Title.h"
-
 #include "Argent/Argent.h"
-#include "BaseBullet.h"
-#include "BaseGun.h"
+
+//#include "Argent/Debug/DebugRenderer.h"
+
+
 #include "BaseFriend.h"
+#include "BaseEnemy.h"
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
-#include "Argent/Component/RayCast.h"
 #include "Demo.h"
 #include "Stage.h"
+<<<<<<< HEAD
 #include "Argent/Component/EffectRenderer.h"
 
 void Title::Initialize()
 {
 	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
+=======
+#include "EnemySpikeBot.h"
+#include "EnemyTurret.h"
+#include "spikeBot.h"
+#include "FriendCreature.h"
+#include "FriendManager.h"
 
-	//AddObject(new GameObject("plane", Argent::Loader::Fbx::LoadFbx("./Resources/Model/plane.fbx", true)));
+
+void Title::Initialize()
+{
+	ClearGameObject();
+	AddObject(new GameObject("TitleSprite", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Title.png")));
+>>>>>>> 46e1d2412a259bb7acd1ccd02b5d6e5d299f515f
+
 	
+<<<<<<< HEAD
 	//AddObject(new GameObject("enemy_ver03", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver3.fbx", false)));
 
 	//AddObject(new GameObject("nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
@@ -55,6 +70,8 @@ void Title::Initialize()
 	//エフェクトの追加方法　複製してファイルネームのところだけ変えればok
 	AddObject(new GameObject("Effect", new Argent::Component::Renderer::EffectRenderer("./Resources/Effects/barel_test.efk", "./Resources/Effects")));
 
+=======
+>>>>>>> 46e1d2412a259bb7acd1ccd02b5d6e5d299f515f
 	BaseScene::Initialize();
 }
 
@@ -68,15 +85,13 @@ void Title::Finalize()
 	BaseScene::Finalize();
 }
 
-
-
 void Title::Update()
 {
 	BaseScene::Update();
 
-	if(Argent::Input::GetKeyDown(KeyCode::P))
+	if(Argent::Input::GetKeyUp(KeyCode::F2))
 	{
-		Argent::Scene::ArSceneManager::SetNextScene("Game");
+		Argent::Scene::SceneManager::SetNextScene("StageSelect");
 	}
 }
 

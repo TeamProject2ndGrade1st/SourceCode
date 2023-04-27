@@ -3,8 +3,6 @@
 #include <vector>
 
 #include "../GameObject/GameObject.h"
-#include "../Component/Camera.h"
-#include "../Component/Light.h"
 #include "../Graphic/Graphics.h"
 
 namespace Argent::Scene
@@ -16,9 +14,8 @@ namespace Argent::Scene
 			sceneName(std::move(sceneName))
 		,	isInitialized(false)
 		{
-			gameObject.clear();
-			AddObject(new GameObject("Camera", new Camera(true, Argent::Graphics::Graphics::Instance()->GetWidth(), Argent::Graphics::Graphics::Instance()->GetHeight())));
-			AddObject(new GameObject("Light", new Light));
+			objects.clear();
+			objects.resize(100);
 		}
 		virtual ~BaseScene() = default;
 		BaseScene(const BaseScene&) = delete;
@@ -26,7 +23,8 @@ namespace Argent::Scene
 		BaseScene& operator=(const BaseScene&) = delete;
 		BaseScene& operator=(const BaseScene&&) = delete;
 
-		
+
+		void ClearGameObject();
 		virtual void Initialize();
 		virtual void Finalize();
 		/**
@@ -43,20 +41,22 @@ namespace Argent::Scene
 
 		virtual void DrawDebug();
 
+		void DrawDebugNumGameObject() const;
 
 		void DeleteDestroyedObject();
-		//void DestroyGameObject(GameObject* object);
 
+		std::vector<std::unique_ptr<GameObject>>::iterator begin() { return objects.begin(); }
+		std::vector<std::unique_ptr<GameObject>>::iterator end() { return objects.end(); }
 
 		const std::string& GetName() const { return sceneName; }
 		void CloseAllDebugWindow() const;
 		void AddObject(GameObject* obj);
 		
-
 		std::string ObjectNameCheck(std::string name, int num = 0, bool isChecked = false)
 		{
-			for(const auto& object : gameObject)
+			for(const auto& object : objects)
 			{
+				if (!object) continue;
 				if(object->GetName() == name)
 				{
 					if(isChecked)
@@ -75,21 +75,23 @@ namespace Argent::Scene
 
 		GameObject* GetGameObject(const std::string& objectName) const
 		{
-			for(const auto& obj : gameObject)
+			for(const auto& obj : objects)
 			{
 				if(obj->GetName() == objectName)
 				{
-					return obj;
+					return obj.get();
 				}
 			}
 			return nullptr;
 		}
 
+		int64_t FindNullObjectIndex() const;
 	protected:
 		const std::string sceneName;
-		std::vector<GameObject*> gameObject{};
-		//std::vector<GameObject*> destroyedGameObject{};
+	private:
+		std::vector<std::unique_ptr<GameObject>> objects{};
 		bool isInitialized;
+		int lightIndex = 0;
 	private:
 	};
 	

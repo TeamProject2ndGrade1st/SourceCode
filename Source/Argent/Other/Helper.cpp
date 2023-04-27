@@ -588,7 +588,8 @@ namespace Argent
 					DirectX::XMStoreFloat(&dot3, Dot3);
 					if(dot3 < 0) continue;
 
-					//最近距離を更新
+					//最近距離を更
+					//
 					neart = t;
 
 					//交点と法線を更新

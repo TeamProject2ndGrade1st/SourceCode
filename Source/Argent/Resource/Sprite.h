@@ -27,7 +27,7 @@ namespace Argent::Resource
 
 			/*void SetOnCommandList(ID3D12GraphicsCommandList* cmdList) override
 			{
-				ArMesh::SetOnCommandList(cmdList, 0, 1);
+				Mesh::SetOnCommandList(cmdList, 0, 1);
 				DrawCall(cmdList, static_cast<UINT>(indices.size()));
 			}*/
 			/**

@@ -9,13 +9,16 @@
 
 namespace Argent::App
 {
+
+	bool ArApp::quit = false;
+
 	ArApp::ArApp(HINSTANCE hInstance, LONG width, LONG height, const char* appName, bool isFullScreen)
 	{
 		static bool isInstantiated{ FALSE };
 		if(isInstantiated)_ASSERT_EXPR(FALSE, L"Instance is already existed");
 
-		arWindow = std::make_unique<Window::ArWindow>(hInstance, width, height);
-		arGfx = std::make_unique<Graphics::Graphics>(arWindow->GetHandle());
+		window = std::make_unique<Window::ArWindow>(hInstance, width, height);
+		arGfx = std::make_unique<Graphics::Graphics>(window->GetHandle());
 		effectManager = std::make_unique<Argent::Resource::Effect::EffectManager>(arGfx->GetDevice(), arGfx->GetCommandQueue(), arGfx->GetNumBackBuffers());
 
 		isInstantiated = true;
@@ -25,7 +28,7 @@ namespace Argent::App
 	{
 		arGfx->Initialize();
 #ifdef _DEBUG
-		ImguiCtrl::Initialize(arWindow->GetHandle(), arGfx->GetDevice(), arGfx->GetGUIHeap());
+		ImguiCtrl::Initialize(window->GetHandle(), arGfx->GetDevice(), arGfx->GetGUIHeap());
 #endif
 		Resource::ResourceManager::Instance().Initialize();
 	}
@@ -34,10 +37,10 @@ namespace Argent::App
 	{
 		Initialize();
 			
-		Scene::ArSceneManager arSceneManager;
+		Scene::SceneManager arSceneManager;
 		arSceneManager.Initialize();
 		Argent::Resource::Audio::AudioManager::Instance().Initialize();
-		while (MainLoop(arWindow->GetHandle()))
+		while (MainLoop(window->GetHandle()))
 		{
 			Argent::Input::Keyboard::Instance().Update();
 			Argent::Input::Mouse::Instance().Update();
@@ -53,7 +56,7 @@ namespace Argent::App
 #ifdef _DEBUG
 			Argent::Resource::Audio::AudioManager::Instance().DrawDebug();
 #endif
-			Argent::Collider::ArColliderManager::Instance().CollisionDetection();
+			Argent::Collider::ColliderManager::Instance().CollisionDetection();
 
 			arSceneManager.DeleteDestroyedObject();
 
@@ -68,6 +71,8 @@ namespace Argent::App
 			
 
 			arGfx->End();
+
+			if (quit) break;
 		}
 		arGfx->Terminate();
 		arSceneManager.Finalize();
@@ -82,4 +87,10 @@ namespace Argent::App
 		//arGfx->Terminate();
 		return 0;
 	}
+
+	void ArApp::Quit()
+	{
+		quit = true;
+	}
+
 }

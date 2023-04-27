@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Argent/Argent.h"
-#include "BaseBullet.h"
+#include "Bullet.h"
 
 class BaseBulletManager
 {

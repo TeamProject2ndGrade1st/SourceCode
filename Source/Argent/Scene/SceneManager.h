@@ -6,22 +6,22 @@
 
 namespace Argent::Scene
 {
-	class ArSceneManager
+	class SceneManager
 	{
 	public:
-		ArSceneManager();
-		~ArSceneManager() = default;
+		SceneManager();
+		~SceneManager() = default;
 
 		void Initialize();
 		void Finalize() const;
-		void Begin() const;
+		void Begin();
 		void Update();
 		void End() const;
 		void Render() const;
 		void DrawDebug() const;
 		static void SetNextScene(const std::string& s) { nextScene = s; }
 
-		static ArSceneManager* Instance() { return instance;  }
+		static SceneManager* Instance() { return instance;  }
 
 		BaseScene* GetCurrentScene() const { return currentScene;  }
 
@@ -30,15 +30,22 @@ namespace Argent::Scene
 			if (currentScene)
 				currentScene->DeleteDestroyedObject();
 		}
+
+		template<class T>
+		void RegisterScene()
+		{
+			std::unique_ptr<T> t = std::make_unique<T>();
+			scenes[t->GetName()] = std::move(t);
+		}
 	private:
 		void ChangeScene();
-		
+
+
 	private:
-		static ArSceneManager* instance;
+		static SceneManager* instance;
 		static std::string nextScene;
 		BaseScene* currentScene;
+		BaseScene* postScene;
 		std::unordered_map<std::string, std::unique_ptr<BaseScene>> scenes{};
-		DWORD end;
-		DWORD start;
 	};
 }

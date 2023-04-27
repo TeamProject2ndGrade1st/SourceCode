@@ -9,7 +9,7 @@
 namespace Argent::Component::Renderer
 {
 	SkinnedMeshRenderer::SkinnedMeshRenderer(ID3D12Device* device, const char* fileName,
-		std::shared_ptr<Resource::Mesh::ArSkinnedMesh> meshes,
+		std::shared_ptr<Resource::Mesh::SkinnedMesh> meshes,
 		std::vector<Resource::Animation::AnimationClip>& animation) :
 		BaseRenderer("SkinnedMesh Renderer")
 	{
@@ -50,7 +50,7 @@ namespace Argent::Component::Renderer
 		{
 			if (animationClips.size() > 0)
 			{
-				Argent::Resource::Mesh::ArSkinnedMesh::Constant meshConstant{};
+				Argent::Resource::Mesh::SkinnedMesh::Constant meshConstant{};
 				const size_t boneCount{ m->bindPose.bones.size() };
 				for (int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
 				{
@@ -69,7 +69,7 @@ namespace Argent::Component::Renderer
 			}
 			else
 			{
-				Resource::Mesh::ArSkinnedMesh::Constant meshConstant{};
+				Resource::Mesh::SkinnedMesh::Constant meshConstant{};
 				const size_t boneCount{ m->bindPose.bones.size() };
 				for (int boneIndex = 0; boneIndex < boneCount; ++boneIndex)
 				{
@@ -100,20 +100,23 @@ namespace Argent::Component::Renderer
 
 	void SkinnedMeshRenderer::Render() const 
 	{
-		Transform t = GetOwner()->GetTransform()->AdjustParentTransform();
+		//Transform t = GetOwner()->GetTransform()->AdjustParentTransform();
+	//	auto mat = GetOwner()->GetTransform()->CalcWorldMatrix();
+		DirectX::XMFLOAT4X4 world{};
+		DirectX::XMStoreFloat4x4(&world, GetOwner()->GetTransform()->CalcWorldMatrix());
 		if(animationClips.size() > 0)
 		{
 			const Resource::Animation::AnimationClip& animation{ this->animationClips.at(clipIndex) };
 			const Resource::Animation::AnimationClip::Keyframe& keyframe{ animation.sequence.at(static_cast<uint64_t>(frameIndex)) };
 
 			//todo マテリアルの適用
-			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), t.GetWorld(),
+			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), world,
 				 &keyframe);
 		}
 		else
 		{
 			Resource::Animation::AnimationClip::Keyframe key{};
-			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), t.GetWorld(),
+			Render(Argent::Graphics::Graphics::Instance()->GetCommandList(Graphics::RenderType::Mesh), world,
 			 &key);
 		}
 	}

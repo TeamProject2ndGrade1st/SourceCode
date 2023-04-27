@@ -29,15 +29,20 @@ namespace Argent
 			 */
 			int Execute() const;
 
+			/**
+			 * \brief アプリケーション終了用の関数
+			 */
+			static void Quit();
 		private:
-
 			int Terminate() const;
 			void Initialize() const;
 
 		private:
 			std::unique_ptr<Argent::Graphics::Graphics> arGfx{};
-			std::unique_ptr<Argent::Window::ArWindow> arWindow{};
+			std::unique_ptr<Argent::Window::ArWindow> window{};
 			std::unique_ptr<Argent::Resource::Effect::EffectManager> effectManager{};
+
+			static bool quit;
 		};
 	}
 

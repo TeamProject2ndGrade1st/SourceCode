@@ -52,13 +52,12 @@ namespace Argent::Resource::Effect
 	}
 
 
-	void Argent::Resource::Effect::EffectManager::Update()
+	void EffectManager::Update()
 	{
-		
 		efkManager->Update();
 	}
 
-	void Argent::Resource::Effect::EffectManager::Render() const
+	void EffectManager::Render() const
 	{
 		Effekseer::Matrix44 fkViewMat;
 		Effekseer::Matrix44 fkProjMat;

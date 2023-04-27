@@ -30,9 +30,14 @@ public:
 	void OnSceneCamera() { isSceneCamera = true; }
 	void OffSceneCamera() { isSceneCamera = false; }
 
-	DirectX::XMFLOAT3 GetForward() { return forward; }
-	DirectX::XMFLOAT3 GetRight() { return right; }
-	DirectX::XMFLOAT3 GetUp() { return up; }
+	DirectX::XMFLOAT3 GetForward() const { return forward; }
+	DirectX::XMFLOAT3 GetRight() const { return right; }
+	DirectX::XMFLOAT3 GetUp() const { return up; }
+
+	void SetFov(float f) { fov = f; }
+	void SetWidth(float f) { width = f; }
+	void SetHeight(float f) { height = f; }
+
 
 	DirectX::XMFLOAT4 GetMaxRotation() const { return maxRotation; }
 	void SetMaxRotation(const DirectX::XMFLOAT4& mRot) { maxRotation = mRot; useMaxRotation = true; }

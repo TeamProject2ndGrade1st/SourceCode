@@ -1,19 +1,30 @@
 #pragma once
 #include "Argent/Argent.h"
-
+#include "Bullet.h"
 
 class BaseGun:
-	public Argent::Component::BaseActor
+	public Argent::Component::BaseComponent
 {
 public:
-	BaseGun();
+	BaseGun(const char* name);
 	virtual ~BaseGun() override = default;
 
-	virtual void Shot();
 	void Initialize() override;
-	void Update() override;
-	//virtual void Recoil() = 0;
-protected:
-	
-};
+	void Update() final;
+	void Finalize() override;
 
+	void DrawDebug() override;
+
+	float fireRate;
+	int damage;
+	float speed;
+
+	DirectX::XMFLOAT3 offset;
+
+	Bullet::Mode mode;
+	GameObject* lmg;
+#ifdef _DEBUG
+	bool enableShot = false;
+
+#endif
+};

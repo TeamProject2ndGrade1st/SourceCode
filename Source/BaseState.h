@@ -2,11 +2,11 @@
 #include <vector>
 class BaseFriend;
 
-class State
+class FriendState
 {
 public:
-	State(BaseFriend* _friend, const char* name) :owner(_friend), name(name) {}
-	 virtual ~State() {}
+	FriendState(BaseFriend* _friend, const char* name) :owner(_friend), name(name) {}
+	 virtual ~FriendState() {}
 
 	 //ステートに入った時に呼ばれる
 	 virtual void Enter() = 0;
@@ -23,10 +23,10 @@ protected:
 };
 
 
-class HierarchicalState : public State
+class HierarchicalState : public FriendState
 {
 public:
-	HierarchicalState(BaseFriend* _friend) :State(_friend, "hierarchical") {}
+	HierarchicalState(BaseFriend* _friend) :FriendState(_friend, "hierarchical") {}
 	virtual ~HierarchicalState() {}
 
 	virtual void Enetr() = 0;
@@ -35,11 +35,11 @@ public:
 
 	virtual void SetSubState(int newState);
 	virtual void ChangeSubState(int newState);
-	virtual void RegisterSubState(State* state);
-	virtual State* SetSubState() { return subState; }
+	virtual void RegisterSubState(FriendState* state);
+	virtual FriendState* SetSubState() { return subState; }
 	virtual int GetSubStateIndex();
 
 protected:
-	std::vector<State*> subStatePool;
-	State* subState = nullptr;
+	std::vector<FriendState*> subStatePool;
+	FriendState* subState = nullptr;
 };
