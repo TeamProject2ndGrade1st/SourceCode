@@ -46,6 +46,7 @@ namespace Enemy::SpikeBot
 
     }
 
+
 #if 1
     bool IdleState::SearchFriend()
     {
