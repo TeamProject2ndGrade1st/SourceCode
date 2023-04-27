@@ -2,20 +2,10 @@
 #include "EnemyStateDerivad.h"
 
 // コンストラクタ
-BaseEnemy::BaseEnemy():Character("BaseEnemy")
+BaseEnemy::BaseEnemy(const char* name, DirectX::XMFLOAT3 pos) :
+    Character(name, pos)
 {
 }
-
-BaseEnemy::BaseEnemy(DirectX::XMFLOAT3 pos)
-    :Character("BaseEnemy")
-{
-    GetOwner()->GetTransform()->SetPosition(pos);
-}
-
-BaseEnemy::BaseEnemy(const char* name):Character(name)
-{
-}
-
 
 void BaseEnemy::Initialize()
 {
