@@ -104,7 +104,6 @@ namespace Argent::Graphics
 			resource.Get(),
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 			D3D12_RESOURCE_STATE_RENDER_TARGET);
-		//メッシュ描画用とスプライト描画用の両方のコマンドリストでバリアを発行（レンダーターゲットがそれぞれ違う）
 		cmdList->ResourceBarrier(1, &barrier);
 
 		cmdList->OMSetRenderTargets(1, &rtvHandle,
