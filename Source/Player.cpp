@@ -36,7 +36,7 @@ void Player::Update()
     case 0:
         //camera = Argent::Scene::SceneManager::Instance()->GetCurrentScene()->GetGameObject("Camera");
         camera = GameObject::FindByName("Camera"); // ‚±‚Á‚¿‚Å
-        movement = 10.5f;
+        movement = 50.5f;
 
         {
             auto c = camera->GetComponent<Camera>();
@@ -95,11 +95,10 @@ void Player::Update()
         // ƒJƒƒ‰‰¡‚Ì‚â‚Â(‰ñ“]‚Å‚«‚é‚æ‚¤‚É‚·‚é)
         if (setRotation.y > 360)setRotation.y -= 360;
         if (setRotation.y < 0)setRotation.y += 360;
-
-
 #endif
 #ifdef _DEBUG
         static bool use = false;
+
         if(Argent::Input::GetKeyUp(KeyCode::U))
         {
 	        use = !use;

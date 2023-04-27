@@ -22,7 +22,7 @@ void Bullet::Initialize()
 	/*auto* rC = new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Sphere);
 	rC->scale = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
 	GetOwner()->AddComponent(rC);*/
-	auto e = new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_test.efk", "./Resources/Effects");
+	auto e = new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_test2.efk", "./Resources/Effects");
 	GetOwner()->AddComponent(e);
 	e->OnPlay(0);
 }
