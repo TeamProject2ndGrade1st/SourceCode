@@ -32,20 +32,16 @@ void Game::Initialize()
 	//GetGameObject("player")->AddComponent(new Player);
 //	AddObject(new GameObject("player", new Player));
 
-	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_test.efk", "./Resources/Effects"));
+	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/heal.efk", "./Resources/Effects"));
 
 	//AddObject(new GameObject("spikeBot", Argent::Loader::Fbx::LoadFbx("./Resources/Model/spike_bot_0419_1.fbx")));
 	//AddObject(new GameObject("spikeBot", new SpikeBot()));
 
-	//AddObject(new GameObject("turret", new EnemyTurret()));
+	AddObject(new GameObject("turret", new EnemyTurret()));
 
 	//AddObject(new GameObject("friend", new FriendCreature()));
-	auto* g = new GameObject("target", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false));
-	AddObject(g);
-	auto* hoge0 = new GameObject("shadow", Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow.fbx", false));
-	AddObject(hoge0);
-	auto* hoge2 = new GameObject("shadow_ver2", Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow_ver2.fbx", false));
-	AddObject(hoge2);
+	//auto* g = new GameObject("target", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false));
+	//AddObject(g);
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 
 	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_0419_1.fbx"));
@@ -55,6 +51,7 @@ void Game::Initialize()
 	GameObject::Instantiate("HoneyComb", new Honeycomb("./Resources/Model/Stage/hanikamu_0425_1.fbx"));
 	GameObject::Instantiate("Barricade", new Barricade("./Resources/Model/Stage/barike-do_0419_1.fbx"));
 	GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_1_0426_5.fbx"));
+
 
 	BaseScene::Initialize();
 }

@@ -17,9 +17,13 @@
 #include "FriendManager.h"
 
 
+//#include "Argent/Debug/DebugRenderer.h"
+
+
 void Title::Initialize()
 {
 	ClearGameObject();
+
 	AddObject(new GameObject("TitleSprite", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Title.png")));
 
 	

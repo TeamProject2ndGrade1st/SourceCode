@@ -35,6 +35,10 @@ public:
         return GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->IsAnimationEnd();
     }
 
+    virtual void OnDamaged() override;//被ダメージ時に呼ばれる
+    virtual void OnDead() override;//死亡時に呼ばれる
+    virtual void OnHeal() override;//回復時に呼ばれる
+
     //ターゲットが攻撃範囲内にいるか
     bool IsTargetInAttackArea();
     bool SerchEnemy();
@@ -53,8 +57,7 @@ public:
     void Init_SetFriction(float friction) { init_friction = friction; }
 
     
-    void SetTargetPosition(DirectX::XMFLOAT3 pos) { targetPosition = pos; }
-    DirectX::XMFLOAT3 GetTargetPosition() const { return targetPosition; }
+    DirectX::XMFLOAT3 GetTargetPosition() const { return target->GetTransform()->GetPosition(); }
     float GetAttackAreaRadius() const { return attackAreaRadius; }
 
     StateMachine* GetStateMachine() const { return stateMachine.get(); }
@@ -62,7 +65,6 @@ public:
 
 protected:
     //目標座標
-    DirectX::XMFLOAT3 targetPosition{};
     GameObject* target{ nullptr };
 
     //攻撃始動範囲
@@ -70,8 +72,8 @@ protected:
   
     //初期値
     float init_acceleration{ 0.0f };
-    float init_maxMoveSpeed{ 5.0f };
-    float init_friction{ 5.0f };
+    float init_maxMoveSpeed{ 500.0f };
+    float init_friction{ 500.0f };
 
     float stateTimer{};
 

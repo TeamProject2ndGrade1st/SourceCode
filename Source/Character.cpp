@@ -1,15 +1,45 @@
 #include "Character.h"
 #include "Argent/Argent.h"
+#include "Shadow.h"
+
 
 void Character::Initialize()
 {
     BaseActor::Initialize();
 
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow_ver3.fbx", false));
+    //todo ‰e
+   // GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow_ver3.fbx", false));
+
+    
+    //‰e‚Ì•\Ž¦
+    //GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow0425_3.fbx", false));
+    GameObject::Instantiate("Shadow", new Shadow(this));
+
 
     GetOwner()->AddComponent(new Argent::Component::Collider::SphereCollider);
 
     GetOwner()->GetTransform()->SetPosition(init_position);
+}
+
+void Character::DrawDebug()
+{
+    if (ImGui::TreeNode("Status"))
+    {
+        ImGui::SliderFloat("HP", &health, 0, maxHealth,"%.2f");
+        ImGui::SliderFloat("MAX_HP", &maxHealth, 0, 50,"%.2f");
+        ImGui::SliderFloat("Attack", &attack, 0, 30,"%.2f");
+        ImGui::SliderFloat("Weight", &weight, 0, 100,"%.2f");
+        ImGui::TreePop();
+    }
+    if (ImGui::TreeNode("Move"))
+    {
+        ImGui::SliderFloat("Friction", &friction, 0.0f, 5.0f);
+        ImGui::SliderFloat("Acceleration", &acceleration, 0.0f, 10.0f);
+        ImGui::InputFloat3("Velocity", &velocity.x);
+        ImGui::TreePop();
+    }
+
+    BaseActor::DrawDebug();
 }
 
 void Character::UpdateVelocity()
@@ -47,7 +77,8 @@ void Character::UpdateVelocity()
     }
     //‘¬“x§ŒÀ
     length = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);
-    if (length > maxMoveSpeed)
+    //‹­‚·‚¬‚é—Í‚ª“­‚¢‚½‚Æ‚«‚Í‘¬“x§ŒÀ‚ð‚µ‚È‚¢
+    if (length > maxMoveSpeed && length <= maxMoveSpeed + 10.0f)
     {
         DirectX::XMVECTOR vec = { moveVec.x,moveVec.z };
         vec = DirectX::XMVector2Normalize(vec);
@@ -62,9 +93,9 @@ void Character::UpdateVelocity()
 void Character::UpdateMove()
 {
     GetOwner()->GetTransform()->AddPosition(DirectX::XMFLOAT3(
-        velocity.x * Argent::Timer::GetDeltaTime(),
+        velocity.x * Argent::Timer::GetDeltaTime() * GetTransform()->GetScaleFactor(),
         0.0f,
-        velocity.z * Argent::Timer::GetDeltaTime()
+        velocity.z * Argent::Timer::GetDeltaTime() * GetTransform()->GetScaleFactor()
     ));
 }
 

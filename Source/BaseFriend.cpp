@@ -66,46 +66,20 @@ void BaseFriend::DrawDebug()
 
     if (ImGui::TreeNode(GetName()))
     {
-        if (ImGui::TreeNode("Move"))
-        {
-            ImGui::SliderFloat("Friction", &friction, 0.0f, 5.0f);
-            ImGui::SliderFloat("Acceleration", &acceleration, 0.0f, 10.0f);
-            ImGui::InputFloat3("Velocity", &velocity.x);
-            ImGui::DragFloat3("TargetPosition", &targetPosition.x,0.1f,-100.0f,100.0f);
-            ImGui::TreePop();
-        }
+       
         
 
-        /*if (ImGui::TreeNode("State"))
-        {
-            switch (stateMachine.get()->GetStateIndex())
-            {
-            case static_cast<int>(State::Idle):
-                ImGui::Text("State Idle");
-                break;
-            case static_cast<int>(State::Action):
-                ImGui::Text("State Action");
-                break;
-            case static_cast<int>(State::Walk):
-                ImGui::Text("State Walk");
-                break;
-            case static_cast<int>(State::Attack):
-                ImGui::Text("State Attack");
-                break;
-            }
-            ImGui::SliderFloat("State Timer", &stateTimer, 0.0f, 30.0f);
-            ImGui::TreePop();
-        }*/
+        Character::DrawDebug();
         
-        BaseActor::DrawDebug();
+        
         ImGui::TreePop();
     }
 }
 
 void BaseFriend::MoveToTarget()
 {
-    float vx = targetPosition.x - GetOwner()->GetTransform()->GetPosition().x;
-    float vz = targetPosition.z - GetOwner()->GetTransform()->GetPosition().z;
+    float vx = target->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
+    float vz = target->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
     float length = sqrtf(vx * vx + vz * vz);
     vx /= length;
     vz /= length;
@@ -124,11 +98,23 @@ void BaseFriend::SetAnimation(int index)
     com->SetAnimation(index);
 }
 
+void BaseFriend::OnDamaged()
+{
+}
+
+void BaseFriend::OnDead()
+{
+}
+
+void BaseFriend::OnHeal()
+{
+}
+
 //ƒ^[ƒQƒbƒg‚ªUŒ‚”ÍˆÍ“à‚É‚¢‚é‚©‚Ç‚¤‚©
 bool BaseFriend::IsTargetInAttackArea()
 {
-    float vx = targetPosition.x - GetOwner()->GetTransform()->GetPosition().x;
-    float vz = targetPosition.z - GetOwner()->GetTransform()->GetPosition().z;
+    float vx = target->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
+    float vz = target->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
     float length = sqrtf(vx * vx + vz * vz);
     if (length < attackAreaRadius)return true;
     else return false;
@@ -137,7 +123,8 @@ bool BaseFriend::IsTargetInAttackArea()
 bool BaseFriend::SerchEnemy()
 {
     std::vector<GameObject*> enemyArray;
-    if (!GameObject::FindByTag(GameObject::Tag::Turret, enemyArray))
+    GameObject::FindByTag(GameObject::Tag::Turret, enemyArray);
+    if (enemyArray.size() == 0)
     {
         //”­Œ©‚µ‚È‚©‚Á‚½‚ç
         target = nullptr;
