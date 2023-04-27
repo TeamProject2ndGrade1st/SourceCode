@@ -13,7 +13,6 @@
 #include "Argent/Component/EffekseerEmitter.h"
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
-#include "spikeBot.h"
 #include "FriendCreature.h"
 #include "FriendManager.h"
 
