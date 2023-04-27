@@ -324,6 +324,7 @@
     <ClCompile Include="Source\FriendCreature.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FriendManager.cpp" />
     <ClCompile Include="Source\EnemyStateMachine.cpp">
       <Filter>Game\mame</Filter>
     </ClCompile>
@@ -607,6 +608,7 @@
     <ClInclude Include="Source\FriendCreature.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
+    <ClInclude Include="Source\FriendManager.h" />
     <ClInclude Include="Source\EnemyStateMachine.h">
       <Filter>Game\mame</Filter>
     </ClInclude>

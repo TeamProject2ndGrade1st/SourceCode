@@ -32,7 +32,7 @@ void Game::Initialize()
 	//GetGameObject("player")->AddComponent(new Player);
 //	AddObject(new GameObject("player", new Player));
 
-	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/heal.efk", "./Resources/Effects"));
+	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_test.efk", "./Resources/Effects"));
 
 	//AddObject(new GameObject("spikeBot", Argent::Loader::Fbx::LoadFbx("./Resources/Model/spike_bot_0419_1.fbx")));
 	//AddObject(new GameObject("spikeBot", new SpikeBot()));
@@ -40,8 +40,6 @@ void Game::Initialize()
 	AddObject(new GameObject("turret", new EnemyTurret()));
 
 	//AddObject(new GameObject("friend", new FriendCreature()));
-	//auto* g = new GameObject("target", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false));
-	//AddObject(g);
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 
 	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_0419_1.fbx"));

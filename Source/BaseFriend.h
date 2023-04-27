@@ -68,7 +68,8 @@ protected:
     GameObject* target{ nullptr };
 
     //UŒ‚n“®”ÍˆÍ
-    float attackAreaRadius{ 2.0f };
+    float attackAreaRadius{};
+    float init_attackAreaRadius{ 200.0f };
   
     //‰Šú’l
     float init_acceleration{ 0.0f };

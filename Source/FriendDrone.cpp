@@ -4,8 +4,6 @@
 
 void FriendDrone::Initialize()
 {
-    //スケール変更
-    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
 
     BaseFriend::Initialize();
 
@@ -23,19 +21,16 @@ void FriendDrone::Initialize()
 
 
     //仮置きのターゲット
-    target = GetOwner()->FindByName("target");
-    target->GetTransform()->SetScaleFactor(0.01f);
+    //target = GetOwner()->FindByName("target");
+    //target->GetTransform()->SetScaleFactor(0.01f);
 
-    //スケール変更
-    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
     acceleration     = init_acceleration;
     maxMoveSpeed     = init_maxMoveSpeed;
     friction         = init_friction;
-    attackAreaRadius = init_attackAreaRadius;
+    attackAreaRadius = init_attackAreaRadius * GetTransform()->GetScaleFactor();
 
     //タグ付け
     GetOwner()->ReplaceTag(GameObject::Tag::Friend);
-    GetOwner()->GetTransform()->SetScaleFactor(0.01f);
 
     //ステートマシンへのステート登録
     stateMachine = std::make_unique<StateMachine>();
