@@ -10,13 +10,7 @@
 #include "Argent/Debug/DebugRenderer.h"
 #include "Demo.h"
 #include "Stage.h"
-<<<<<<< HEAD
-#include "Argent/Component/EffectRenderer.h"
-
-void Title::Initialize()
-{
-	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
-=======
+#include "Argent/Component/EffekseerEmitter.h"
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
 #include "spikeBot.h"
@@ -28,10 +22,10 @@ void Title::Initialize()
 {
 	ClearGameObject();
 	AddObject(new GameObject("TitleSprite", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Title.png")));
->>>>>>> 46e1d2412a259bb7acd1ccd02b5d6e5d299f515f
+
 
 	
-<<<<<<< HEAD
+
 	//AddObject(new GameObject("enemy_ver03", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver3.fbx", false)));
 
 	//AddObject(new GameObject("nico", Argent::Loader::Fbx::LoadFbx("./Resources/Model/nico.fbx", false)));
@@ -68,10 +62,8 @@ void Title::Initialize()
 
 
 	//エフェクトの追加方法　複製してファイルネームのところだけ変えればok
-	AddObject(new GameObject("Effect", new Argent::Component::Renderer::EffectRenderer("./Resources/Effects/barel_test.efk", "./Resources/Effects")));
+	//AddObject(new GameObject("Effect", new Argent::Component::Renderer::EffectRenderer("./Resources/Effects/barel_test.efk", "./Resources/Effects")));
 
-=======
->>>>>>> 46e1d2412a259bb7acd1ccd02b5d6e5d299f515f
 	BaseScene::Initialize();
 }
 
@@ -89,7 +81,7 @@ void Title::Update()
 {
 	BaseScene::Update();
 
-	if(Argent::Input::GetKeyUp(KeyCode::F2))
+	if(Argent::Input::GetKeyUp(KeyCode::Enter)||Argent::Input::GetKeyUp(KeyCode::Z)|| Argent::Input::GetKeyUp(KeyCode::Space))
 	{
 		Argent::Scene::SceneManager::SetNextScene("StageSelect");
 	}
