@@ -4,7 +4,7 @@ BaseGun::BaseGun(const char* name):
 	BaseComponent(name)
 {
 	damage = 1;
-	speed = 20.0f;
+	speed = 100.0f;
 	fireRate = 1.0f;
 }
 
