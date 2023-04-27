@@ -25,7 +25,7 @@ void FriendManager::DrawDebug()
     static int type{};
     if (ImGui::TreeNode(GetName()))
     {
-        ImGui::SliderFloat3("SpawnPos", &pos.x, -100.0f, 100.0f);
+        ImGui::SliderFloat3("SpawnPos", &pos.x, -1000.0f, 1000.0f);
         ImGui::SliderInt("FriendType", &type, 0, static_cast<int>(Type::End)-1);
         ImGui::Text("1: Creature\n2: Drone\n");
         if (ImGui::Button("AddFriend"))
