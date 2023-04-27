@@ -49,6 +49,8 @@ void EnemyManager::AddEnemy(BaseEnemy* _enemy)
 {
     GameObject::Instantiate("Enemy", _enemy);
     enemyArray.emplace_back(_enemy);
+
+    // タグ登録はそれぞれのエネミー本体で行っている
 }
 
 BaseEnemy* EnemyManager::FindEnemyComponentFromOwner(GameObject* wEnemy) const

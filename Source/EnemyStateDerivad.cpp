@@ -14,31 +14,22 @@ namespace Enemy::SpikeBot
 
     void IdleState::Execute()
     {
-
-        // タイマーが０になったら攻撃に移る
-        //float timer = owner->GetStateTimer();
-        //owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
-        //if (timer < 0.0f)
-        //{
-        //    if (owner->isAnimationEnd())
-        //    {
-        //        owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyAnimation::Attack));
-        //    }
-        //}
-        //if (SearchFriend())
-
-        //owner->addspeed();
-
-        
-        
-
-        
-        
-        owner->SetFriend(owner->SearchFriend1());
+        // friendを見つけたら攻撃ステートに入る
+#if 1
+        owner->SetFriend(owner->SearchFriend());
         if (owner->_friend != nullptr)
         {
             owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyAnimation::Attack));
         }
+#else
+        // 配列バージョンを作る
+        owner->SearchFriendSet();
+        if (owner->_friendArray.size() != 0)
+        {
+            owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyAnimation::Attack));
+            // owner->_friendArray.clear();
+        }
+#endif
     }
 
     void IdleState::Exit()
@@ -145,8 +136,6 @@ namespace Enemy::SpikeBot
 
     void AttackState::Execute()
     {
-        owner->addspeed();
-
         if (!once)
         {
             //int animationFrame = static_cast<int>(owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimationFrame());
@@ -154,15 +143,21 @@ namespace Enemy::SpikeBot
 
             if (anime >= attackTime)
             {
-                auto f = owner->GetFriend();
-                
-                //owner->friendAddSpeed = 3;
-                
-                
+                // friendを取ってきてノックバックを与える
+#if 1
+                auto f = owner->GetFriend();               
                 f->AddImpulse(DirectX::XMFLOAT3(0, 0, -1000));
+                // エフェクト仮
                 owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
-                
-
+#else
+                // 配列バージョン
+                auto friend_array = owner->GetFriendArray();
+                for (auto& f : friend_array)
+                {
+                    f->AddImpulse(DirectX::XMFLOAT3(0, 0, -1000));
+                }
+                friend_array.clear();
+#endif
                 once = true;
             }
         }

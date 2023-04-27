@@ -7,9 +7,6 @@
 
 #include "Stage.h"
 
-
-
-
 #include "FriendCreature.h"
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
