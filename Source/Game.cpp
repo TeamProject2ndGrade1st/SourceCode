@@ -26,6 +26,8 @@
 void Game::Initialize()
 {
 	ClearGameObject();
+	auto g = GameObject::Instantiate("UI", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/UI.png"));
+	g->GetTransform()->SetPosition(DirectX::XMFLOAT3(250, 615, 0));
 	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
 	
 	
@@ -54,7 +56,6 @@ void Game::Initialize()
 	GameObject::Instantiate("HoneyComb", new Honeycomb("./Resources/Model/Stage/hanikamu_0425_1.fbx"));
 	GameObject::Instantiate("Barricade", new Barricade("./Resources/Model/Stage/barike-do_0419_1.fbx"));
 	GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_1_0426_5.fbx"));
-
 
 	BaseScene::Initialize();
 	std::vector<GameObject*> lightArray;
