@@ -10,7 +10,7 @@ void Character::Initialize()
     //‰e‚Ì•\Ž¦
     GameObject::Instantiate("Shadow", new Shadow(this));
 
-    GetOwner()->AddComponent(new Argent::Component::Collider::SphereCollider(10.0f));
+    GetOwner()->AddComponent(new Argent::Component::Collider::SphereCollider);
 
     GetOwner()->GetTransform()->SetPosition(init_position);
 }

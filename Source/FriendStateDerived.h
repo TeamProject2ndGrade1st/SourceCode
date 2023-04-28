@@ -61,8 +61,6 @@ namespace Friend::Creature
     private:
         float attackInterval{ 3.0f };
         int efeStartFrame{ 10 };
-
-        bool didAttack{};
     };
 
     //階層構造のステート（多分つかわん）
@@ -134,7 +132,6 @@ namespace Friend::Drone
 
     private:
         float attackInterval{ 3.0f };
-        bool didAttack{};
     };
 
 }

@@ -9,5 +9,5 @@ cbuffer SceneConstant : register(b0)
 	row_major float4x4 view;
 	row_major float4x4 projection;
 	float4 cameraPosition;
-    Light light[4];
+    Light light[2];
 }

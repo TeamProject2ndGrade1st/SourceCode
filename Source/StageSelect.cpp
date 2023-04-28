@@ -9,7 +9,7 @@ void StageSelect::Initialize()
 
 void StageSelect::Update()
 {
-	if(Argent::Input::GetKeyUp(KeyCode::Enter) || Argent::Input::GetKeyUp(KeyCode::Z) || Argent::Input::GetKeyUp(KeyCode::Space))
+	if(Argent::Input::GetKeyUp(KeyCode::F2))
 	{
 		Argent::Scene::SceneManager::SetNextScene("Game");
 	}

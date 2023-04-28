@@ -43,7 +43,6 @@ namespace Argent::Timer
 
 	void ArTimer::CalcFrameTime(HWND hWnd)
 	{
-#ifdef _DEBUG
 		const float stamp = Stamp();
 		++frames;
 		if (stamp - elapsedTime >= 1.0f)
@@ -57,6 +56,5 @@ namespace Argent::Timer
 			frames = 0;
 			elapsedTime += 1.0f;
 		}
-#endif
 	}
 }

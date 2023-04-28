@@ -50,11 +50,9 @@ namespace Argent::Component
 				}
 				b = true;
 			}
-
-#ifdef _DEBUG
 			debugRenderer = std::make_unique<Debug::DebugRenderer>(
 				mResources[static_cast<int>(type)]);
-#endif
+
 			Argent::Collider::ColliderManager::Instance().RegisterRayCastCollider(this);
 		}
 
@@ -97,14 +95,12 @@ namespace Argent::Component
 
 		void RayCastCollider::Render() const
 		{
-#ifdef _DEBUG
 			if(debugRenderer)
 			{
 				DirectX::XMFLOAT4X4 w{};
 				DirectX::XMStoreFloat4x4(&w, GetWorldTransform());
 				debugRenderer->Render(w);
 			}
-#endif
 		}
 
 		void RayCastCollider::Initialize()

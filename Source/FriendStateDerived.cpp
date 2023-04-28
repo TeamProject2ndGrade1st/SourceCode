@@ -152,22 +152,13 @@ namespace Friend::Creature
 		int animationFrame = static_cast<int>(owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimationFrame());
 		if (animationFrame = efeStartFrame)
 		{
-			owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
 
-			//TODO:敵のポインターが呼び出せたらやる
-			//owner->GetTarget()->A(敵へのダメージ処理)
-			// 
-			//処理が重いとかで万が一このキーフレームが飛ばされたときは最後に攻撃処理をいれるためにフラグを用意
-			didAttack = true;
+			owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
 		}
 	}
 
 	void AttackState::Exit()
 	{
-		if (!didAttack)
-		{
-			//敵へのダメージ処理
-		}
 		owner->SetAttackTimer(attackInterval);
 	}
 
@@ -289,19 +280,10 @@ namespace Friend::Drone
 		{
 			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Idle));
 		}
-		//TODO:敵のポインターが呼び出せたらやる
-			//owner->GetTarget()->A(敵へのダメージ処理)
-			// 
-			//処理が重いとかで万が一このキーフレームが飛ばされたときは最後に攻撃処理をいれるためにフラグを用意
-		didAttack = true;
 	}
 
 	void AttackState::Exit()
 	{
-		if (!didAttack)
-		{
-			//敵へのダメージ処理
-		}
 		owner->SetAttackTimer(attackInterval);
 	}
 }

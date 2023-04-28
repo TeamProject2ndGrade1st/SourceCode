@@ -153,9 +153,9 @@ DirectX::XMMATRIX Transform::CalcWorldMatrix()
 	DirectX::XMVECTOR u = DirectX::XMVector3Normalize(q.r[1]);
 	DirectX::XMVECTOR r = DirectX::XMVector3Normalize(q.r[0]);
 
-	const DirectX::XMMATRIX C = { DirectX::XMLoadFloat4x4(&CoordinateSystemTransforms[coordinateSystem])
-		 };
-	const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) * DirectX::XMMatrixScaling(scaleFactor, scaleFactor, scaleFactor) };
+	const DirectX::XMMATRIX C = { DirectX::XMLoadFloat4x4(&CoordinateSystemTransforms[coordinateSystem]) *
+		DirectX::XMMatrixScaling(scaleFactor, scaleFactor, scaleFactor) };
+	const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) };
 
 	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(u, DirectX::XMConvertToRadians(rotation.y)));
 	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(r, DirectX::XMConvertToRadians(rotation.x)));

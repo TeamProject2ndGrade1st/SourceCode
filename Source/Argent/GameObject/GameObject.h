@@ -17,16 +17,16 @@ public:
 
 		UnTagged   =	0x01 << 1,	//default 
 		MainCamera =	0x01 << 2,	//カメラが持ってる
+		Stage =			0x01 << 3,	//ステージ
+		Friend =		0x01 << 4,	//味方キャラ
+		Enemy =			0x01 << 5,	//敵キャラ
 
-		Light =			0x01 << 3,
-		Stage =			0x01 << 4,	//ステージ
-		Friend =		0x01 << 5,	//味方キャラ
-		Enemy =			0x01 << 6,	//敵キャラ
+		FriendManager = 0x01 << 6,
 		EnemyManager =	0x01 << 7,
-		FriendManager = 0x01 << 8,
-		Core =			0x01 << 9,
-		Creature =		0x01 << 10,	
-		Machine =		0x01 << 11,
+		Core =			0x01 << 8,
+		Creature =		0x01 << 9,	
+		Machine =		0x01 << 10,
+
 	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);
 	GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com);
