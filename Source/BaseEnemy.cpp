@@ -2,20 +2,10 @@
 #include "EnemyStateDerivad.h"
 
 // コンストラクタ
-BaseEnemy::BaseEnemy():Character("BaseEnemy")
+BaseEnemy::BaseEnemy(const char* name, DirectX::XMFLOAT3 pos) :
+    Character(name, pos)
 {
 }
-
-BaseEnemy::BaseEnemy(DirectX::XMFLOAT3 pos)
-    :Character("BaseEnemy")
-{
-    GetOwner()->GetTransform()->SetPosition(pos);
-}
-
-BaseEnemy::BaseEnemy(const char* name):Character(name)
-{
-}
-
 
 void BaseEnemy::Initialize()
 {
@@ -65,27 +55,9 @@ void BaseEnemy::DrawDebug()
     }
 }
 
-void BaseEnemy::addspeed()
-{
-    // スピードが出てたら
-    if (friendAddSpeed > 0)
-    {
-        //auto f = GetFriend();
-        //DirectX::XMFLOAT3 friendPos = f->GetTransform()->GetPosition();
-        //friendPos.z -= friendAddSpeed;
-        //f->GetTransform()->SetPosition(friendPos);
-        //friendAddSpeed -= 0.1f;
 
-        
-        
-    }
-    
 
-    // スピード足すの終了
-    if (friendAddSpeed < 0)friendAddSpeed = 0;
-}
-
-BaseFriend* BaseEnemy::SearchFriend1()
+BaseFriend* BaseEnemy::SearchFriend()
 {
     // TODO: return ステートメントをここに挿入します
         // Friendタグが付いているGameObjectを探す
@@ -128,4 +100,48 @@ BaseFriend* BaseEnemy::SearchFriend1()
         }
     }
     return nullptr;
+}
+
+void BaseEnemy::SearchFriendSet()
+{
+    // TODO: return ステートメントをここに挿入します
+        // Friendタグが付いているGameObjectを探す
+    std::vector<GameObject*> Friend;
+    GameObject::FindByTag(GameObject::Tag::Friend, Friend);
+
+    DirectX::XMFLOAT3 pos = GetOwner()->GetTransform()->GetPosition();
+    DirectX::XMFLOAT4 angle = GetOwner()->GetTransform()->GetRotation();
+
+    // TO DO 途中
+    for (auto f : Friend)
+    {
+        // Friend の positionを取る
+        DirectX::XMFLOAT3 friendPos = f->GetTransform()->GetPosition();
+
+        float vx = pos.x - friendPos.x;
+        float vy = pos.y - friendPos.y;
+        float vz = pos.z - friendPos.z;
+        float dist = sqrtf(vx * vx + vy * vy + vz * vz);
+
+        if (dist < 50)
+        {
+            float distXZ = sqrtf(vx * vx + vz * vz);
+            // 単位ベクトル化
+            vx /= distXZ;
+            vz /= distXZ;
+
+            // 方向ベクトル化
+            float frontX = sinf(angle.y);
+            float frontZ = cosf(angle.y);
+            // 2つのベクトルの内積値で前後判定
+            float dot = (frontX * vx) + (frontZ * vz);
+            if (dot > 0.0f)
+            {
+                f->GetTransform()->SetPosition(friendPos);
+                auto* ret = fManager->FindFriendComponentFromOwner(f);
+                SetFriendArray(ret);                
+            }
+        }
+    }
+    
 }

@@ -1,9 +1,5 @@
 #include "EnemyTurret.h"
 
-EnemyTurret::EnemyTurret() : BaseEnemy("EnemyTurret")
-{
-}
-
 void EnemyTurret::Initialize()
 {
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/turrets/gunturret_0422_5.fbx"));
@@ -17,7 +13,7 @@ void EnemyTurret::Initialize()
 
     // ƒ^ƒO‚ðÝ’è‚·‚é
 
-    GetOwner()->ReplaceTag(GameObject::Tag::Turret);
+    GetOwner()->ReplaceTag(GameObject::Tag::Enemy);
     BaseEnemy::Initialize();
 }
 

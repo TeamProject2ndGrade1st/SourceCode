@@ -5,7 +5,8 @@ class EnemySpikeBot :
     public BaseEnemy
 {
 public:
-    EnemySpikeBot();
+    EnemySpikeBot(DirectX::XMFLOAT3 pos = { 0.0f,0.0f,0.0f })
+        :BaseEnemy("EnemySpikeBot", pos) {}
     ~EnemySpikeBot() {}
 
     void Initialize()override;

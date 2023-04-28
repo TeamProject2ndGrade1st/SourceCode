@@ -10,7 +10,14 @@ void FriendManager::Initialize()
 
 void FriendManager::Update()
 {
-    //味方同士の衝突判定をしている
+    static DirectX::XMFLOAT3 pos{};
+    pos.z = -440;
+    if (Argent::Input::GetKeyUp(KeyCode::E))
+    {
+        AddFriend(new FriendCreature(pos));
+             
+    }
+
     for (auto activer = friendArray.begin();activer != friendArray.end();++activer)
     {
         for (auto passiver = activer + 1; passiver != friendArray.end(); ++passiver)
@@ -57,7 +64,6 @@ void FriendManager::AddFriend(BaseFriend* _friend)
     //タグ登録はそれぞれのフレンド本体で行っている
 }
 
-
 BaseFriend* FriendManager::FindFriendComponentFromOwner(GameObject* wFriend) const
 {
     for (auto& f : friendArray)
@@ -69,4 +75,3 @@ BaseFriend* FriendManager::FindFriendComponentFromOwner(GameObject* wFriend) con
 
     return nullptr;
 }
-
