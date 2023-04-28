@@ -21,7 +21,7 @@ namespace Argent::Window
 		RECT rc{ 0, 0, width, height };
 		AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-		hWnd = CreateWindowExW(0, wc.lpszClassName, L"Dx12", 
+		hWnd = CreateWindowExW(0, wc.lpszClassName, L"Out Break", 
 		                       WS_OVERLAPPEDWINDOW ^ WS_MAXIMIZEBOX ^ WS_THICKFRAME | WS_VISIBLE,
 		                       CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, 
 		                       rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr);

@@ -24,7 +24,7 @@ public:
 	Bullet::Mode mode;
 	GameObject* lmg;
 #ifdef _DEBUG
-	bool enableShot = false;
+	bool enableShot = true;
 
 #endif
 };

@@ -22,7 +22,7 @@ void Bullet::Initialize()
 	/*auto* rC = new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Sphere);
 	rC->scale = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
 	GetOwner()->AddComponent(rC);*/
-	auto e = new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_test.efk", "./Resources/Effects");
+	auto e = new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_test2.efk", "./Resources/Effects");
 	GetOwner()->AddComponent(e);
 	e->OnPlay(0);
 }
@@ -35,13 +35,14 @@ void Bullet::Update()
 	ManageDuration();
 }
 
-void Bullet::Shot(const DirectX::XMFLOAT3& position,
+void Bullet::Shot(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT4& rotation,
 	const DirectX::XMFLOAT3& direction, int damage, float speed,
 	Mode mode)
 {
 	auto* b = new Bullet(direction, damage, speed, mode);
 	const auto g = GameObject::Instantiate("Bullet", b);
 	g->GetTransform()->SetPosition(position);
+	g->GetTransform()->SetRotation(rotation);
 }
 
 void Bullet::ManageDuration()
@@ -80,7 +81,7 @@ void Bullet::OnCollision(const HitResult& result)
 			auto g = friendCom->GetOwner();
 	 		switch (mode)
 			{
-	 		case Mode::Living:
+	 		case Mode::Creature:
 				if(g->GetUnsignedTag() & static_cast<unsigned>(GameObject::Tag::Creature))
 				{
 					friendCom->ApplyHeal(damage);

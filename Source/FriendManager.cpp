@@ -10,6 +10,14 @@ void FriendManager::Initialize()
 
 void FriendManager::Update()
 {
+    static DirectX::XMFLOAT3 pos{};
+    pos.z = -440;
+    if (Argent::Input::GetKeyUp(KeyCode::E))
+    {
+        AddFriend(new FriendCreature(pos));
+             
+    }
+
     for (auto activer = friendArray.begin();activer != friendArray.end();++activer)
     {
         for (auto passiver = activer + 1; passiver != friendArray.end(); ++passiver)
@@ -25,7 +33,7 @@ void FriendManager::DrawDebug()
     static int type{};
     if (ImGui::TreeNode(GetName()))
     {
-        ImGui::SliderFloat3("SpawnPos", &pos.x, -100.0f, 100.0f);
+        ImGui::SliderFloat3("SpawnPos", &pos.x, -1000.0f, 1000.0f);
         ImGui::SliderInt("FriendType", &type, 0, static_cast<int>(Type::End)-1);
         ImGui::Text("1: Creature\n2: Drone\n");
         if (ImGui::Button("AddFriend"))

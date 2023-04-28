@@ -3,6 +3,8 @@
 #include "../Graphic/Graphics.h"
 #include "../Component/Camera.h"
 #include "../Component/Light.h"
+#include "../Input/Keyboard.h"
+#include "../Core/App.h"
 
 namespace Argent::Scene
 {
@@ -19,14 +21,31 @@ namespace Argent::Scene
 	void BaseScene::Initialize()
 	{
 		auto camera = new Camera(true, Argent::Graphics::Graphics::Instance()->GetWidth(), Argent::Graphics::Graphics::Instance()->GetHeight());
-		camera->SetFov(110.0f);
+		camera->SetFov(90.0f);
 		const auto c = new GameObject("Camera", camera);
 
 		c->ReplaceTag(GameObject::Tag::MainCamera);
 		AddObject(c);
-		AddObject(new GameObject("Light", new Light(lightIndex)));
+
+
+		auto l = new GameObject("Light", new Light(lightIndex));
+		l->ReplaceTag(GameObject::Tag::Light);
+		AddObject(l);
 		++lightIndex;
-		AddObject(new GameObject("Light", new Light(lightIndex)));
+		l = new GameObject("Light", new Light(lightIndex));
+		l->ReplaceTag(GameObject::Tag::Light);
+		AddObject(l);
+		++lightIndex;
+		l = new GameObject("Light", new Light(lightIndex));
+		l->ReplaceTag(GameObject::Tag::Light);
+		AddObject(l);
+		/*++lightIndex;
+		l = new GameObject("Light", new Light(lightIndex));
+		l->ReplaceTag(GameObject::Tag::Light);
+		AddObject(l);*/
+
+
+
 		for(size_t i = 0; i < objects.size(); ++i)
 		{
 			if(objects.at(i))
@@ -92,6 +111,11 @@ namespace Argent::Scene
 		{
 			if (objects.at(i) && objects.at(i)->GetIsActive())
 				objects.at(i)->LateUpdate();
+		}
+
+		if(Argent::Input::Keyboard::Instance().GetKeyUp(Input::Keyboard::Escape))
+		{
+			Argent::App::ArApp::Quit();
 		}
 	}
 
