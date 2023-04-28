@@ -53,7 +53,7 @@ void FriendManager::AddFriend(BaseFriend* _friend)
         _friend));*/
     friendArray.emplace_back(_friend);
 
-    //タグ登録はそれぞれのフレンド本体で行っている
+    //タグ登録はそれぞれのフン本体で行っている
 }
 
 BaseFriend* FriendManager::FindFriendComponentFromOwner(GameObject* wFriend) const
