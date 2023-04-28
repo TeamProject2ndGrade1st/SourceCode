@@ -10,6 +10,7 @@ void FriendManager::Initialize()
 
 void FriendManager::Update()
 {
+    //–¡•û“¯m‚ÌÕ“Ë”»’è‚ğ‚µ‚Ä‚¢‚é
     for (auto activer = friendArray.begin();activer != friendArray.end();++activer)
     {
         for (auto passiver = activer + 1; passiver != friendArray.end(); ++passiver)

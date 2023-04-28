@@ -29,9 +29,6 @@ void FriendDrone::Initialize()
     friction         = init_friction;
     attackAreaRadius = init_attackAreaRadius * GetTransform()->GetScaleFactor();
 
-    //タグ付け
-    GetOwner()->ReplaceTag(GameObject::Tag::Friend);
-
     //ステートマシンへのステート登録
     stateMachine = std::make_unique<StateMachine>();
 
@@ -46,7 +43,6 @@ void FriendDrone::Update()
 {
     //レイキャストコンポーネントでY座標があげられるからその分落とす
     //(なぜかイニシャライザでやっても座標が戻される)
-    static bool once;
     auto pos = GetOwner()->GetTransform()->GetPosition();
     if (pos.y >= 0.0f && !once)
     {
@@ -60,8 +56,8 @@ void FriendDrone::Update()
     pos = GetTransform()->GetPosition();
     huwahuwaDegree += huwahuwaSpeed;
     if (huwahuwaDegree > 360)huwahuwaDegree = 0;
-    float huwahuwa = sinf(DirectX::XMConvertToRadians(huwahuwaDegree)) * 0.2f;
-    GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 1.5f + huwahuwa, pos.z));
+    float huwahuwa = sinf(DirectX::XMConvertToRadians(huwahuwaDegree)) * (20.0f * GetOwner()->GetTransform()->GetScaleFactor());
+    GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 150.0f * GetOwner()->GetTransform()->GetScaleFactor() + huwahuwa, pos.z));
 }
 
 void FriendDrone::DrawDebug()

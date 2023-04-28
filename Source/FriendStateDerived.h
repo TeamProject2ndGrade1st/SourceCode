@@ -113,7 +113,7 @@ namespace Friend::Drone
 
     private:
         float acceleration{ 1000.0f };
-        float maxSpeed{ 600.0f };
+        float maxSpeed{ 200.0f };
 
         //アニメーション20~32フレーム間で動きが早くなる
         int startMovingFastFrame{ 20 };
