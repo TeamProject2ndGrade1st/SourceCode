@@ -16,7 +16,6 @@ public:
 
 
     virtual void Initialize()override;
-    virtual void Begin() override;
     virtual void Update()override;
     void DrawDebug() override;
 
@@ -82,6 +81,9 @@ protected:
     float attackTimer{};
 
     std::unique_ptr<StateMachine> stateMachine{ nullptr };
+
+    //Update‚Åˆê“x‚¾‚¯ŒÄ‚Î‚ê‚é
+    bool once;
 
     //ƒ^ƒO
 };

@@ -36,6 +36,15 @@ void Character::DrawDebug()
     BaseActor::DrawDebug();
 }
 
+void Character::Begin()
+{
+    if (!initOnce)
+    {
+        GetTransform()->SetPosition(init_position);
+        initOnce = true;
+    }
+}
+
 void Character::UpdateVelocity()
 {
     if (moveVec.x == 0.0f && moveVec.z == 0.0f)

@@ -46,11 +46,6 @@ void BaseFriend::Initialize()
 
 }
 
-void BaseFriend::Begin()
-{
-
-}
-
 void BaseFriend::Update()
 {
 

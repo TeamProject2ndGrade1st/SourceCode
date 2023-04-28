@@ -29,9 +29,6 @@ void FriendDrone::Initialize()
     friction         = init_friction;
     attackAreaRadius = init_attackAreaRadius * GetTransform()->GetScaleFactor();
 
-    //タグ付け
-    GetOwner()->ReplaceTag(GameObject::Tag::Friend);
-
     //ステートマシンへのステート登録
     stateMachine = std::make_unique<StateMachine>();
 
@@ -46,7 +43,6 @@ void FriendDrone::Update()
 {
     //レイキャストコンポーネントでY座標があげられるからその分落とす
     //(なぜかイニシャライザでやっても座標が戻される)
-    static bool once;
     auto pos = GetOwner()->GetTransform()->GetPosition();
     if (pos.y >= 0.0f && !once)
     {

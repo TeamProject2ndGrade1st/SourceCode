@@ -10,6 +10,7 @@ public:
 
     void Initialize()override;
     void DrawDebug()override;
+    void Begin()override;
     
     void SetVelocity(DirectX::XMFLOAT3 velo) { velocity = velo; }
     void SetAccelaration(float accel) { acceleration = accel; }
@@ -56,5 +57,9 @@ protected:
 private:
     //初期座標
     DirectX::XMFLOAT3 init_position{};
+
+    //なんか座標の初期化がinitializeから
+    //begin処理の間でリセットされるから一旦無理やりbeginに初期座標入れとく
+    bool initOnce;
 };
 
