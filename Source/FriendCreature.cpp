@@ -7,6 +7,7 @@ void FriendCreature::Initialize()
 
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     GetOwner()->AddComponent(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects"));
+    
     //攻撃範囲の視覚化
     /*GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(
         Argent::Component::Collider::RayCastCollider::MeshType::Cylinder
@@ -25,7 +26,12 @@ void FriendCreature::Initialize()
     acceleration = init_acceleration;
     maxMoveSpeed = init_maxMoveSpeed;
     friction = init_friction;
+
+    //タグ付け
+
+    GetOwner()->ReplaceTag(GameObject::Tag::Friend);
     
+
     //ステートマシンへのステート登録
     stateMachine = std::make_unique<StateMachine>();
 
@@ -35,33 +41,21 @@ void FriendCreature::Initialize()
     stateMachine.get()->RegisterState(new Friend::Creature::AttackState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
-    auto pos = GetTransform()->GetPosition();
 }
 
 void FriendCreature::Update()
 {
     //レイキャストコンポーネントでY座標があげられるからその分落とす
     //(なぜかイニシャライザでやっても座標が戻される)
-    if (!once)
+    static bool once;
+    auto pos = GetOwner()->GetTransform()->GetPosition();
+    if (pos.y >= 0.0f && !once)
     {
-        auto pos = GetOwner()->GetTransform()->GetPosition();
-        if (pos.y >= 0.0f)
-        {
-            GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 0.0f, pos.z));
-            once = true;
-        }
+        GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 0.0f, pos.z)); 
+        once = true;
     }
-    
 
     BaseFriend::Update();
-
-
-    //仮置きターゲットの座標更新
-    //if(target)
-    //{
-	   // auto t = target->GetTransform();
-	   // auto p = t->GetPosition();
-    //}
 
 }
 

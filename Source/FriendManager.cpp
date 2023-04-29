@@ -10,7 +10,18 @@ void FriendManager::Initialize()
 
 void FriendManager::Update()
 {
+
     //–¡•û“¯m‚ÌÕ“Ë”»’è‚ğ‚µ‚Ä‚¢‚é
+
+    static DirectX::XMFLOAT3 pos{};
+    pos.z = -440;
+    if (Argent::Input::GetKeyUp(KeyCode::E))
+    {
+        AddFriend(new FriendCreature(pos));
+             
+    }
+
+
     for (auto activer = friendArray.begin();activer != friendArray.end();++activer)
     {
         for (auto passiver = activer + 1; passiver != friendArray.end(); ++passiver)
