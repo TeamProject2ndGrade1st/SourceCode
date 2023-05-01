@@ -14,7 +14,9 @@ namespace Argent::Resource::Effect
 
 		void Play(const DirectX::XMFLOAT3& position, 
 				const DirectX::XMFLOAT3& scale, 
-				const DirectX::XMFLOAT4& rotate, float startFrame = 0);
+				const DirectX::XMFLOAT4& rotate,
+				const DirectX::XMFLOAT4& color,
+			float startFrame = 0);
 		void Update(const DirectX::XMFLOAT3& position,
 			const DirectX::XMFLOAT3& scale,
 			const DirectX::XMFLOAT4& rotate,

@@ -27,7 +27,7 @@ void Game::Initialize()
 	g->GetTransform()->SetPosition(DirectX::XMFLOAT3(250, 615, 0));
 	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
 	
-	
+	//AddObject(new GameObject("EffectSlash", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects")));
 	GameObject::Instantiate("Reticle", new Reticle("./Resources/Image/ReticleYellow.png"));
 	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
 	// player ‚Â‚¢‚©

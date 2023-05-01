@@ -114,7 +114,6 @@ void Player::Update()
 
     }
 
-    GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
     GetTransform()->SetRotation(camera->GetTransform()->GetRotation());
 
 #ifdef _DEBUG

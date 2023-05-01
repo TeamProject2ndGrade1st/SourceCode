@@ -92,6 +92,8 @@ namespace Argent::Component::Renderer
 		float GetAnimationFrame() { return frameIndex; }
 		bool IsAnimationEnd();
 
+		void SetStopTime(float t) { stopTimer = t; }
+
 	private:
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> objectConstantBuffer;
 
@@ -101,5 +103,8 @@ namespace Argent::Component::Renderer
 		std::vector<Resource::Animation::AnimationClip> animationClips;
 
 		float animationTick{};
+
+		//ヒットストップをするためにアニメーションを途中で止める
+		float stopTimer{};
 	};
 }

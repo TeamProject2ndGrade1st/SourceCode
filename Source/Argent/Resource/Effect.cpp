@@ -21,8 +21,10 @@ namespace Argent::Resource::Effect
 	}
 
 	void EffekseerResource::Play(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& scale,
-		const DirectX::XMFLOAT4& rotate, float startFrame)
+		const DirectX::XMFLOAT4& rotate, const DirectX::XMFLOAT4& color,float startFrame)
 	{
+
+		Update(position,scale,rotate,color);
 		handle = EffectManager::Instance()->GetManager()->Play(effect, Helper::Effect::ToVector3D(position), static_cast<int32_t>(startFrame));
 	}
 

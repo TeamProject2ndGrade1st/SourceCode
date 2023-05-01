@@ -4,7 +4,6 @@
 #include "../Other/Helper.h"
 #include "../Math/MathHelper.h"
 
-
 namespace Argent::Component::Renderer
 {
 	EffekseerEmitter::EffekseerEmitter(const char* filePath, const char* materialPath):
@@ -60,7 +59,7 @@ namespace Argent::Component::Renderer
 		const auto* t = GetOwner()->GetTransform();
 		//スケールファクターに影響されるようにした（なんか出来やん）
 		effect->Play(t->GetPosition() + offset, t->GetScale() * t->GetScaleFactor() + scale,
-			t->GetRotation() + rotation, startFrame);
+			t->GetRotation() + rotation, color.color,startFrame);
 	}
 
 	void EffekseerEmitter::Pause()

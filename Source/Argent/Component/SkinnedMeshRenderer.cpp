@@ -160,6 +160,13 @@ namespace Argent::Component::Renderer
 
 	#endif
 		if (animationClips.size() == 0) return;
+
+		//ヒットストップしているとき
+		if (stopTimer > 0)
+		{
+			stopTimer -= Argent::Timer::ArTimer::Instance().DeltaTime();
+			return;
+		}
 		//static float animationTick{};
 		const Resource::Animation::AnimationClip& animation{ this->animationClips.at(clipIndex) };
 		frameIndex = static_cast<float>(animationTick * animation.samplingRate);
