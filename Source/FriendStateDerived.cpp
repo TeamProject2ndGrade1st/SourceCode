@@ -157,6 +157,8 @@ namespace Friend::Creature
 			//TODO:敵のポインターが呼び出せたらやる
 			//owner->GetTarget()->A(敵へのダメージ処理)
 			// 
+			//攻撃が通ればヒットストップ
+			//owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetStopTime(0.3f);
 			//処理が重いとかで万が一このキーフレームが飛ばされたときは最後に攻撃処理をいれるためにフラグを用意
 			didAttack = true;
 		}
@@ -167,6 +169,8 @@ namespace Friend::Creature
 		if (!didAttack)
 		{
 			//敵へのダメージ処理
+
+			
 		}
 		owner->SetAttackTimer(attackInterval);
 	}
