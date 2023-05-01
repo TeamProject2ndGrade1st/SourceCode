@@ -10,7 +10,7 @@ void EnemySpikeBot::Initialize()
     GetOwner()->GetTransform()->SetScaleFactor(0.2f);
     
     // デバッグシリンダー
-    GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cylinder));
+    GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube));
     GetOwner()->GetComponent<Argent::Component::Collider::RayCastCollider>()->scale = { 500.0f,100.0f,500.0f };
 
     GetOwner()->AddComponent(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_once.efk", "./Resources/Effects"));

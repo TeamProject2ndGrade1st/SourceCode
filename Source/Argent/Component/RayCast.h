@@ -36,11 +36,11 @@ namespace Argent::Component
 			{
 				Cube,
 				Sphere,
-				Cylinder,
+				//Cylinder,
 				Mesh,
 				Max,
 			};
-			RayCastCollider(MeshType type = MeshType::Cylinder,
+			RayCastCollider(MeshType type = MeshType::Cube,
 				const DirectX::XMFLOAT3& offset = DirectX::XMFLOAT3(),
 					const DirectX::XMFLOAT3& scale = DirectX::XMFLOAT3(1, 1, 1),
 					const DirectX::XMFLOAT4& rotation = DirectX::XMFLOAT4(1, 1, 1, 1));

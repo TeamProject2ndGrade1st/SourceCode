@@ -24,7 +24,7 @@ namespace Argent::Resource::Mesh
 		template<class T>
 		void serialize(T& archive)
 		{
-			archive(position, normal, texcoord);
+			archive(position, normal, tangent, texcoord);
 		}
 	};
 

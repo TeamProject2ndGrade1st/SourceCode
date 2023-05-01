@@ -98,16 +98,6 @@ namespace Argent::Resource
 		{
 			fbxResources.at(i).DrawDebug();
 		}
-
-		for(auto& m : materials)
-		{
-			if(ImGui::TreeNode(m.second.lock()->GetName()))
-			{
-			ImGui::Text(m.second.lock()->textureNames[0].c_str());
-			ImGui::Text(m.second.lock()->textureNames[1].c_str());
-				ImGui::TreePop();
-			}
-		}
 		ImGui::End();
 	}
 

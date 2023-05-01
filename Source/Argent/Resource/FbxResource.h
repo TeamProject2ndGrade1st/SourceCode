@@ -70,10 +70,7 @@ namespace Argent::Resource::Fbx
 		}
 	};
 
-	struct ReplaceFileName
-	{
-		std::string replace[2];
-	};
+	
 	struct FbxResource
 	{
 		std::string filePath;
@@ -81,7 +78,6 @@ namespace Argent::Resource::Fbx
 		std::unordered_map<std::string, std::shared_ptr<Material::MeshMaterial>> materials;
 		std::vector<Resource::Animation::AnimationClip> animationClips;
 
-		std::vector<ReplaceFileName> replaceTextureFileName;
 		bool isResize = false; //上のストリングリサイズ用
 		void DrawDebug();
 		template<class T>

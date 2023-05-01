@@ -62,8 +62,8 @@ namespace Argent::Loader::Fbx
 			for(auto& m : fbxResource.materials)
 			{
 				auto& mat = m.second;
-				mat->CreateTexture(mat->textureNames[0].c_str(), Material::MeshMaterial::TextureType::Diffuse);
-				mat->CreateTexture(mat->textureNames[1].c_str(), Material::MeshMaterial::TextureType::Normal);
+				mat->CreateTexture(mat->textureNames[0].c_str(), Material::MeshMaterial::TextureUsage::Diffuse);
+				mat->CreateTexture(mat->textureNames[1].c_str(), Material::MeshMaterial::TextureUsage::Normal);
 			}
 			for(auto& mesh : fbxResource.tmpMeshes)
 			{
@@ -72,7 +72,7 @@ namespace Argent::Loader::Fbx
 					s.material = fbxResource.materials[s.materialName];
 					//for(int i = 0; i < Material::MeshMaterial::NumTextures; ++i)
 					//{
-					//	//s.material->CreateTexture(s.material->textureNames[i].c_str(), static_cast<Material::MeshMaterial::TextureType>(i));
+					//	//s.material->CreateTexture(s.material->textureNames[i].c_str(), static_cast<Material::MeshMaterial::TextureUsage>(i));
 					//}
 				}
 			}
@@ -409,7 +409,7 @@ namespace Argent::Loader::Fbx
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
 
-				material->CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureType::Diffuse);
+				material->CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureUsage::Diffuse);
 			}
 			if(PName == FbxSurfaceMaterial::sSpecular) 
 			{
@@ -435,7 +435,7 @@ namespace Argent::Loader::Fbx
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
 
-				material->CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureType::Normal);
+				material->CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureUsage::Normal);
 			}
 			
 			
@@ -446,9 +446,9 @@ namespace Argent::Loader::Fbx
 
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
-			//	if(material.get()->textureNames[static_cast<int>(Material::MeshMaterial::TextureType::Normal)].empty())
+			//	if(material.get()->textureNames[static_cast<int>(Material::MeshMaterial::TextureUsage::Normal)].empty())
 				{
-					material->CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureType::Normal);
+					material->CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureUsage::Normal);
 					
 				}
 			}
@@ -457,19 +457,19 @@ namespace Argent::Loader::Fbx
 		{
 			if(PName == FbxSurfaceMaterial::sDiffuse)
 			{
-				material->CreateTexture("", Material::MeshMaterial::TextureType::Diffuse);
+				material->CreateTexture("", Material::MeshMaterial::TextureUsage::Diffuse);
 			}
 			if(pName == FbxSurfaceMaterial::sNormalMap)
 			{
-				material->CreateTexture("", Material::MeshMaterial::TextureType::Normal);
+				material->CreateTexture("", Material::MeshMaterial::TextureUsage::Normal);
 			}
 		}
 	}
 
 	void SetDummySurfaceMaterial(std::shared_ptr<Material::MeshMaterial> material)
 	{
-		material->CreateTexture("", Material::MeshMaterial::TextureType::Diffuse);
-		material->CreateTexture("", Material::MeshMaterial::TextureType::Normal);
+		material->CreateTexture("", Material::MeshMaterial::TextureUsage::Diffuse);
+		material->CreateTexture("", Material::MeshMaterial::TextureUsage::Normal);
 	}
 
 	void FetchMaterial(FbxScene* fbxScene, const Resource::Fbx::ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<std::string, std::shared_ptr<Material::MeshMaterial>>& materials)

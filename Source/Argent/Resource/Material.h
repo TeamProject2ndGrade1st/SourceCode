@@ -41,6 +41,14 @@ namespace Argent::Material
 		std::string name;
 	};
 
+
+	struct ReplaceFileName
+	{
+		std::string diffuse;
+		std::string normal;
+	};
+
+
 	class MeshMaterial:
 		public Resource::ArResource
 	{
@@ -57,7 +65,7 @@ namespace Argent::Material
 		{
 			archive(name, textureNames, constant);
 		}
-		enum class TextureType
+		enum class TextureUsage
 		{
 			Diffuse,
 			Normal,
@@ -79,13 +87,13 @@ namespace Argent::Material
 			}
 		};
 
-		static constexpr int NumTextures = static_cast<int>(TextureType::Max);
+		static constexpr int NumTextures = static_cast<int>(TextureUsage::Max);
 		uint64_t textureUniqueId[NumTextures];
 		std::string textureNames[NumTextures];
 		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer{};
 		Constant constant{};
 		Color color;
-		void CreateTexture(const char* filePath, TextureType type);
+		void CreateTexture(const char* filePath, TextureUsage type);
 
 		void SetOnCommand(ID3D12GraphicsCommandList* cmdList, UINT cbIndex, UINT diffuseIndex, UINT normalIndex) const;
 
@@ -102,5 +110,6 @@ namespace Argent::Material
 			}
 		}
 
+		ReplaceFileName replace;
 	};
 }
