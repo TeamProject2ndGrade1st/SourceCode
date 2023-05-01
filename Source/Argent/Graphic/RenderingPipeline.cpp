@@ -127,6 +127,7 @@ namespace Argent::Graphics
 		{
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("POSITION", DXGI_FORMAT_R32G32B32_FLOAT),
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT),
+			Helper::Dx12::InputElement::GenerateInputLayoutDesc("TANGENT", DXGI_FORMAT_R32G32B32A32_FLOAT),
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT),
 		};
 
@@ -206,6 +207,7 @@ namespace Argent::Graphics
 		{
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("POSITION", DXGI_FORMAT_R32G32B32_FLOAT),
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT),
+			Helper::Dx12::InputElement::GenerateInputLayoutDesc("TANGENT", DXGI_FORMAT_R32G32B32A32_FLOAT),
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT),
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("WEIGHTS", DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 1),
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("BONES", DXGI_FORMAT_R32G32B32A32_UINT, 0, 1),
@@ -276,6 +278,7 @@ namespace Argent::Graphics
 		{
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("POSITION", DXGI_FORMAT_R32G32B32_FLOAT),
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT),
+			Helper::Dx12::InputElement::GenerateInputLayoutDesc("TANGENT", DXGI_FORMAT_R32G32B32A32_FLOAT),
 			Helper::Dx12::InputElement::GenerateInputLayoutDesc("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT),
 
 		};

@@ -365,6 +365,16 @@ namespace Argent::Loader::Fbx
 						vertex.texcoord.y = 1.0f - static_cast<float>(uv[1]);
 					}
 
+					if(fbxMesh->GenerateTangentsData(0, false))
+					{
+						//このインデックス（０）の意味は？？？
+						const FbxGeometryElementTangent* tangent = fbxMesh->GetElementTangent(0);
+						vertex.tangent.x = static_cast<float>(tangent->GetDirectArray().GetAt(vertexIndex)[0]);
+						vertex.tangent.y = static_cast<float>(tangent->GetDirectArray().GetAt(vertexIndex)[1]);
+						vertex.tangent.z = static_cast<float>(tangent->GetDirectArray().GetAt(vertexIndex)[2]);
+						vertex.tangent.w = static_cast<float>(tangent->GetDirectArray().GetAt(vertexIndex)[3]);
+					}
+
 					mesh.meshResource.vertices.at(vertexIndex) = std::move(vertex);
 					mesh.meshResource.indices.at(static_cast<size_t>(offset) + positionInPolygon) = vertexIndex;
 					mesh.vertexBones.at(vertexIndex) = std::move(bone);

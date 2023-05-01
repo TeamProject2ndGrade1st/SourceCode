@@ -135,7 +135,7 @@ void Player::DrawDebug()
         ImGui::SliderFloat("sensitivity", &sensitivity, 0.1f, 2.0f);
         ImGui::SliderFloat("OffsetLength", &offsetLength, 0.0f, 10.0f);
     	BaseActor::DrawDebug();
-        ImGui::TreePop();
+    	ImGui::TreePop();
     }
 }
 

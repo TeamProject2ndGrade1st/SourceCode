@@ -18,6 +18,7 @@ namespace Argent::Resource::Mesh
 	{
 		DirectX::XMFLOAT3 position;
 		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT4 tangent{ 1, 0, 0, 1};
 		DirectX::XMFLOAT2 texcoord;
 
 		template<class T>
