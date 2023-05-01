@@ -40,7 +40,7 @@ namespace Argent::Resource::Mesh
 		template<class T>
 		void serialize(T& archive)
 		{
-			archive(materialUniqueId, startIndexLocation, indexCount, materialName, material);
+			archive(materialUniqueId, startIndexLocation, indexCount, materialName);
 		}
 	};
 

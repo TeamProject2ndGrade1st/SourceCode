@@ -60,6 +60,7 @@ namespace Argent::App
 
 			arSceneManager.DeleteDestroyedObject();
 
+			Resource::ResourceManager::Instance().DrawDebug();
 			arGfx->Begin();
 			arSceneManager.Render();
 			effectManager->Render();
@@ -74,6 +75,8 @@ namespace Argent::App
 
 			if (quit) break;
 		}
+		Resource::ResourceManager::Instance().Serialize();
+
 		arGfx->Terminate();
 		arSceneManager.Finalize();
 #ifdef _DEBUG

@@ -4,9 +4,8 @@
 #include <DirectXMath.h>
 #include <vector>
 
-#include "../Resource/Mesh.h"
-#include "../Resource/SkinnedMesh.h"
 #include "../Resource/Animation.h"
+#include "../Resource/FbxResource.h"
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/string.hpp>
@@ -25,85 +24,14 @@ namespace Argent::Loader
 {
 	namespace Fbx
 	{
-		struct ArBoneInfluence
-		{
-			uint32_t boneIndex;
-			float boneWeight;
-		};
-
-		struct ArFbxScene
-		{
-			struct Node
-			{
-				uint64_t id{};
-				std::string name;
-				FbxNodeAttribute::EType attribute{};
-				int64_t parentIndex{ -1 };
-
-				template<class T>
-				void serialize(T& archive)
-				{
-					archive(id, name, attribute, parentIndex);
-				}
-			};
-			std::vector<Node> nodes{};
-
-			//todo âΩÇÃÇ‚Ç¬Ç≈ÇµÇÂÇ§ÅH
-			int64_t IndexOf(uint64_t id) const  // NOLINT(modernize-use-nodiscard)
-			{
-				int64_t index{};
-				for(const Node& node : nodes)
-				{
-					if(node.id == id) return index;
-					++index;
-				}
-				return -1;
-			}
-
-			template<class T>
-			void serialize(T& archive)
-			{
-				archive(nodes);
-			}
-		};
-
-		struct TmpFbxMesh
-		{
-			int64_t nodeIndex;
-			std::string name;
-			Argent::Resource::Mesh::MeshResource meshResource;
-			std::vector<Resource::Mesh::BoneVertex> vertexBones;
-			std::vector<Resource::Mesh::Subset> subsets;
-			Argent::Resource::Mesh::Skeleton bindPose;
-			DirectX::XMFLOAT4X4 defaultGlobalTransform
-			{
-				1, 0, 0, 0,
-				0, 1, 0, 0,
-				0, 0, 1, 0,
-				0, 0, 0, 1,
-			};
-
-			template<class T>
-			void serialize(T& archive)
-			{
-				archive(nodeIndex, name, meshResource, vertexBones, subsets, bindPose, defaultGlobalTransform);
-			}
-		};
-
-
-		struct FbxResource
-		{
-			std::vector<TmpFbxMesh> tmpMeshes;
-			std::unordered_map<uint64_t, std::shared_ptr<Material::MeshMaterial>> materials;
-			std::vector<Resource::Animation::AnimationClip> animationClips;
-
-			template<class T>
-			void serialize(T& archive)
-			{
-				archive(tmpMeshes, materials, animationClips);
-			}
-		};
 		std::vector<Component::BaseComponent*> LoadFbx(const char* filePath, bool triangulate = false);
+
+		void FetchMesh(FbxScene* fbxScene,const Resource::Fbx::ArFbxScene& sceneView, std::vector<Resource::Fbx::TmpFbxMesh>& meshes);
+		void FetchMaterial(FbxScene* fbxScene, const Resource::Fbx::ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<std::string, std::shared_ptr<Material::MeshMaterial>>& materials);
+		void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const Resource::Fbx::ArFbxScene& sceneView);
+		void FetchAnimation(FbxScene* fbxScene, std::vector<Resource::Animation::AnimationClip>& animationClips, 
+			float samplingRate, const Resource::Fbx::ArFbxScene& sceneView);
+		void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<std::vector<Resource::Fbx::ArBoneInfluence>>& boneInfluences);
 
 		void LoadDebug(const char* filePath);
 

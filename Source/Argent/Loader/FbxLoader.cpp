@@ -10,6 +10,8 @@
 #include "../Resource/SkinnedMesh.h"
 #include "../Resource/Material.h"
 #include "../Resource/Animation.h"
+#include "../Resource/FbxResource.h"
+
 
 
 namespace Argent::Loader::Fbx
@@ -22,7 +24,7 @@ namespace Argent::Loader::Fbx
 	 * \param fbxNode 
 	 * \param sceneView 
 	 */
-	void Traverse(FbxNode* fbxNode, ArFbxScene& sceneView)
+	void Traverse(FbxNode* fbxNode, Resource::Fbx::ArFbxScene& sceneView)
 	{
 		auto& node = sceneView.nodes.emplace_back();
 		node.attribute = fbxNode->GetNodeAttribute() ?
@@ -40,19 +42,11 @@ namespace Argent::Loader::Fbx
 		}
 	}
 
-	void FetchMesh(FbxScene* fbxScene,const ArFbxScene& sceneView, std::vector<TmpFbxMesh>& meshes);
-	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, std::shared_ptr<Material::MeshMaterial>>& materials);
-	void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const ArFbxScene& sceneView);
-	void FetchAnimation(FbxScene* fbxScene, std::vector<Resource::Animation::AnimationClip>& animationClips, 
-			float samplingRate, const ArFbxScene& sceneView);
-	void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<std::vector<ArBoneInfluence>>& boneInfluences);
-
-
 	//ローダー
 	std::vector<Component::BaseComponent*> LoadFbx(const char* filePath, bool triangulate)
 	{
-		ArFbxScene sceneView{};
-		FbxResource fbxResource;
+		Resource::Fbx::ArFbxScene sceneView{};
+		Resource::Fbx::FbxResource fbxResource;
 
 		std::vector<Component::BaseComponent*> ret{};
 		//シリアライズ
@@ -62,21 +56,30 @@ namespace Argent::Loader::Fbx
 		{
 			std::ifstream ifs(cerealFileName.c_str(), std::ios::binary);
 			cereal::BinaryInputArchive deserialization(ifs);
-			deserialization(sceneView, fbxResource);
+			deserialization(fbxResource);
+		//	deserialization(sceneView, fbxResource);
 
+			for(auto& m : fbxResource.materials)
+			{
+				auto& mat = m.second;
+				mat->CreateTexture(mat->textureNames[0].c_str(), Material::MeshMaterial::TextureType::Diffuse);
+				mat->CreateTexture(mat->textureNames[1].c_str(), Material::MeshMaterial::TextureType::Normal);
+			}
 			for(auto& mesh : fbxResource.tmpMeshes)
 			{
 				for(auto& s : mesh.subsets)
 				{
-					for(int i = 0; i < Material::MeshMaterial::NumTextures; ++i)
-					{
-						s.material->CreateTexture(s.material->textureNames[i].c_str(), static_cast<Material::MeshMaterial::TextureType>(i));
-					}
+					s.material = fbxResource.materials[s.materialName];
+					//for(int i = 0; i < Material::MeshMaterial::NumTextures; ++i)
+					//{
+					//	//s.material->CreateTexture(s.material->textureNames[i].c_str(), static_cast<Material::MeshMaterial::TextureType>(i));
+					//}
 				}
 			}
 		}
 		else
 		{
+			fbxResource.filePath = filePath;
 			FbxManager* manager{ FbxManager::Create() };
 			FbxScene* fbxScene{ FbxScene::Create(manager, "") };
 
@@ -106,7 +109,8 @@ namespace Argent::Loader::Fbx
 			manager->Destroy();
 			std::ofstream ofs(cerealFileName.c_str(), std::ios::binary);
 			cereal::BinaryOutputArchive serialization(ofs);
-			serialization(sceneView, fbxResource);
+			serialization(fbxResource);
+			//serialization(sceneView, fbxResource);
 		}
 
 
@@ -174,12 +178,13 @@ namespace Argent::Loader::Fbx
 			}
 		}
 
+		Resource::ResourceManager::Instance().RegisterFbxResource(fbxResource);
 		return ret;
 	}
 
-	void FetchMesh(FbxScene* fbxScene, const ArFbxScene& sceneView, Argent::Resource::Mesh::MeshResource& mResource)
+	void FetchMesh(FbxScene* fbxScene, const Resource::Fbx::ArFbxScene& sceneView, Argent::Resource::Mesh::MeshResource& mResource)
 	{
-		for (const ArFbxScene::Node& node : sceneView.nodes)
+		for (const Resource::Fbx::ArFbxScene::Node& node : sceneView.nodes)
 		{
 			if (node.attribute != FbxNodeAttribute::EType::eMesh) continue;
 
@@ -236,7 +241,7 @@ namespace Argent::Loader::Fbx
 		std::filesystem::path cerealFileName(filePath);
 		cerealFileName.replace_extension("cereal");
 
-		ArFbxScene sceneView{};
+		Resource::Fbx::ArFbxScene sceneView{};
 		Argent::Resource::Mesh::MeshResource mResource;
 
 		FbxManager* manager{ FbxManager::Create() };
@@ -261,21 +266,21 @@ namespace Argent::Loader::Fbx
 	}
 
 
-	void FetchMesh(FbxScene* fbxScene, const ArFbxScene& sceneView, std::vector<TmpFbxMesh>& meshes)
+	void FetchMesh(FbxScene* fbxScene, const Resource::Fbx::ArFbxScene& sceneView, std::vector<Resource::Fbx::TmpFbxMesh>& meshes)
 	{
-		for (const ArFbxScene::Node& node : sceneView.nodes)
+		for (const Resource::Fbx::ArFbxScene::Node& node : sceneView.nodes)
 		{
 			if (node.attribute != FbxNodeAttribute::EType::eMesh) continue;
 
 			FbxNode* fbxNode{ fbxScene->FindNodeByName(node.name.c_str()) };
 			FbxMesh* fbxMesh{ fbxNode->GetMesh() };
 
-			TmpFbxMesh& mesh{ meshes.emplace_back() };
+			Resource::Fbx::TmpFbxMesh& mesh{ meshes.emplace_back() };
 			mesh.nodeIndex = sceneView.IndexOf(fbxMesh->GetNode()->GetUniqueID());
 			mesh.defaultGlobalTransform = Argent::Helper::FBX::ToFloat4x4(fbxMesh->GetNode()->EvaluateGlobalTransform());
 			mesh.name = fbxNode->GetName();
 
-			std::vector<std::vector<ArBoneInfluence>> boneInfluences;
+			std::vector<std::vector<Resource::Fbx::ArBoneInfluence>> boneInfluences;
 			FetchBoneInfluences(fbxMesh, boneInfluences);
 			FetchSkeleton(fbxMesh, mesh.bindPose, sceneView);
 
@@ -467,12 +472,12 @@ namespace Argent::Loader::Fbx
 		material->CreateTexture("", Material::MeshMaterial::TextureType::Normal);
 	}
 
-	void FetchMaterial(FbxScene* fbxScene, const ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<uint64_t, std::shared_ptr<Material::MeshMaterial>>& materials)
+	void FetchMaterial(FbxScene* fbxScene, const Resource::Fbx::ArFbxScene& sceneView, const char* fbxFilePath, std::unordered_map<std::string, std::shared_ptr<Material::MeshMaterial>>& materials)
 	{
 		const size_t nodeCount{ sceneView.nodes.size() };
 		for (size_t nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
 		{
-			const ArFbxScene::Node& node{ sceneView.nodes.at(nodeIndex) };
+			const Resource::Fbx::ArFbxScene::Node& node{ sceneView.nodes.at(nodeIndex) };
 			const FbxNode* fbxNode{ fbxScene->FindNodeByName(node.name.c_str()) };
 
 			const int materialCount{ fbxNode->GetMaterialCount() };
@@ -492,13 +497,9 @@ namespace Argent::Loader::Fbx
 					FetchSurfaceMaterial(fbxMaterial, FbxSurfaceMaterial::sNormalMap, fbxFilePath, material);
 					FetchSurfaceMaterial(fbxMaterial, FbxSurfaceMaterial::sBump, fbxFilePath, material);
 
-					materials.emplace(materialUniqueId, material);
+					materials.emplace(name, material);
 					Resource::ResourceManager::Instance().RegisterMaterial(material);
 				}
-			}
-			else
-			{
-				
 			}
 		}
 
@@ -507,11 +508,11 @@ namespace Argent::Loader::Fbx
 			const char* name = "Dummy";
 			auto material = std::make_shared<Material::MeshMaterial>(name);
 			SetDummySurfaceMaterial(material);
-			materials.emplace(0, material);
+			materials.emplace(name, material);
 		}
 	}
 
-	void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<std::vector<ArBoneInfluence>>& boneInfluences)
+	void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<std::vector<Resource::Fbx::ArBoneInfluence>>& boneInfluences)
 	{
 		const int controlPointsCount{ fbxMesh->GetControlPointsCount() };
 		boneInfluences.resize(controlPointsCount);
@@ -540,7 +541,7 @@ namespace Argent::Loader::Fbx
 
 
 
-	void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const ArFbxScene& sceneView)
+	void FetchSkeleton(FbxMesh* fbxMesh, Argent::Resource::Mesh::Skeleton& bindPose, const Resource::Fbx::ArFbxScene& sceneView)
 	{
 		const int deformerCount = fbxMesh->GetDeformerCount(FbxDeformer::eSkin);
 		for (int deformerIndex = 0; deformerIndex < deformerCount; ++deformerIndex)
@@ -569,7 +570,7 @@ namespace Argent::Loader::Fbx
 	}
 
 	void FetchAnimation(FbxScene* fbxScene, std::vector<Resource::Animation::AnimationClip>& animationClips,
-		float samplingRate, const ArFbxScene& sceneView)
+		float samplingRate, const Resource::Fbx::ArFbxScene& sceneView)
 	{
 		FbxArray<FbxString*> animationStackNames;
 		fbxScene->FillAnimStackNameArray(animationStackNames);
