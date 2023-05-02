@@ -156,15 +156,16 @@ DirectX::XMMATRIX Transform::CalcWorld()
 	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(r, DirectX::XMConvertToRadians(rotation.x)));
 	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(f, DirectX::XMConvertToRadians(rotation.z)));
 
-	const DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(orientationVec);
-	const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(position.x,position.y, position.z) };
+	//const DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(orientationVec);
+	const DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(rotation.x), DirectX::XMConvertToRadians(rotation.y), DirectX::XMConvertToRadians(rotation.z));
+	const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(position.x, position.y, position.z) };
 
-	const DirectX::XMMATRIX DW = DirectX::XMLoadFloat4x4(&defaultWorld);
+	
 	postRotation = rotation;
 	DirectX::XMStoreFloat4(&orientation, orientationVec);
 
 	DirectX::XMMATRIX W = S * R * T;
-	return DW * W * parentMatrix;
+	return  W * parentMatrix;
 }
 
 DirectX::XMMATRIX Transform::CalcWorldMatrix()

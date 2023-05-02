@@ -297,7 +297,7 @@ namespace Argent::Loader::Fbx
 			{
 				const FbxSurfaceMaterial* fbxMaterial{ fbxMesh->GetNode()->GetMaterial(materialIndex) };
 				subsets.at(materialIndex).materialUniqueId = fbxMaterial->GetUniqueID();
-				subsets.at(materialIndex).materialName = fbxMaterial->GetName();
+				subsets.at(materialIndex).materialName = fbxMaterial->GetName(); 
 				
 				subsets.at(materialIndex).material = Resource::ResourceManager::Instance().GetMaterial(fbxMaterial->GetName());
 			}

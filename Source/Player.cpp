@@ -26,7 +26,9 @@ void Player::Initialize()
 	    	c->SetMinRotation(DirectX::XMFLOAT4(-70, 0, 0, 0));
     }
 
-    auto gun = new BaseGun("BaseGun");
+
+    gun =new BaseGun("Base Gun");
+    //gun = GameObject::Instantiate("Gun", new BaseGun("Base Gun"));
     GetOwner()->AddComponent(gun);
 }
 
@@ -116,6 +118,28 @@ void Player::Update()
 
     GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
     GetTransform()->SetRotation(camera->GetTransform()->GetRotation());
+
+
+    //e‚ÌˆÊ’u
+
+    DirectX::XMFLOAT3 forward = GetTransform()->CalcForward();
+    DirectX::XMFLOAT3 up = GetTransform()->CalcUp();
+    DirectX::XMFLOAT3 right = GetTransform()->CalcRight();
+
+    DirectX::XMFLOAT3 NormForward = forward;
+    NormForward.y = 0;
+
+    float dot{};
+    DirectX::XMStoreFloat(&dot, DirectX::XMVector3Dot(DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&forward)), DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&NormForward))));
+
+    //DirectX::XMFLOAT3 offsetPosition = forward * gunOffset.z + up * gunOffset.y + right * gunOffset.x;
+    //gun->GetTransform()->SetPosition(offsetPosition + GetOwner()->GetTransform()->GetPosition());
+
+    //DirectX::XMFLOAT4 setRotation = GetOwner()->GetTransform()->GetRotation();
+    //setRotation = Absolute(setRotation);
+    //setRotation.x = DirectX::XMConvertToDegrees(acosf(dot));
+    //gun->GetTransform()->SetRotation(setRotation);
+
 }
 
 void Player::DrawDebug()
@@ -127,6 +151,7 @@ void Player::DrawDebug()
         ImGui::DragFloat2("mouse", &mousePos.x);
         ImGui::SliderFloat("sensitivity", &sensitivity, 0.1f, 2.0f);
         ImGui::SliderFloat("OffsetLength", &offsetLength, 0.0f, 10.0f);
+        ImGui::DragFloat3("GunOffset", &gunOffset.x, 0.1f, -FLT_MAX, FLT_MAX);
     	BaseActor::DrawDebug();
     	ImGui::TreePop();
     }
