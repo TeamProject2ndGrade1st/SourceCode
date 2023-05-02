@@ -5,7 +5,7 @@ void FriendCreature::Initialize()
 {
     BaseFriend::Initialize();
 
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver10.fbx", false));
     GetOwner()->AddComponent(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects"));
     
     //UŒ‚”ÍˆÍ‚ÌŽ‹Šo‰»
@@ -39,6 +39,7 @@ void FriendCreature::Initialize()
     stateMachine.get()->RegisterState(new Friend::Creature::ActionState(this));
     stateMachine.get()->RegisterState(new Friend::Creature::WalkState(this));
     stateMachine.get()->RegisterState(new Friend::Creature::AttackState(this));
+    stateMachine.get()->RegisterState(new Friend::Creature::DieState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
 }
@@ -93,4 +94,9 @@ void FriendCreature::DrawDebug()
     {
         GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetStopTime(1.0f);
     }
+}
+
+void FriendCreature::OnDead()
+{
+    stateMachine->ChangeState(static_cast<int>(State::Die));
 }

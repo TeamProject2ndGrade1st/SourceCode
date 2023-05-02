@@ -8,7 +8,8 @@ enum class CreatureAnimation
     Attack,
     Walk_ChangeFrom_Action,
     Walk,
-    Walk_End
+    Walk_End,
+    Die
 };
 
 class FriendCreature :
@@ -24,6 +25,8 @@ public:
     void Update() override;
     void DrawDebug() override;
 
+    void OnDead()override;
+
 
     enum class State
     {
@@ -31,6 +34,7 @@ public:
         Action,
         Walk,
         Attack,
+        Die,
     };
 
 private:

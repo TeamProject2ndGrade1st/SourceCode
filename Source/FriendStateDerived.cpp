@@ -181,33 +181,24 @@ namespace Friend::Creature
 		owner->SetAttackTimer(attackInterval);
 	}
 
-	//階層構造のステート（いらんかも）
-	void H_MoveState::Enter()
+	void DieState::Enter()
 	{
+		owner->SetAccelaration(0);
+		owner->SetMaxSpeed(0);
+		owner->SetAnimation(static_cast<int>(CreatureAnimation::Die));
 	}
 
-	void H_MoveState::Execute()
+	void DieState::Execute()
 	{
+		if (owner->IsAnimationEnd())
+		{
+			owner->GetOwner()->Destroy(owner->GetOwner());
+		}
 	}
 
-	void H_MoveState::Exit()
+	void DieState::Exit()
 	{
 	}
-
-	void H_BattleState::Enter()
-	{
-	}
-
-	void H_BattleState::Execute()
-	{
-	}
-
-	void H_BattleState::Exit()
-	{
-	}
-
-
-
 }
 
 namespace Friend::Drone

@@ -67,23 +67,11 @@ namespace Friend::Creature
         bool didAttack{};
     };
 
-    //階層構造のステート（多分つかわん）
-    class H_MoveState : public HierarchicalState
+    class DieState : public FriendState
     {
     public:
-        H_MoveState(BaseFriend* _friend) : HierarchicalState(_friend) {}
-        ~H_MoveState();
-
-        void Enter()override;
-        void Execute()override;
-        void Exit()override;
-    };
-
-    class H_BattleState : public HierarchicalState
-    {
-    public:
-        H_BattleState(BaseFriend* _friend) : HierarchicalState(_friend) {}
-        ~H_BattleState();
+        DieState(BaseFriend* _friend) : FriendState(_friend, "attack") {}
+        ~DieState() {}
 
         void Enter()override;
         void Execute()override;
