@@ -10,17 +10,20 @@ Texture2D normalTex : register(t1);
 
 float4 main(VS_OUT pin) : SV_TARGET
 {
-	float4 color = albedoTex.Sample(smpPoint, pin.texcoord);
+    float4 color = albedoTex.Sample(smpPoint, pin.texcoord);
+    float3 N = normalize(pin.worldNormal.xyz);
 
-	float3 normal = normalTex.Sample(smpPoint, pin.texcoord).rgb;
+    float3 T = normalize(pin.worldTangent.xyz);
+    float sigma = pin.worldTangent.w;
+    T = normalize(T - N * dot(N, T));
+    float3 B = normalize(cross(N, T) * sigma);
 
-	float3 T = float3(1.0001, 0, 0);
-	float3x3 CM = {normalize(T), normalize(cross(pin.worldNormal.xyz, T)), normalize(pin.worldNormal.xyz) };
+    float4 normal = normalTex.Sample(smpPoint, pin.texcoord);
+    normal = (normal * 2.0f) - 1.0f;
+    N = normalize((normal.x * T) + (normal.y * B) + (normal.z * N));
 
 
-	//float3 N = normalize(pin.worldNormal.xyz);
-	float3 N = normalTex.Sample(smpPoint, pin.texcoord).rgb;
-	N = normalize(mul(normal * 2.0f - 1.0f, CM));
+
 
     float3 L0 = normalize(float3(-light[0].position.xyz));
     float3 L1 = normalize(float3(-light[1].position.xyz));

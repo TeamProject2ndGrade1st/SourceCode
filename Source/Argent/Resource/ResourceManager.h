@@ -8,6 +8,12 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "SkinnedMesh.h"
+#include "FbxResource.h"
+
+namespace Argent::Loader::Fbx
+{
+	struct FbxResource;
+}
 
 
 namespace Argent::Resource
@@ -28,7 +34,7 @@ namespace Argent::Resource
 
 		void Initialize();
 		void Clear();
-		void Begin();
+		void Serialize();
 
 		/**
 		 * \brief リソース管理用ユニークidを生み出す
@@ -84,6 +90,21 @@ namespace Argent::Resource
 		std::shared_ptr<Mesh::Mesh> GetMesh(const char* name);
 		std::shared_ptr<Mesh::SkinnedMesh> GetSkinnedMesh(const char* name);
 
+
+		void RegisterFbxResource(const Resource::Fbx::FbxResource& res)
+		{
+			fbxResources.emplace_back(res);
+		}
+
+		/**
+		 * \brief 
+		 * \param filePath ファイルパス
+		 * \param result 結果を格納する
+		 * \return 発見したかどうか　true発見した　false なかった
+		 */
+		bool GetFbxResource(const char* filePath, Fbx::FbxResource& result);
+
+		void DrawDebug();
 	private:
 
 		std::shared_ptr<Texture> FindResourceFromFilePath(const char* filePath) const;
@@ -95,6 +116,7 @@ namespace Argent::Resource
 		std::unordered_map<uint64_t, std::weak_ptr<Mesh::Mesh>> meshes;
 		std::unordered_map<uint64_t, std::weak_ptr<Mesh::SkinnedMesh>> skinnedMeshes;
 
+		std::vector<Resource::Fbx::FbxResource> fbxResources;
 
 	public:
 		static ResourceManager& Instance()

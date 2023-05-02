@@ -70,7 +70,7 @@ namespace Argent::Scene
 
 	void SceneManager::Update()
 	{
-		if(currentScene)
+		if(currentScene && currentScene->GetOnUpdate())
 		{
 			currentScene->Update();
 		}

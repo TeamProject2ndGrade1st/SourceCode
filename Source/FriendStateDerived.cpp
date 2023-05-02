@@ -162,7 +162,7 @@ namespace Friend::Creature
 
 			if (owner->GetTarget()->ApplyDamage(owner->GetAttack()))
 			{
-				owner->HitStop(0.15f);
+				owner->HitStop(hitStopTime);
 			}
 			
 			//処理が重いとかで万が一このキーフレームが飛ばされたときは最後に攻撃処理をいれるためにフラグを用意

@@ -10,9 +10,10 @@ namespace Argent::Scene
 	class BaseScene
 	{
 	public:
-		explicit BaseScene(std::string sceneName):
+		BaseScene(std::string sceneName):
 			sceneName(std::move(sceneName))
 		,	isInitialized(false)
+		,	onUpdate(true)
 		{
 			objects.clear();
 			objects.resize(100);
@@ -84,7 +85,8 @@ namespace Argent::Scene
 			}
 			return nullptr;
 		}
-
+		bool GetOnUpdate() const { return onUpdate; }
+		void SetOnUpdate(bool b) { onUpdate = b; }
 		int64_t FindNullObjectIndex() const;
 	protected:
 		const std::string sceneName;
@@ -92,6 +94,7 @@ namespace Argent::Scene
 		std::vector<std::unique_ptr<GameObject>> objects{};
 		bool isInitialized;
 		int lightIndex = 0;
+		bool onUpdate;
 	private:
 	};
 	

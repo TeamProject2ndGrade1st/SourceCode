@@ -23,6 +23,8 @@
 void Game::Initialize()
 {
 	ClearGameObject();
+	Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Cube.fbx");
+	Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Sphere.fbx");
 	auto g = GameObject::Instantiate("UI", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/UI.png"));
 	g->GetTransform()->SetPosition(DirectX::XMFLOAT3(250, 615, 0));
 	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
@@ -66,6 +68,8 @@ void Game::Initialize()
 	camera.at(0)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 27.0f, -500.0f));
 
 	Argent::Input::Mouse::Instance().resetPositionToCenter = true;
+
+	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/shield_bash.efk", "./Resources/Effects/"));
 
 #ifndef _DEBUG
 	ShowCursor(false);

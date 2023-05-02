@@ -62,6 +62,8 @@ namespace Friend::Creature
         float attackInterval{ 3.0f };
         int efeStartFrame{ 27 };
 
+        float hitStopTime{ 0.27f };
+
         bool didAttack{};
     };
 

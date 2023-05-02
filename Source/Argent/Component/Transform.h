@@ -33,14 +33,13 @@ public:
 	Transform& operator=(const Transform& t);
 
 	void Initialize() override;
-	void Update() override;
-
 	void DrawDebug() override;
 
 
 	void Reset() override;
 	void SetWorld(const DirectX::XMFLOAT4X4& w);
 
+	DirectX::XMMATRIX CalcWorld();
 	DirectX::XMMATRIX CalcWorldMatrix();
 	DirectX::XMMATRIX CalcLocalMatrix();
 
@@ -65,8 +64,6 @@ public:
 		position.y += pos.y;
 		position.z += pos.z;
 	}
-
-	//Transform AdjustParentTransform() const;
 
 	float GetScaleFactor() const { return scaleFactor;  }
 	void SetScaleFactor(float f) { scaleFactor = f;  }
@@ -94,13 +91,13 @@ private:
 	float scaleFactor;
 
 	int coordinateSystem;
-	/*DirectX::XMFLOAT4X4 defaultWorld
+	DirectX::XMFLOAT4X4 defaultWorld
 	{
 		1, 0, 0, 0,
 		0, 1, 0, 0,
 		0, 0, 1, 0,
 		0, 0, 0, 1
-	};*/
+	};
 
 	const DirectX::XMFLOAT4X4 CoordinateSystemTransforms[static_cast<int>(CoordinateSystem::cNone)]
 	{
