@@ -20,7 +20,7 @@ namespace Argent::Component::Renderer
 		//エフェクトの再生
 		void OnPlay(float startFrame = 0.0f);
 		void Pause();
-	private:
+	public:
 
 		Argent::Color color;
 		DirectX::XMFLOAT3 offset;

@@ -14,6 +14,6 @@ public:
     void Update()override;
     void DrawDebug()override;
 
-    
+    Argent::Component::Renderer::EffekseerEmitter* effect;
 };
 

@@ -74,6 +74,8 @@ void Game::Initialize()
 
 	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/shield_bash.efk", "./Resources/Effects/"));
 
+	
+
 #ifndef _DEBUG
 	ShowCursor(false);
 #endif

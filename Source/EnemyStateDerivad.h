@@ -18,8 +18,7 @@ namespace Enemy::SpikeBot
         void Execute()override;
         void Exit()override;
 
-        bool SearchFriend();
-        BaseFriend* SearchFriend1();
+
 
     private:
         float searchRange = 50.0f;
@@ -54,7 +53,7 @@ namespace Enemy::Turret
         void Execute()override;
         void Exit()override;
 
-        bool SearchFriend();
+        
 
 
     };

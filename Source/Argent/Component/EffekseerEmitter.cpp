@@ -18,6 +18,7 @@ namespace Argent::Component::Renderer
 	{
 		if (!effect) return;
 
+
 		//todo 毎フレームはいらない気がする
 		//再生中だった場合はトランスフォームを毎フレームアップデートする
 		if(effect->IsExist())
@@ -58,7 +59,7 @@ namespace Argent::Component::Renderer
 		if(!effect) return;
 
 		//エフェクトが再生中だった場合は停止する
-		if(effect->IsExist())	effect->Stop();
+		if (effect->IsExist()) effect->Stop();
 
 		//再生
 		const auto* t = GetOwner()->GetTransform();
