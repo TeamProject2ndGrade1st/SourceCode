@@ -25,6 +25,10 @@ public:
     //‰ñ•œ‚ğó‚¯‚é
     bool ApplyHeal(float heal);
 
+    float GetAttack()const { return attack; }
+
+    void HitStop(float t) { GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetStopTime(t); }
+
 protected:
     //‘¬—Íˆ—(…•½‚Ì‚İ)
     void UpdateVelocity();
@@ -38,6 +42,7 @@ protected:
     virtual void OnDamaged() {}//”íƒ_ƒ[ƒW‚ÉŒÄ‚Î‚ê‚é
     virtual void OnDead() {}//€–S‚ÉŒÄ‚Î‚ê‚é
     virtual void OnHeal() {}//‰ñ•œ‚ÉŒÄ‚Î‚ê‚é
+
 
 protected:
     DirectX::XMFLOAT3 velocity{};

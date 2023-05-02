@@ -1,5 +1,4 @@
 #include "BaseFriend.h"
-#include "Argent/Argent.h"
 #include "FriendStateDerived.h"
 
 BaseFriend::BaseFriend(const char* name, DirectX::XMFLOAT3 pos) :
@@ -16,34 +15,30 @@ void BaseFriend::Initialize()
     GetOwner()->ReplaceTag(GameObject::Tag::Friend);
 
     GetOwner()->GetTransform()->SetScaleFactor(0.15f);
-   /* GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
-    
-    target = GetOwner()->FindByName("target");
-    target->GetTransform()->SetScaleFactor(0.01f);
-
-    BaseActor::Initialize();
-
-
-    acceleration = init_acceleration;
-    maxMoveSpeed = init_maxMoveSpeed;
-    friction = init_friction;
-
-    GetOwner()->ReplaceTag(GameObject::Tag::Stage);
-    //GetOwner()->GetTransform()->SetScaleFactor(0.01f);
-    GetOwner()->GetTransform()->SetScaleFactor(0.1f);
-
-
-    stateMachine.reset(new StateMachine);
-
-    stateMachine.get()->RegisterState(new Friend::IdleState(this));
-    stateMachine.get()->RegisterState(new Friend::ActionState(this));
-    stateMachine.get()->RegisterState(new Friend::WalkState(this));
-    stateMachine.get()->RegisterState(new Friend::AttackState(this));
-
-    stateMachine.get()->SetState(static_cast<int>(State::Idle));*/
+   
+    if (!eManager)
+    {
+        std::vector<GameObject*> g;
+        GameObject::FindByTag(GameObject::Tag::EnemyManager, g);
+        if (g.size() > 0)
+            eManager = g.at(0)->GetComponent<EnemyManager>();
+    }
 
     attackAreaRadius = init_attackAreaRadius * GetTransform()->GetScaleFactor();
 
+}
+
+void BaseFriend::Begin()
+{
+    Character::Begin();
+
+    if (!eManager)
+    {
+        std::vector<GameObject*> g;
+        GameObject::FindByTag(GameObject::Tag::EnemyManager, g);
+        if (g.size() > 0)
+            eManager = g.at(0)->GetComponent<EnemyManager>();
+    }
 }
 
 void BaseFriend::Update()
@@ -62,11 +57,7 @@ void BaseFriend::DrawDebug()
 
     if (ImGui::TreeNode(GetName()))
     {
-       
-        
-
         Character::DrawDebug();
-        
         
         ImGui::TreePop();
     }
@@ -74,8 +65,9 @@ void BaseFriend::DrawDebug()
 
 void BaseFriend::MoveToTarget()
 {
-    float vx = target->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
-    float vz = target->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
+    if (!target)return;
+    float vx = target->GetOwner()->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
+    float vz = target->GetOwner()->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
     float length = sqrtf(vx * vx + vz * vz);
     vx /= length;
     vz /= length;
@@ -109,8 +101,9 @@ void BaseFriend::OnHeal()
 //ƒ^[ƒQƒbƒg‚ªUŒ‚”ÍˆÍ“à‚É‚¢‚é‚©‚Ç‚¤‚©
 bool BaseFriend::IsTargetInAttackArea()
 {
-    float vx = target->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
-    float vz = target->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
+    if (!target)return false;
+    float vx = target->GetOwner()->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
+    float vz = target->GetOwner()->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
     float length = sqrtf(vx * vx + vz * vz);
     if (length < attackAreaRadius)return true;
     else return false;
@@ -119,7 +112,9 @@ bool BaseFriend::IsTargetInAttackArea()
 bool BaseFriend::SerchEnemy()
 {
     std::vector<GameObject*> enemyArray;
+    std::vector<GameObject*> enemyManager;
     GameObject::FindByTag(GameObject::Tag::Enemy, enemyArray);
+    GameObject::FindByTag(GameObject::Tag::EnemyManager, enemyManager);
     if (enemyArray.size() == 0)
     {
         //”­Œ©‚µ‚È‚©‚Á‚½‚ç
@@ -141,7 +136,7 @@ bool BaseFriend::SerchEnemy()
         DirectX::XMStoreFloat(&length1, Length);
         if (length1 < length0)
         {
-            target = (*enemy);
+            target = eManager->FindEnemyComponentFromOwner((*enemy));
         }
     }
     return true;

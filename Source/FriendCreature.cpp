@@ -43,6 +43,11 @@ void FriendCreature::Initialize()
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
 }
 
+void FriendCreature::Begin()
+{
+    BaseFriend::Begin();
+}
+
 void FriendCreature::Update()
 {
     //レイキャストコンポーネントでY座標があげられるからその分落とす
@@ -82,5 +87,10 @@ void FriendCreature::DrawDebug()
         }
         ImGui::SliderFloat("State Timer", &stateTimer, 0.0f, 30.0f);
         ImGui::TreePop();
+    }
+
+    if (ImGui::Button("1s HitStop"))
+    {
+        GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetStopTime(1.0f);
     }
 }

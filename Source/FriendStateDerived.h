@@ -60,7 +60,7 @@ namespace Friend::Creature
 
     private:
         float attackInterval{ 3.0f };
-        int efeStartFrame{ 10 };
+        int efeStartFrame{ 27 };
 
         bool didAttack{};
     };

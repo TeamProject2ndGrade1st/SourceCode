@@ -5,6 +5,8 @@
 #include "Character.h"
 #include "StateMachine.h"
 #include "FriendManager.h"
+#include "BaseEnemy.h"
+#include "EnemyManager.h"
 
 class BaseFriend : public Character
 {
@@ -16,6 +18,7 @@ public:
 
 
     virtual void Initialize()override;
+    virtual void Begin()override;
     virtual void Update()override;
     void DrawDebug() override;
 
@@ -56,15 +59,15 @@ public:
     void Init_SetFriction(float friction) { init_friction = friction; }
 
     
-    DirectX::XMFLOAT3 GetTargetPosition() const { return target->GetTransform()->GetPosition(); }
+    //DirectX::XMFLOAT3 GetTargetPosition() const { return target->GetOwner()->GetTransform()->GetPosition(); }
     float GetAttackAreaRadius() const { return attackAreaRadius; }
 
     StateMachine* GetStateMachine() const { return stateMachine.get(); }
-    GameObject* GetTarget() const { return target; }
+    BaseEnemy* GetTarget() const { return target; }
 
 protected:
     //目標座標
-    GameObject* target{ nullptr };
+    BaseEnemy* target{ nullptr };
 
     //攻撃始動範囲
     float attackAreaRadius{};
@@ -81,6 +84,7 @@ protected:
     float attackTimer{};
 
     std::unique_ptr<StateMachine> stateMachine{ nullptr };
+    EnemyManager* eManager{ nullptr };
 
     //Updateで一度だけ呼ばれる
     bool once;

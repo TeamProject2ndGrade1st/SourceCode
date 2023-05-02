@@ -20,6 +20,7 @@ public:
     ~FriendCreature() {}
     
     void Initialize() override;
+    void Begin() override;
     void Update() override;
     void DrawDebug() override;
 

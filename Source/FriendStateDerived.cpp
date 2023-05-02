@@ -2,6 +2,7 @@
 #include "Argent/Argent.h"
 #include "FriendCreature.h"
 #include "FriendDrone.h"
+#include "Character.h"
 
 namespace Friend::Creature 
 {
@@ -73,7 +74,6 @@ namespace Friend::Creature
 	void WalkState::Execute()
 	{
 		int animationFrame = static_cast<int>(owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimationFrame());
-		//TODO:足を引きずるときfrictionを上げまくる
 		float timer = owner->GetStateTimer();
 		owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
 
@@ -90,6 +90,11 @@ namespace Friend::Creature
 
 		case static_cast<int>(CreatureAnimation::Walk):
 
+			if (!owner->GetTarget())
+			{
+				owner->SetAnimation(static_cast<int>(CreatureAnimation::Walk_End));
+			}
+
 			owner->MoveToTarget();
 
 			//足を引きずっているから移動速度に変化を付ける
@@ -105,9 +110,10 @@ namespace Friend::Creature
 				owner->SetAccelaration(0.0f);
 			}
 
+			if (owner->GetTarget())
 			{
-				float vx = owner->GetTargetPosition().x - owner->GetOwner()->GetTransform()->GetPosition().x;
-				float vz = owner->GetTargetPosition().z - owner->GetOwner()->GetTransform()->GetPosition().z;
+				float vx = owner->GetTarget()->GetOwner()->GetTransform()->GetPosition().x - owner->GetOwner()->GetTransform()->GetPosition().x;
+				float vz = owner->GetTarget()->GetOwner()->GetTransform()->GetPosition().z - owner->GetOwner()->GetTransform()->GetPosition().z;
 				float length = sqrtf(vx * vx + vz * vz);
 				if (length < owner->GetAttackAreaRadius())
 				{
@@ -150,15 +156,15 @@ namespace Friend::Creature
 		}
 
 		int animationFrame = static_cast<int>(owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimationFrame());
-		if (animationFrame = efeStartFrame)
+		if (animationFrame == efeStartFrame)
 		{
 			owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
 
-			//TODO:敵のポインターが呼び出せたらやる
-			//owner->GetTarget()->A(敵へのダメージ処理)
-			// 
-			//攻撃が通ればヒットストップ
-			//owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetStopTime(0.3f);
+			if (owner->GetTarget()->ApplyDamage(owner->GetAttack()))
+			{
+				owner->HitStop(0.15f);
+			}
+			
 			//処理が重いとかで万が一このキーフレームが飛ばされたときは最後に攻撃処理をいれるためにフラグを用意
 			didAttack = true;
 		}
@@ -262,8 +268,8 @@ namespace Friend::Drone
 
 		owner->MoveToTarget();
 
-		float vx = owner->GetTargetPosition().x - owner->GetOwner()->GetTransform()->GetPosition().x;
-		float vz = owner->GetTargetPosition().z - owner->GetOwner()->GetTransform()->GetPosition().z;
+		float vx = owner->GetTarget()->GetOwner()->GetTransform()->GetPosition().x - owner->GetOwner()->GetTransform()->GetPosition().x;
+		float vz = owner->GetTarget()->GetOwner()->GetTransform()->GetPosition().z - owner->GetOwner()->GetTransform()->GetPosition().z;
 		float length = sqrtf(vx * vx + vz * vz);
 		if (length < owner->GetAttackAreaRadius())
 		{

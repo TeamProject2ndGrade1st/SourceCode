@@ -27,8 +27,8 @@ void Character::DrawDebug()
     }
     if (ImGui::TreeNode("Move"))
     {
-        ImGui::SliderFloat("Friction", &friction, 0.0f, 5.0f);
-        ImGui::SliderFloat("Acceleration", &acceleration, 0.0f, 10.0f);
+        ImGui::SliderFloat("Friction", &friction, 0.0f, 1000.0f);
+        ImGui::SliderFloat("Acceleration", &acceleration, 0.0f, 1000.0f);
         ImGui::InputFloat3("Velocity", &velocity.x);
         ImGui::TreePop();
     }
