@@ -96,6 +96,14 @@ namespace Argent::Resource
 			fbxResources.emplace_back(res);
 		}
 
+		/**
+		 * \brief 
+		 * \param filePath ファイルパス
+		 * \param result 結果を格納する
+		 * \return 発見したかどうか　true発見した　false なかった
+		 */
+		bool GetFbxResource(const char* filePath, Fbx::FbxResource& result);
+
 		void DrawDebug();
 	private:
 

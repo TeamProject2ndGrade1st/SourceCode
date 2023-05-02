@@ -52,67 +52,71 @@ namespace Argent::Loader::Fbx
 		//シリアライズ
 		std::filesystem::path cerealFileName(filePath);
 		cerealFileName.replace_extension("cereal");
-		if(std::filesystem::exists(cerealFileName.c_str()))
-		{
-			std::ifstream ifs(cerealFileName.c_str(), std::ios::binary);
-			cereal::BinaryInputArchive deserialization(ifs);
-			deserialization(fbxResource);
-		//	deserialization(sceneView, fbxResource);
 
-			for(auto& m : fbxResource.materials)
+		bool isLoaded = Resource::ResourceManager::Instance().GetFbxResource(filePath, fbxResource);
+		if(!isLoaded)
+		{
+			if(std::filesystem::exists(cerealFileName.c_str()))
 			{
-				auto& mat = m.second;
-				mat->CreateTexture(mat->textureNames[0].c_str(), Material::MeshMaterial::TextureUsage::Diffuse);
-				mat->CreateTexture(mat->textureNames[1].c_str(), Material::MeshMaterial::TextureUsage::Normal);
-			}
-			for(auto& mesh : fbxResource.tmpMeshes)
-			{
-				for(auto& s : mesh.subsets)
+				std::ifstream ifs(cerealFileName.c_str(), std::ios::binary);
+				cereal::BinaryInputArchive deserialization(ifs);
+				deserialization(fbxResource);
+			//	deserialization(sceneView, fbxResource);
+
+				for(auto& m : fbxResource.materials)
 				{
-					s.material = fbxResource.materials[s.materialName];
-					//for(int i = 0; i < Material::MeshMaterial::NumTextures; ++i)
-					//{
-					//	//s.material->CreateTexture(s.material->textureNames[i].c_str(), static_cast<Material::MeshMaterial::TextureUsage>(i));
-					//}
+					auto& mat = m.second;
+					mat->CreateTexture(mat->textureNames[0].c_str(), Material::MeshMaterial::TextureUsage::Diffuse);
+					mat->CreateTexture(mat->textureNames[1].c_str(), Material::MeshMaterial::TextureUsage::Normal);
+				}
+				for(auto& mesh : fbxResource.tmpMeshes)
+				{
+					for(auto& s : mesh.subsets)
+					{
+						s.material = fbxResource.materials[s.materialName];
+						//for(int i = 0; i < Material::MeshMaterial::NumTextures; ++i)
+						//{
+						//	//s.material->CreateTexture(s.material->textureNames[i].c_str(), static_cast<Material::MeshMaterial::TextureUsage>(i));
+						//}
+					}
 				}
 			}
-		}
-		else
-		{
-			fbxResource.filePath = filePath;
-			FbxManager* manager{ FbxManager::Create() };
-			FbxScene* fbxScene{ FbxScene::Create(manager, "") };
-
-			FbxImporter* importer{ FbxImporter::Create(manager, "") };
-			bool importState{ FALSE };
-			importState = importer->Initialize(filePath);
-			_ASSERT_EXPR_A(importState, importer->GetStatus().GetErrorString());
-
-			importState = importer->Import(fbxScene);
-			_ASSERT_EXPR_A(importState, importer->GetStatus().GetErrorString());
-
-			FbxGeometryConverter converter(manager);
-			if (triangulate)
+			else
 			{
-				converter.Triangulate(fbxScene, true, false);
-				converter.RemoveBadPolygonsFromMeshes(fbxScene);
+				fbxResource.filePath = filePath;
+				FbxManager* manager{ FbxManager::Create() };
+				FbxScene* fbxScene{ FbxScene::Create(manager, "") };
+
+				FbxImporter* importer{ FbxImporter::Create(manager, "") };
+				bool importState{ FALSE };
+				importState = importer->Initialize(filePath);
+				_ASSERT_EXPR_A(importState, importer->GetStatus().GetErrorString());
+
+				importState = importer->Import(fbxScene);
+				_ASSERT_EXPR_A(importState, importer->GetStatus().GetErrorString());
+
+				FbxGeometryConverter converter(manager);
+				if (triangulate)
+				{
+					converter.Triangulate(fbxScene, true, false);
+					converter.RemoveBadPolygonsFromMeshes(fbxScene);
+				}
+
+				Traverse(fbxScene->GetRootNode(), sceneView);
+
+				FetchMaterial(fbxScene, sceneView, filePath, fbxResource.materials);
+				FetchMesh(fbxScene, sceneView, fbxResource.tmpMeshes);
+				
+
+				FetchAnimation(fbxScene, fbxResource.animationClips, 0, sceneView);
+
+				manager->Destroy();
+				std::ofstream ofs(cerealFileName.c_str(), std::ios::binary);
+				cereal::BinaryOutputArchive serialization(ofs);
+				serialization(fbxResource);
+				//serialization(sceneView, fbxResource);
 			}
-
-			Traverse(fbxScene->GetRootNode(), sceneView);
-
-			FetchMaterial(fbxScene, sceneView, filePath, fbxResource.materials);
-			FetchMesh(fbxScene, sceneView, fbxResource.tmpMeshes);
-			
-
-			FetchAnimation(fbxScene, fbxResource.animationClips, 0, sceneView);
-
-			manager->Destroy();
-			std::ofstream ofs(cerealFileName.c_str(), std::ios::binary);
-			cereal::BinaryOutputArchive serialization(ofs);
-			serialization(fbxResource);
-			//serialization(sceneView, fbxResource);
 		}
-
 
 		bool hasBone = false;
 		for (const auto& m : fbxResource.tmpMeshes)
@@ -178,7 +182,9 @@ namespace Argent::Loader::Fbx
 			}
 		}
 
-		Resource::ResourceManager::Instance().RegisterFbxResource(fbxResource);
+		if(!isLoaded)
+			Resource::ResourceManager::Instance().RegisterFbxResource(fbxResource);
+
 		return ret;
 	}
 
@@ -430,10 +436,14 @@ namespace Argent::Loader::Fbx
 			if(pName == FbxSurfaceMaterial::sNormalMap)
 			{
 				const FbxFileTexture* fbxTexture{ fbxProp.GetSrcObject<FbxFileTexture>() };
-				const char* tmpFilePath = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
+				std::string tmpFilePath = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
 
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
+				if(tmpFilePath.empty())
+				{
+					path.clear();
+				}
 
 				material->CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureUsage::Normal);
 			}
@@ -446,7 +456,7 @@ namespace Argent::Loader::Fbx
 
 				std::filesystem::path path(fbxFilePath);
 				path.replace_filename(tmpFilePath);
-			//	if(material.get()->textureNames[static_cast<int>(Material::MeshMaterial::TextureUsage::Normal)].empty())
+				if(material.get()->textureNames[static_cast<int>(Material::MeshMaterial::TextureUsage::Normal)].empty())
 				{
 					material->CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureUsage::Normal);
 					

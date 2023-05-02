@@ -60,6 +60,23 @@ void Game::Initialize()
 
 
 	BaseScene::Initialize();
+	std::vector<GameObject*> lightArray;
+	GameObject::FindByTag(GameObject::Tag::Light, lightArray);
+	lightArray.at(0)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, -10.0f, -50));
+	lightArray.at(1)->GetTransform()->SetPosition(DirectX::XMFLOAT3(-80.0f, 10.0f, 50.0f));
+	lightArray.at(2)->GetTransform()->SetPosition(DirectX::XMFLOAT3(35.0f, 18.0f, 30.0f));
+
+	std::vector<GameObject*> camera;
+	GameObject::FindByTag(GameObject::Tag::MainCamera, camera);
+	camera.at(0)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 27.0f, -500.0f));
+
+	Argent::Input::Mouse::Instance().resetPositionToCenter = true;
+
+	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/shield_bash.efk", "./Resources/Effects/"));
+
+#ifndef _DEBUG
+	ShowCursor(false);
+#endif
 }
 
 void Game::Finalize()

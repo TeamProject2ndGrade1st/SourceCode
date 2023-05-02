@@ -40,9 +40,14 @@ float4 main(VS_OUT pin) : SV_TARGET
     normal = (normal * 2.0f) - 1.0f;
     N = normalize((normal.x * T) + (normal.y * B) + (normal.z * N));
 
-	float3 L1 = normalize(float3(-light[0].position.xyz));
-	float3 L2 = normalize(float3(-light[1].position.xyz));
-	float3 E = normalize(float3(cameraPosition.xyz - pin.worldPosition.xyz));
+
+
+
+    float3 L0 = normalize(float3(-light[0].position.xyz));
+    float3 L1 = normalize(float3(-light[1].position.xyz));
+    float3 L2 = normalize(float3(-light[2].position.xyz));
+    //float3 L3 = normalize(float3(-light[3].position.xyz));
+    float3 E = normalize(float3(cameraPosition.xyz - pin.worldPosition.xyz));
 
 
 	float3 diffuse1 = CalcLambertDiffuse(N, L1, light[0].color, kd);

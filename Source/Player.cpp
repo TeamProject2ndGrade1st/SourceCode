@@ -21,11 +21,12 @@ void Player::Initialize()
     movement = 10.5f;
     {
         auto c = camera->GetComponent<Camera>();
-        c->SetMaxRotation(DirectX::XMFLOAT4(100, 0, 0, 0));
-	    	c->SetMinRotation(DirectX::XMFLOAT4(-100, 0, 0, 0));
+        c->SetMaxRotation(DirectX::XMFLOAT4(70, 0, 0, 0));
+	    	c->SetMinRotation(DirectX::XMFLOAT4(-70, 0, 0, 0));
     }
 
-    GetOwner()->AddComponent(new BaseGun("BaseGun"));
+    auto gun = new BaseGun("BaseGun");
+    GetOwner()->AddComponent(gun);
 }
 
 void Player::Update()
@@ -39,8 +40,8 @@ void Player::Update()
 
         {
             auto c = camera->GetComponent<Camera>();
-            c->SetMaxRotation(DirectX::XMFLOAT4(100, 370, 0, 0));
-			c->SetMinRotation(DirectX::XMFLOAT4(-100, -10, 0, 0));
+            c->SetMaxRotation(DirectX::XMFLOAT4(70, 370, 0, 0));
+			c->SetMinRotation(DirectX::XMFLOAT4(-70, -10, 0, 0));
         }
 
         ++state;
@@ -107,18 +108,10 @@ void Player::Update()
 #endif
 
         break;
-
     }
 
     GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
     GetTransform()->SetRotation(camera->GetTransform()->GetRotation());
-
-#ifdef _DEBUG
-    if(Argent::Input::GetKeyDown(KeyCode::O))
-    {
-	    useCameraControl = !useCameraControl;
-    }
-#endif
 }
 
 void Player::DrawDebug()
@@ -168,17 +161,48 @@ void Player::MoveCamera()
     cameraRight = cameraRight * movement * Argent::Timer::GetDeltaTime();
     cameraFront = cameraFront * movement * Argent::Timer::GetDeltaTime();
 
-    direction = direction * offsetLength;
     p = p + cameraRight + cameraFront;
 
     auto pos = t->GetPosition();
-    ray->SetRayData(pos + direction, p + direction);
+
+
+    ray->SetRayData(pos, p);
     HitResult hitResult{};
     if(Argent::Collision::RayCollisionDetection(ray, hitResult, GameObject::Tag::Stage))
     {
        // hitResult.position.y = GetTransform()->GetPosition().y;
-	    p = hitResult.position - direction;
-    } 
+        hitResult.position.y = pos.y;
+	    p = hitResult.position;
+    }
+    else
+    {
+        const DirectX::XMVECTOR UP = DirectX::XMVectorSet(0, 1, 0, 0);
+        DirectX::XMVECTOR RIGHT = DirectX::XMVector3Cross(UP, DirectX::XMLoadFloat3(&direction));
+
+        //is•ûŒü‚É‘Î‚µ‚Ä‚’¼•ûŒü‚É­‚µ‚¸‚ç‚·
+        DirectX::XMFLOAT3 offset;
+        DirectX::XMStoreFloat3(&offset, DirectX::XMVectorScale(RIGHT, 1.f));
+
+        //­‚µŒã‚ë‚É‰º‚°‚é
+        pos = pos - direction * 3.0f;
+	    ray->SetRayData(pos + offset, p);
+        if(Argent::Collision::RayCollisionDetection(ray, hitResult, GameObject::Tag::Stage))
+        {
+            hitResult.position.y = pos.y;
+	        p = hitResult.position;
+        }
+        else
+        {
+            //‚³‚Á‚«‚Æ‚Í”»’è•ûŒü‚É‚¸‚ç‚µ‚Ä”»’è‚ðŽæ‚é
+	        offset = offset * -1.0f;
+            ray->SetRayData(pos + offset, p);
+            if(Argent::Collision::RayCollisionDetection(ray, hitResult, GameObject::Tag::Stage))
+            {
+	            hitResult.position.y = pos.y;
+                p = hitResult.position;
+            }
+        }
+    }
 
     t->SetPosition(p);
 }
