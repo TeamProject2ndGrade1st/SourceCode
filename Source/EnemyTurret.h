@@ -1,5 +1,13 @@
 #pragma once
 #include "BaseEnemy.h"
+
+enum class TurretAnimation
+{
+    Idle,
+    Attack,
+    StartUp,
+};
+
 class EnemyTurret :
     public BaseEnemy
 {

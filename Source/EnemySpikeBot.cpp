@@ -13,7 +13,7 @@ void EnemySpikeBot::Initialize()
     GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube));
     GetOwner()->GetComponent<Argent::Component::Collider::RayCastCollider>()->scale = { 500.0f,100.0f,500.0f };
 
-    GetOwner()->AddComponent(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_once.efk", "./Resources/Effects"));
+    GetOwner()->AddComponent(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/shield_bash.efk", "./Resources/Effects"));
 
     // ステートマシンをセット
     stateMachine.reset(new EnemyStateMachine);
