@@ -64,11 +64,6 @@ void Transform::Initialize()
 	DirectX::XMStoreFloat4(&orientation, DirectX::XMQuaternionRotationAxis(Axis, 0));
 }
 
-void Transform::Update()
-{
-	
-}
-
 void Transform::DrawDebug()
 {
 	if(ImGui::TreeNode(GetName()))
@@ -104,14 +99,16 @@ void Transform::Reset()
 
 void Transform::SetWorld(const DirectX::XMFLOAT4X4& w)
 {
+	//defaultWorld  = w;
 	DirectX::XMMATRIX W = DirectX::XMLoadFloat4x4(&w);
 
 	//移動値を抜き出す
 	DirectX::XMFLOAT3 transration;
 	DirectX::XMStoreFloat3(&transration, W.r[3]);
 	//オフセットの位置はリセット
-	W.r[3] = DirectX::XMVectorSet(0, 0, 0, 1);
-
+	//W.r[3] = DirectX::XMVectorSet(0, 0, 0, 1);
+	DirectX::XMMATRIX TInv = DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranslation(transration.x, transration.y, transration.z));
+	W = W * TInv;
 
 	//スケール行列を求めていく
 	float sX, sY, sZ;
@@ -119,9 +116,9 @@ void Transform::SetWorld(const DirectX::XMFLOAT4X4& w)
 	sY = LengthV3(W.r[1]);
 	sZ = LengthV3(W.r[2]);
 	//スケール行列の逆行列を求める
-	DirectX::XMMATRIX S = DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixScaling(sX, sY, sZ));
+	DirectX::XMMATRIX SInv = DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixScaling(sX, sY, sZ));
 	//逆行列を使って回転行列を求める
-	DirectX::XMMATRIX R = S * W;
+	DirectX::XMMATRIX R = SInv * W;
 
 	DirectX::XMFLOAT3 rot = CalcEulerAngleFromRotationMatrix(R);
 
@@ -134,7 +131,7 @@ void Transform::SetWorld(const DirectX::XMFLOAT4X4& w)
 
 }
 
-DirectX::XMMATRIX Transform::CalcWorldMatrix()
+DirectX::XMMATRIX Transform::CalcWorld()
 {
 	DirectX::XMMATRIX parentMatrix = DirectX::XMMatrixIdentity();
 	if(GetOwner()->GetParent())
@@ -147,40 +144,39 @@ DirectX::XMMATRIX Transform::CalcWorldMatrix()
 	const DirectX::XMVECTOR Axis = DirectX::XMVectorSet(1, 1, 1, 0);
 	DirectX::XMVECTOR orientationVec =  DirectX::XMQuaternionRotationAxis(Axis, 0);
 
-	//DirectX::XMVECTOR orientationVec = DirectX::XMLoadFloat4(&orientation);
 	auto q = DirectX::XMMatrixRotationQuaternion(orientationVec);
 	DirectX::XMVECTOR f = DirectX::XMVector3Normalize(q.r[2]);
 	DirectX::XMVECTOR u = DirectX::XMVector3Normalize(q.r[1]);
 	DirectX::XMVECTOR r = DirectX::XMVector3Normalize(q.r[0]);
 
-	const DirectX::XMMATRIX C = { DirectX::XMLoadFloat4x4(&CoordinateSystemTransforms[coordinateSystem])
-		 };
+
 	const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) * DirectX::XMMatrixScaling(scaleFactor, scaleFactor, scaleFactor) };
 
 	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(u, DirectX::XMConvertToRadians(rotation.y)));
 	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(r, DirectX::XMConvertToRadians(rotation.x)));
 	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(f, DirectX::XMConvertToRadians(rotation.z)));
-	//orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(u, DirectX::XMConvertToRadians(dRotation.y)));
-	//orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(r, DirectX::XMConvertToRadians(dRotation.x)));
-	//orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(f, DirectX::XMConvertToRadians(dRotation.z)));
 
 	const DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(orientationVec);
 	const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(position.x,position.y, position.z) };
-	//const DirectX::XMMATRIX Dw = DirectX::XMLoadFloat4x4(&defaultWorld);
 
-
+	const DirectX::XMMATRIX DW = DirectX::XMLoadFloat4x4(&defaultWorld);
 	postRotation = rotation;
 	DirectX::XMStoreFloat4(&orientation, orientationVec);
-	//return W * parentMatrix;
+
+	DirectX::XMMATRIX W = S * R * T;
+	return DW * W * parentMatrix;
+}
+
+DirectX::XMMATRIX Transform::CalcWorldMatrix()
+{
+	const DirectX::XMMATRIX C = { DirectX::XMLoadFloat4x4(&CoordinateSystemTransforms[coordinateSystem])};
 	if(GetOwner()->GetParent())
 	{
-		DirectX::XMMATRIX W = S * R * T;
-		return W * parentMatrix;
+		return CalcWorld();
 	}
 	else
 	{
-		DirectX::XMMATRIX W = C * S * R * T;
-		return W * parentMatrix;
+		return C * CalcWorld();
 	}
 }
 
@@ -210,24 +206,6 @@ DirectX::XMMATRIX Transform::CalcLocalMatrix()
 	return  (C * S * R * T);
 
 }
-
-//Transform Transform::AdjustParentTransform() const
-//{
-//	Transform tmp = *this;
-//	//tmp += *this;
-//	if(GetOwner())
-//	{
-//		if(GetOwner()->GetParent())
-//		{
-//			const Transform t = GetOwner()->GetParent()->GetTransform()->AdjustParentTransform();
-//			tmp += t;
-//			tmp.scale = tmp.scale * t.scale;
-//			tmp.scaleFactor *= t.GetScaleFactor();
-//			tmp.coordinateSystem = t.coordinateSystem;
-//		}
-//	}
-//	return tmp;
-//}
 
 void Transform::SetTransform(const Transform& t)
 {

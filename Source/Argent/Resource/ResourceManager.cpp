@@ -89,8 +89,23 @@ namespace Argent::Resource
 		return nullptr;
 	}
 
+
+	bool ResourceManager::GetFbxResource(const char* filePath, Fbx::FbxResource& result)
+	{
+		for(auto& f : fbxResources)
+		{
+			if(f.filePath == filePath)
+			{
+				result = f; 
+				return true;
+			}
+		}
+		return false;
+	}
+
 	void ResourceManager::DrawDebug()
 	{
+#ifdef _DEBUG
 		ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_::ImGuiCond_Once);
 		ImGui::SetNextWindowPos(ImVec2( 0, 50), ImGuiCond_::ImGuiCond_Once);
 		ImGui::Begin("ResourceManager", nullptr, ImGuiWindowFlags_MenuBar);
@@ -99,6 +114,7 @@ namespace Argent::Resource
 			fbxResources.at(i).DrawDebug();
 		}
 		ImGui::End();
+#endif
 	}
 
 	std::shared_ptr<Texture> ResourceManager::FindResourceFromFilePath(const char* filePath) const
