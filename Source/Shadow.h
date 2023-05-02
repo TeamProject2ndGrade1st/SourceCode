@@ -5,7 +5,7 @@ class Shadow :
     public Argent::Component::BaseActor
 {
 public:
-    Shadow(Character * p) : parent(p),BaseActor("CharaShadow") {}
+    Shadow(Character* p) : parent(p),BaseActor("CharaShadow") {}
     ~Shadow() {}
 
     void Initialize()override;

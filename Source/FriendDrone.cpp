@@ -1,14 +1,22 @@
 #include "FriendDrone.h"
 #include "FriendStateDerived.h"
 #include "StateMachine.h"
+#include "Shadow.h"
 
 void FriendDrone::Initialize()
 {
 
     BaseFriend::Initialize();
 
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx", false));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0502_1.fbx", false));
 
+    if (myShadow)
+    {
+        myShadow->GetOwner()->GetTransform()->SetScale(DirectX::XMFLOAT3(0.3f, 0.3f, 0.3f));
+    }
+
+
+    GetOwner()->GetTransform()->SetScaleFactor(0.4f);
 
     //UŒ‚”ÍˆÍ‚ÌŽ‹Šo‰»
     /*GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(
@@ -57,7 +65,7 @@ void FriendDrone::Update()
     huwahuwaDegree += huwahuwaSpeed;
     if (huwahuwaDegree > 360)huwahuwaDegree = 0;
     float huwahuwa = sinf(DirectX::XMConvertToRadians(huwahuwaDegree)) * (20.0f * GetOwner()->GetTransform()->GetScaleFactor());
-    GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 150.0f * GetOwner()->GetTransform()->GetScaleFactor() + huwahuwa, pos.z));
+    GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 80.0f * GetOwner()->GetTransform()->GetScaleFactor() + huwahuwa, pos.z));
 }
 
 void FriendDrone::DrawDebug()

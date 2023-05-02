@@ -8,7 +8,7 @@ void Character::Initialize()
     BaseActor::Initialize();
     
     //‰e‚Ì•\Ž¦
-    GameObject::Instantiate("Shadow", new Shadow(this));
+    GameObject::Instantiate("Shadow", myShadow = new Shadow(this));
 
     GetOwner()->AddComponent(new Argent::Component::Collider::SphereCollider(10.0f));
 

@@ -1,5 +1,8 @@
 #pragma once
 #include "Argent/Argent.h"
+
+class Shadow;
+
 class Character :
     public Argent::Component::BaseActor
 {
@@ -58,6 +61,7 @@ protected:
 
     float weight = { 30.0f };//体重(最大で100)
 
+    Shadow* myShadow{ nullptr };
 
 private:
     //初期座標
@@ -66,5 +70,6 @@ private:
     //なんか座標の初期化がinitializeから
     //begin処理の間でリセットされるから一旦無理やりbeginに初期座標入れとく
     bool initOnce;
+
 };
 

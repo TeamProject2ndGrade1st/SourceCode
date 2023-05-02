@@ -220,7 +220,7 @@ namespace Friend::Drone
 		}
 
 		//“G‚ª‚¢‚È‚¢
-		if (0)//TODO:‚ ‚Æ‚ÅŽÀ‘•
+		if (!owner->GetTarget())
 		{
 			return;
 		}
@@ -259,13 +259,21 @@ namespace Friend::Drone
 
 		owner->MoveToTarget();
 
-		float vx = owner->GetTarget()->GetOwner()->GetTransform()->GetPosition().x - owner->GetOwner()->GetTransform()->GetPosition().x;
-		float vz = owner->GetTarget()->GetOwner()->GetTransform()->GetPosition().z - owner->GetOwner()->GetTransform()->GetPosition().z;
-		float length = sqrtf(vx * vx + vz * vz);
-		if (length < owner->GetAttackAreaRadius())
+		if (owner->GetTarget())
 		{
-			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Attack));
+			float vx = owner->GetTarget()->GetOwner()->GetTransform()->GetPosition().x - owner->GetOwner()->GetTransform()->GetPosition().x;
+			float vz = owner->GetTarget()->GetOwner()->GetTransform()->GetPosition().z - owner->GetOwner()->GetTransform()->GetPosition().z;
+			float length = sqrtf(vx * vx + vz * vz);
+			if (length < owner->GetAttackAreaRadius())
+			{
+				owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Attack));
+			}
 		}
+		else
+		{
+			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Idle));
+		}
+		
 	}
 
 	void WalkState::Exit()

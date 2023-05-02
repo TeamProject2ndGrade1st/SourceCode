@@ -4,6 +4,9 @@ void Shadow::Initialize()
 {
     BaseActor::Initialize();
 
+    GetOwner()->ReplaceTag(GameObject::Tag::Shadow);
+    
+
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/shadow0425_3.fbx", false));
 
     //ínñ ÇÊÇËÇ‡è≠Çµè„Ç…Ç∑ÇÈ
