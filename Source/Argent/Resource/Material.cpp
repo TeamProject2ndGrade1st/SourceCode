@@ -15,7 +15,7 @@ namespace Argent::Material
 		texture->SetOnCommandList(cmdList, RootParameterIndex);
 	}
 
-	void MeshMaterial::CreateTexture(const char* filePath, TextureType type)
+	void MeshMaterial::CreateTexture(const char* filePath, TextureUsage type)
 	{
 		textureUniqueId[static_cast<UINT>(type)] = Argent::Resource::ResourceManager::Instance().LoadTexture(filePath);
 		textureNames[static_cast<UINT>(type)] = filePath;
@@ -26,8 +26,8 @@ namespace Argent::Material
 	{
 		//todo ‚È‚ñ‚Æ‚©”’
 		constantBuffer->SetOnCommandList(cmdList, cbIndex);
-		auto t1 = Resource::ResourceManager::Instance().GetTexture(textureUniqueId[static_cast<int>(TextureType::Diffuse)]);
-		auto t2 = Resource::ResourceManager::Instance().GetTexture(textureUniqueId[static_cast<int>(TextureType::Normal)]);
+		auto t1 = Resource::ResourceManager::Instance().GetTexture(textureUniqueId[static_cast<int>(TextureUsage::Diffuse)]);
+		auto t2 = Resource::ResourceManager::Instance().GetTexture(textureUniqueId[static_cast<int>(TextureUsage::Normal)]);
 		t1->SetOnCommandList(cmdList, diffuseIndex);
 		t2->SetOnCommandList(cmdList, normalIndex);
 	}

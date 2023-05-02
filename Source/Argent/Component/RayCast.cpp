@@ -41,12 +41,12 @@ namespace Argent::Component
 					deserialization(mResources[static_cast<int>(MeshType::Sphere)]);
 				}
 				{
-					const char* filePath = "./Resources/Model/Collision/Cylinder.cereal";
-					_ASSERT_EXPR(std::filesystem::exists(filePath), L"指定されたファイルが無い");
+					//const char* filePath = "./Resources/Model/Collision/Cylinder.cereal";
+					//_ASSERT_EXPR(std::filesystem::exists(filePath), L"指定されたファイルが無い");
 
-					std::ifstream ifs(filePath, std::ios::binary);
-					cereal::BinaryInputArchive deserialization(ifs);
-					deserialization(mResources[static_cast<int>(MeshType::Cylinder)]);
+					//std::ifstream ifs(filePath, std::ios::binary);
+					//cereal::BinaryInputArchive deserialization(ifs);
+					//deserialization(mResources[static_cast<int>(MeshType::Cylinder)]);
 				}
 				b = true;
 			}

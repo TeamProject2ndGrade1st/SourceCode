@@ -18,6 +18,7 @@ namespace Argent::Scene
 
 	void BaseScene::Initialize()
 	{
+		onUpdate = true;
 		auto camera = new Camera(true, Argent::Graphics::Graphics::Instance()->GetWidth(), Argent::Graphics::Graphics::Instance()->GetHeight());
 		camera->SetFov(110.0f);
 		const auto c = new GameObject("Camera", camera);
@@ -126,6 +127,7 @@ namespace Argent::Scene
 	void BaseScene::DrawDebug()
 	{
 		ImGui::Text(GetName().c_str());
+		ImGui::Checkbox("OnUpdate", &onUpdate);
 
 		DrawDebugNumGameObject();
 

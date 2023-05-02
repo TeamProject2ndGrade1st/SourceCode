@@ -299,7 +299,6 @@
     <ClCompile Include="Source\Title.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\spikeBot.cpp" />
     <ClCompile Include="Source\Bullet.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
@@ -360,6 +359,10 @@
     </ClCompile>
     <ClCompile Include="Source\Shadow.cpp">
       <Filter>Game\善晃</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyManager.cpp" />
+    <ClCompile Include="Source\Argent\Argent.cpp">
+      <Filter>Lib\Argent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -583,7 +586,6 @@
     <ClInclude Include="Source\Title.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\spikeBot.h" />
     <ClInclude Include="Source\Bullet.h">
       <Filter>Game\Player</Filter>
     </ClInclude>
@@ -648,6 +650,8 @@
     <ClInclude Include="Source\Shadow.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
+    <ClInclude Include="Source\EnemyManager.h" />
+    <ClInclude Include="Source\muzzleFlash.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
