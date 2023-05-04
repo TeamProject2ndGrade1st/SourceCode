@@ -7,11 +7,6 @@
 #include "FriendManager.h"
 
 
-enum class EnemyAnimation
-{
-    Idle,
-    Attack,
-};
 
 class BaseEnemy : public Character
 {
@@ -50,6 +45,7 @@ public:
     {
         Idle,
         Attack,
+        StartUp,
     };
 
 public:

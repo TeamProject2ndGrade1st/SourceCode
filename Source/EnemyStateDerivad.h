@@ -3,14 +3,15 @@
 #include "Argent/Argent.h"
 #include "BaseFriend.h"
 
+// スパイクボット
 namespace Enemy::SpikeBot
 {
-
+    // 待機ステート
     class IdleState : public EnemyState
     {
     public:
         // コンストラクタ
-        IdleState(BaseEnemy* _friend) :EnemyState(_friend, "idle") {}
+        IdleState(BaseEnemy* _enemy) :EnemyState(_enemy, "idle") {}
         // デストラクタ
         ~IdleState() {}
 
@@ -18,16 +19,17 @@ namespace Enemy::SpikeBot
         void Execute()override;
         void Exit()override;
 
-
-
     private:
         float searchRange = 50.0f;
     };
 
+    // 攻撃ステート
     class AttackState :public EnemyState
     {
     public:
-        AttackState(BaseEnemy* _friend) :EnemyState(_friend, "attack") {}
+        // コンストラクタ
+        AttackState(BaseEnemy* _enemy) :EnemyState(_enemy, "attack") {}
+        // デストラクタ
         ~AttackState() {}
 
         void Enter()override;
@@ -41,20 +43,48 @@ namespace Enemy::SpikeBot
     };
 }
 
+// タレット
 namespace Enemy::Turret
 {
+    // 待機ステート
     class IdleState :public EnemyState
     {
     public:
-        IdleState(BaseEnemy* _friend) :EnemyState(_friend, "idle") {}
+        // コンストラクタ
+        IdleState(BaseEnemy* _enemy) :EnemyState(_enemy, "idle") {}
+        // デストラクタ
         ~IdleState() {}
 
         void Enter()override;
         void Execute()override;
         void Exit()override;
+    };
 
-        
+    // 攻撃ステート
+    class AttackState :public EnemyState
+    {
+    public:
+        // コンストラクタ
+        AttackState(BaseEnemy* _enemy) :EnemyState(_enemy, "attack") {}
+        // デストラクタ
+        ~AttackState() {}
 
+        void Enter() override;
+        void Execute() override;
+        void Exit() override;
+    };
 
+    // 起動ステート
+    class StartUpState :public EnemyState
+    {
+    public:
+        // コンストラクタ
+        StartUpState(BaseEnemy* _enemy) :EnemyState(_enemy, "stratUp") {}
+        // デストラクタ
+        ~StartUpState() {}
+
+        void Enter()override;
+        void Execute()override;
+        void Exit()override;
     };
 }

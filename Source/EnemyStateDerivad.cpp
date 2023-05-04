@@ -1,43 +1,26 @@
 #include "EnemyStateDerivad.h"
 #include "Argent/Argent.h"
-#include "BaseEnemy.h"
 #include "BaseFriend.h"
+#include "EnemySpikeBot.h"
+#include "EnemyTurret.h"
 
+// スパイクボット
 namespace Enemy::SpikeBot
 {
+    // 待機ステート
     void IdleState::Enter()
     {
         // 待機アニメーションをセット
-        owner->SetAnimation(static_cast<int>(EnemyAnimation::Idle));
+        owner->SetAnimation(static_cast<int>(SpikeBotAnimation::Idle));
         owner->SetStateTimer(5.0f);
     }
 
     void IdleState::Execute()
     {
-        //owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
-        // タイマーが０になったら攻撃に移る
-        //float timer = owner->GetStateTimer();
-        //owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
-        //if (timer < 0.0f)
-        //{
-        //    if (owner->isAnimationEnd())
-        //    {
-        //        owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyAnimation::Attack));
-        //    }
-        //}
-        //if (SearchFriend())
-
-        //owner->addspeed();
-
-        
-        
-
-        
-        
         owner->SetFriend(owner->SearchFriend1());
         if (owner->_friend != nullptr)
         {
-            owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyAnimation::Attack));
+            owner->GetStateMachine()->ChangeState(static_cast<int>(SpikeBotAnimation::Attack));
         }
     }
 
@@ -46,12 +29,11 @@ namespace Enemy::SpikeBot
 
     }
 
-
-
+    // 攻撃ステート
     void AttackState::Enter()
     {
         // 攻撃アニメーションをセット
-        owner->SetAnimation(static_cast<int>(EnemyAnimation::Attack));
+        owner->SetAnimation(static_cast<int>(SpikeBotAnimation::Attack));
         once = false;
     }
 
@@ -83,7 +65,7 @@ namespace Enemy::SpikeBot
         // 攻撃のアニメーションが終わったら待機に戻る
         if (owner->IsAnimationEnd())
         {
-            owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyAnimation::Idle));
+            owner->GetStateMachine()->ChangeState(static_cast<int>(SpikeBotAnimation::Idle));
         }
     }
 
@@ -92,11 +74,14 @@ namespace Enemy::SpikeBot
     }
 }
 
+// タレット
 namespace Enemy::Turret
 {
+    // 待機ステート
     void IdleState::Enter()
     {
-
+        // アニメーション設定
+        owner->SetAnimation(static_cast<int>(TurretAnimation::Idle));
     }
 
     void IdleState::Execute()
@@ -105,6 +90,43 @@ namespace Enemy::Turret
     }
 
     void IdleState::Exit()
+    {
+
+    }
+
+    // 攻撃ステート
+    void AttackState::Enter()
+    {
+        // アニメーション設定
+        owner->SetAnimation(static_cast<int>(TurretAnimation::Attack));
+    }
+
+    void AttackState::Execute()
+    {
+
+    }
+
+    void AttackState::Exit()
+    {
+
+    }
+
+    // 起動ステート
+    void StartUpState::Enter()
+    {
+        // アニメーション設定
+        owner->SetAnimation(static_cast<int>(TurretAnimation::StartUp));
+    }
+
+    void StartUpState::Execute()
+    {
+        if (owner->IsAnimationEnd())
+        {
+            owner->SetAnimation(static_cast<int>(TurretAnimation::Idle));
+        }
+    }
+
+    void StartUpState::Exit()
     {
 
     }

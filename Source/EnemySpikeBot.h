@@ -1,6 +1,13 @@
 #pragma once
 #include "BaseEnemy.h"
 #include "Argent/Argent.h"
+
+enum class SpikeBotAnimation
+{
+    Idle,
+    Attack,
+};
+
 class EnemySpikeBot :
     public BaseEnemy
 {
