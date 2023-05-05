@@ -1,5 +1,6 @@
 #include "EffectManager.h"
 #include "../Graphic/Graphics.h"
+#include "../Core/Timer.h"
 
 
 namespace Argent::Resource::Effect
@@ -54,7 +55,8 @@ namespace Argent::Resource::Effect
 
 	void EffectManager::Update()
 	{
-		efkManager->Update();
+		
+		efkManager->Update(0.5f);
 	}
 
 	void EffectManager::Render() const

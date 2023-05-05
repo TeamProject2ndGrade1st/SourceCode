@@ -12,8 +12,12 @@ void EnemySpikeBot::Initialize()
     // デバッグシリンダー
     GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube));
     GetOwner()->GetComponent<Argent::Component::Collider::RayCastCollider>()->scale = { 500.0f,100.0f,500.0f };
-
-    GetOwner()->AddComponent(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_once.efk", "./Resources/Effects"));
+    
+    // エフェクト
+    effect = new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/shield_bash.efk", "./Resources/Effects");
+    GetOwner()->AddComponent(effect);
+    effect->offset = { 0.0f,30.0f,-35.0f };
+    effect->scale = { 7.0f,8.0f,7.0f };
 
     // ステートマシンをセット
     stateMachine.reset(new EnemyStateMachine);
@@ -24,11 +28,12 @@ void EnemySpikeBot::Initialize()
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
 
     // タグを設定する
-
     GetOwner()->ReplaceTag(GameObject::Tag::Enemy);
 
     SetAccelaration(0);
     BaseEnemy::Initialize();
+
+    
 
 }
 
