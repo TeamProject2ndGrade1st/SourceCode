@@ -113,7 +113,6 @@ void FriendCreature::DrawDebug()
             ImGui::TreePop();
         }
     }
-    
 }
 
 void FriendCreature::OnDead()

@@ -137,7 +137,7 @@ bool BaseFriend::IsTargetInAttackArea()
     else return false;*/
 }
 
-bool BaseFriend::SerchEnemy()
+bool BaseFriend::SearchEnemy()
 {
     std::vector<GameObject*> enemyArray;
     std::vector<GameObject*> enemyManager;

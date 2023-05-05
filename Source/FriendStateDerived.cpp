@@ -16,8 +16,8 @@ namespace Friend::Creature
 	{
 		float timer = owner->GetStateTimer();
 		owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
-		if (!owner->SerchEnemy())return;
 		if (!owner->IsAnimationEnd())return;
+		if (!owner->SearchEnemy())return;
 		
 		if (owner->IsTargetInAttackArea())
 		{
@@ -42,7 +42,7 @@ namespace Friend::Creature
 		if (!owner->IsAnimationEnd())return;
 
 		//“G‚ª‚¢‚È‚¢
-		if (!owner->SerchEnemy())//TODO:‚ ‚Æ‚ÅŽÀ‘•
+		if (!owner->SearchEnemy())//TODO:‚ ‚Æ‚ÅŽÀ‘•
 		{
 			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Idle));
 		}
@@ -212,7 +212,9 @@ namespace Friend::Drone
 	{
 		float timer = owner->GetStateTimer();
 		owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
-		if (!owner->SerchEnemy())return;
+
+		//SearchEnemy‰½•b‚©‚Éˆê‰ñ‚É•Ï‚¦‚é
+		if (!owner->SearchEnemy())return;
 
 		if (owner->IsTargetInAttackArea())
 		{
@@ -250,7 +252,7 @@ namespace Friend::Drone
 	void WalkState::Execute()
 	{
 		float timer = owner->GetStateTimer();
-		if (!owner->SerchEnemy())
+		if (!owner->SearchEnemy())
 		{
 			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendDrone::State::Idle));
 		}
