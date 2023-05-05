@@ -17,7 +17,7 @@ namespace Enemy::SpikeBot
 
     void IdleState::Execute()
     {
-        owner->SetFriend(owner->SearchFriend1());
+        //owner->SetFriend(owner->SearchFriend1());
         if (owner->_friend != nullptr)
         {
             owner->GetStateMachine()->ChangeState(static_cast<int>(SpikeBotAnimation::Attack));
@@ -39,7 +39,7 @@ namespace Enemy::SpikeBot
 
     void AttackState::Execute()
     {
-        owner->addspeed();
+        //owner->addspeed();
 
         if (!once)
         {

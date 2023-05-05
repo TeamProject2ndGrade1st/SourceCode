@@ -104,7 +104,7 @@ namespace Friend::Drone
         void Exit()override;
 
     private:
-        float acceleration{ 1000.0f };
+        float acceleration{ 500.0f };
         float maxSpeed{ 200.0f };
 
         //アニメーション20~32フレーム間で動きが早くなる

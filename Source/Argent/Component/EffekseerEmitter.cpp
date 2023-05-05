@@ -63,7 +63,7 @@ namespace Argent::Component::Renderer
 
 		//再生
 		const auto* t = GetOwner()->GetTransform();
-		//スケールファクターに影響されるようにした（なんか出来やん）
+		
 		effect->Play(t->GetPosition() + offset, t->GetScale() * scale, ToRadians(t->GetRotation()) + ToRadians(rotation), startFrame);
 	}
 
