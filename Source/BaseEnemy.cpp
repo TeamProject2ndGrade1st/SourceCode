@@ -9,7 +9,7 @@ BaseEnemy::BaseEnemy(const char* name, DirectX::XMFLOAT3 pos) :
 
 void BaseEnemy::Initialize()
 {
-    
+    Character::Initialize();
     if (!fManager)
     {
         std::vector<GameObject*> g;

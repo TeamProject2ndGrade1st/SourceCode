@@ -65,13 +65,21 @@ public:
     StateMachine* GetStateMachine() const { return stateMachine.get(); }
     BaseEnemy* GetTarget() const { return target; }
 
+    //進行ルート上で必ず通るポイント
+    struct  RelayPoint
+    {
+        DirectX::XMFLOAT3 pos;
+        char routeNo;//３つのルートの内どれのポイントか
+        bool passage;//通過したか
+    };
+
 protected:
     //目標座標
     BaseEnemy* target{ nullptr };
 
     //攻撃始動範囲
     float attackAreaRadius{};
-    float init_attackAreaRadius{ 200.0f };
+    float init_attackAreaRadius{ 300.0f };
   
     //初期値
     float init_acceleration{ 0.0f };
@@ -89,6 +97,6 @@ protected:
     //Updateで一度だけ呼ばれる
     bool once;
 
-    //タグ
+
 };
 

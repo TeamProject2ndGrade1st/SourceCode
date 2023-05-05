@@ -6,8 +6,16 @@ void FriendCreature::Initialize()
     BaseFriend::Initialize();
 
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver10.fbx", false));
-    GetOwner()->AddComponent(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects"));
-    
+    effectVector.emplace_back(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects"));
+    effectVector.emplace_back(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/speedup.efk", "./Resources/Effects"));
+    for (auto it = effectVector.begin();it != effectVector.end();++it)
+    {
+        (*it)->scale = { 6.0f,6.0f,6.0f };
+        (*it)->rotation.y = -90.0f;
+        GetOwner()->AddComponent((*it));
+    }
+
+
     //攻撃範囲の視覚化
     /*GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(
         Argent::Component::Collider::RayCastCollider::MeshType::Cylinder
@@ -27,8 +35,9 @@ void FriendCreature::Initialize()
     maxMoveSpeed = init_maxMoveSpeed;
     friction = init_friction;
 
-    //タグ付け
+    
 
+    //タグ付け
     GetOwner()->ReplaceTag(GameObject::Tag::Friend);
     
 
@@ -94,6 +103,16 @@ void FriendCreature::DrawDebug()
     {
         GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetStopTime(1.0f);
     }
+    /*if (ImGui::TreeNode("EffectSlash"))
+    {
+        effectVector.at(0)->DrawDebug();
+        ImGui::TreePop();
+    }
+    if (ImGui::TreeNode("EffectSpeedUp"))
+    {
+        effectVector.at(1)->DrawDebug();
+        ImGui::TreePop();
+    }*/
 }
 
 void FriendCreature::OnDead()

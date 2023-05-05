@@ -102,11 +102,14 @@ void BaseFriend::OnHeal()
 bool BaseFriend::IsTargetInAttackArea()
 {
     if (!target)return false;
-    float vx = target->GetOwner()->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
+    auto collider = Argent::Component::Collider::SphereCollider(GetAttackAreaRadius());
+    
+    return target->GetOwner()->GetComponent<Argent::Component::Collider::SphereCollider>()->DetectionOnly(&collider,GetOwner()->GetTransform());
+    /*float vx = target->GetOwner()->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
     float vz = target->GetOwner()->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
     float length = sqrtf(vx * vx + vz * vz);
     if (length < attackAreaRadius)return true;
-    else return false;
+    else return false;*/
 }
 
 bool BaseFriend::SerchEnemy()

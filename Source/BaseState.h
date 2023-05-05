@@ -17,6 +17,8 @@ public:
 	 //ステートから出るときに呼ばれる
 	 virtual void Exit() = 0;
 
+	 virtual void DrawDebug() {}
+
 protected:
 	BaseFriend* owner;
 	const char* name;

@@ -49,6 +49,23 @@ namespace Argent::Component::Collider
 		return ret;
 	}
 
+	bool SphereCollider::DetectionOnly(Collider* other, Transform* transform)
+	{
+		Transform* thisTransform = GetOwner()->GetTransform();
+		if (!thisTransform) _ASSERT_EXPR(false, "Missing Transform Component");
+
+
+		SphereCollider* collider = static_cast<SphereCollider*>(other);
+
+		DirectX::XMFLOAT3 outPosition{};
+		DirectX::XMFLOAT3 positionA = thisTransform->GetPosition();
+		DirectX::XMFLOAT3 positionB = transform->GetPosition();
+		bool ret = Helper::Collision::IntersectSphereVsSphere(
+			positionA, this->radius,positionB, collider->radius, outPosition);
+
+		return ret;
+	}
+
 
 	void SphereCollider::DrawDebug()
 	{

@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseFriend.h"
+#include <vector>
 
 enum class CreatureAnimation
 {
@@ -38,5 +39,6 @@ public:
     };
 
 private:
+    std::vector<Argent::Component::Renderer::EffekseerEmitter*> effectVector;
 };
 

@@ -158,7 +158,7 @@ namespace Friend::Creature
 		int animationFrame = static_cast<int>(owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimationFrame());
 		if (animationFrame == efeStartFrame)
 		{
-			owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
+			//owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
 
 			if (owner->GetTarget()->ApplyDamage(owner->GetAttack()))
 			{

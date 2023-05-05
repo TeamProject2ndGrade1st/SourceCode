@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "../Component/Transform.h"
 
 namespace Argent::Component::Collider
 {
@@ -41,6 +42,8 @@ namespace Argent::Component::Collider
 		~SphereCollider() override = default;
 
 		bool CollisionDetection(Collider* other) override;
+
+		bool DetectionOnly(Collider* other,Transform* transform);
 
 
 		void DrawDebug() override;
