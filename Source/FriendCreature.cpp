@@ -103,16 +103,17 @@ void FriendCreature::DrawDebug()
     {
         GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetStopTime(1.0f);
     }
-    /*if (ImGui::TreeNode("EffectSlash"))
+    if (relayPoint.size() > 0)
     {
-        effectVector.at(0)->DrawDebug();
-        ImGui::TreePop();
+        if (ImGui::TreeNode("RouteSearch"))
+        {
+            ImGui::SliderFloat3("pointPosition", &relayPoint.at(0).pos.x, -500, 500);
+            if (relayPoint.at(0).passage) ImGui::Text("pass");
+            else ImGui::Text("no pass");
+            ImGui::TreePop();
+        }
     }
-    if (ImGui::TreeNode("EffectSpeedUp"))
-    {
-        effectVector.at(1)->DrawDebug();
-        ImGui::TreePop();
-    }*/
+    
 }
 
 void FriendCreature::OnDead()

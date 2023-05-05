@@ -11,7 +11,21 @@
 class BaseFriend : public Character
 {
 public:
-    BaseFriend(const char* name, DirectX::XMFLOAT3 pos);
+    enum Route
+    {
+        left,
+        center,
+        right
+    };
+
+    //進行ルート上で必ず通るポイント
+    struct  RelayPoint
+    {
+        DirectX::XMFLOAT3 pos;
+        bool passage;//通過したか
+    };
+
+    BaseFriend(const char* name, DirectX::XMFLOAT3 pos = {0,0,0},Route route = Route::left);
     virtual ~BaseFriend() {}
 
     //BaseFriend(DirectX::XMFLOAT3 pos);
@@ -21,12 +35,6 @@ public:
     virtual void Begin()override;
     virtual void Update()override;
     void DrawDebug() override;
-
-    ////速力処理(水平のみ)
-    //void UpdateVelocity();
-
-    ////移動処理
-    //void UpdateMove();
 
     //ターゲットに向かって移動
     void MoveToTarget();
@@ -65,13 +73,7 @@ public:
     StateMachine* GetStateMachine() const { return stateMachine.get(); }
     BaseEnemy* GetTarget() const { return target; }
 
-    //進行ルート上で必ず通るポイント
-    struct  RelayPoint
-    {
-        DirectX::XMFLOAT3 pos;
-        char routeNo;//３つのルートの内どれのポイントか
-        bool passage;//通過したか
-    };
+    void RouteSearch(std::vector<RelayPoint>& point,Route routeNo);
 
 protected:
     //目標座標
@@ -97,6 +99,6 @@ protected:
     //Updateで一度だけ呼ばれる
     bool once;
 
-
+    std::vector<RelayPoint> relayPoint;
 };
 

@@ -1,12 +1,11 @@
 #include "BaseFriend.h"
 #include "FriendStateDerived.h"
 
-BaseFriend::BaseFriend(const char* name, DirectX::XMFLOAT3 pos) :
-    Character(name,pos)
+BaseFriend::BaseFriend(const char* name, DirectX::XMFLOAT3 pos, Route route) : 
+    Character(name, pos)
 {
-    
+    RouteSearch(relayPoint, route);
 }
-
 
 void BaseFriend::Initialize()
 {
@@ -69,12 +68,38 @@ void BaseFriend::MoveToTarget()
     float vx = target->GetOwner()->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
     float vz = target->GetOwner()->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
     float length = sqrtf(vx * vx + vz * vz);
+
     vx /= length;
     vz /= length;
+
+    //敵よりも通過ポイントが近い場合はそっちに進む
+    if (relayPoint.size() > 0)
+    {
+        for (auto it = relayPoint.begin(); it != relayPoint.end(); ++it)
+        {
+            if ((*it).passage)continue;
+            float vxR = (*it).pos.x - GetOwner()->GetTransform()->GetPosition().x;
+            float vzR = (*it).pos.z - GetOwner()->GetTransform()->GetPosition().z;
+            float lengthR = sqrtf(vxR * vxR + vzR * vzR);
+            if (lengthR < 10.0f)
+            {
+                (*it).passage = true;
+                continue;
+            }
+
+            if (lengthR < length)
+            {
+                vx = vxR / lengthR;
+                vz = vzR / lengthR;
+            }
+            break;
+        }
+    }
 
     moveVec.x = vx;
     moveVec.z = vz;
     Turn(vx, vz, 180.0f);
+    
 }
 
 void BaseFriend::SetAnimation(int index)
@@ -143,5 +168,29 @@ bool BaseFriend::SerchEnemy()
         }
     }
     return true;
+}
+
+void BaseFriend::RouteSearch(std::vector<RelayPoint>& point,Route route)
+{
+    switch (route)
+    {
+    case BaseFriend::left:
+        point.emplace_back(RelayPoint{ { 0, 0, -160 }, false });
+        point.emplace_back(RelayPoint{ { -100, 0, -50 }, false });
+        point.emplace_back(RelayPoint{ { -100, 0, 150 }, false });
+        point.emplace_back(RelayPoint{ { 0, 0, 300 }, false });
+        break;
+    case BaseFriend::center:
+        point.emplace_back(RelayPoint{ { 0, 0, -160 }, false });
+        point.emplace_back(RelayPoint{ { 0, 0, 0 }, false });
+        point.emplace_back(RelayPoint{ { 0, 0, 300 }, false });
+        break;
+    case BaseFriend::right:
+        point.emplace_back(RelayPoint{ { 0, 0, -160 }, false });
+        point.emplace_back(RelayPoint{ { 100, 0, -50 }, false });
+        point.emplace_back(RelayPoint{ { 100, 0, 150 }, false });
+        point.emplace_back(RelayPoint{ { 0, 0, 300 }, false });
+        break;
+    }
 }
 
