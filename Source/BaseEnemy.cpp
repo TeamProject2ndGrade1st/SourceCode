@@ -17,6 +17,7 @@ void BaseEnemy::Initialize()
         if (g.size() > 0)
             fManager = g.at(0)->GetComponent<FriendManager>();
     }
+
     //GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube));
     
     
