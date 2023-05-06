@@ -175,8 +175,7 @@ namespace Friend::Creature
 		if (!didAttack)
 		{
 			//“G‚Ö‚Ìƒ_ƒ[ƒWˆ—
-
-			
+			owner->GetTarget()->ApplyDamage(owner->GetAttack());
 		}
 		owner->SetAttackTimer(attackInterval);
 	}
