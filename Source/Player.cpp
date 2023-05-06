@@ -184,11 +184,14 @@ void Player::MoveCamera()
     cameraRight = Normalize(cameraRight);
     cameraFront = Normalize(cameraFront);
 
-    DirectX::XMFLOAT3 direction = Normalize(cameraRight + cameraFront);
+    
     cameraRight = cameraRight* ax ;
     cameraFront = cameraFront * ay;
     cameraRight = cameraRight * movement * Argent::Timer::GetDeltaTime();
     cameraFront = cameraFront * movement * Argent::Timer::GetDeltaTime();
+
+
+    DirectX::XMFLOAT3 direction = Normalize(cameraRight + cameraFront);
 
     p = p + cameraRight + cameraFront;
 
@@ -197,7 +200,7 @@ void Player::MoveCamera()
 
     ray->SetRayData(pos, p);
     HitResult hitResult{};
-    if(Argent::Collision::RayCollisionDetection(ray, hitResult, GameObject::Tag::Stage))
+    if(Argent::Collision::RayCollisionDetection(ray, hitResult/*, GameObject::Tag::Stage*/))
     {
        // hitResult.position.y = GetTransform()->GetPosition().y;
         hitResult.position.y = pos.y;

@@ -58,7 +58,8 @@ void Bullet::Move()
 {
 	const DirectX::XMFLOAT3 curPos = GetTransform()->GetPosition();
 	float frameSpeed = speed * Argent::Timer::GetDeltaTime();
-	ray->SetRayData(curPos, direction, frameSpeed);
+	const DirectX::XMFLOAT3 end = curPos + direction * frameSpeed;
+	ray->SetRayData(curPos, end);
 	HitResult hitResult{};
 	if (Argent::Collision::RayCollisionDetection(ray, hitResult))
 	{
@@ -73,33 +74,42 @@ void Bullet::Move()
 
 void Bullet::OnCollision(const HitResult& result)
 {
-	if(result.collider->GetOwner()->GetUnsignedTag() & static_cast<unsigned>(GameObject::Tag::Friend))
+	//衝突判定をする相手のタグ
+	const auto colliderTag = static_cast<unsigned>(GameObject::Tag::Friend);
+	if(result.collider->GetOwner()->GetUnsignedTag() & colliderTag)
 	{
 		 if(friendManager)
 		 {
-			auto friendCom = friendManager->FindFriendComponentFromOwner(result.collider->GetOwner());
-			auto g = friendCom->GetOwner();
+			BaseFriend* friendCom = friendManager->FindFriendComponentFromOwner(result.collider->GetOwner());
+			if (!(result.collider->GetOwner()->GetUnsignedTag() & static_cast<unsigned>(GameObject::Tag::Friend))) return;
+			const GameObject* friendOwner = friendCom->GetOwner();
+
+			//弾丸のモードによって処理を変える
 	 		switch (mode)
 			{
 	 		case Mode::Creature:
-				if(g->GetUnsignedTag() & static_cast<unsigned>(GameObject::Tag::Creature))
+
+				if(friendOwner->GetUnsignedTag() & static_cast<unsigned>(GameObject::Tag::Creature))
 				{
 					friendCom->ApplyHeal(damage);
 				}
-				else if(g->GetUnsignedTag() & static_cast<unsigned>(GameObject::Tag::Machine))
+				else if(friendOwner->GetUnsignedTag() & static_cast<unsigned>(GameObject::Tag::Machine))
 				{
 					friendCom->ApplyDamage(damage);
 				}
+
 			 break;
 			case Mode::Machine:
-				if(g->GetUnsignedTag() & static_cast<unsigned>(GameObject::Tag::Creature))
+
+				if(friendOwner->GetUnsignedTag() & static_cast<unsigned>(GameObject::Tag::Creature))
 				{
 					friendCom->ApplyDamage(damage);
 				}
-				else if(g->GetUnsignedTag() & static_cast<unsigned>(GameObject::Tag::Machine))
+				else if(friendOwner->GetUnsignedTag() & static_cast<unsigned>(GameObject::Tag::Machine))
 				{
 					friendCom->ApplyHeal(damage);
 				}
+
 			 break;
 			}
 		 }

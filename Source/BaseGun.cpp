@@ -52,7 +52,7 @@ void BaseGun::Update()
 	if(Argent::Input::GetButtonUp(MouseButton::RightButton))
 	{
 		if(mode == Bullet::Mode::Creature) mode = Bullet::Mode::Machine;
-		if(mode == Bullet::Mode::Machine) mode = Bullet::Mode::Creature;
+		else if(mode == Bullet::Mode::Machine) mode = Bullet::Mode::Creature;
 	}
 
 }

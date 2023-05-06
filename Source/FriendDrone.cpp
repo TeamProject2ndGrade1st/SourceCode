@@ -10,6 +10,11 @@ void FriendDrone::Initialize()
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx", false));
 
 
+    auto c = new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube);
+    GetOwner()->AddComponent(c);
+    c->offset = DirectX::XMFLOAT3(0, 0, 0);
+    c->scale = DirectX::XMFLOAT3(100, 100, 100);
+
     //攻撃範囲の視覚化
     /*GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(
         Argent::Component::Collider::RayCastCollider::MeshType::Cylinder
@@ -31,6 +36,7 @@ void FriendDrone::Initialize()
 
     //タグ付け
     GetOwner()->ReplaceTag(GameObject::Tag::Friend);
+    GetOwner()->AddTag(GameObject::Tag::Machine);
 
     //ステートマシンへのステート登録
     stateMachine = std::make_unique<StateMachine>();
