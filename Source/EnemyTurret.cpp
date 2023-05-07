@@ -3,26 +3,28 @@
 
 void EnemyTurret::Initialize()
 {
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/turrets/gun_turret_anm.fbx"));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/gun_turret_animv2.fbx"));
 
     // スケーリング
-    GetOwner()->GetTransform()->SetScaleFactor(0.1f);
+    GetOwner()->GetTransform()->SetScaleFactor(0.2f);
 
-    // ポジションをセット
-    DirectX::XMFLOAT3 pos = { 25.0f,0.0f,0.0f };
-    GetOwner()->GetTransform()->SetPosition(pos);    
 
     // ステートマシンをセット
     stateMachine.reset(new EnemyStateMachine);
 
-    stateMachine.get()->RegisterState(new Enemy::Turret::IdleState(this));
-    stateMachine.get()->RegisterState(new Enemy::Turret::AttackState(this));
     stateMachine.get()->RegisterState(new Enemy::Turret::StartUpState(this));
+    stateMachine.get()->RegisterState(new Enemy::Turret::AttackState(this));
+    stateMachine.get()->RegisterState(new Enemy::Turret::IdleState(this));
+    stateMachine.get()->RegisterState(new Enemy::Turret::BootWaitState(this));
 
-    stateMachine.get()->SetState(static_cast<int>(State::StartUp));
+    stateMachine.get()->SetState(static_cast<int>(State::BootWait));
 
     // タグを設定する
     GetOwner()->ReplaceTag(GameObject::Tag::Enemy);
+
+    // ポジションをセット
+    //DirectX::XMFLOAT3 pos = { 0.0f,0.0f,60.0f };
+    GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 60.0f));
 
     BaseEnemy::Initialize();
 }

@@ -75,13 +75,27 @@ namespace Enemy::Turret
     };
 
     // 起動ステート
-    class StartUpState :public EnemyState
+    class StartUpState : public EnemyState
     {
     public:
         // コンストラクタ
         StartUpState(BaseEnemy* _enemy) :EnemyState(_enemy, "stratUp") {}
         // デストラクタ
         ~StartUpState() {}
+
+        void Enter()override;
+        void Execute()override;
+        void Exit()override;
+    };
+
+    // 起動待機ステート
+    class BootWaitState : public EnemyState
+    {
+    public:
+        // コンストラクタ
+        BootWaitState(BaseEnemy* _enemy) :EnemyState(_enemy, "bootWait") {}
+        // デストラクタ
+        ~BootWaitState() {}
 
         void Enter()override;
         void Execute()override;

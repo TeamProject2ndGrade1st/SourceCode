@@ -21,6 +21,13 @@ public:
     void Update()override;
     void DrawDebug()override;
 
+    enum class State
+    {
+        Idle,
+        Attack,
+    };
+
+public:
     Argent::Component::Renderer::EffekseerEmitter* effect;
 };
 

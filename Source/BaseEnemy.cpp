@@ -42,7 +42,7 @@ void BaseEnemy::Begin()
 
 void BaseEnemy::Update()
 {
-
+    stateMachine.get()->Update();
 
     
 }

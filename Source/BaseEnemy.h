@@ -45,7 +45,6 @@ public:
     {
         Idle,
         Attack,
-        StartUp,
     };
 
 public:
