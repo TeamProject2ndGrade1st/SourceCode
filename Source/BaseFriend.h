@@ -52,7 +52,7 @@ public:
     //ターゲットが攻撃範囲内にいるか
     bool IsTargetInAttackArea();
     bool SearchEnemy();
-    bool SearchTarget();
+    //bool SearchTarget();
 
     void SetStateTimer(float timer) { stateTimer = timer; }
     float GetStateTimer() const { return stateTimer; }
@@ -74,7 +74,7 @@ public:
     StateMachine* GetStateMachine() const { return stateMachine.get(); }
     BaseEnemy* GetTarget() const { return target; }
 
-    void RouteSearch(std::vector<RelayPoint>& point,Route routeNo);
+    //void RouteSearch(std::vector<RelayPoint>& point,Route routeNo);
 
 protected:
     //目標座標

@@ -84,7 +84,7 @@ void FriendManager::SetFriendByClick()
     DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
     //エネミー配置処理
-    if (Argent::Input::Mouse::Instance().GetButtonDown(Argent::Input::Mouse::Button::LeftButton))
+    if (Argent::Input::Mouse::Instance().GetButtonDown(Argent::Input::Mouse::Button::RightButton))
     {
         DirectX::XMVECTOR startPosition = { Argent::Graphics::GetWindowWidth()/2,Argent::Graphics::GetWindowHeight() / 2,0.0f};
         DirectX::XMVECTOR endPosition = { Argent::Graphics::GetWindowWidth() / 2,Argent::Graphics::GetWindowHeight() / 2,1.0f };

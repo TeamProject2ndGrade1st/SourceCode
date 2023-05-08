@@ -96,7 +96,7 @@ namespace Friend::Creature
 
 		case static_cast<int>(CreatureAnimation::Walk):
 
-			if (!owner->SearchTarget())
+			if (!owner->SearchEnemy())
 			{
 				owner->SetAccelaration(owner->Init_GetAccelaration());
 				owner->SetVelocity(DirectX::XMFLOAT3(0, 0, 0));
@@ -227,7 +227,7 @@ namespace Friend::Drone
 		}
 
 		//“G‚ª‚¢‚È‚¢
-		if (!owner->SearchTarget())
+		if (!owner->SearchEnemy())
 		{
 			return;
 		}
