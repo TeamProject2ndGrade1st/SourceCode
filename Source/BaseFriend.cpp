@@ -64,13 +64,21 @@ void BaseFriend::DrawDebug()
 
 void BaseFriend::MoveToTarget()
 {
-    if (!target)return;
-    float vx = target->GetOwner()->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
-    float vz = target->GetOwner()->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
-    float length = sqrtf(vx * vx + vz * vz);
+    if (!SearchTarget())return;
+    float vx = moveVec.x;
+    float vz = moveVec.z;
+    float length = FLT_MAX;
 
-    vx /= length;
-    vz /= length;
+    if (target)
+    {
+        vx = target->GetOwner()->GetTransform()->GetPosition().x - GetOwner()->GetTransform()->GetPosition().x;
+        vz = target->GetOwner()->GetTransform()->GetPosition().z - GetOwner()->GetTransform()->GetPosition().z;
+        length = sqrtf(vx * vx + vz * vz);
+
+        vx /= length;
+        vz /= length;
+    }
+    
 
     //敵よりも通過ポイントが近い場合はそっちに進む
     if (relayPoint.size() > 0)
@@ -150,11 +158,30 @@ bool BaseFriend::SearchEnemy()
         return false;
     }
 
+    target = eManager->FindEnemyComponentFromOwner((enemyArray.at(0)));
+
+    //通過ポイントまでの距離を保持しておく
     float length0 = FLT_MAX;
+    if (relayPoint.size() > 0)
+    {
+        for (auto it = relayPoint.begin(); it != relayPoint.end(); ++it)
+        {
+            if ((*it).passage)continue;
+            float vxR = (*it).pos.x - GetOwner()->GetTransform()->GetPosition().x;
+            float vzR = (*it).pos.z - GetOwner()->GetTransform()->GetPosition().z;
+            length0 = sqrtf(vxR * vxR + vzR * vzR);
+            break;
+        }
+    }
+
+    //通過ポイントと敵までの距離を比較
+    //敵の方が近いならレイキャストで障害物検索
+    target = nullptr;
     for (auto enemy = enemyArray.begin(); enemy != enemyArray.end(); ++enemy)
     {
         DirectX::XMFLOAT3 enemyPos = (*enemy)->GetTransform()->GetPosition();
         DirectX::XMFLOAT3 pos = GetTransform()->GetPosition();
+
         DirectX::XMVECTOR EnemyPos = DirectX::XMLoadFloat3(&enemyPos);
 
         DirectX::XMVECTOR Pos = DirectX::XMLoadFloat3(&pos);
@@ -162,12 +189,46 @@ bool BaseFriend::SearchEnemy()
         DirectX::XMVECTOR Length = DirectX::XMVector3Length(Vec);
         float length1;
         DirectX::XMStoreFloat(&length1, Length);
+
         if (length1 < length0)
         {
-            target = eManager->FindEnemyComponentFromOwner((*enemy));
+            //自分から目標までの間に障害物がないか
+            /*std::vector<GameObject*> stage;
+            GetOwner()->FindByTag(GameObject::Tag::Stage, stage);*/
+            auto stage = GetOwner()->FindByName("Main Stage");
+            DirectX::XMFLOAT4X4 world = GetTransform()->GetWorld();
+            DirectX::XMMATRIX World = DirectX::XMLoadFloat4x4(&world);
+            Argent::Component::Collision::HitResult result;
+
+            //地面すれすれ怖いから上げとく
+            pos.y = 10;
+            enemyPos.y = 10;
+
+            if (!Argent::Helper::Collision::IntersectRayVsModel(
+                pos, enemyPos,
+                stage->GetComponent<Argent::Component::Renderer::MeshRenderer>()->GetMesh()->meshResource,
+                World,result
+            ))
+            {
+                //障害物がなかった
+                target = eManager->FindEnemyComponentFromOwner((*enemy));
+            }
         }
     }
     return true;
+}
+
+bool BaseFriend::SearchTarget()
+{
+    if (target)return true;
+
+    for (auto it = relayPoint.begin(); it != relayPoint.end(); ++it)
+    {
+        //通過していなければ
+        if (!(*it).passage)return true;
+    }
+    
+    return false;
 }
 
 void BaseFriend::RouteSearch(std::vector<RelayPoint>& point,Route route)
@@ -175,20 +236,24 @@ void BaseFriend::RouteSearch(std::vector<RelayPoint>& point,Route route)
     switch (route)
     {
     case BaseFriend::left:
-        point.emplace_back(RelayPoint{ { 0, 0, -160 }, false });
-        point.emplace_back(RelayPoint{ { -100, 0, -50 }, false });
-        point.emplace_back(RelayPoint{ { -100, 0, 150 }, false });
+        point.emplace_back(RelayPoint{ { 0, 0, -150 }, false });
+        point.emplace_back(RelayPoint{ { -65, 0, -100 }, false });
+        point.emplace_back(RelayPoint{ { -110, 0, -50 }, false });
+        point.emplace_back(RelayPoint{ { -110, 0, 150 }, false });
         point.emplace_back(RelayPoint{ { 0, 0, 300 }, false });
         break;
     case BaseFriend::center:
-        point.emplace_back(RelayPoint{ { 0, 0, -160 }, false });
+        point.emplace_back(RelayPoint{ { 0, 0, -300 }, false });
+        point.emplace_back(RelayPoint{ { 0, 0, -150 }, false });
         point.emplace_back(RelayPoint{ { 0, 0, 0 }, false });
+        point.emplace_back(RelayPoint{ { 0, 0, 150 }, false });
         point.emplace_back(RelayPoint{ { 0, 0, 300 }, false });
         break;
     case BaseFriend::right:
-        point.emplace_back(RelayPoint{ { 0, 0, -160 }, false });
-        point.emplace_back(RelayPoint{ { 100, 0, -50 }, false });
-        point.emplace_back(RelayPoint{ { 100, 0, 150 }, false });
+        point.emplace_back(RelayPoint{ { 0, 0, -150 }, false });
+        point.emplace_back(RelayPoint{ { 65, 0, -100 }, false });
+        point.emplace_back(RelayPoint{ { 110, 0, -50 }, false });
+        point.emplace_back(RelayPoint{ { 110, 0, 150 }, false });
         point.emplace_back(RelayPoint{ { 0, 0, 300 }, false });
         break;
     }

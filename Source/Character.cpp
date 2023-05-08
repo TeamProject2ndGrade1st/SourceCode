@@ -29,6 +29,7 @@ void Character::DrawDebug()
     {
         ImGui::SliderFloat("Friction", &friction, 0.0f, 1000.0f);
         ImGui::SliderFloat("Acceleration", &acceleration, 0.0f, 1000.0f);
+        ImGui::SliderFloat("MaxSpeed", &maxMoveSpeed, 0.0f, 1000.0f);
         ImGui::InputFloat3("Velocity", &velocity.x);
         ImGui::TreePop();
     }

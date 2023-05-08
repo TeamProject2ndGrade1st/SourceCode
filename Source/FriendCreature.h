@@ -17,8 +17,8 @@ class FriendCreature :
     public BaseFriend
 {
 public:
-    FriendCreature(DirectX::XMFLOAT3 pos = {0.0f,0.0f,0.0f}) 
-        : BaseFriend("Creature", pos) {}
+    FriendCreature(DirectX::XMFLOAT3 pos = {0.0f,0.0f,0.0f},int route = 0) 
+        : BaseFriend("Creature", pos,static_cast<Route>(route)) {}
     ~FriendCreature() {}
     
     void Initialize() override;

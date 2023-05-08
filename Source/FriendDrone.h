@@ -3,8 +3,8 @@
 class FriendDrone : public BaseFriend
 {
 public:
-    FriendDrone(DirectX::XMFLOAT3 pos = { 0.0f,0.0f,0.0f })
-        : BaseFriend("Creature", pos) {}
+    FriendDrone(DirectX::XMFLOAT3 pos = { 0.0f,0.0f,0.0f },int route = 0)
+        : BaseFriend("Creature", pos,static_cast<Route>(route)) {}
     ~FriendDrone() {}
 
     void Initialize() override;

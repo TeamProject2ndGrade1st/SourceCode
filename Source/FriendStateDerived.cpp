@@ -76,6 +76,12 @@ namespace Friend::Creature
 		int animationFrame = static_cast<int>(owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimationFrame());
 		float timer = owner->GetStateTimer();
 		owner->SetStateTimer(timer -= Argent::Timer::GetDeltaTime());
+		//3秒に一回敵のサーチをして障害物がないかチェックする
+		if (timer < 0)
+		{
+			owner->SearchEnemy();
+			owner->SetStateTimer(3.0f);
+		}
 
 		switch (owner->GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetAnimation())
 		{
@@ -90,7 +96,7 @@ namespace Friend::Creature
 
 		case static_cast<int>(CreatureAnimation::Walk):
 
-			if (!owner->GetTarget())
+			if (!owner->SearchTarget())
 			{
 				owner->SetAnimation(static_cast<int>(CreatureAnimation::Walk_End));
 			}
@@ -112,10 +118,7 @@ namespace Friend::Creature
 
 			if (owner->GetTarget())
 			{
-				float vx = owner->GetTarget()->GetOwner()->GetTransform()->GetPosition().x - owner->GetOwner()->GetTransform()->GetPosition().x;
-				float vz = owner->GetTarget()->GetOwner()->GetTransform()->GetPosition().z - owner->GetOwner()->GetTransform()->GetPosition().z;
-				float length = sqrtf(vx * vx + vz * vz);
-				if (length < owner->GetAttackAreaRadius())
+				if (owner->IsTargetInAttackArea())
 				{
 					owner->SetAccelaration(owner->Init_GetAccelaration());
 					owner->SetVelocity(DirectX::XMFLOAT3(0, 0, 0));
@@ -221,7 +224,7 @@ namespace Friend::Drone
 		}
 
 		//敵がいない
-		if (!owner->GetTarget())
+		if (!owner->SearchTarget())
 		{
 			return;
 		}

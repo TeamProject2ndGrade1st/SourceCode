@@ -31,20 +31,23 @@ void FriendManager::DrawDebug()
 {
     static DirectX::XMFLOAT3 pos{};
     static int type{};
+    static int route{};
     if (ImGui::TreeNode(GetName()))
     {
         ImGui::SliderFloat3("SpawnPos", &pos.x, -1000.0f, 1000.0f);
         ImGui::SliderInt("FriendType", &type, 0, static_cast<int>(Type::End)-1);
         ImGui::Text("1: Creature\n2: Drone\n");
+        ImGui::SliderInt("Route", &route, 0, 2);
+        ImGui::Text("Left:0,Center:1,Right:2");
         if (ImGui::Button("AddFriend"))
         {
             switch (type)
             {
             case static_cast<int>(Type::Creature)://クリーチャー
-                AddFriend(new FriendCreature(pos));
+                AddFriend(new FriendCreature(pos,route));
                 break;
             case static_cast<int>(Type::Drone):
-                AddFriend(new FriendDrone(pos));
+                AddFriend(new FriendDrone(pos,route));
                 break;
             }
         }

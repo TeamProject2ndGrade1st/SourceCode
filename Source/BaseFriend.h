@@ -52,6 +52,7 @@ public:
     //ターゲットが攻撃範囲内にいるか
     bool IsTargetInAttackArea();
     bool SearchEnemy();
+    bool SearchTarget();
 
     void SetStateTimer(float timer) { stateTimer = timer; }
     float GetStateTimer() const { return stateTimer; }
