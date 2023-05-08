@@ -41,12 +41,12 @@ namespace Argent::Component
 					deserialization(mResources[static_cast<int>(MeshType::Sphere)]);
 				}
 				{
-					//const char* filePath = "./Resources/Model/Collision/Cylinder.cereal";
-					//_ASSERT_EXPR(std::filesystem::exists(filePath), L"指定されたファイルが無い");
+					/*const char* filePath = "./Resources/Model/Collision/Cylinder.cereal";
+					_ASSERT_EXPR(std::filesystem::exists(filePath), L"指定されたファイルが無い");
 
-					//std::ifstream ifs(filePath, std::ios::binary);
-					//cereal::BinaryInputArchive deserialization(ifs);
-					//deserialization(mResources[static_cast<int>(MeshType::Cylinder)]);
+					std::ifstream ifs(filePath, std::ios::binary);
+					cereal::BinaryInputArchive deserialization(ifs);
+					deserialization(mResources[static_cast<int>(MeshType::Cylinder)]);*/
 				}
 				b = true;
 			}
@@ -114,15 +114,25 @@ namespace Argent::Component
 		DirectX::XMMATRIX RayCastCollider::GetWorldTransform() const
 		{
 			auto g = GetOwner();
-			/*auto t = g->GetTransform()->AdjustParentTransform();*/
-			//auto m = t.CalcWorldMatrix();
-			auto m = g->GetTransform()->CalcWorldMatrix();
-			const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) };
-			const DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
-			const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(offset.x,offset.y, offset.z) };
+			DirectX::XMFLOAT3 s = g->GetTransform()->GetScale() * g->GetTransform()->GetScaleFactor();;
+			DirectX::XMFLOAT4 r = g->GetTransform()->GetRotation();
+			DirectX::XMFLOAT3 t = g->GetTransform()->GetPosition();
+			//auto m = g->GetTransform()->CalcWorldMatrix();
+			const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x * s.x, scale.y * s.y, scale.z * s.z) };
+			const DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(
+				DirectX::XMConvertToRadians(rotation.x + r.x),
+				DirectX::XMConvertToRadians(rotation.y + r.y),
+				DirectX::XMConvertToRadians(rotation.z + r.z));
+			const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(offset.x + t.x,
+				offset.y + t.y, offset.z + t.z) };
 
 			auto lm = S * R * T;
-			return m * lm;
+			DirectX::XMMATRIX pM = DirectX::XMMatrixIdentity();
+			if(GetOwner()->GetParent())
+			{
+				pM = GetOwner()->GetParent()->GetTransform()->CalcWorldMatrix();
+			}
+			return lm * pM;
 		}
 
 
@@ -187,19 +197,8 @@ namespace Argent::Component
 			if(other->type != Collider::RayCastCollider::MeshType::Mesh)
 			{
 				//todo　ザル計算　コライダーの位置が元の座標から大きくずらされていた場合は判定が入らないようになる
-				if(GetOwner())
+				//if(GetOwner())
 				{
-					auto* t = GetOwner()->GetTransform();
-					auto* t2 = other->GetOwner()->GetTransform();
-
-					if(t && t2)
-					{
-						const float length = Length(t->GetPosition(), t2->GetPosition());
-						const float rayLength = Length(start, end);
-						//実際の距離とレイの距離を比べ　レイのほうが短かった場合は当たらないはずなので通らない
-						//todo レイのスタート地点がオーナーの座標と大きくずれていた場合はうまくいかない
-						if(length > rayLength) return false;
-					}
 					if(Helper::Collision::IntersectRayVsModel(start, end, other->GetMeshResource(), 
 						other->GetWorldTransform(), hitResult))
 					{

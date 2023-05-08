@@ -7,7 +7,13 @@ void FriendCreature::Initialize()
 
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     GetOwner()->AddComponent(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects"));
-    
+
+
+    auto c = new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube);
+    GetOwner()->AddComponent(c);
+    c->offset = DirectX::XMFLOAT3(0, 10, -6);
+    c->scale = DirectX::XMFLOAT3(100, 200, 100);
+
     //攻撃範囲の視覚化
     /*GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(
         Argent::Component::Collider::RayCastCollider::MeshType::Cylinder
@@ -30,6 +36,7 @@ void FriendCreature::Initialize()
     //タグ付け
 
     GetOwner()->ReplaceTag(GameObject::Tag::Friend);
+    GetOwner()->AddTag(GameObject::Tag::Creature);
     
 
     //ステートマシンへのステート登録

@@ -34,4 +34,8 @@ private:
 protected:
 	bool useCameraControl = true;
 	float offsetLength;
+	BaseGun* gun;
+	//GameObject* gun;
+
+	DirectX::XMFLOAT3 gunOffset;
 };

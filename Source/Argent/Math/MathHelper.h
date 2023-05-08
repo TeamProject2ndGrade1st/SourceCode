@@ -119,3 +119,13 @@ inline float LengthV3(const DirectX::XMVECTOR& v)
 	DirectX::XMStoreFloat(&ret, DirectX::XMVector3Length(v));
 	return ret; 
 }
+
+inline DirectX::XMFLOAT4 Absolute(const DirectX::XMFLOAT4& f)
+{
+	DirectX::XMFLOAT4 ret;
+	ret.x = fabsf(f.x);
+	ret.y = fabsf(f.y);
+	ret.z = fabsf(f.z);
+	ret.w = fabsf(f.w);
+	return ret;
+}
