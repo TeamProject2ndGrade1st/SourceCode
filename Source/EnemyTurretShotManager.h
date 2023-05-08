@@ -25,5 +25,5 @@ public:
     void AddShot(const DirectX::XMFLOAT3 pos);
 
 private:
-    std::vector<EnemyTurretShot*> shotArray;
+    
 };

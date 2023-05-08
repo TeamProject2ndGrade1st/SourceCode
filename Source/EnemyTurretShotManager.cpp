@@ -1,6 +1,8 @@
 #include "EnemyTurretShotManager.h"
 #include "EnemyTurretShot.h"
 
+std::vector<EnemyTurretShot*> shotArray;
+
 void EnemyTurretShotManager::Initialize()
 {
     BaseActor::Initialize();
@@ -9,12 +11,16 @@ void EnemyTurretShotManager::Initialize()
 
 void EnemyTurretShotManager::Update()
 {
-    for (auto& shot : shotArray)
+    for (auto it = shotArray.begin(); it != shotArray.end();)
     {
-        if (shot->eraseTimer <= 0.0f)
+        if ((*it)->eraseTimer <= 0.0f)
+        {            
+            GameObject::Destroy((*it)->GetOwner());
+            it = shotArray.erase(it);
+        }
+        else
         {
-            delete shot;
-            
+            ++it;
         }
     }
 }
