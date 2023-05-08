@@ -4,6 +4,7 @@
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
 #include "EnemyTurretShot.h"
+#include "EnemyTurretShotManager.h"
 
 // スパイクボット
 namespace Enemy::SpikeBot
@@ -112,9 +113,9 @@ namespace Enemy::Turret
 
         // タイマーを設定
         owner->SetStateTimer(4.0f);
-
-        DirectX::XMFLOAT3 pos{ owner->GetOwner()->GetTransform()->GetPosition() };
-        GameObject::Instantiate("shot", new EnemyTurretShot("shot", pos));
+        
+        // ショットタイマーをセット
+        shotTimer = 0.0f;
     }
 
     void AttackState::Execute()
@@ -126,6 +127,15 @@ namespace Enemy::Turret
         {
             owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyTurret::State::Idle));
         }
+
+        if (shotTimer <= 0.0f)
+        {
+            DirectX::XMFLOAT3 pos{ owner->GetOwner()->GetTransform()->GetPosition() };
+            EnemyTurretShotManager::Instance().AddShot(pos);
+            shotTimer = 0.4f;
+        }
+        shotTimer -= Argent::Timer::GetDeltaTime();
+
     }
 
     void AttackState::Exit()

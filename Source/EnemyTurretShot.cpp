@@ -5,25 +5,28 @@ void EnemyTurretShot::Initialize()
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/sphere.fbx"));
 
     // スケーリング
-    //GetOwner()->GetTransform()->SetScaleFactor(0.015f);
-
-    GetOwner()->GetTransform()->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
+    GetOwner()->GetTransform()->SetScaleFactor(0.015f);
 
     // 位置設定
-    GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(0.0f, 26.0f, 0.0f));
+    init_position.y = 27.0f;
+    init_position.z -= 15.0f;
+    GetOwner()->GetTransform()->SetPosition(init_position);
+
 
     // 速度設定
     DirectX::XMFLOAT3 moveVec{ 0.0f,0.0f,-8000.0f };
     SetVelocity(moveVec);
+
+    // 弾が消えるまでの時間を設定する
+    eraseTimer = 2.0f;
 }
 
 void EnemyTurretShot::Update()
 {
-    //DirectX::XMFLOAT3 pos = GetOwner()->GetTransform()->GetPosition();
-    //pos.y = 26.0f;
-    //GetOwner()->GetTransform()->SetPosition(pos);
-
     UpdateMove();   // 移動処理
+
+    // 弾を消すカウントダウン
+    eraseTimer -= Argent::Timer::GetDeltaTime();
 }
 
 void EnemyTurretShot::DrawDebug()

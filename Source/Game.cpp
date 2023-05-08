@@ -20,6 +20,7 @@
 #include "EnemyManager.h"
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
+#include "EnemyTurretShotManager.h"
 
 
 
@@ -50,6 +51,8 @@ void Game::Initialize()
 	//AddObject(new GameObject("friend", new FriendCreature()));
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 	AddObject(new GameObject("EnemyManager", new EnemyManager(this)));
+
+	AddObject(new GameObject("EnemyTurretShotManager", new EnemyTurretShotManager()));
 
 	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_2_0427_3.fbx"));
 	GameObject::Instantiate("Box", new Box("./Resources/Model/Stage/boxes_0419_1.fbx"));

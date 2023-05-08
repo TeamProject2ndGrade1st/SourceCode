@@ -367,6 +367,9 @@
     <ClCompile Include="Source\EnemyTurretShot.cpp">
       <Filter>Game\mame</Filter>
     </ClCompile>
+    <ClCompile Include="Source\EnemyTurretShotManager.cpp">
+      <Filter>Game\mame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -656,6 +659,9 @@
     <ClInclude Include="Source\EnemyManager.h" />
     <ClInclude Include="Source\muzzleFlash.h" />
     <ClInclude Include="Source\EnemyTurretShot.h">
+      <Filter>Game\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyTurretShotManager.h">
       <Filter>Game\mame</Filter>
     </ClInclude>
   </ItemGroup>

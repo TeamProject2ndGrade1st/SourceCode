@@ -22,6 +22,8 @@ public:
     // ˆÚ“®ˆ—
     void UpdateMove();
 
+public:
+    float eraseTimer = {};  // ’e‚ªÁ‚¦‚é‚Ü‚Å‚ÌŠÔ
 
 private:
     DirectX::XMFLOAT3 velocity{};
