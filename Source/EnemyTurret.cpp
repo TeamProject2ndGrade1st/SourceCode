@@ -35,6 +35,8 @@ void EnemyTurret::Initialize()
 void EnemyTurret::Begin()
 {
     BaseEnemy::Begin();
+
+    GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 90.0f, 0.0f, 0.0f));
 }
 
 void EnemyTurret::Update()
