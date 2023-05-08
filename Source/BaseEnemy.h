@@ -53,8 +53,6 @@ public:
     BaseFriend* GetFriend() { return _friend; }
     void SetFriend(BaseFriend* f) { _friend = f; }
 
-    float friendAddSpeed = 0;
-    void addspeed();
 
     BaseFriend* SearchFriend1();
 protected:

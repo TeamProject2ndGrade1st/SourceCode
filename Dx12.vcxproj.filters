@@ -364,6 +364,9 @@
     <ClCompile Include="Source\Argent\Argent.cpp">
       <Filter>Lib\Argent</Filter>
     </ClCompile>
+    <ClCompile Include="Source\EnemyTurretShot.cpp">
+      <Filter>Game\mame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -652,6 +655,9 @@
     </ClInclude>
     <ClInclude Include="Source\EnemyManager.h" />
     <ClInclude Include="Source\muzzleFlash.h" />
+    <ClInclude Include="Source\EnemyTurretShot.h">
+      <Filter>Game\mame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

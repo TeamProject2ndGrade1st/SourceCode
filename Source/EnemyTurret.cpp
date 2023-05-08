@@ -3,11 +3,15 @@
 
 void EnemyTurret::Initialize()
 {
+    BaseEnemy::Initialize();
+
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/gun_turret_animv2.fbx"));
 
     // スケーリング
     GetOwner()->GetTransform()->SetScaleFactor(0.2f);
 
+    // 向きを整える
+    GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 90.0f, 0.0f, 0.0f));
 
     // ステートマシンをセット
     stateMachine.reset(new EnemyStateMachine);
@@ -26,7 +30,6 @@ void EnemyTurret::Initialize()
     //DirectX::XMFLOAT3 pos = { 0.0f,0.0f,60.0f };
     GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 60.0f));
 
-    BaseEnemy::Initialize();
 }
 
 void EnemyTurret::Begin()

@@ -55,25 +55,7 @@ void BaseEnemy::DrawDebug()
     }
 }
 
-void BaseEnemy::addspeed()
-{
-    // スピードが出てたら
-    if (friendAddSpeed > 0)
-    {
-        //auto f = GetFriend();
-        //DirectX::XMFLOAT3 friendPos = f->GetTransform()->GetPosition();
-        //friendPos.z -= friendAddSpeed;
-        //f->GetTransform()->SetPosition(friendPos);
-        //friendAddSpeed -= 0.1f;
 
-        
-        
-    }
-    
-
-    // スピード足すの終了
-    if (friendAddSpeed < 0)friendAddSpeed = 0;
-}
 
 BaseFriend* BaseEnemy::SearchFriend1()
 {

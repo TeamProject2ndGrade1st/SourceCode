@@ -3,6 +3,7 @@
 #include "BaseFriend.h"
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
+#include "EnemyTurretShot.h"
 
 // スパイクボット
 namespace Enemy::SpikeBot
@@ -39,7 +40,7 @@ namespace Enemy::SpikeBot
 
     void AttackState::Execute()
     {
-        owner->addspeed();
+        
 
         if (!once)
         {
@@ -111,6 +112,9 @@ namespace Enemy::Turret
 
         // タイマーを設定
         owner->SetStateTimer(4.0f);
+
+        DirectX::XMFLOAT3 pos{ owner->GetOwner()->GetTransform()->GetPosition() };
+        GameObject::Instantiate("shot", new EnemyTurretShot("shot", pos));
     }
 
     void AttackState::Execute()
