@@ -127,7 +127,6 @@ namespace Friend::Creature
 					owner->SetAnimation(static_cast<int>(CreatureAnimation::Walk_End));
 				}
 			}
-
 			break;
 
 		case static_cast<int>(CreatureAnimation::Walk_End):

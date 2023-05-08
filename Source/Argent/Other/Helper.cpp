@@ -617,7 +617,6 @@ namespace Argent
 						DirectX::XMStoreFloat3(&result.normal, DirectX::XMVector3Normalize(WorldNormal));
 						hit = true;
 					}
-				
 				}
 				return hit;
 			}

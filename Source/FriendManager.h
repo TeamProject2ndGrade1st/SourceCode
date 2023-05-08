@@ -23,6 +23,9 @@ public:
     void DrawDebug()override;
 
     void AddFriend(BaseFriend* _friend);
+    void SetFriendByClick();
+
+    
 
     BaseFriend* FindFriendComponentFromOwner(GameObject* wFriend) const;
 private:

@@ -195,24 +195,25 @@ bool BaseFriend::SearchEnemy()
             //©•ª‚©‚ç–Ú•W‚Ü‚Å‚ÌŠÔ‚ÉáŠQ•¨‚ª‚È‚¢‚©
             /*std::vector<GameObject*> stage;
             GetOwner()->FindByTag(GameObject::Tag::Stage, stage);*/
-            auto stage = GetOwner()->FindByName("Main Stage");
-            DirectX::XMFLOAT4X4 world = GetTransform()->GetWorld();
-            DirectX::XMMATRIX World = DirectX::XMLoadFloat4x4(&world);
-            Argent::Component::Collision::HitResult result;
+            //auto stage = GetOwner()->FindByName("Main Stage");
+            //DirectX::XMFLOAT4X4 world = GetTransform()->GetWorld();
+            //DirectX::XMMATRIX World = DirectX::XMLoadFloat4x4(&world);
+            //Argent::Component::Collision::HitResult result;
 
-            //’n–Ê‚·‚ê‚·‚ê•|‚¢‚©‚çã‚°‚Æ‚­
-            pos.y = 10;
-            enemyPos.y = 10;
+            ////’n–Ê‚·‚ê‚·‚ê•|‚¢‚©‚çã‚°‚Æ‚­
+            //pos.y = 10;
+            //enemyPos.y = 10;
 
-            if (!Argent::Helper::Collision::IntersectRayVsModel(
-                pos, enemyPos,
-                stage->GetComponent<Argent::Component::Renderer::MeshRenderer>()->GetMesh()->meshResource,
-                World,result
-            ))
-            {
-                //áŠQ•¨‚ª‚È‚©‚Á‚½
-                target = eManager->FindEnemyComponentFromOwner((*enemy));
-            }
+            //if (!Argent::Helper::Collision::IntersectRayVsModel(
+            //    pos, enemyPos,
+            //    stage->GetComponent<Argent::Component::Renderer::MeshRenderer>()->GetMesh()->meshResource,
+            //    World,result
+            //))
+            // {
+            //      áŠQ•¨‚ª‚È‚©‚Á‚½
+            // }
+
+            target = eManager->FindEnemyComponentFromOwner((*enemy));
         }
     }
     return true;
