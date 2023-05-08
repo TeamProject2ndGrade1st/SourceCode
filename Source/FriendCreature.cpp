@@ -5,16 +5,14 @@ void FriendCreature::Initialize()
 {
     BaseFriend::Initialize();
 
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver10.fbx", false));
-    effectVector.emplace_back(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects"));
-    effectVector.emplace_back(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/speedup.efk", "./Resources/Effects"));
-    for (auto it = effectVector.begin();it != effectVector.end();++it)
-    {
-        (*it)->scale = { 6.0f,6.0f,6.0f };
-        (*it)->rotation.y = -90.0f;
-        GetOwner()->AddComponent((*it));
-    }
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
+    GetOwner()->AddComponent(new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects"));
 
+
+    auto c = new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube);
+    GetOwner()->AddComponent(c);
+    c->offset = DirectX::XMFLOAT3(0, 10, -6);
+    c->scale = DirectX::XMFLOAT3(100, 200, 100);
 
     //攻撃範囲の視覚化
     /*GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(
@@ -35,10 +33,10 @@ void FriendCreature::Initialize()
     maxMoveSpeed = init_maxMoveSpeed;
     friction = init_friction;
 
-    
-
     //タグ付け
+
     GetOwner()->ReplaceTag(GameObject::Tag::Friend);
+    GetOwner()->AddTag(GameObject::Tag::Creature);
     
 
     //ステートマシンへのステート登録
@@ -48,14 +46,8 @@ void FriendCreature::Initialize()
     stateMachine.get()->RegisterState(new Friend::Creature::ActionState(this));
     stateMachine.get()->RegisterState(new Friend::Creature::WalkState(this));
     stateMachine.get()->RegisterState(new Friend::Creature::AttackState(this));
-    stateMachine.get()->RegisterState(new Friend::Creature::DieState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
-}
-
-void FriendCreature::Begin()
-{
-    BaseFriend::Begin();
 }
 
 void FriendCreature::Update()
@@ -98,24 +90,9 @@ void FriendCreature::DrawDebug()
         ImGui::SliderFloat("State Timer", &stateTimer, 0.0f, 30.0f);
         ImGui::TreePop();
     }
-
-    if (ImGui::Button("1s HitStop"))
-    {
-        GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetStopTime(1.0f);
-    }
-    if (relayPoint.size() > 0)
-    {
-        if (ImGui::TreeNode("RouteSearch"))
-        {
-            ImGui::SliderFloat3("pointPosition", &relayPoint.at(0).pos.x, -500, 500);
-            if (relayPoint.at(0).passage) ImGui::Text("pass");
-            else ImGui::Text("no pass");
-            ImGui::TreePop();
-        }
-    }
 }
 
 void FriendCreature::OnDead()
 {
-    stateMachine->ChangeState(static_cast<int>(State::Die));
+
 }

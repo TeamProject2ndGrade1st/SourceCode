@@ -3,6 +3,7 @@
 #include "BaseFriend.h"
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
+#include "EnemyTurretShot.h"
 
 // スパイクボット
 namespace Enemy::SpikeBot
@@ -12,15 +13,15 @@ namespace Enemy::SpikeBot
     {
         // 待機アニメーションをセット
         owner->SetAnimation(static_cast<int>(SpikeBotAnimation::Idle));
-        owner->SetStateTimer(5.0f);
+        //owner->SetStateTimer(5.0f);
     }
 
     void IdleState::Execute()
     {
-        //owner->SetFriend(owner->SearchFriend1());
+        owner->SetFriend(owner->SearchFriend1());
         if (owner->_friend != nullptr)
         {
-            owner->GetStateMachine()->ChangeState(static_cast<int>(SpikeBotAnimation::Attack));
+            owner->GetStateMachine()->ChangeState(static_cast<int>(EnemySpikeBot::State::Attack));
         }
     }
 
@@ -39,7 +40,7 @@ namespace Enemy::SpikeBot
 
     void AttackState::Execute()
     {
-        //owner->addspeed();
+        
 
         if (!once)
         {
@@ -65,7 +66,7 @@ namespace Enemy::SpikeBot
         // 攻撃のアニメーションが終わったら待機に戻る
         if (owner->IsAnimationEnd())
         {
-            owner->GetStateMachine()->ChangeState(static_cast<int>(SpikeBotAnimation::Idle));
+            owner->GetStateMachine()->ChangeState(static_cast<int>(EnemySpikeBot::State::Idle));
         }
     }
 
@@ -82,11 +83,20 @@ namespace Enemy::Turret
     {
         // アニメーション設定
         owner->SetAnimation(static_cast<int>(TurretAnimation::Idle));
+
+        // タイマーを設定
+        owner->SetStateTimer(3.0f);
     }
 
     void IdleState::Execute()
     {
+        float stateTimer = owner->GetStateTimer();
+        owner->SetStateTimer(stateTimer -= Argent::Timer::GetDeltaTime());
 
+        if (stateTimer < 0.0f)
+        {
+            owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyTurret::State::Attack));
+        }
     }
 
     void IdleState::Exit()
@@ -99,11 +109,23 @@ namespace Enemy::Turret
     {
         // アニメーション設定
         owner->SetAnimation(static_cast<int>(TurretAnimation::Attack));
+
+        // タイマーを設定
+        owner->SetStateTimer(4.0f);
+
+        DirectX::XMFLOAT3 pos{ owner->GetOwner()->GetTransform()->GetPosition() };
+        GameObject::Instantiate("shot", new EnemyTurretShot("shot", pos));
     }
 
     void AttackState::Execute()
     {
+        float stateTimer = owner->GetStateTimer();
+        owner->SetStateTimer(stateTimer -= Argent::Timer::GetDeltaTime());
 
+        if (stateTimer < 0.0f&&owner->IsAnimationEnd())
+        {
+            owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyTurret::State::Idle));
+        }
     }
 
     void AttackState::Exit()
@@ -120,13 +142,40 @@ namespace Enemy::Turret
 
     void StartUpState::Execute()
     {
+        // 起動アニメーションが終わったら待機へ
         if (owner->IsAnimationEnd())
         {
-            owner->SetAnimation(static_cast<int>(TurretAnimation::Idle));
+            owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyTurret::State::Idle));
         }
     }
 
     void StartUpState::Exit()
+    {
+
+    }
+
+    // 起動待機ステート
+    void BootWaitState::Enter()
+    {
+        // アニメーション設定
+        owner->SetAnimation(static_cast<int>(TurretAnimation::BootWait));
+        
+        // タイマーをセット
+        owner->SetStateTimer(10.0f);
+    }
+
+    void BootWaitState::Execute()
+    {
+        float stateTimer = owner->GetStateTimer();
+        owner->SetStateTimer(stateTimer -= Argent::Timer::GetDeltaTime());
+
+        if (stateTimer < 0.0f)
+        {
+            owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyTurret::State::StartUp));
+        }
+    }
+
+    void BootWaitState::Exit()
     {
 
     }

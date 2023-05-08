@@ -91,6 +91,7 @@
     <ClCompile Include="Source\EnemyStateDerivad.cpp" />
     <ClCompile Include="Source\EnemyStateMachine.cpp" />
     <ClCompile Include="Source\EnemyTurret.cpp" />
+    <ClCompile Include="Source\EnemyTurretShot.cpp" />
     <ClCompile Include="Source\FriendCreature.cpp" />
     <ClCompile Include="Source\FriendDrone.cpp" />
     <ClCompile Include="Source\FriendManager.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Source\EnemyStateDerivad.h" />
     <ClInclude Include="Source\EnemyStateMachine.h" />
     <ClInclude Include="Source\EnemyTurret.h" />
+    <ClInclude Include="Source\EnemyTurretShot.h" />
     <ClInclude Include="Source\FriendCreature.h" />
     <ClInclude Include="Source\FriendDrone.h" />
     <ClInclude Include="Source\FriendManager.h" />
@@ -251,6 +253,12 @@
     <FxCompile Include="Source\Shader\SpriteVertex.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\StageEmissive.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Source\Shader\StaticMeshPixel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

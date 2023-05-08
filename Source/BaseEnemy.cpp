@@ -10,6 +10,7 @@ BaseEnemy::BaseEnemy(const char* name, DirectX::XMFLOAT3 pos) :
 void BaseEnemy::Initialize()
 {
     Character::Initialize();
+
     if (!fManager)
     {
         std::vector<GameObject*> g;
@@ -17,7 +18,6 @@ void BaseEnemy::Initialize()
         if (g.size() > 0)
             fManager = g.at(0)->GetComponent<FriendManager>();
     }
-
     //GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube));
     
     
@@ -43,7 +43,7 @@ void BaseEnemy::Begin()
 
 void BaseEnemy::Update()
 {
-
+    stateMachine.get()->Update();
 
     
 }
@@ -58,7 +58,7 @@ void BaseEnemy::DrawDebug()
 
 
 
-BaseFriend* BaseEnemy::SearchFriend()
+BaseFriend* BaseEnemy::SearchFriend1()
 {
     // TODO: return ステートメントをここに挿入します
         // Friendタグが付いているGameObjectを探す
@@ -101,48 +101,4 @@ BaseFriend* BaseEnemy::SearchFriend()
         }
     }
     return nullptr;
-}
-
-void BaseEnemy::SearchFriendSet()
-{
-    // TODO: return ステートメントをここに挿入します
-        // Friendタグが付いているGameObjectを探す
-    std::vector<GameObject*> Friend;
-    GameObject::FindByTag(GameObject::Tag::Friend, Friend);
-
-    DirectX::XMFLOAT3 pos = GetOwner()->GetTransform()->GetPosition();
-    DirectX::XMFLOAT4 angle = GetOwner()->GetTransform()->GetRotation();
-
-    // TO DO 途中
-    for (auto f : Friend)
-    {
-        // Friend の positionを取る
-        DirectX::XMFLOAT3 friendPos = f->GetTransform()->GetPosition();
-
-        float vx = pos.x - friendPos.x;
-        float vy = pos.y - friendPos.y;
-        float vz = pos.z - friendPos.z;
-        float dist = sqrtf(vx * vx + vy * vy + vz * vz);
-
-        if (dist < 50)
-        {
-            float distXZ = sqrtf(vx * vx + vz * vz);
-            // 単位ベクトル化
-            vx /= distXZ;
-            vz /= distXZ;
-
-            // 方向ベクトル化
-            float frontX = sinf(angle.y);
-            float frontZ = cosf(angle.y);
-            // 2つのベクトルの内積値で前後判定
-            float dot = (frontX * vx) + (frontZ * vz);
-            if (dot > 0.0f)
-            {
-                f->GetTransform()->SetPosition(friendPos);
-                auto* ret = fManager->FindFriendComponentFromOwner(f);
-                SetFriendArray(ret);                
-            }
-        }
-    }
-    
 }

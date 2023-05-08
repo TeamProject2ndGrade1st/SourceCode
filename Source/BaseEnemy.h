@@ -45,24 +45,16 @@ public:
     {
         Idle,
         Attack,
-        StartUp,
     };
 
 public:
-    // spikebot でノックバックをする用のやつ
     BaseFriend* _friend;
 
     BaseFriend* GetFriend() { return _friend; }
     void SetFriend(BaseFriend* f) { _friend = f; }
 
-    BaseFriend* SearchFriend();
 
-    // 配列で作る(仮)
-    std::vector<BaseFriend*>_friendArray;
-    std::vector<BaseFriend*> GetFriendArray() { return _friendArray; }
-    void SetFriendArray(BaseFriend* f) { _friendArray.emplace_back(f); }
-    void SearchFriendSet();
-
+    BaseFriend* SearchFriend1();
 protected:
     // 目的座標
     DirectX::XMFLOAT3 targetPosition{};

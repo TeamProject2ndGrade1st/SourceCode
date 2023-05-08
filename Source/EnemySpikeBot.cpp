@@ -3,12 +3,17 @@
 
 void EnemySpikeBot::Initialize()
 {
+    BaseEnemy::Initialize();
+
     GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/spike.fbx"));
     
-
     // スケーリング
     GetOwner()->GetTransform()->SetScaleFactor(0.2f);
-    
+
+    // test
+    //GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 90.0f, 0.0f, 0.0f));
+    //GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, -200.0f));
+
     // デバッグシリンダー
     GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube));
     GetOwner()->GetComponent<Argent::Component::Collider::RayCastCollider>()->scale = { 500.0f,100.0f,500.0f };
@@ -31,10 +36,7 @@ void EnemySpikeBot::Initialize()
     GetOwner()->ReplaceTag(GameObject::Tag::Enemy);
 
     SetAccelaration(0);
-    BaseEnemy::Initialize();
-
     
-
 }
 
 void EnemySpikeBot::Begin()

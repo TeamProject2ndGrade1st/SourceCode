@@ -3,9 +3,10 @@
 
 enum class TurretAnimation
 {
-    StartUp,
-    Attack,
-    Idle,
+    StartUp,    // 起動
+    Attack,     // 攻撃
+    Idle,       // 待機
+    BootWait,   // 起動待機
 };
 
 class EnemyTurret :
@@ -20,5 +21,14 @@ public:
     void Begin()override;
     void Update()override;
     void DrawDebug()override;
+
+    enum class State
+    {
+        StartUp,    // 起動
+        Attack,     // 攻撃
+        Idle,       // 待機
+        BootWait,   // 起動待機
+    };
+
 };
 

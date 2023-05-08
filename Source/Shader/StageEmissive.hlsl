@@ -22,6 +22,9 @@ float4 main(VS_OUT pin) : SV_TARGET
     normal = (normal * 2.0f) - 1.0f;
     N = normalize((normal.x * T) + (normal.y * B) + (normal.z * N));
 
+
+
+
     float3 L0 = normalize(float3(-light[0].position.xyz));
     float3 L1 = normalize(float3(-light[1].position.xyz));
     float3 L2 = normalize(float3(-light[2].position.xyz));
@@ -49,5 +52,5 @@ float4 main(VS_OUT pin) : SV_TARGET
     float sb = clamp(specular0.b + specular1.b + specular2.b/* + specular3.b*/, 0, 1);
     float4 ret = float4(float3(r, g, b) + float3(sr, sg, sb), 1);
 
-    return ret;
+    return ret * 10;
 }

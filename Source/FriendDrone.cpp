@@ -1,22 +1,19 @@
 #include "FriendDrone.h"
 #include "FriendStateDerived.h"
 #include "StateMachine.h"
-#include "Shadow.h"
 
 void FriendDrone::Initialize()
 {
 
     BaseFriend::Initialize();
 
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0502_1.fbx", false));
-
-    if (myShadow)
-    {
-        myShadow->GetOwner()->GetTransform()->SetScale(DirectX::XMFLOAT3(0.3f, 0.3f, 0.3f));
-    }
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx", false));
 
 
-    GetOwner()->GetTransform()->SetScaleFactor(0.4f);
+    auto c = new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube);
+    GetOwner()->AddComponent(c);
+    c->offset = DirectX::XMFLOAT3(0, 0, 0);
+    c->scale = DirectX::XMFLOAT3(100, 100, 100);
 
     //攻撃範囲の視覚化
     /*GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(
@@ -37,6 +34,10 @@ void FriendDrone::Initialize()
     friction         = init_friction;
     attackAreaRadius = init_attackAreaRadius * GetTransform()->GetScaleFactor();
 
+    //タグ付け
+    GetOwner()->ReplaceTag(GameObject::Tag::Friend);
+    GetOwner()->AddTag(GameObject::Tag::Machine);
+
     //ステートマシンへのステート登録
     stateMachine = std::make_unique<StateMachine>();
 
@@ -51,6 +52,7 @@ void FriendDrone::Update()
 {
     //レイキャストコンポーネントでY座標があげられるからその分落とす
     //(なぜかイニシャライザでやっても座標が戻される)
+    static bool once;
     auto pos = GetOwner()->GetTransform()->GetPosition();
     if (pos.y >= 0.0f && !once)
     {
@@ -64,8 +66,8 @@ void FriendDrone::Update()
     pos = GetTransform()->GetPosition();
     huwahuwaDegree += huwahuwaSpeed;
     if (huwahuwaDegree > 360)huwahuwaDegree = 0;
-    float huwahuwa = sinf(DirectX::XMConvertToRadians(huwahuwaDegree)) * (20.0f * GetOwner()->GetTransform()->GetScaleFactor());
-    GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 80.0f * GetOwner()->GetTransform()->GetScaleFactor() + huwahuwa, pos.z));
+    float huwahuwa = sinf(DirectX::XMConvertToRadians(huwahuwaDegree)) * 0.2f;
+    GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 1.5f + huwahuwa, pos.z));
 }
 
 void FriendDrone::DrawDebug()

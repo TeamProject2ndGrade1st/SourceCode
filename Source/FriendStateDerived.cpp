@@ -98,6 +98,8 @@ namespace Friend::Creature
 
 			if (!owner->SearchTarget())
 			{
+				owner->SetAccelaration(owner->Init_GetAccelaration());
+				owner->SetVelocity(DirectX::XMFLOAT3(0, 0, 0));
 				owner->SetAnimation(static_cast<int>(CreatureAnimation::Walk_End));
 			}
 
@@ -144,10 +146,12 @@ namespace Friend::Creature
 
 	void WalkState::Exit()
 	{
+
 	}
 
 	void AttackState::Enter()
 	{
+		didAttack = false;
 		owner->SetAnimation(static_cast<int>(CreatureAnimation::Attack));
 	}
 

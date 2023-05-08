@@ -99,35 +99,36 @@ void Transform::Reset()
 
 void Transform::SetWorld(const DirectX::XMFLOAT4X4& w)
 {
-	//defaultWorld  = w;
-	DirectX::XMMATRIX W = DirectX::XMLoadFloat4x4(&w);
+	defaultWorld  = w;
 
-	//移動値を抜き出す
-	DirectX::XMFLOAT3 transration;
-	DirectX::XMStoreFloat3(&transration, W.r[3]);
-	//オフセットの位置はリセット
-	//W.r[3] = DirectX::XMVectorSet(0, 0, 0, 1);
-	DirectX::XMMATRIX TInv = DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranslation(transration.x, transration.y, transration.z));
-	W = W * TInv;
+	//DirectX::XMMATRIX W = DirectX::XMLoadFloat4x4(&w);
 
-	//スケール行列を求めていく
-	float sX, sY, sZ;
-	sX = LengthV3(W.r[0]);
-	sY = LengthV3(W.r[1]);
-	sZ = LengthV3(W.r[2]);
-	//スケール行列の逆行列を求める
-	DirectX::XMMATRIX SInv = DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixScaling(sX, sY, sZ));
-	//逆行列を使って回転行列を求める
-	DirectX::XMMATRIX R = SInv * W;
+	////移動値を抜き出す
+	//DirectX::XMFLOAT3 transration;
+	//DirectX::XMStoreFloat3(&transration, W.r[3]);
+	////オフセットの位置はリセット
+	////W.r[3] = DirectX::XMVectorSet(0, 0, 0, 1);
+	//DirectX::XMMATRIX TInv = DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranslation(transration.x, transration.y, transration.z));
+	//W = W * TInv;
 
-	DirectX::XMFLOAT3 rot = CalcEulerAngleFromRotationMatrix(R);
+	////スケール行列を求めていく
+	//float sX, sY, sZ;
+	//sX = LengthV3(W.r[0]);
+	//sY = LengthV3(W.r[1]);
+	//sZ = LengthV3(W.r[2]);
+	////スケール行列の逆行列を求める
+	//DirectX::XMMATRIX SInv = DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixScaling(sX, sY, sZ));
+	////逆行列を使って回転行列を求める
+	//DirectX::XMMATRIX R = SInv * W;
 
-	//それぞれの値をセットしていく
-	position = DirectX::XMFLOAT3(transration.x, transration.y, transration.z);
-	scale = DirectX::XMFLOAT3(sX, sY, sZ);
-	rotation = DirectX::XMFLOAT4(DirectX::XMConvertToDegrees(rot.x),
-		DirectX::XMConvertToDegrees(rot.y),
-		DirectX::XMConvertToDegrees(rot.z), 0);
+	//DirectX::XMFLOAT3 rot = CalcEulerAngleFromRotationMatrix(R);
+
+	////それぞれの値をセットしていく
+	//position = DirectX::XMFLOAT3(transration.x, transration.y, transration.z);
+	//scale = DirectX::XMFLOAT3(sX, sY, sZ);
+	//rotation = DirectX::XMFLOAT4(DirectX::XMConvertToDegrees(rot.x),
+	//	DirectX::XMConvertToDegrees(rot.y),
+	//	DirectX::XMConvertToDegrees(rot.z), 0);
 
 }
 
@@ -156,15 +157,18 @@ DirectX::XMMATRIX Transform::CalcWorld()
 	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(r, DirectX::XMConvertToRadians(rotation.x)));
 	orientationVec = DirectX::XMQuaternionMultiply(orientationVec, DirectX::XMQuaternionRotationAxis(f, DirectX::XMConvertToRadians(rotation.z)));
 
-	const DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(orientationVec);
-	const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(position.x,position.y, position.z) };
+	//const DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(orientationVec);
+	const DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(rotation.x), DirectX::XMConvertToRadians(rotation.y), DirectX::XMConvertToRadians(rotation.z));
+	const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(position.x, position.y, position.z) };
 
-	const DirectX::XMMATRIX DW = DirectX::XMLoadFloat4x4(&defaultWorld);
+	
 	postRotation = rotation;
 	DirectX::XMStoreFloat4(&orientation, orientationVec);
 
+	DirectX::XMMATRIX DW = DirectX::XMLoadFloat4x4(&defaultWorld);
+
 	DirectX::XMMATRIX W = S * R * T;
-	return DW * W * parentMatrix;
+	return  DW * W * parentMatrix;
 }
 
 DirectX::XMMATRIX Transform::CalcWorldMatrix()
