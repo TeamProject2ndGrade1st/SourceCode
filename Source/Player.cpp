@@ -19,11 +19,11 @@ void Player::Initialize()
 
     camera = GameObject::FindByName("Camera"); // ‚±‚Á‚¿‚Å
     camera->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 16.0f, 0));
-    movement = 10.5f;
+    movement = 50.5f;
     {
         auto c = camera->GetComponent<Camera>();
-        c->SetMaxRotation(DirectX::XMFLOAT4(70, 0, 0, 0));
-	    	c->SetMinRotation(DirectX::XMFLOAT4(-70, 0, 0, 0));
+		c->SetMaxRotation(DirectX::XMFLOAT4(70, 370, 0, 0));
+		c->SetMinRotation(DirectX::XMFLOAT4(-70, -10, 0, 0));
     }
 
 
@@ -34,22 +34,22 @@ void Player::Initialize()
 
 void Player::Update()
 {
-    switch (state)
-    {
-    case 0:
-        //camera = Argent::Scene::SceneManager::Instance()->GetCurrentScene()->GetGameObject("Camera");
-        camera = GameObject::FindByName("Camera"); // ‚±‚Á‚¿‚Å
-        movement = 50.5f;
+   // switch (state)
+   // {
+   // case 0:
+   //     //camera = Argent::Scene::SceneManager::Instance()->GetCurrentScene()->GetGameObject("Camera");
+   ////     camera = GameObject::FindByName("Camera"); // ‚±‚Á‚¿‚Å
+   ////     movement = 50.5f;
 
-        {
-            auto c = camera->GetComponent<Camera>();
-            c->SetMaxRotation(DirectX::XMFLOAT4(70, 370, 0, 0));
-			c->SetMinRotation(DirectX::XMFLOAT4(-70, -10, 0, 0));
-        }
+   ////     {
+   ////         auto c = camera->GetComponent<Camera>();
+   ////         c->SetMaxRotation(DirectX::XMFLOAT4(70, 370, 0, 0));
+			////c->SetMinRotation(DirectX::XMFLOAT4(-70, -10, 0, 0));
+   ////     }
 
-        ++state;
-        break;
-    case 1:
+   //     ++state;
+   //     break;
+   // case 1:
 
         // ˆÚ“®
         MoveCamera();
@@ -113,8 +113,8 @@ void Player::Update()
 #else
         t->SetRotation(setRotation);
 #endif
-        break;
-    }
+     //   break;
+   // }
 
     GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
     GetTransform()->SetRotation(camera->GetTransform()->GetRotation());

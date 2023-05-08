@@ -169,7 +169,7 @@ namespace Argent::Component
 		void CalcComplementPosition(Collider::RayCastCollider* other,
 			const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end,
 			HitResult& hitResult)
-		{
+		{  
 			//•Ç‚Ü‚Å‚ÌƒxƒNƒgƒ‹
 			const DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&start);
 			const DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);

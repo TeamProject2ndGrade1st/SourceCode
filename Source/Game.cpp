@@ -59,6 +59,7 @@ void Game::Initialize()
 	GameObject::Instantiate("Barricade", new Barricade("./Resources/Model/Stage/barike-do_0419_1.fbx"));
 	GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_1_0426_5.fbx"));
 
+
 	BaseScene::Initialize();
 	std::vector<GameObject*> lightArray;
 	GameObject::FindByTag(GameObject::Tag::Light, lightArray);
