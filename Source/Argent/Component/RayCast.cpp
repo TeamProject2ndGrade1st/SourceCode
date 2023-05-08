@@ -117,7 +117,7 @@ namespace Argent::Component
 			DirectX::XMFLOAT3 s = g->GetTransform()->GetScale() * g->GetTransform()->GetScaleFactor();;
 			DirectX::XMFLOAT4 r = g->GetTransform()->GetRotation();
 			DirectX::XMFLOAT3 t = g->GetTransform()->GetPosition();
-			//auto m = g->GetTransform()->CalcWorldMatrix();
+			auto m = g->GetTransform()->CalcWorldMatrix();
 			const DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scale.x * s.x, scale.y * s.y, scale.z * s.z) };
 			const DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(
 				DirectX::XMConvertToRadians(rotation.x + r.x),
@@ -126,13 +126,21 @@ namespace Argent::Component
 			const DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(offset.x + t.x,
 				offset.y + t.y, offset.z + t.z) };
 
+			/*const DirectX::XMMATRIX S { DirectX::XMMatrixScaling(scale.x, scale.y, scale.z)};
+			const DirectX::XMMATRIX R { DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z)};
+			const DirectX::XMMATRIX T { DirectX::XMMatrixTranslation(offset.x, offset.y, offset.z)};*/
+
 			auto lm = S * R * T;
+
+			DirectX::XMMATRIX defaultMatrix = GetOwner()->GetTransform()->GetDefaultGlobalTransform();
+			DirectX::XMMATRIX colliderTransformMatrix = S * R * T;
+
 			DirectX::XMMATRIX pM = DirectX::XMMatrixIdentity();
 			if(GetOwner()->GetParent())
 			{
 				pM = GetOwner()->GetParent()->GetTransform()->CalcWorldMatrix();
 			}
-			return lm * pM;
+			return defaultMatrix * lm * pM;
 		}
 
 

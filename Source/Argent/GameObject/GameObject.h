@@ -79,7 +79,7 @@ public:
 		if(!isInitialized)
 			Initialize();
 	}
-	
+
 
 	void SetIsDrawDebug(bool b) { isDrawDebug = b; }
 

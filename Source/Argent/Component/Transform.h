@@ -65,6 +65,7 @@ public:
 		position.z += pos.z;
 	}
 
+	DirectX::XMMATRIX GetDefaultGlobalTransform() const { return DirectX::XMLoadFloat4x4(&defaultWorld); }
 	float GetScaleFactor() const { return scaleFactor;  }
 	void SetScaleFactor(float f) { scaleFactor = f;  }
 
