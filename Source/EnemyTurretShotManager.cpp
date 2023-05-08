@@ -14,7 +14,7 @@ void EnemyTurretShotManager::Update()
     for (auto it = shotArray.begin(); it != shotArray.end();)
     {
         if ((*it)->eraseTimer <= 0.0f)
-        {            
+        {
             GameObject::Destroy((*it)->GetOwner());
             it = shotArray.erase(it);
         }
