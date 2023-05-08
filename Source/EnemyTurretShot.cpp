@@ -2,10 +2,12 @@
 
 void EnemyTurretShot::Initialize()
 {
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/Stage/spike.fbx"));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/sphere.fbx"));
 
     // スケーリング
-    GetOwner()->GetTransform()->SetScaleFactor(0.1f);
+    GetOwner()->GetTransform()->SetScaleFactor(10.0f);
+
+    GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(0.0f, 5.0f, 0.0f));
 
     // 速度設定
     DirectX::XMFLOAT3 moveVec{ 0.0f,0.0f,-100.0f };
