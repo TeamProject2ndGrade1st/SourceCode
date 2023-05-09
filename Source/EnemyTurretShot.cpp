@@ -2,10 +2,11 @@
 
 void EnemyTurretShot::Initialize()
 {
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/sphere.fbx"));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/bullet_0509_1.fbx"));
+    //GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/sphere.fbx"));
 
     // スケーリング
-    GetOwner()->GetTransform()->SetScaleFactor(0.015f);
+    //GetOwner()->GetTransform()->SetScaleFactor(0.015f);
 
     // 位置設定
     init_position.y = 27.0f;
