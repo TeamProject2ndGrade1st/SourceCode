@@ -1,6 +1,6 @@
 struct DirectionalLight
 {
-    float3 direction;
+    float4 direction;
     float4 color;
 };
 
@@ -17,7 +17,8 @@ cbuffer SceneConstant : register(b0)
 {
 	row_major float4x4 view;
 	row_major float4x4 projection;
-	float3 cameraPosition;
+	float4 cameraPosition;
+    
     DirectionalLight directionalLight;
-    PointLight pointLight;
+    PointLight pointLight[NumPointLight];
 }

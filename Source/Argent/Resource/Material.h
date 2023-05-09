@@ -105,6 +105,9 @@ namespace Argent::Material
 				ImGui::DragFloat3("Kd", &constant.kd.x, 0.001f, 0, 1.0f);
 				ImGui::DragFloat3("Ks", &constant.ks.x, 0.001f, 0, 1.0f);
 				ImGui::DragFloat("Shininess", &constant.shininess, 1.0f, 0, FLT_MAX);
+				/*ImGui::ColorEdit4("Color", &constant.color.x,
+				ImGuiColorEditFlags_PickerHueWheel | 
+				ImGuiColorEditFlags_AlphaBar);*/
 				color.DrawDebug();
 				ImGui::TreePop();
 			}

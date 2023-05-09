@@ -21,27 +21,37 @@ float4 main(VS_OUT pin) : SV_TARGET
 
     const float3 specular = CalcPhongSpecular(N, L, directionalLight.color, E, shininess, ks);
 
-    const float3 diffuse = CalcDiffuseColor(N, L, directionalLight.color, kd, color.rgb);
+    const float3 diffuse = CalcDiffuseColor(N, L, directionalLight.color, kd, color.rgb * pin.color);
 
     //ポイントライトの処理
+    float3 diffusePoint = 0;
+    float3 specularPoint = 0;
 
+    for (int i = 0; i < NumPointLight; ++i)
+    {
     //サーフェイスに入射するポイントライトのベクトル
-    float3 ligDir = normalize(pin.worldPosition - pointLight.position);
+        float3 ligDir = normalize(pin.worldPosition - pointLight[i].position);
     //減衰なしランバートディフューズを求める
-    float3 diffusePoint = CalcLambertDiffuse(N, ligDir, pointLight.color, kd);
+        float3 dPoint = CalcDiffuseColor(N, ligDir, pointLight[i].color, kd, color.rgb * pin.color);
     //減衰なしフォンスペキュラを求める
-    float3 specularPoint = CalcPhongSpecular(N, L, pointLight.color, E, shininess, float3(1, 1, 1));
+        float3 sPoint = CalcPhongSpecular(N, L, pointLight[i].color, E, shininess, ks);
 
     //距離から影響率を求める　距離に応じて減衰する
-    float distance = length(pin.worldPosition - pointLight.position);
+        float distance = length(pin.worldPosition - pointLight[i].position);
     //float affect = max(0, 1.0f - 1.0f / 1000 * distance);
-    float affect = max(0, 1.0f - 1.0f / pointLight.range * distance);
+        //float affect = 0.8f;
+        float affect = max(0, 1.0f - 1.0f / pointLight[i].range * distance);
     //累乗すればいい感じになるらしい
-    affect = pow(affect, 1.0f);
+        affect = pow(affect, 2.0f);
     //affect = 0.1f;
-    diffusePoint *= affect;
-    specularPoint *= affect;
-    float4 ret = float4(diffuse + specular + diffusePoint + specularPoint, 1);
-    ret = float4(diffusePoint + specularPoint, 1);
+        dPoint *= affect;
+        sPoint *= affect;
+        diffusePoint += dPoint;
+        specularPoint += sPoint;
+    }
+    float4 ret = float4(diffuse + specular + diffusePoint + specularPoint, materialColor.a);
+
+   //float4 ret = float4(diffuse + specular, 1);
+	//float4 ret = float4(diffusePoint + specularPoint, 1);
     return ret;
 }

@@ -27,10 +27,9 @@ class PointLight:
     public Argent::Component::BaseComponent
 {
 public:
-    PointLight(int index, const DirectX::XMFLOAT3& direction = DirectX::XMFLOAT3(-1.0f, -1.0f, 1.0f),
-        float range = 50.0f):
+    PointLight(int index, float range = 50.0f):
 		BaseComponent("PointLight")
-    ,   direction(direction)
+    ,   index(index)
     ,   range(range)
     {}
 
@@ -42,7 +41,6 @@ public:
 
 private:
     Argent::Color color;
-    DirectX::XMFLOAT3 direction;
     float range;
     int index;
 };

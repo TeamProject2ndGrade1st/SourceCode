@@ -132,11 +132,25 @@ namespace Argent::Graphics
 
 
 		//パイプライン
+		D3D12_RENDER_TARGET_BLEND_DESC rtvBlendDesc{};
+		rtvBlendDesc.BlendEnable = TRUE;
+		rtvBlendDesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		rtvBlendDesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+		rtvBlendDesc.BlendOp = D3D12_BLEND_OP_ADD;
+		rtvBlendDesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+		rtvBlendDesc.DestBlendAlpha = D3D12_BLEND_ONE;
+		rtvBlendDesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+
+		rtvBlendDesc.LogicOpEnable = FALSE;
+		rtvBlendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
 		D3D12_BLEND_DESC blendDesc{};
 		blendDesc.AlphaToCoverageEnable = FALSE;
 		blendDesc.IndependentBlendEnable = FALSE;
-		blendDesc.RenderTarget[0] = Helper::Dx12::Blend::GenerateRenderTargetBlendDesc(Helper::Dx12::Blend::BlendMode::bAlpha);
+		blendDesc.RenderTarget[0] = rtvBlendDesc;
+		//blendDesc.RenderTarget[0] = Helper::Dx12::Blend::GenerateRenderTargetBlendDesc(Helper::Dx12::Blend::BlendMode::bAlpha);
+
+		
 
 		D3D12_INPUT_ELEMENT_DESC inputElementDesc[]
 		{
@@ -153,13 +167,15 @@ namespace Argent::Graphics
 
 		D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 		depthStencilDesc.DepthEnable = TRUE;
-		depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
 		depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+		depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
 
 
 		pipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 
-		pipelineStateDesc.RasterizerState = Helper::Dx12::Rasterizer::Generate();
+		auto r = Helper::Dx12::Rasterizer::Generate();
+		r.DepthClipEnable = false;
+		pipelineStateDesc.RasterizerState = r;
 		pipelineStateDesc.BlendState = blendDesc;
 		pipelineStateDesc.InputLayout.NumElements = _countof(inputElementDesc);
 		pipelineStateDesc.InputLayout.pInputElementDescs = inputElementDesc;

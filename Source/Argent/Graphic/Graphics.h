@@ -85,9 +85,9 @@ namespace Argent::Graphics
 		//シーンコンスタント用
 		void SetViewMatrix(const DirectX::XMMATRIX& m){ DirectX::XMStoreFloat4x4(&sceneConstant.view, m); }
 		void SetProjectionMatrix(const DirectX::XMMATRIX& m) { DirectX::XMStoreFloat4x4(&sceneConstant.projection, m); }
-		void SetCameraPosition(const DirectX::XMFLOAT3& p) { sceneConstant.cameraPosition = p; }
+		void SetCameraPosition(const DirectX::XMFLOAT3& p) { sceneConstant.cameraPosition = DirectX::XMFLOAT4(p.x, p.y, p.z, 0); }
 		void SetDirectionalLight(const DirectionalLight& d) { sceneConstant.directionalLight = d; }
-		void SetPointLight(const PointLight& p, int index) { sceneConstant.pointLight = p; }
+		void SetPointLight(const PointLight& p, int index) { sceneConstant.pointLight[index] = p; }
 	private:
 		static Graphics* instance;
 		static constexpr int NumBackBuffers = 3;

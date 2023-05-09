@@ -6,15 +6,13 @@ namespace Argent::Graphics
 	static constexpr int NumPointLight = 4;
 	struct DirectionalLight
 	{
-		DirectX::XMFLOAT3 direction;
+		DirectX::XMFLOAT4 direction;
 		//float pad;
 		DirectX::XMFLOAT4 color;
 	};
 
 	struct PointLight
 	{
-		float pad;
-		float pad1;
 		DirectX::XMFLOAT3 position;
 		float range;
 		DirectX::XMFLOAT4 color;
@@ -24,8 +22,11 @@ namespace Argent::Graphics
 	{
 		DirectX::XMFLOAT4X4 view;
 		DirectX::XMFLOAT4X4 projection;
-		DirectX::XMFLOAT3 cameraPosition;
+		DirectX::XMFLOAT4 cameraPosition;
+		//float pad;
 		DirectionalLight directionalLight;
-		PointLight pointLight;
+		/*float pad1;
+		float pad2;*/
+		PointLight pointLight[NumPointLight];
 	};
 }

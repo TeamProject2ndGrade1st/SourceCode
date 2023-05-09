@@ -75,7 +75,17 @@ void Game::Initialize()
 
 	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/shield_bash.efk", "./Resources/Effects/"));
 
-	GameObject::Instantiate("PointLight", new PointLight(0));
+
+	auto l = GameObject::Instantiate("PointLight", new PointLight(0));
+	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
+	l = GameObject::Instantiate("PointLight", new PointLight(1));
+	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
+	l = GameObject::Instantiate("PointLight", new PointLight(2));
+	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
+	l = GameObject::Instantiate("PointLight", new PointLight(3));
+	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
+
+	GameObject::Instantiate("skyBox",Argent::Loader::Fbx::LoadFbx("./Resources/Model/skyBox.fbx", true));
 
 #ifndef _DEBUG
 	ShowCursor(false);

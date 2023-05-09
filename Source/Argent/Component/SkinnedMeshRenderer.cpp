@@ -86,7 +86,10 @@ namespace Argent::Component::Renderer
 
 			const auto& material{ s.material };
 			//const auto& material{ materials.at(s.materialUniqueId) };
-			material->constantBuffer->UpdateConstantBuffer(material->constant);
+
+			auto mConstant = material->constant;
+			mConstant.color = material->color.GetColor();
+			material->constantBuffer->UpdateConstantBuffer(mConstant);
 			material->SetOnCommand(cmdList, static_cast<UINT>(RootParameterIndex::cbMaterial),
 				static_cast<UINT>(RootParameterIndex::txAlbedo), 
 				static_cast<UINT>(RootParameterIndex::txNormal));

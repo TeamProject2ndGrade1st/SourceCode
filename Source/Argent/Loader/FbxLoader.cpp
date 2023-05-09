@@ -74,10 +74,6 @@ namespace Argent::Loader::Fbx
 					for(auto& s : mesh.subsets)
 					{
 						s.material = fbxResource.materials[s.materialName];
-						//for(int i = 0; i < Material::MeshMaterial::NumTextures; ++i)
-						//{
-						//	//s.material->CreateTexture(s.material->textureNames[i].c_str(), static_cast<Material::MeshMaterial::TextureUsage>(i));
-						//}
 					}
 				}
 			}
@@ -292,15 +288,27 @@ namespace Argent::Loader::Fbx
 
 			auto& subsets{ mesh.subsets };
 			const int MaterialCount{ fbxMesh->GetNode()->GetMaterialCount() };
+
 			subsets.resize(MaterialCount > 0 ? MaterialCount : 1);
-			for (int materialIndex = 0; materialIndex < MaterialCount; ++materialIndex)
+			if(MaterialCount > 0)
 			{
-				const FbxSurfaceMaterial* fbxMaterial{ fbxMesh->GetNode()->GetMaterial(materialIndex) };
-				subsets.at(materialIndex).materialUniqueId = fbxMaterial->GetUniqueID();
-				subsets.at(materialIndex).materialName = fbxMaterial->GetName(); 
-				
-				subsets.at(materialIndex).material = Resource::ResourceManager::Instance().GetMaterial(fbxMaterial->GetName());
+				for (int materialIndex = 0; materialIndex < MaterialCount; ++materialIndex)
+				{
+					const FbxSurfaceMaterial* fbxMaterial{ fbxMesh->GetNode()->GetMaterial(materialIndex) };
+					subsets.at(materialIndex).materialUniqueId = fbxMaterial->GetUniqueID();
+					subsets.at(materialIndex).materialName = fbxMaterial->GetName(); 
+					
+					subsets.at(materialIndex).material = Resource::ResourceManager::Instance().GetMaterial(fbxMaterial->GetName());
+				}
 			}
+			else
+			{
+				subsets.at(0).materialUniqueId = 0;
+				subsets	.at(0).materialName = "Dummy";
+				subsets.at(0).material = Resource::ResourceManager::Instance().GetMaterial("Dummy");
+			}
+			
+			
 
 			if (MaterialCount > 0)
 			{
@@ -519,6 +527,7 @@ namespace Argent::Loader::Fbx
 			auto material = std::make_shared<Material::MeshMaterial>(name);
 			SetDummySurfaceMaterial(material);
 			materials.emplace(name, material);
+			Resource::ResourceManager::Instance().RegisterMaterial(material);
 		}
 	}
 

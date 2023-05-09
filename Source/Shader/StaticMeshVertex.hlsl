@@ -13,6 +13,6 @@ VS_OUT main(VSIN vin)
     vout.worldTangent = normalize(mul(vin.tangent, world));
     vout.worldTangent.w = sigma;
 	vout.texcoord = vin.texcoord;
-	vout.color = color;
+	vout.color = materialColor;
 	return vout;
 }

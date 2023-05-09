@@ -22,7 +22,7 @@ void DirectionalLight::Render() const
 {
 	auto g = Argent::Graphics::Graphics::Instance();
 	Argent::Graphics::DirectionalLight directionalLight{};
-	directionalLight.direction = direction;
+	directionalLight.direction = DirectX::XMFLOAT4(direction.x, direction.y, direction.z, 0);
 	directionalLight.color = color.GetColor();
 	g->SetDirectionalLight(directionalLight);
 }
@@ -59,7 +59,6 @@ void PointLight::DrawDebug()
 {
 	if(ImGui::TreeNode(GetName()))
 	{
-		ImGui::DragFloat3("Direction", &direction.x, 0.1f, -FLT_MAX, FLT_MAX);
 		ImGui::DragFloat("Range", &range, 0.1f, -FLT_MAX, FLT_MAX);
 		color.DrawDebug();
 		BaseComponent::DrawDebug();
