@@ -9,10 +9,12 @@
 #include "Dx12/Descriptor.h"
 #include "Dx12/Command.h"
 
+#include "SceneConstant.h"
+
 
 namespace Argent::Graphics
 {
-	struct Light
+	/*struct Light
 	{
 		DirectX::XMFLOAT4 color;
 		DirectX::XMFLOAT4 position;
@@ -23,7 +25,7 @@ namespace Argent::Graphics
 		DirectX::XMFLOAT4X4 projection;
 		DirectX::XMFLOAT4 cameraPosition;
 		Light light[3];
-	};
+	};*/
 
 	enum class RenderType
 	{

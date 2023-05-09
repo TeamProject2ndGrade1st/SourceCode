@@ -82,12 +82,12 @@ namespace Argent::Graphics
 
 		static int GetNumBackBuffers() { return NumBackBuffers;  }
 
-
+		//シーンコンスタント用
 		void SetViewMatrix(const DirectX::XMMATRIX& m){ DirectX::XMStoreFloat4x4(&sceneConstant.view, m); }
 		void SetProjectionMatrix(const DirectX::XMMATRIX& m) { DirectX::XMStoreFloat4x4(&sceneConstant.projection, m); }
-		void SetCameraPosition(const DirectX::XMFLOAT3& p) { sceneConstant.cameraPosition = DirectX::XMFLOAT4(p.x, p.y, p.z, 0); }
-		void SetLightPosition(const DirectX::XMFLOAT3& f, int index) { sceneConstant.light[index].position = DirectX::XMFLOAT4(f.x, f.y, f.z, 0); }
-		void SetLightColor(const DirectX::XMFLOAT4& f, int index) { sceneConstant.light[index].color = f; }
+		void SetCameraPosition(const DirectX::XMFLOAT3& p) { sceneConstant.cameraPosition = p; }
+		void SetDirectionalLight(const DirectionalLight& d) { sceneConstant.directionalLight = d; }
+		void SetPointLight(const PointLight& p, int index) { sceneConstant.pointLight = p; }
 	private:
 		static Graphics* instance;
 		static constexpr int NumBackBuffers = 3;

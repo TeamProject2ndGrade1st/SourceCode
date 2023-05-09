@@ -153,6 +153,7 @@
     <ClInclude Include="Source\Argent\Graphic\Dx12\VertexBuffer.h" />
     <ClInclude Include="Source\Argent\Graphic\Dx12\IndexBuffer.h" />
     <ClInclude Include="Source\Argent\Graphic\FrameBuffer.h" />
+    <ClInclude Include="Source\Argent\Graphic\SceneConstant.h" />
     <ClInclude Include="Source\Argent\Input\Keyboard.h" />
     <ClInclude Include="Source\Argent\Input\Mouse.h" />
     <ClInclude Include="Source\Argent\Loader\FbxLoader.h" />
@@ -254,12 +255,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="Source\Shader\StageEmissive.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
     <FxCompile Include="Source\Shader\StaticMeshPixel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -275,6 +270,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shader\DebugMesh.hlsli" />
+    <None Include="Source\Shader\Helper.hlsli" />
     <None Include="Source\Shader\LambertDiffuse.hlsli" />
     <None Include="Source\Shader\Pera.hlsli" />
     <None Include="Source\Shader\PhongSpecular.hlsli" />
