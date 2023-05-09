@@ -87,7 +87,7 @@ void Game::Initialize()
 	l = GameObject::Instantiate("PointLight", new PointLight(3));
 	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
 
-	GameObject::Instantiate("skyBox",Argent::Loader::Fbx::LoadFbx("./Resources/Model/skyBox.fbx", true));
+	GameObject::Instantiate("skyBox",Argent::Loader::Fbx::LoadFbx("./Resources/Model/Sky/skysphere.fbx", false));
 
 	
 #ifndef _DEBUG

@@ -174,7 +174,8 @@ namespace Argent::Graphics
 		pipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 
 		auto r = Helper::Dx12::Rasterizer::Generate();
-		r.DepthClipEnable = false;
+		//r.DepthClipEnable = false;
+		
 		pipelineStateDesc.RasterizerState = r;
 		pipelineStateDesc.BlendState = blendDesc;
 		pipelineStateDesc.InputLayout.NumElements = _countof(inputElementDesc);

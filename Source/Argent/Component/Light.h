@@ -7,18 +7,20 @@ class DirectionalLight :
     public Argent::Component::BaseComponent
 {
 public:
-    DirectionalLight(int index, std::string name = "Light", DirectX::XMFLOAT4 color = DirectX::XMFLOAT4(1, 1, 1, 1));
+    DirectionalLight(int index, std::string name = "Light", DirectX::XMFLOAT3 color = DirectX::XMFLOAT3(1, 1, 1), float power = 1.0f);
 	virtual ~DirectionalLight() override = default;
 
     void Reset() override;
     void Render() const override;
 
     void DrawDebug() override;
-    [[nodiscard]] Argent::Color GetColor() const { return color; }
+    DirectX::XMFLOAT3 GetColor() const { return color; }
 
 
 protected:
-    Argent::Color color;
+   // Argent::Color color;
+    DirectX::XMFLOAT3 color;
+    float power;
     DirectX::XMFLOAT3 direction;
     int index;
 };
@@ -40,7 +42,9 @@ public:
     void DrawDebug() override;
 
 private:
-    Argent::Color color;
+    DirectX::XMFLOAT3 color;
+    float power;
+   // Argent::Color color;
     float range;
     int index;
 };

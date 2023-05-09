@@ -49,10 +49,10 @@ float4 main(VS_OUT pin) : SV_TARGET
         diffusePoint += dPoint;
         specularPoint += sPoint;
     }
-    //float4 ret = float4(diffuse + specular + diffusePoint + specularPoint, 1);
+    float4 ret = float4(diffuse + specular + diffusePoint + specularPoint, 1);
 
    //float4 ret = float4(diffuse + specular, 1);
-    float4 ret = float4(diffusePoint + specularPoint, 1);
+    //float4 ret = float4(diffusePoint + specularPoint, 1);
 
 
     //float4 ret = float4(diffuse + specular, 1);
