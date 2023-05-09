@@ -86,14 +86,6 @@ namespace Argent::Component::Renderer
 
 	void MeshRenderer::CreateComObject(ID3D12Device* device)
 	{
-		/*for (auto it = materials.begin(); it != materials.end(); ++it)
-		{
-			it->second->constantBuffer =
-				std::make_unique<Argent::Dx12::ArConstantBuffer<Material::MeshMaterial::Constant>>(
-					device,
-					Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
-					&it->second->constant);
-		}*/
 		for(auto& s : mesh->subsets)
 		{
 			if (s.material->constantBuffer == nullptr)

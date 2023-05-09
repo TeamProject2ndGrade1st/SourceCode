@@ -26,6 +26,8 @@
 void Game::Initialize()
 {
 	ClearGameObject();
+	BaseScene::Initialize();
+	GameObject::Instantiate("addCamera", new Camera(false, 1280, 720));
 	Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Cube.fbx");
 	Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Sphere.fbx");
 	auto g = GameObject::Instantiate("UI", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/UI.png"));
@@ -60,7 +62,7 @@ void Game::Initialize()
 	GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_1_0426_5.fbx"));
 
 
-	BaseScene::Initialize();
+	
 	std::vector<GameObject*> lightArray;
 	GameObject::FindByTag(GameObject::Tag::Light, lightArray);
 	//lightArray.at(0)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, -10.0f, -50));
@@ -87,6 +89,7 @@ void Game::Initialize()
 
 	GameObject::Instantiate("skyBox",Argent::Loader::Fbx::LoadFbx("./Resources/Model/skyBox.fbx", true));
 
+	
 #ifndef _DEBUG
 	ShowCursor(false);
 #endif

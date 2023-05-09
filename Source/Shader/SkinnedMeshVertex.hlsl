@@ -29,7 +29,7 @@ VS_OUT main( VSIN vin )
 	vout.worldPosition = mul(vin.position, meshWorld);
 
 	vout.worldNormal = normalize(mul(vin.normal, meshWorld));
-    vout.worldTangent = normalize(mul(vin.tangent, world));
+    vout.worldTangent = normalize(mul(vin.tangent, meshWorld));
     vout.worldTangent.w = sigma;
 	vout.texcoord = vin.texcoord;
 

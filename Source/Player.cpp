@@ -17,19 +17,52 @@ void Player::Initialize()
 
     
 
-    camera = GameObject::FindByName("Camera"); // ‚±‚Á‚¿‚Å
-    camera->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 16.0f, 0));
     movement = 50.5f;
-    {
-        auto c = camera->GetComponent<Camera>();
-		c->SetMaxRotation(DirectX::XMFLOAT4(70, 370, 0, 0));
-		c->SetMinRotation(DirectX::XMFLOAT4(-70, -10, 0, 0));
-    }
+  //  camera = GameObject::FindByName("Camera"); // ‚±‚Á‚¿‚Å
+  //  camera->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 16.0f, 0));
+  //  {
+  //      auto c = camera->GetComponent<Camera>();
+		//c->SetMaxRotation(DirectX::XMFLOAT4(70, 370, 0, 0));
+		//c->SetMinRotation(DirectX::XMFLOAT4(-70, -10, 0, 0));
+  //  }
 
 
     gun =new BaseGun("Base Gun");
     //gun = GameObject::Instantiate("Gun", new BaseGun("Base Gun"));
     GetOwner()->AddComponent(gun);
+
+    std::vector<GameObject*> gameObject;
+    GameObject::FindByTag(GameObject::Tag::MainCamera, gameObject);
+    for(auto g : gameObject)
+    {
+	    cameraArray.emplace_back(g->GetComponent<Camera>());
+    }
+
+    for(auto& c : cameraArray)
+    {
+	    if(c->GetIsSceneCamera())
+	    {
+		    camera = c->GetOwner();
+            camera->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 16.0f, 0));
+            c->SetMaxRotation(DirectX::XMFLOAT4(70, 370, 0, 0));
+            c->SetMinRotation(DirectX::XMFLOAT4(-70, -10, 0, 0));
+            
+            break;
+	    }
+    }
+
+}
+
+void Player::Begin()
+{
+    for(auto& c : cameraArray)
+    {
+	    if(c->GetIsSceneCamera())
+	    {
+		    camera = c->GetOwner();
+            break;
+	    }
+    }
 }
 
 void Player::Update()
