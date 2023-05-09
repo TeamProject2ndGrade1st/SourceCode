@@ -8,6 +8,8 @@
 #include "Stage.h"
 
 #include "FriendCreature.h"
+#include "FriendCreater.h"
+
 #include "Player.h"
 #include "Argent/Debug/DebugRenderer.h"
 #include "Demo.h"
@@ -17,8 +19,6 @@
 #include "EnemyManager.h"
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
-
-
 
 void Game::Initialize()
 {
@@ -48,11 +48,15 @@ void Game::Initialize()
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 	AddObject(new GameObject("EnemyManager", new EnemyManager(this)));
 
-	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/boxes_0419_1.fbx"));
+	AddObject(new GameObject("FriendCreater", new FriendCreater()));
+	
+	//AddObject(new GameObject("kongure",Argent::Loader::Fbx::LoadFbx("./Resources/Model/kongure_0509_1.fbx", false)));
+
+	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_3_0508_1.fbx"));
 	GameObject::Instantiate("Box", new Box("./Resources/Model/Stage/boxes_0419_1.fbx"));
 	GameObject::Instantiate("OwnCamp", new OwnCamp("./Resources/Model/Stage/zizin_0419_1.fbx"));
 	GameObject::Instantiate("Core", new Core("./Resources/Model/Stage/core_0419_1.fbx"));
-	//GameObject::Instantiate("HoneyComb", new Honeycomb("./Resources/Model/Stage/hanikamu_0425_1.fbx"));
+	GameObject::Instantiate("HoneyComb", new Honeycomb("./Resources/Model/Stage/hanikamu_0425_1.fbx"));
 	GameObject::Instantiate("Barricade", new Barricade("./Resources/Model/Stage/barike-do_0419_1.fbx"));
 	GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_1_0426_5.fbx"));
 

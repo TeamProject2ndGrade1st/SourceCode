@@ -48,6 +48,8 @@ namespace Argent::Component::Collider
 
 		void DrawDebug() override;
 
+		float GetRadius()const { return radius; }
+
 
 	protected:
 		float radius{};

@@ -92,6 +92,7 @@
     <ClCompile Include="Source\EnemyStateMachine.cpp" />
     <ClCompile Include="Source\EnemyTurret.cpp" />
     <ClCompile Include="Source\EnemyTurretShot.cpp" />
+    <ClCompile Include="Source\FriendCreater.cpp" />
     <ClCompile Include="Source\FriendCreature.cpp" />
     <ClCompile Include="Source\FriendDrone.cpp" />
     <ClCompile Include="Source\FriendManager.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Source\EnemyStateMachine.h" />
     <ClInclude Include="Source\EnemyTurret.h" />
     <ClInclude Include="Source\EnemyTurretShot.h" />
+    <ClInclude Include="Source\FriendCreater.h" />
     <ClInclude Include="Source\FriendCreature.h" />
     <ClInclude Include="Source\FriendDrone.h" />
     <ClInclude Include="Source\FriendManager.h" />

@@ -23,7 +23,7 @@ public:
     void DrawDebug()override;
 
     void AddFriend(BaseFriend* _friend);
-    void SetFriendByClick();
+    
 
     
 

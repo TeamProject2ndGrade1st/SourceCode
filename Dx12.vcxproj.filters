@@ -367,6 +367,7 @@
     <ClCompile Include="Source\EnemyTurretShot.cpp">
       <Filter>Game\mame</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FriendCreater.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -658,6 +659,7 @@
     <ClInclude Include="Source\EnemyTurretShot.h">
       <Filter>Game\mame</Filter>
     </ClInclude>
+    <ClInclude Include="Source\FriendCreater.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

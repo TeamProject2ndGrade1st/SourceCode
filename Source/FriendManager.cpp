@@ -26,8 +26,6 @@ void FriendManager::Update()
             (*activer)->OnCollision((*passiver)->GetOwner()->GetComponent<Argent::Component::Collider::SphereCollider>());
         }
     }
-    
-    SetFriendByClick();
 }
 
 void FriendManager::DrawDebug()
@@ -68,59 +66,6 @@ void FriendManager::AddFriend(BaseFriend* _friend)
     friendArray.emplace_back(_friend);
 
     //タグ登録はそれぞれのフレンド本体で行っている
-}
-
-void FriendManager::SetFriendByClick()
-{
-    //ビューポート
-    D3D12_VIEWPORT viewport = Argent::Graphics::Graphics::Instance()->GetViewport();
-
-    //交換行列
-    std::vector<GameObject*> _camera;
-    GameObject::FindByTag(GameObject::Tag::MainCamera,_camera);
-    Camera* camera = _camera.at(0)->GetComponent<Camera>();
-    DirectX::XMMATRIX View = camera->GetViewMatrix();
-    DirectX::XMMATRIX Projection = camera->GetProjectionMatrix();
-    DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
-
-    //エネミー配置処理
-    if (Argent::Input::Mouse::Instance().GetButtonDown(Argent::Input::Mouse::Button::RightButton))
-    {
-        DirectX::XMVECTOR startPosition = { Argent::Graphics::GetWindowWidth()/2,Argent::Graphics::GetWindowHeight() / 2,0.0f};
-        DirectX::XMVECTOR endPosition = { Argent::Graphics::GetWindowWidth() / 2,Argent::Graphics::GetWindowHeight() / 2,1.0f };
-
-        DirectX::XMVECTOR Start = DirectX::XMVector3Unproject(
-            startPosition,
-            viewport.TopLeftX, viewport.TopLeftY,
-            viewport.Width, viewport.Height,
-            viewport.MinDepth, viewport.MaxDepth,
-            Projection, View, World
-        );
-        DirectX::XMVECTOR End = DirectX::XMVector3Unproject(
-            endPosition,
-            viewport.TopLeftX, viewport.TopLeftY,
-            viewport.Width, viewport.Height,
-            viewport.MinDepth, viewport.MaxDepth,
-            Projection, View, World
-        );
-
-        DirectX::XMFLOAT3 start;
-        DirectX::XMStoreFloat3(&start, Start);
-        DirectX::XMFLOAT3 end;
-        DirectX::XMStoreFloat3(&end, End);
-
-        std::vector<GameObject*> stage;
-        GameObject::FindByTag(GameObject::Tag::Stage, stage);
-        auto meshResource = stage.at(0)->GetComponent<Argent::Component::Renderer::MeshRenderer>()->GetMesh()->meshResource;
-
-        HitResult result;
-        if (Argent::Helper::Collision::IntersectRayVsModel(start, end, 
-            meshResource,stage.at(0)->GetComponent<Argent::Component::Collider::RayCastCollider>()->GetWorldTransform(),
-            result))
-        {
-            AddFriend(new FriendCreature(result.position));
-        }
-    }
 }
 
 BaseFriend* FriendManager::FindFriendComponentFromOwner(GameObject* wFriend) const
