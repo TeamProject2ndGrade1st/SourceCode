@@ -16,7 +16,7 @@ public:
     void DrawDebug()override;
 
     void SetVelocity(DirectX::XMFLOAT3 velo) { velocity = velo; }
-
+    DirectX::XMFLOAT3 GetVelocity() { return velocity; }
 
 
     // ˆÚ“®ˆ—

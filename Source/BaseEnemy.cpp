@@ -76,7 +76,7 @@ BaseFriend* BaseEnemy::SearchFriend1()
         float vx = pos.x - friendPos.x;
         float vy = pos.y - friendPos.y;
         float vz = pos.z - friendPos.z;
-        float dist = sqrtf(vx * vx + vy * vy + vz * vz);
+        float dist = sqrtf(vx * vx + vz * vz);
 
         if (dist < 50)
         {

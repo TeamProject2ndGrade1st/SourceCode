@@ -29,10 +29,17 @@ void EnemyTurretShotManager::DrawDebug()
 {
 }
 
-void EnemyTurretShotManager::AddShot(const DirectX::XMFLOAT3 pos)
+// shot‚ğ¶¬‚·‚é
+void EnemyTurretShotManager::AddShot(const DirectX::XMFLOAT3 pos, const DirectX::XMFLOAT3 targetPos)
 {
+    // shot‚ğì‚é
     EnemyTurretShot* shot = new EnemyTurretShot("shot", pos);
+    shot->SetVelocity(targetPos);
     GameObject::Instantiate("shot", shot);
+    
+    // shot‚Ìi‚Ş•ûŒü‚ğİ’è‚·‚é
+    
+    
+    // shot‚ğ”z—ñ‚É“o˜^‚·‚é
     shotArray.emplace_back(shot);
-    // TO DO ‚±‚±‰ğŒˆ‚µ‚È‚¢‚Æ‚¢‚¯‚È‚¢
 }

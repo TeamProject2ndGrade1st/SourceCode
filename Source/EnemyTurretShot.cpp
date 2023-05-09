@@ -14,11 +14,16 @@ void EnemyTurretShot::Initialize()
 
 
     // ‘¬“xÝ’è
-    DirectX::XMFLOAT3 moveVec{ 0.0f,0.0f,-8000.0f };
+    DirectX::XMFLOAT3 velo = GetVelocity();
+    float add = 100.0f;
+    moveVec = { velo.x * add,velo.y * add ,velo.z * add };
+    //DirectX::XMVECTOR vec = DirectX::XMLoadFloat3(&velo);
+    //DirectX::XMVectorScale(vec, 1000.0f);
+    //DirectX::XMStoreFloat3(&moveVec, vec);
     SetVelocity(moveVec);
 
     // ’e‚ªÁ‚¦‚é‚Ü‚Å‚ÌŽžŠÔ‚ðÝ’è‚·‚é
-    eraseTimer = 2.0f;
+    eraseTimer = 10.0f;
 }
 
 void EnemyTurretShot::Update()
@@ -36,9 +41,15 @@ void EnemyTurretShot::DrawDebug()
 // ˆÚ“®ˆ—
 void EnemyTurretShot::UpdateMove()
 {
-    GetOwner()->GetTransform()->AddPosition(DirectX::XMFLOAT3(
-        velocity.x * Argent::Timer::GetDeltaTime() * GetTransform()->GetScaleFactor(),
-        0.0f,
-        velocity.z * Argent::Timer::GetDeltaTime() * GetTransform()->GetScaleFactor()
-    ));
+    //GetOwner()->GetTransform()->AddPosition(DirectX::XMFLOAT3(
+    //    velocity.x * Argent::Timer::GetDeltaTime() * GetTransform()->GetScaleFactor(),
+    //    0.0f,
+    //    velocity.z * Argent::Timer::GetDeltaTime() * GetTransform()->GetScaleFactor()
+    //));
+    GetOwner()->GetTransform()->AddPosition({
+        velocity.x * Argent::Timer::GetDeltaTime(),
+        velocity.y * Argent::Timer::GetDeltaTime(),
+        velocity.z * Argent::Timer::GetDeltaTime()
+        }
+    );
 }

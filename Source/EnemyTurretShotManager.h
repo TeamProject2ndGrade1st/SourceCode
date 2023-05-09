@@ -22,7 +22,7 @@ public:
     void Update()override;
     void DrawDebug()override;
 
-    void AddShot(const DirectX::XMFLOAT3 pos);
+    void AddShot(const DirectX::XMFLOAT3 pos, const DirectX::XMFLOAT3 targetPos);
 
 private:
     

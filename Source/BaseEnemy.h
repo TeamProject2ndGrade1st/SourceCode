@@ -54,6 +54,7 @@ public:
     void SetFriend(BaseFriend* f) { _friend = f; }
 
 
+
     BaseFriend* SearchFriend1();
 protected:
     // –Ú“IÀ•W

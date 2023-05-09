@@ -12,6 +12,7 @@ void EnemyTurret::Initialize()
 
     // 向きを整える
     GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 90.0f, 0.0f, 0.0f));
+    //GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f));
 
     // デバックシリンダー
     GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube));
@@ -40,7 +41,7 @@ void EnemyTurret::Begin()
 {
     BaseEnemy::Begin();
 
-    GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 90.0f, 0.0f, 0.0f));
+    //GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 90.0f, 0.0f, 0.0f));
 }
 
 void EnemyTurret::Update()
