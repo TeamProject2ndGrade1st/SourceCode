@@ -24,7 +24,8 @@ namespace Argent::Graphics
 
 
 		D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-		D3D12_CLEAR_VALUE clearValue = CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor);
+		D3D12_CLEAR_VALUE clearValue = CD3DX12_CLEAR_VALUE(rsDesc.Format, clearColor);
+		//D3D12_CLEAR_VALUE clearValue = CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor);
 		//シェーダーリソースとしてリソースを作成(バリアの設定をするため最初はシェーダーリソース）
 		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &rsDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 			&clearValue, IID_PPV_ARGS(resource.ReleaseAndGetAddressOf()));
@@ -33,7 +34,8 @@ namespace Argent::Graphics
 		//シェーダーリソースとレンダーターゲットそれぞれのビューを作成
 		D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 		rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
-		rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		rtvDesc.Format = rsDesc.Format;
+		//rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		auto handle = rtvDescriptor->GetCPUHandle();
 		device->CreateRenderTargetView(resource.Get(), &rtvDesc, handle);
 

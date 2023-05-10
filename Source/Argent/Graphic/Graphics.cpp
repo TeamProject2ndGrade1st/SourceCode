@@ -69,7 +69,10 @@ namespace Argent::Graphics
 		resourceQueue = std::make_unique<Dx12::CommandQueue>(device.Get());
 		resourceCmdBundle = std::make_unique<Dx12::CommandBundle>(device.Get());
 
-		hr = CreateSwapChain(hWnd, factory.Get(), static_cast<UINT>(windowWidth), static_cast<UINT>(windowHeight), NumBackBuffers, renderingQueue->cmdQueue.Get(), swapChain.GetAddressOf());
+		hr = CreateSwapChain(hWnd, factory.Get(),
+			static_cast<UINT>(windowWidth), static_cast<UINT>(windowHeight),
+			NumBackBuffers, renderingQueue->cmdQueue.Get(), 
+			swapChain.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 		
 

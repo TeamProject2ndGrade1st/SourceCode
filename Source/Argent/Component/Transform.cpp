@@ -85,14 +85,7 @@ void Transform::DrawDebug()
 
 void Transform::Reset()
 {
-	if(GetOwner()->GetComponent<Camera>() || GetOwner()->GetComponent<Light>())
-	{
-		position = DirectX::XMFLOAT3(0, 0, -10);
-	}
-	else 
-	{
-		position = DirectX::XMFLOAT3();
-	}
+	position = DirectX::XMFLOAT3();
 	scale = DirectX::XMFLOAT3(1, 1, 1);
 	rotation = DirectX::XMFLOAT4(0, 0, 0, 0);
 }

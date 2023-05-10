@@ -3,7 +3,7 @@
 struct VSIN
 {
 	float4 position : POSITION;
-	float4 normal : NORMAL;
+	float3 normal : NORMAL;
     float4 tangent : TANGENT;
 	float2 texcoord : TEXCOORD;
 };
@@ -25,7 +25,7 @@ cbuffer ObjectConstant : register(b1)
 
 cbuffer MaterialConstant : register(b2)
 {
-	float4 color;
+	float4 materialColor;
 	float4 ka;
 	float4 kd;
 	float4 ks;

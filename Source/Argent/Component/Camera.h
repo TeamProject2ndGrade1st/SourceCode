@@ -17,7 +17,7 @@ public:
 	void Initialize() override;
 	void Update() override;
 	void LateUpdate() override;
-	void End() override;
+
 
 	void DrawDebug() override;
 

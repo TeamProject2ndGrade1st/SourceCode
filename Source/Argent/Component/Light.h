@@ -1,25 +1,50 @@
 #pragma once
 #include "Component.h"
 #include "Color.h"
+#include "../Graphic/SceneConstant.h"
 
-class Light :
+class DirectionalLight :
     public Argent::Component::BaseComponent
 {
 public:
-    Light(int index, std::string name = "Light", DirectX::XMFLOAT4 color = DirectX::XMFLOAT4(1, 1, 1, 1));
-	virtual ~Light() = default;
+    DirectionalLight(int index, std::string name = "Light", DirectX::XMFLOAT3 color = DirectX::XMFLOAT3(1, 1, 1), float power = 1.0f);
+	virtual ~DirectionalLight() override = default;
 
-
-    void Initialize() override;
     void Reset() override;
-    void End() override;
+    void Render() const override;
 
     void DrawDebug() override;
-    [[nodiscard]] Argent::Color GetColor() const { return color; }
+    DirectX::XMFLOAT3 GetColor() const { return color; }
 
 
 protected:
-    Argent::Color color;
+   // Argent::Color color;
+    DirectX::XMFLOAT3 color;
+    float power;
+    DirectX::XMFLOAT3 direction;
     int index;
 };
 
+class PointLight:
+    public Argent::Component::BaseComponent
+{
+public:
+    PointLight(int index, float range = 50.0f):
+		BaseComponent("PointLight")
+    ,   index(index)
+    ,   range(range)
+    {}
+
+    ~PointLight() override = default;
+
+    void Initialize() override;
+    void Render() const override;
+    void DrawDebug() override;
+
+private:
+    DirectX::XMFLOAT3 color;
+    float power;
+   // Argent::Color color;
+    float range;
+    int index;
+};

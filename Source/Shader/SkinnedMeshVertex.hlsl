@@ -29,12 +29,12 @@ VS_OUT main( VSIN vin )
 	vout.worldPosition = mul(vin.position, meshWorld);
 
 	vout.worldNormal = normalize(mul(vin.normal, meshWorld));
-    vout.worldTangent = normalize(mul(vin.tangent, world));
+    vout.worldTangent = normalize(mul(vin.tangent, meshWorld));
     vout.worldTangent.w = sigma;
 	vout.texcoord = vin.texcoord;
 
 #if 1
-	vout.color = materialColor;
+	//vout.color = materialColor;
 #else
 	vout.color = float4(0, 0, 0, 0);
 	const float4 boneColors[4] = 

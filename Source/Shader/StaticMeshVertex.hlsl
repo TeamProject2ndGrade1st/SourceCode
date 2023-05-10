@@ -9,11 +9,10 @@ VS_OUT main(VSIN vin)
 	vout.position = mul(vin.position, mul(world, viewProjection));
 	vout.worldPosition = mul(vin.position, world);
 
-	vout.worldNormal = vin.normal;
-	//vout.worldNormal = normalize(mul(vin.normal, world));
+    vout.worldNormal = normalize(mul(vin.normal, world));
     vout.worldTangent = normalize(mul(vin.tangent, world));
     vout.worldTangent.w = sigma;
 	vout.texcoord = vin.texcoord;
-	vout.color = color;
+	vout.color = materialColor;
 	return vout;
 }

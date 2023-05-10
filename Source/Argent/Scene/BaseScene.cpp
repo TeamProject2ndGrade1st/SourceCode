@@ -29,17 +29,17 @@ namespace Argent::Scene
 		AddObject(c);
 
 
-		auto l = new GameObject("Light", new Light(lightIndex));
+		auto l = new GameObject("Light", new DirectionalLight(lightIndex));
 		l->ReplaceTag(GameObject::Tag::Light);
 		AddObject(l);
-		++lightIndex;
+		/*++lightIndex;
 		l = new GameObject("Light", new Light(lightIndex));
 		l->ReplaceTag(GameObject::Tag::Light);
 		AddObject(l);
 		++lightIndex;
 		l = new GameObject("Light", new Light(lightIndex));
 		l->ReplaceTag(GameObject::Tag::Light);
-		AddObject(l);
+		AddObject(l);*/
 		/*++lightIndex;
 		l = new GameObject("Light", new Light(lightIndex));
 		l->ReplaceTag(GameObject::Tag::Light);

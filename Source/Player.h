@@ -10,6 +10,7 @@ public:
 	virtual ~Player() override = default;
 
 	void Initialize() override;
+	void Begin() override;
 	void Update() override;
 
 
@@ -35,6 +36,7 @@ protected:
 	bool useCameraControl = true;
 	float offsetLength;
 	BaseGun* gun;
+	std::vector<Camera*> cameraArray;
 	//GameObject* gun;
 
 	DirectX::XMFLOAT3 gunOffset;

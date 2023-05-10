@@ -21,8 +21,6 @@ Camera::Camera(bool isSceneCamera, float width, float height, float nearZ, float
 ,	maxRotation(0, 0, 0, 0)
 ,	minRotation(0, 0, 0, 0)
 {
-	/*if(Argent::Graphics::Graphics::Instance()->GetCamera() == nullptr)
-		Argent::Graphics::Graphics::Instance()->SetCamera(this);*/
 }
 
 void Camera::Reset()
@@ -36,6 +34,7 @@ void Camera::Initialize()
 	pos.z = -10.0f;
 	GetOwner()->GetTransform()->SetPosition(pos);
 	Argent::Component::BaseComponent::Initialize();
+	GetOwner()->AddTag(GameObject::Tag::MainCamera);
 }
 
 void Camera::Update()
@@ -150,25 +149,17 @@ void Camera::LateUpdate()
 		rotation = Max(rotation, minRotation);
 	}
 	GetOwner()->GetTransform()->SetRotation(rotation);
-	auto g = Argent::Graphics::Graphics::Instance();
-	g->SetCameraPosition(GetOwner()->GetTransform()->GetPosition());
-	g->SetProjectionMatrix(GetProjectionMatrix());
-	g->SetViewMatrix(GetViewMatrix());
-}
 
-void Camera::End()
-{
-	/*auto t = GetOwner()->GetTransform();
-	auto rot = t->GetRotation();
-	if (rot.x > maxRotation.x)
+	if(isSceneCamera)
 	{
-		rot.x = maxRotation.x;
-		t->SetRotation(rot);
-	}*/
-
-	
+		auto g = Argent::Graphics::Graphics::Instance();
+		auto ga = GetOwner();
+		auto p = GetOwner()->GetTransform()->GetPosition();
+		g->SetCameraPosition(GetOwner()->GetTransform()->GetPosition());
+		g->SetProjectionMatrix(GetProjectionMatrix());
+		g->SetViewMatrix(GetViewMatrix());
+	}
 }
-
 
 void Camera::DrawDebug()
 {
@@ -177,6 +168,23 @@ void Camera::DrawDebug()
 		if(ImGui::Button("Use Scene Camera"))
 		{
 			isSceneCamera = true;
+			std::vector<GameObject*> gameObject;
+			GameObject::FindByTag(GameObject::Tag::MainCamera, gameObject);
+			for(auto& g : gameObject)
+			{
+				auto* c = g->GetComponent<Camera>();
+				if(c)
+				{
+					if(c != this)
+					{
+						c->isSceneCamera = false;
+					}
+					else
+					{
+						c->isSceneCamera = true;
+					}
+				}
+			}
 		}
 
 

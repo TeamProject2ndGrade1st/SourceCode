@@ -23,6 +23,8 @@
 void Game::Initialize()
 {
 	ClearGameObject();
+	BaseScene::Initialize();
+	GameObject::Instantiate("addCamera", new Camera(false, 1280, 720));
 	Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Cube.fbx");
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Sphere.fbx");
 	auto g = GameObject::Instantiate("UI", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/UI.png"));
@@ -60,12 +62,13 @@ void Game::Initialize()
 	GameObject::Instantiate("Barricade", new Barricade("./Resources/Model/Stage/barike-do_0419_1.fbx"));
 	GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_1_0426_5.fbx"));
 
-	BaseScene::Initialize();
+
+	
 	std::vector<GameObject*> lightArray;
 	GameObject::FindByTag(GameObject::Tag::Light, lightArray);
-	lightArray.at(0)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, -10.0f, -50));
-	lightArray.at(1)->GetTransform()->SetPosition(DirectX::XMFLOAT3(-80.0f, 10.0f, 50.0f));
-	lightArray.at(2)->GetTransform()->SetPosition(DirectX::XMFLOAT3(35.0f, 18.0f, 30.0f));
+	//lightArray.at(0)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, -10.0f, -50));
+	//lightArray.at(1)->GetTransform()->SetPosition(DirectX::XMFLOAT3(-80.0f, 10.0f, 50.0f));
+	//lightArray.at(2)->GetTransform()->SetPosition(DirectX::XMFLOAT3(35.0f, 18.0f, 30.0f));
 
 	std::vector<GameObject*> camera;
 	GameObject::FindByTag(GameObject::Tag::MainCamera, camera);
@@ -75,8 +78,19 @@ void Game::Initialize()
 
 	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/shield_bash.efk", "./Resources/Effects/"));
 
-	
 
+	auto l = GameObject::Instantiate("PointLight", new PointLight(0));
+	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
+	l = GameObject::Instantiate("PointLight", new PointLight(1));
+	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
+	l = GameObject::Instantiate("PointLight", new PointLight(2));
+	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
+	l = GameObject::Instantiate("PointLight", new PointLight(3));
+	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
+
+	GameObject::Instantiate("skyBox",Argent::Loader::Fbx::LoadFbx("./Resources/Model/Sky/skysphere.fbx", false));
+
+	
 #ifndef _DEBUG
 	ShowCursor(false);
 #endif

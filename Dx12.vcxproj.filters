@@ -660,6 +660,9 @@
       <Filter>Game\mame</Filter>
     </ClInclude>
     <ClInclude Include="Source\FriendCreater.h" />
+    <ClInclude Include="Source\Argent\Graphic\SceneConstant.h">
+      <Filter>Lib\Argent\Graphic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
@@ -701,9 +704,6 @@
     <FxCompile Include="Source\Shader\DebugMeshPixel.hlsl">
       <Filter>Lib\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Source\Shader\StageEmissive.hlsl">
-      <Filter>Lib\Shader</Filter>
-    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shader\SpritePrimitive.hlsli">
@@ -731,6 +731,9 @@
       <Filter>Lib\Shader</Filter>
     </None>
     <None Include="Source\Shader\PhongSpecular.hlsli">
+      <Filter>Lib\Shader</Filter>
+    </None>
+    <None Include="Source\Shader\Helper.hlsli">
       <Filter>Lib\Shader</Filter>
     </None>
   </ItemGroup>
