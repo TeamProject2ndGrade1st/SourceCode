@@ -717,6 +717,7 @@
     <FxCompile Include="Source\Shader\GaussianBlurXVertex.hlsl" />
     <FxCompile Include="Source\Shader\GaussianBlurYVertex.hlsl" />
     <FxCompile Include="Source\Shader\tmpPixel.hlsl" />
+    <FxCompile Include="Source\Shader\KawaseBloomPixel.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shader\SpritePrimitive.hlsli">

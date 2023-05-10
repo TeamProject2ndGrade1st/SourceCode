@@ -182,9 +182,9 @@ namespace Argent::Graphics
 		luminanceExtraction->Draw(cmdList,
 			scissorRect, frameBuffer[0]->GetSrvGPUHandle(), viewport);
 
-		luminanceExtraction->SetOnCommandList(cmdList, 0);
+		//luminanceExtraction->SetOnCommandList(cmdList, 0);
 
-		gaussianBlur->Execute(cmdList, scissorRect);
+		gaussianBlur->Execute(cmdList, scissorRect, luminanceExtraction->GetSrvGPUHandle());
 
 		curFrameResource->SetRenderTarget(viewport, scissorRect, clearColor);
 

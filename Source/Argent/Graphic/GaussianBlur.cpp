@@ -13,25 +13,18 @@ namespace Argent::Graphics
 		this->clearColor[3] = clearColor[3];
 
 		HRESULT hr{ S_OK };
-
-		//必要なデスクリプタを取得
-		srvDescriptorX = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor();
-		rtvDescriptorX = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)->PopDescriptor();
-		srvDescriptorFinal = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor();
-		rtvDescriptorFinal = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)->PopDescriptor();
-
 		//フォーマットをHDR対応にする
 		rsDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+
+		rtvFinal = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)->PopDescriptor();
+		srvFinal = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor();
 
 		D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 		D3D12_CLEAR_VALUE clearValue = CD3DX12_CLEAR_VALUE(rsDesc.Format, clearColor);
 
 		//シェーダーリソースとしてリソースを作成(バリアの設定をするため最初はシェーダーリソース）
 		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &rsDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-			&clearValue, IID_PPV_ARGS(blurResourceX.ReleaseAndGetAddressOf()));
-		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &rsDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-			&clearValue, IID_PPV_ARGS(finalBlurResource.ReleaseAndGetAddressOf()));
+			&clearValue, IID_PPV_ARGS(finalResource.ReleaseAndGetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
 		//シェーダーリソースとレンダーターゲットそれぞれのビューを作成
@@ -39,26 +32,70 @@ namespace Argent::Graphics
 			D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 			rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 			rtvDesc.Format = rsDesc.Format;
-			auto handle = rtvDescriptorX->GetCPUHandle();
-			device->CreateRenderTargetView(blurResourceX.Get(), &rtvDesc, handle);
-			handle = rtvDescriptorFinal->GetCPUHandle();
-			device->CreateRenderTargetView(finalBlurResource.Get(), &rtvDesc, handle);
-
+			auto handle = rtvFinal->GetCPUHandle();
+			device->CreateRenderTargetView(finalResource.Get(), &rtvDesc, handle);
 
 			D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 			srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 			srvDesc.Format = rtvDesc.Format;
 			srvDesc.Texture2D.MipLevels = 1;
 			srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-			handle = srvDescriptorX->GetCPUHandle();
-			device->CreateShaderResourceView(blurResourceX.Get(), &srvDesc, handle);
-			handle = srvDescriptorFinal->GetCPUHandle();
-			device->CreateShaderResourceView(finalBlurResource.Get(), &srvDesc, handle);
+			handle = srvFinal->GetCPUHandle();
+			device->CreateShaderResourceView(finalResource.Get(), &srvDesc, handle);
 		}
-		
-		blurResourceX->SetName(L"GaussianBluerBufferX");
-		finalBlurResource->SetName(L"GaussianBluerBufferY");
 
+		renderingPipelineFinal = Argent::Graphics::RenderingPipeline::CreateCombineBokeColorPipeline();
+
+		//川瀬式ブルームに必要なダウンサンプリングの変数
+		int xDev = 2;
+		int yDev = 1;
+		UINT64 originalWidth = rsDesc.Width;
+		UINT64 originalHeight = rsDesc.Height;
+
+		for(int j = 0; j < 4; ++j)
+		{
+			originalWidth /= 2;
+			for (int i = 0; i < 2; ++i)
+			{
+				//必要なデスクリプタを取得
+				blurResource[j].srvDescriptor[i] = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor();
+				blurResource[j].rtvDescriptor[i] = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)->PopDescriptor();
+
+				
+
+				D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+				D3D12_CLEAR_VALUE clearValue = CD3DX12_CLEAR_VALUE(rsDesc.Format, clearColor);
+
+
+				//リソースの幅高さを下げていく
+				rsDesc.Width = originalWidth;
+				rsDesc.Height = originalHeight;
+
+				//シェーダーリソースとしてリソースを作成(バリアの設定をするため最初はシェーダーリソース）
+				hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &rsDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+					&clearValue, IID_PPV_ARGS(blurResource[j].blurResource[i].ReleaseAndGetAddressOf()));
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+
+				//シェーダーリソースとレンダーターゲットそれぞれのビューを作成
+				{
+					D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
+					rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
+					rtvDesc.Format = rsDesc.Format;
+					auto handle = blurResource[j].rtvDescriptor[i]->GetCPUHandle();
+					device->CreateRenderTargetView(blurResource[j].blurResource[i].Get(), &rtvDesc, handle);
+
+					D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+					srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+					srvDesc.Format = rtvDesc.Format;
+					srvDesc.Texture2D.MipLevels = 1;
+					srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+					handle = blurResource[j].srvDescriptor[i]->GetCPUHandle();
+					device->CreateShaderResourceView(blurResource[j].blurResource[i].Get(), &srvDesc, handle);
+				}
+
+				if (i == 0) originalHeight /= 2;
+			}
+		}
 
 		renderingPipelineX = Argent::Graphics::RenderingPipeline::CreateGaussianBlurPipelineX();
 		renderingPipelineY = Argent::Graphics::RenderingPipeline::CreateGaussianBlurPipelineY();
@@ -71,87 +108,51 @@ namespace Argent::Graphics
 
 	void GaussianBlur::SetOnCommandList(ID3D12GraphicsCommandList* cmdList, int rootParameterIndex)
 	{
-		cmdList->SetGraphicsRootDescriptorTable(rootParameterIndex, srvDescriptorFinal->GetGPUHandle());
+		cmdList->SetGraphicsRootDescriptorTable(rootParameterIndex, srvFinal->GetGPUHandle());
 	}
 
-	void GaussianBlur::Execute(ID3D12GraphicsCommandList* cmdList, D3D12_RECT rect)
+	void GaussianBlur::Execute(ID3D12GraphicsCommandList* cmdList, D3D12_RECT rect, D3D12_GPU_DESCRIPTOR_HANDLE srvHandle)
 	{
-		UpdateWeight(20);
-		renderingPipelineX->SetOnCommandList(cmdList);
+		UpdateWeight(10);
+		//renderingPipelineX->SetOnCommandList(cmdList);
 		//コンスタントバッファをセット
 		constantBuffer->UpdateConstantBuffer(constant);
-		constantBuffer->SetOnCommandList(cmdList, 1);
-
-		//横方向のブラー
-		{
-			CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(blurResourceX.Get(),
-				D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
-			const auto rtvHandle = rtvDescriptorX->GetCPUHandle();
-
-			//リソースの状態をレンダーターゲットに
-			cmdList->ResourceBarrier(1, &barrier);
-
-			//レンダーターゲットとしてセット＆クリア
-			cmdList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
-			cmdList->ClearRenderTargetView(rtvHandle, clearColor, 1, &rect);
-
-			//パイプラインをセット
-			renderingPipelineX->SetOnCommandList(cmdList);
-
-			//頂点バッファのセット
-			cmdList->IASetVertexBuffers(0, 0, nullptr);
-
-			//トポロジのセット
-			cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-			//ドローコール
-			cmdList->DrawInstanced(4, 1, 0, 0);
-
-			barrier = CD3DX12_RESOURCE_BARRIER::Transition(blurResourceX.Get(),
-				D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-
-			//リソースの状態をシェーダーリソースに戻す
-			cmdList->ResourceBarrier(1, &barrier);
-		}
-
-		//横ブラーしたテクスチャをセット
-		cmdList->SetGraphicsRootDescriptorTable(0, srvDescriptorX->GetGPUHandle());
-
-		//縦方向のブラー
-		{
-			renderingPipelineY->SetOnCommandList(cmdList);
-			CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(finalBlurResource.Get(),
-				D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
-			const auto rtvHandle = rtvDescriptorFinal->GetCPUHandle();
-
-			//リソースの状態をレンダーターゲットに
-			cmdList->ResourceBarrier(1, &barrier);
-
-			//レンダーターゲットとしてセット＆クリア
-			cmdList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
-			cmdList->ClearRenderTargetView(rtvHandle, clearColor, 1, &rect);
-
-			//パイプラインをセット
-			renderingPipelineX->SetOnCommandList(cmdList);
-
-			//頂点バッファのセット
-			cmdList->IASetVertexBuffers(0, 0, nullptr);
-
-			//トポロジのセット
-			cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-			//ドローコール
-			cmdList->DrawInstanced(4, 1, 0, 0);
+		//constantBuffer->SetOnCommandList(cmdList, 1);
 
 
+		//1回目のブラー
+		Blurred(cmdList, rect, &blurResource[0], srvHandle);
+		//2回目のブラー
+		Blurred(cmdList, rect, &blurResource[1], blurResource[0].srvDescriptor[1]->GetGPUHandle());
+		//3回目のブラー
+		Blurred(cmdList, rect, &blurResource[2], blurResource[1].srvDescriptor[1]->GetGPUHandle());
+		//4回目のブラー
+		Blurred(cmdList, rect, &blurResource[3], blurResource[2].srvDescriptor[1]->GetGPUHandle());
 
-			barrier = CD3DX12_RESOURCE_BARRIER::Transition(finalBlurResource.Get(),
-				D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+		//すべての平均を取る
 
-			//リソースの状態をシェーダーリソースに戻す
-			cmdList->ResourceBarrier(1, &barrier);
-		}
+		CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(finalResource.Get(),
+			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
-		cmdList->SetGraphicsRootDescriptorTable(0, srvDescriptorX->GetGPUHandle());
-		cmdList->SetGraphicsRootDescriptorTable(1, srvDescriptorFinal->GetGPUHandle());
+		//リソースの状態をレンダーターゲットに
+		cmdList->ResourceBarrier(1, &barrier);
+
+		auto rtvHandle = rtvFinal->GetCPUHandle();
+		cmdList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
+		cmdList->ClearRenderTargetView(rtvHandle, clearColor, 1, &rect);
+		renderingPipelineFinal->SetOnCommandList(cmdList);
+		cmdList->SetGraphicsRootDescriptorTable(0, blurResource[0].srvDescriptor[1]->GetGPUHandle());
+		cmdList->SetGraphicsRootDescriptorTable(1, blurResource[1].srvDescriptor[1]->GetGPUHandle());
+		cmdList->SetGraphicsRootDescriptorTable(2, blurResource[2].srvDescriptor[1]->GetGPUHandle());
+		cmdList->SetGraphicsRootDescriptorTable(3, blurResource[3].srvDescriptor[1]->GetGPUHandle());
+
+		cmdList->DrawInstanced(4, 1, 0, 0);
+
+		barrier = CD3DX12_RESOURCE_BARRIER::Transition(finalResource.Get(),
+			D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+
+		//リソースの状態をレンダーターゲットに
+		cmdList->ResourceBarrier(1, &barrier);
 	}
 
 	void GaussianBlur::UpdateWeight(float power)
@@ -166,6 +167,90 @@ namespace Argent::Graphics
 		for (int i = 0; i < NumWeight; i++) 
 		{
 			constant.weight[i] /= total;
+		}
+	}
+
+	void GaussianBlur::Blurred(ID3D12GraphicsCommandList* cmdList, D3D12_RECT rect, 
+		BlurBuffer* buffer, D3D12_GPU_DESCRIPTOR_HANDLE srvHandle)
+	{
+		auto* renderTarget = buffer->blurResource[0].Get();
+		auto rtvHandle = buffer->rtvDescriptor[0]->GetCPUHandle();
+
+		//横方向ブラー
+		{
+			renderingPipelineX->SetOnCommandList(cmdList);
+			CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(renderTarget,
+				D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
+
+			//リソースの状態をレンダーターゲットに
+			cmdList->ResourceBarrier(1, &barrier);
+
+			//レンダーターゲットとしてセット＆クリア
+			cmdList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
+			cmdList->ClearRenderTargetView(rtvHandle, clearColor, 1, &rect);
+
+			//シェーダーリソースのセット
+			cmdList->SetGraphicsRootDescriptorTable(0, srvHandle);
+
+			//頂点バッファのセット
+			cmdList->IASetVertexBuffers(0, 0, nullptr);
+
+			//コンスタントバッファのセット
+			constantBuffer->SetOnCommandList(cmdList, 1);
+
+			//トポロジのセット
+			cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+			//ドローコール
+			cmdList->DrawInstanced(4, 1, 0, 0);
+
+
+			barrier = CD3DX12_RESOURCE_BARRIER::Transition(renderTarget,
+				D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+
+			//リソースの状態をシェーダーリソースに戻す
+			cmdList->ResourceBarrier(1, &barrier);
+		}
+
+		//レンダーターゲットとハンドルを切り替える
+		renderTarget = buffer->blurResource[1].Get();
+		rtvHandle = buffer->rtvDescriptor[1]->GetCPUHandle();
+		srvHandle = buffer->srvDescriptor[0]->GetGPUHandle();
+
+		//縦方向ブラー
+		{
+			renderingPipelineY->SetOnCommandList(cmdList);
+			CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(renderTarget,
+				D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
+
+			//リソースの状態をレンダーターゲットに
+			cmdList->ResourceBarrier(1, &barrier);
+
+			//レンダーターゲットとしてセット＆クリア
+			cmdList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
+			cmdList->ClearRenderTargetView(rtvHandle, clearColor, 1, &rect);
+
+			//シェーダーリソースのセット
+			cmdList->SetGraphicsRootDescriptorTable(0, srvHandle);
+
+			//頂点バッファのセット
+			cmdList->IASetVertexBuffers(0, 0, nullptr);
+
+			//コンスタントバッファのセット
+			constantBuffer->SetOnCommandList(cmdList, 1);
+
+			//トポロジのセット
+			cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+			//ドローコール
+			cmdList->DrawInstanced(4, 1, 0, 0);
+
+
+			barrier = CD3DX12_RESOURCE_BARRIER::Transition(renderTarget,
+				D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+
+			//リソースの状態をシェーダーリソースに戻す
+			cmdList->ResourceBarrier(1, &barrier);
 		}
 	}
 }

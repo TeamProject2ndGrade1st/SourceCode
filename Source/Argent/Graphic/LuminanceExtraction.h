@@ -18,6 +18,7 @@ public:
 	void Draw(ID3D12GraphicsCommandList* cmdList, D3D12_RECT rect,
 		D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle, D3D12_VIEWPORT viewport);
 
+	D3D12_GPU_DESCRIPTOR_HANDLE GetSrvGPUHandle() const { return srvDescriptor->GetGPUHandle();  }
 	void Output(ID3D12GraphicsCommandList* cmdList);
 	void SetOnCommandList(ID3D12GraphicsCommandList* cmdList, int rootParameterIndex);
 private:

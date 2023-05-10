@@ -15,6 +15,18 @@ namespace Argent::Material
 		texture->SetOnCommandList(cmdList, RootParameterIndex);
 	}
 
+	void SpriteMaterial::DrawDebug()
+	{
+		if (ImGui::TreeNode("Material"))
+		{
+			ImGui::Text("%f", texture->GetWidth());
+			ImGui::Text("%f", texture->GetHeight());
+			ImGui::Image(reinterpret_cast<ImTextureID>(texture->GetImDescriptor()->GetGPUHandle().ptr), ImVec2(128, 128));
+			color.DrawDebug();
+			ImGui::TreePop();
+		}
+	}
+
 	void MeshMaterial::CreateTexture(const char* filePath, TextureUsage type)
 	{
 		textureUniqueId[static_cast<UINT>(type)] = Argent::Resource::ResourceManager::Instance().LoadTexture(filePath);
@@ -32,20 +44,18 @@ namespace Argent::Material
 		t2->SetOnCommandList(cmdList, normalIndex);
 	}
 
-
-	void SpriteMaterial::DrawDebug()
+	void MeshMaterial::DrawDebug()
 	{
-		if(ImGui::TreeNode("Material"))
+		if (ImGui::TreeNode(GetName()))
 		{
-			ImGui::Text("%f", texture->GetWidth());
-			ImGui::Text("%f", texture->GetHeight());
-			ImGui::Image(reinterpret_cast<ImTextureID>(texture->GetImDescriptor()->GetGPUHandle().ptr), ImVec2(128, 128));
+			ImGui::DragFloat3("Ka", &constant.ka.x, 0.001f, 0, 1.0f);
+			ImGui::DragFloat3("Kd", &constant.kd.x, 0.001f, 0, 1.0f);
+			ImGui::DragFloat3("Ks", &constant.ks.x, 0.001f, 0, 1.0f);
+			ImGui::DragFloat("Shininess", &constant.shininess, 1.0f, 0, FLT_MAX);
+			ImGui::DragFloat("EmissivePower", &constant.emissivePower, 0.0001f, 0, FLT_MAX);
+			ImGui::ColorPicker3("EmissiveColor", &constant.emissiveColor.x);
 			color.DrawDebug();
 			ImGui::TreePop();
 		}
 	}
-
-
-
-
 }
