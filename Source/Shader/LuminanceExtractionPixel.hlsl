@@ -6,7 +6,6 @@ Texture2D textureMaps : register(t0);
 
 float4 main(VS_OUT pin) : SV_TARGET
  {
-
     float4 color = textureMaps.Sample(samplerStates, pin.texcoord);
     
     float alpha = color.a;

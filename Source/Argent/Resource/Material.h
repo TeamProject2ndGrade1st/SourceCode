@@ -90,7 +90,7 @@ namespace Argent::Material
 		static constexpr int NumTextures = static_cast<int>(TextureUsage::Max);
 		uint64_t textureUniqueId[NumTextures];
 		std::string textureNames[NumTextures];
-		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer{};
+		std::unique_ptr<Argent::Dx12::ConstantBuffer<Constant>> constantBuffer{};
 		Constant constant{};
 		Color color;
 		void CreateTexture(const char* filePath, TextureUsage type);

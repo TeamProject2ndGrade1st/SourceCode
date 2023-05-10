@@ -90,11 +90,11 @@ namespace Argent::Component::Renderer
 		{
 			if (s.material->constantBuffer == nullptr)
 			{
-				s.material->constantBuffer = std::make_unique<Dx12::ArConstantBuffer<Material::MeshMaterial::Constant>>(
+				s.material->constantBuffer = std::make_unique<Dx12::ConstantBuffer<Material::MeshMaterial::Constant>>(
 					device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
 					&s.material->constant);
 			}
 		}
-		constantBuffer = std::make_unique<Argent::Dx12::ArConstantBuffer<Constants>>(device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+		constantBuffer = std::make_unique<Argent::Dx12::ConstantBuffer<Constants>>(device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 	}
 }

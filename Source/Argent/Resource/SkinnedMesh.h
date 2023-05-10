@@ -97,6 +97,6 @@ namespace Argent::Resource::Mesh
 
 		int64_t nodeIndex{};
 
-		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer;
+		std::unique_ptr<Argent::Dx12::ConstantBuffer<Constant>> constantBuffer;
 	};
 }

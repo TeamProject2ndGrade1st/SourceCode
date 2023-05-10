@@ -12,7 +12,7 @@ namespace
 		ID3D12Device* device = Graphics::Graphics::Instance()->GetDevice();
 		boneVertexBuffer = std::make_unique<Dx12::ArVertexBuffer<BoneVertex>>(
 			device, bones);
-		constantBuffer = std::make_unique<Dx12::ArConstantBuffer<Constant>>(
+		constantBuffer = std::make_unique<Dx12::ConstantBuffer<Constant>>(
 			device,
 			Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 	}

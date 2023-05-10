@@ -210,7 +210,7 @@ namespace Argent::Component::Renderer
 		/*for(auto it = materials.begin(); it != materials.end(); ++it)
 		{
 			it->second->constantBuffer = 
-				std::make_unique<Dx12::ArConstantBuffer<Argent::Material::MeshMaterial::Constant>>(
+				std::make_unique<Dx12::ConstantBuffer<Argent::Material::MeshMaterial::Constant>>(
 					device, 
 					Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
 					&it->second->constant);
@@ -220,12 +220,12 @@ namespace Argent::Component::Renderer
 		{
 			if (s.material->constantBuffer == nullptr)
 			{
-				s.material->constantBuffer = std::make_unique<Dx12::ArConstantBuffer<Argent::Material::MeshMaterial::Constant>>(
+				s.material->constantBuffer = std::make_unique<Dx12::ConstantBuffer<Argent::Material::MeshMaterial::Constant>>(
 					device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor(),
 					&s.material->constant);
 			}
 		}
-		objectConstantBuffer = std::make_unique<Dx12::ArConstantBuffer<Constants>>(device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
+		objectConstantBuffer = std::make_unique<Dx12::ConstantBuffer<Constants>>(device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 	}
 
 	void SkinnedMeshRenderer::SetAnimation(int index)

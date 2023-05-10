@@ -710,6 +710,13 @@
     </FxCompile>
     <FxCompile Include="Source\Shader\LuminanceExtractionPixel.hlsl" />
     <FxCompile Include="Source\Shader\FullscreenQuadVertex.hlsl" />
+    <FxCompile Include="Source\Shader\FullscreenQuadPixel.hlsl">
+      <Filter>Lib\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\GaussianBlurPixel.hlsl" />
+    <FxCompile Include="Source\Shader\GaussianBlurXVertex.hlsl" />
+    <FxCompile Include="Source\Shader\GaussianBlurYVertex.hlsl" />
+    <FxCompile Include="Source\Shader\tmpPixel.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shader\SpritePrimitive.hlsli">
@@ -743,5 +750,6 @@
       <Filter>Lib\Shader</Filter>
     </None>
     <None Include="Source\Shader\FullscreenQuad.hlsli" />
+    <None Include="Source\Shader\GaussianBlur.hlsli" />
   </ItemGroup>
 </Project>

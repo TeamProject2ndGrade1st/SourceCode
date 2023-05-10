@@ -16,6 +16,9 @@
 #include "FrameResource.h"
 #include "Dx12/Command.h"
 #include "Dx12/DescriptorHeap.h"
+#include "GaussianBlur.h"
+#include "LuminanceExtraction.h"
+#include "Bloom.h"
 
 namespace Argent::Graphics
 {
@@ -116,6 +119,14 @@ namespace Argent::Graphics
 		UINT backBufferIndex = -1;
 	public:
 		std::unique_ptr<FrameBuffer> frameBuffer[8];
+
+		//高輝度成分抽出
+		std::unique_ptr<LuminanceExtraction> luminanceExtraction;
+		//ガウシアンブラー
+		std::unique_ptr<GaussianBlur> gaussianBlur;
+
+		//ブルーム
+		std::unique_ptr<Bloom> bloom;
 	};
 
 	HRESULT CreateDevice(IDXGIFactory6* factory, ID3D12Device** device);

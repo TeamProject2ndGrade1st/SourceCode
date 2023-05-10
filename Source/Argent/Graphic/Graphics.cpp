@@ -26,9 +26,9 @@ namespace Argent::Graphics
 		GetClientRect(hWnd, &rc);
 		windowWidth = static_cast<float>(rc.right - rc.left);
 		windowHeight = static_cast<float>(rc.bottom - rc.top);
-		clearColor[0] = 255.0f / 256;
-		clearColor[1] = 169.0f / 256;
-		clearColor[2] = 242.0f / 256;
+		clearColor[0] = 0;
+		clearColor[1] = 0;
+		clearColor[2] = 0;
 
 		clearColor[3] = 0;
 		
@@ -93,6 +93,7 @@ namespace Argent::Graphics
 			i, rtvHeap->PopDescriptor(), dsvHeap->PopDescriptor(), srvCbvHeap->PopDescriptor(), NumCmdLists);
 		}
 
+
 		//ビューポート　シザー矩形
 		viewport.TopLeftX = 0;
 		viewport.TopLeftY = 0;
@@ -110,9 +111,14 @@ namespace Argent::Graphics
 		//フレームバッファの作成
 		for(auto& buffer : frameBuffer)
 		{
-			buffer = std::make_unique<FrameBuffer>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), 
+			buffer = std::make_unique<FrameBuffer>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), DXGI_FORMAT_R16G16B16A16_FLOAT,
 			                                       clearColor);
 		}
+
+		//高輝度成分用のバッファを作成
+		luminanceExtraction = std::make_unique<LuminanceExtraction>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), clearColor);
+		gaussianBlur = std::make_unique<GaussianBlur>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), clearColor);
+		bloom = std::make_unique<Bloom>();
 
 		device->SetName(L"Device");
 	}
@@ -153,11 +159,45 @@ namespace Argent::Graphics
 		
 	void Graphics::End()
 	{
+		ID3D12GraphicsCommandList* cmdList = curFrameResource->GetCmdList(RenderType::PostRendering);
 		frameBuffer[0]->End(this);
 		frameBuffer[1]->End(this);
-		curFrameResource->SetRenderTarget(viewport, scissorRect, clearColor);
+
+#if 0
+		//curFrameResource->SetRenderTarget(viewport, scissorRect, clearColor);
 		frameBuffer[0]->Draw(this);
 		frameBuffer[1]->Draw(this);
+
+		//高輝度成分を抽出する
+
+		luminanceExtraction->Draw(curFrameResource->GetCmdList(RenderType::PostRendering),
+			scissorRect, frameBuffer[0]->GetSrvGPUHandle(), viewport);
+		/*frameBuffer[0]->Draw(this);
+		frameBuffer[1]->Draw(this);*/
+		curFrameResource->SetRenderTarget(viewport, scissorRect, clearColor);
+		luminanceExtraction->Output(cmdList);
+#else
+		//高輝度成分を抽出する
+
+		luminanceExtraction->Draw(cmdList,
+			scissorRect, frameBuffer[0]->GetSrvGPUHandle(), viewport);
+
+		luminanceExtraction->SetOnCommandList(cmdList, 0);
+
+		gaussianBlur->Execute(cmdList, scissorRect);
+
+		curFrameResource->SetRenderTarget(viewport, scissorRect, clearColor);
+
+		bloom->Begin(cmdList);
+
+
+		cmdList->SetGraphicsRootDescriptorTable(0, frameBuffer[0]->GetSrvGPUHandle());
+		cmdList->DrawInstanced(4, 1, 0, 0);
+
+		gaussianBlur->SetOnCommandList(cmdList, 0);
+		cmdList->DrawInstanced(4, 1, 0, 0);
+		//luminanceExtraction->Output(curFrameResource->GetCmdList(RenderType::PostRendering));
+#endif
 #ifdef _DEBUG	
 		ImguiCtrl::End(curFrameResource->GetCmdList(RenderType::PostRendering), this->GetGUIHeap());
 #endif
@@ -167,7 +207,7 @@ namespace Argent::Graphics
 		ID3D12CommandList* cmdlists[] { curFrameResource->GetCmdList(RenderType::Sprite), curFrameResource->GetCmdList(RenderType::Mesh), curFrameResource->GetCmdList(RenderType::PostRendering) };
 		renderingQueue->cmdQueue->ExecuteCommandLists(_countof(cmdlists), cmdlists);
 
-		ID3D12GraphicsCommandList* cmdList = curFrameResource->GetCmdList(RenderType::PostRendering);
+		//ID3D12GraphicsCommandList* cmdList = curFrameResource->GetCmdList(RenderType::PostRendering);
 #ifdef _DEBUG
 		ImguiCtrl::CallBeforeSwap(cmdList);
 #endif

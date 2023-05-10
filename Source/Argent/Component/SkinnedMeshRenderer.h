@@ -93,7 +93,7 @@ namespace Argent::Component::Renderer
 		bool IsAnimationEnd();
 
 	private:
-		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> objectConstantBuffer;
+		std::unique_ptr<Argent::Dx12::ConstantBuffer<Constants>> objectConstantBuffer;
 
 		std::shared_ptr<Argent::Resource::Mesh::SkinnedMesh> skinnedMesh;
 		int clipIndex{};

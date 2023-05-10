@@ -8,11 +8,11 @@
 namespace Argent::Dx12
 {
 	template<class T>
-	class ArConstantBuffer
+	class ConstantBuffer
 	{
 	public:
-		ArConstantBuffer(ID3D12Device* device, Dx12::Descriptor* descriptor,const T* fillValue = nullptr);
-		~ArConstantBuffer() = default;
+		ConstantBuffer(ID3D12Device* device, Dx12::Descriptor* descriptor,const T* fillValue = nullptr);
+		~ConstantBuffer() = default;
 
 		void UpdateConstantBuffer(const T& t)
 		{
@@ -34,7 +34,7 @@ namespace Argent::Dx12
 	};
 
 	template <class T>
-	ArConstantBuffer<T>::ArConstantBuffer(ID3D12Device* device, Dx12::Descriptor* descriptor, const T* fillValue):
+	ConstantBuffer<T>::ConstantBuffer(ID3D12Device* device, Dx12::Descriptor* descriptor, const T* fillValue):
 		descriptor(descriptor)
 	{
 		HRESULT hr{ S_OK };
