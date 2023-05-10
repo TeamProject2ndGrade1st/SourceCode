@@ -4,9 +4,9 @@
 namespace Argent::Graphics
 {
 	RenderingPipeline::RenderingPipeline(const char* vsFilePath, const char* psFilePath,
-		const D3D12_ROOT_SIGNATURE_DESC* rootSigDesc, D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineStateDesc):
+		const D3D12_ROOT_SIGNATURE_DESC* rootSigDesc, D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineStateDesc) :
 		vertexShader(std::make_shared<Resource::Shader>(vsFilePath))
-	,	pixelShader(std::make_shared<Resource::Shader>(psFilePath))
+		, pixelShader(std::make_shared<Resource::Shader>(psFilePath))
 	{
 		ID3D12Device* device = Graphics::Graphics::Instance()->GetDevice();
 		CreateRootSignature(device, rootSigDesc);
@@ -86,13 +86,14 @@ namespace Argent::Graphics
 		pipelineStateDesc.IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
 		pipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 		pipelineStateDesc.NumRenderTargets = 1;
-		pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		//pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
 		pipelineStateDesc.SampleDesc = sampleDesc;
 		pipelineStateDesc.DepthStencilState = depthStencilDesc;
 		pipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 		pipelineStateDesc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
 
-		
+
 
 		//todo shader filepath どっかにおいておきたいね
 		return std::make_unique<RenderingPipeline>(
@@ -150,7 +151,7 @@ namespace Argent::Graphics
 		blendDesc.RenderTarget[0] = rtvBlendDesc;
 		//blendDesc.RenderTarget[0] = Helper::Dx12::Blend::GenerateRenderTargetBlendDesc(Helper::Dx12::Blend::BlendMode::bAlpha);
 
-		
+
 
 		D3D12_INPUT_ELEMENT_DESC inputElementDesc[]
 		{
@@ -175,7 +176,7 @@ namespace Argent::Graphics
 
 		auto r = Helper::Dx12::Rasterizer::Generate();
 		//r.DepthClipEnable = false;
-		
+
 		pipelineStateDesc.RasterizerState = r;
 		pipelineStateDesc.BlendState = blendDesc;
 		pipelineStateDesc.InputLayout.NumElements = _countof(inputElementDesc);
@@ -183,7 +184,7 @@ namespace Argent::Graphics
 		pipelineStateDesc.IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
 		pipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 		pipelineStateDesc.NumRenderTargets = 1;
-		pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
 		pipelineStateDesc.SampleDesc = sampleDesc;
 		pipelineStateDesc.DepthStencilState = depthStencilDesc;
 		pipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -194,7 +195,7 @@ namespace Argent::Graphics
 			"./Resources/Shader/StaticMeshPixel.cso",
 			&rootSigDesc,
 			&pipelineStateDesc
-			);
+		);
 	}
 
 	std::unique_ptr<RenderingPipeline> RenderingPipeline::CreateDefaultSkinnedMeshPipeline()
@@ -265,7 +266,7 @@ namespace Argent::Graphics
 		pipelineStateDesc.IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
 		pipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 		pipelineStateDesc.NumRenderTargets = 1;
-		pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
 		pipelineStateDesc.SampleDesc = sampleDesc;
 		pipelineStateDesc.DepthStencilState = depthStencilDesc;
 		pipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -276,7 +277,7 @@ namespace Argent::Graphics
 			"./Resources/Shader/SkinnedMeshPixel.cso",
 			&rootSigDesc,
 			&pipelineStateDesc
-			);
+		);
 	}
 
 	std::unique_ptr<RenderingPipeline> RenderingPipeline::CreateDebugRendererPipeline()
@@ -336,7 +337,7 @@ namespace Argent::Graphics
 
 		pipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 
-		
+
 		pipelineStateDesc.RasterizerState = rsDesc;
 		pipelineStateDesc.BlendState = blendDesc;
 		pipelineStateDesc.InputLayout.NumElements = _countof(inputElementDesc);
@@ -344,7 +345,7 @@ namespace Argent::Graphics
 		pipelineStateDesc.IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
 		pipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 		pipelineStateDesc.NumRenderTargets = 1;
-		pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
 		pipelineStateDesc.SampleDesc = sampleDesc;
 		pipelineStateDesc.DepthStencilState = depthStencilDesc;
 		pipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -355,7 +356,7 @@ namespace Argent::Graphics
 			"./Resources/Shader/DebugMeshPixel.cso",
 			&rootSigDesc,
 			&pipelineStateDesc
-			);
+		);
 	}
 
 	std::unique_ptr<RenderingPipeline> RenderingPipeline::CreateDefaultFrameBufferPipeline()
@@ -408,8 +409,93 @@ namespace Argent::Graphics
 
 		//パイプラインステート用
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
+
+#if 0
 		pipelineDesc.InputLayout.NumElements = _countof(inElementDesc);
 		pipelineDesc.InputLayout.pInputElementDescs = inElementDesc;
+#else
+		pipelineDesc.InputLayout.NumElements = 0;
+		pipelineDesc.InputLayout.pInputElementDescs = nullptr;
+#endif
+		pipelineDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+		pipelineDesc.BlendState.AlphaToCoverageEnable = FALSE;
+		pipelineDesc.BlendState.IndependentBlendEnable = FALSE;
+		pipelineDesc.BlendState.RenderTarget[0] = rtvBlendDesc;
+		pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		pipelineDesc.NumRenderTargets = 1;
+		pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		pipelineDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+		pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+		pipelineDesc.SampleDesc.Count = 1;
+		pipelineDesc.SampleDesc.Quality = 0;
+		pipelineDesc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
+
+		std::string vertexShaderName;
+
+#if 0
+		vertexShaderName = "./Resources/Shader/PeraVertex.cso";
+#else
+		vertexShaderName = "./Resources/Shader/FullscreenQuadVertex.cso";
+#endif
+		return std::make_unique<RenderingPipeline>(
+			vertexShaderName.c_str(),
+			"./Resources/Shader/PeraPixel.cso",
+			&rootSignatureDesc, &pipelineDesc
+		);
+	}
+
+	std::unique_ptr<RenderingPipeline> RenderingPipeline::CreateLuminanceExtractionPipeline()
+	{
+		HRESULT hr{ S_OK };
+		ID3D12Device* device = Graphics::Graphics::Instance()->GetDevice();
+
+		//ルートシグネチャ用
+		D3D12_DESCRIPTOR_RANGE range[1]{};
+		range[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+		range[0].BaseShaderRegister = 0;
+		range[0].NumDescriptors = 1;
+
+		D3D12_ROOT_PARAMETER rootParam[1]{};
+		rootParam[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+		rootParam[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+		rootParam[0].DescriptorTable.pDescriptorRanges = &range[0];
+		rootParam[0].DescriptorTable.NumDescriptorRanges = 1;
+
+		D3D12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
+
+		D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
+		rootSignatureDesc.NumParameters = 1;
+		rootSignatureDesc.pParameters = rootParam;
+		rootSignatureDesc.NumStaticSamplers = 1;
+		rootSignatureDesc.pStaticSamplers = &samplerDesc;
+		rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+
+		/*D3D12_INPUT_ELEMENT_DESC inElementDesc[]
+		{
+			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+				D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
+				D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+		};*/
+
+		D3D12_RENDER_TARGET_BLEND_DESC rtvBlendDesc{};
+		rtvBlendDesc.BlendEnable = true;
+		rtvBlendDesc.BlendEnable = TRUE;
+		rtvBlendDesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		rtvBlendDesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+		rtvBlendDesc.BlendOp = D3D12_BLEND_OP_ADD;
+		rtvBlendDesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+		rtvBlendDesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+		rtvBlendDesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+
+		rtvBlendDesc.LogicOpEnable = FALSE;
+		rtvBlendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+
+
+		//パイプラインステート用
+		D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
+		pipelineDesc.InputLayout.NumElements = /*_countof(inElementDesc)*/0;
+		pipelineDesc.InputLayout.pInputElementDescs = /*inElementDesc*/nullptr;
 		pipelineDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
 		pipelineDesc.BlendState.AlphaToCoverageEnable = FALSE;
 		pipelineDesc.BlendState.IndependentBlendEnable = FALSE;
@@ -425,9 +511,9 @@ namespace Argent::Graphics
 
 
 		return std::make_unique<RenderingPipeline>(
-"./Resources/Shader/PeraVertex.cso", 
-"./Resources/Shader/PeraPixel.cso",
+			"./Resources/Shader/FullscreenQuadVertex.cso",
+			"./Resources/Shader/PeraPixel.cso",
 			&rootSignatureDesc, &pipelineDesc
-			);
+		);
 	}
 }

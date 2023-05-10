@@ -49,8 +49,11 @@
     <ClCompile Include="Source\Argent\Core\ArWindow.cpp" />
     <ClCompile Include="Source\Argent\Debug\DebugRenderer.cpp" />
     <ClCompile Include="Source\Argent\GameObject\GameObject.cpp" />
+    <ClCompile Include="Source\Argent\Graphic\Bloom.cpp" />
     <ClCompile Include="Source\Argent\Graphic\FrameResource.cpp" />
+    <ClCompile Include="Source\Argent\Graphic\GaussianBlur.cpp" />
     <ClCompile Include="Source\Argent\Graphic\Graphics.cpp" />
+    <ClCompile Include="Source\Argent\Graphic\LuminanceExtraction.cpp" />
     <ClCompile Include="Source\Argent\Graphic\RenderContext.cpp" />
     <ClCompile Include="Source\Argent\Graphic\RenderingPipeline.cpp" />
     <ClCompile Include="Source\Argent\Graphic\Dx12\Command.cpp" />
@@ -141,8 +144,11 @@
     <ClInclude Include="Source\Argent\Core\ArWindow.h" />
     <ClInclude Include="Source\Argent\Debug\DebugRenderer.h" />
     <ClInclude Include="Source\Argent\GameObject\GameObject.h" />
+    <ClInclude Include="Source\Argent\Graphic\Bloom.h" />
     <ClInclude Include="Source\Argent\Graphic\FrameResource.h" />
+    <ClInclude Include="Source\Argent\Graphic\GaussianBlur.h" />
     <ClInclude Include="Source\Argent\Graphic\Graphics.h" />
+    <ClInclude Include="Source\Argent\Graphic\LuminanceExtraction.h" />
     <ClInclude Include="Source\Argent\Graphic\RenderContext.h" />
     <ClInclude Include="Source\Argent\Graphic\RenderingPipeline.h" />
     <ClInclude Include="Source\Argent\Graphic\Dx12\Command.h" />
@@ -222,6 +228,18 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="Source\Shader\FullscreenQuadVertex.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\LuminanceExtractionPixel.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="Source\Shader\Pera2Pixel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -270,6 +288,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shader\DebugMesh.hlsli" />
+    <None Include="Source\Shader\FullscreenQuad.hlsli" />
     <None Include="Source\Shader\Helper.hlsli" />
     <None Include="Source\Shader\LambertDiffuse.hlsli" />
     <None Include="Source\Shader\Pera.hlsli" />

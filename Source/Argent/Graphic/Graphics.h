@@ -33,11 +33,7 @@ namespace Argent::Graphics
 	public:
 		HWND hWnd;
 		Graphics(HWND hWnd);
-		virtual ~Graphics()
-		{
-			//renderingQueue->SetFence(1);
-			
-		}
+		virtual ~Graphics() = default;
 		Graphics(const Graphics&) = delete;
 		Graphics(const Graphics&&) = delete;
 		Graphics operator=(const Graphics&) = delete;

@@ -22,6 +22,7 @@ namespace Argent::Graphics
 		rtvDescriptor = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)->PopDescriptor();
 		dsvDescriptor = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)->PopDescriptor();
 
+		rsDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 
 		D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 		D3D12_CLEAR_VALUE clearValue = CD3DX12_CLEAR_VALUE(rsDesc.Format, clearColor);
@@ -80,7 +81,7 @@ namespace Argent::Graphics
 		dsView.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 		device->CreateDepthStencilView(depthResource.Get(), &dsView, dsvDescriptor->GetCPUHandle());
 
-
+		resource->SetName(L"FrameBuffer");
 
 		//頂点情報を入れる(スクリーンサイズの長方形)
 		std::vector<Vertex> vertice
@@ -141,6 +142,7 @@ namespace Argent::Graphics
 
 		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		vertexBuffer->SetOnCommandList(commandList, 0);
+		//commandList->IASetVertexBuffers(0, 0, nullptr);
 		commandList->DrawInstanced(4, 1, 0, 0);
 	}
 }
