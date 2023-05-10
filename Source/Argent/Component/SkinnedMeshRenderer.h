@@ -86,6 +86,13 @@ namespace Argent::Component::Renderer
 
 		void CreateComObject(ID3D12Device* device);
 
+		Argent::Material::MeshMaterial* GetMaterial() {
+			for (auto& s : skinnedMesh->subsets)
+			{
+				return s.material.get();
+			}
+		}
+
 		//’Ç‰ÁiTanaj
 		void SetAnimation(int index);
 		int GetAnimation() { return clipIndex; }

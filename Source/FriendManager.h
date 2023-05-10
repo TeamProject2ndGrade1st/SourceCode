@@ -29,7 +29,6 @@ public:
 
     BaseFriend* FindFriendComponentFromOwner(GameObject* wFriend) const;
 private:
-    std::vector<BaseFriend*> friendArray;
     Argent::Scene::BaseScene* scene;
 };
 

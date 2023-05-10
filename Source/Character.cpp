@@ -15,6 +15,12 @@ void Character::Initialize()
     GetOwner()->GetTransform()->SetPosition(init_position);
 }
 
+void Character::Finalize()
+{
+    myShadow->GetOwner()->Destroy(myShadow->GetOwner());
+    BaseActor::Finalize();
+}
+
 void Character::DrawDebug()
 {
     if (ImGui::TreeNode("Status"))

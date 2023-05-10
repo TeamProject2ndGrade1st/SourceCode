@@ -10,14 +10,46 @@ void FriendCreater::Initialize()
     GetOwner()->GetTransform()->SetScaleFactor(0.15f);
     GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
     friendManager = GameObject::FindByName("FriendManager")->GetComponent<FriendManager>();
+
+    GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color = color;
 }
 
 void FriendCreater::Update()
 {
     ImagineFriendUpdate();
+
+    if (!GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color.x == color.x)
+    {
+        GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color = color;
+    }
+
+    //生成範囲外にでたらドラッグと生成の処理をしない
+    if (!canCreate)
+    {
+        //もし範囲外でドラッグ中の味方がいる状態でクリックを離したらその味方を消す
+        if (!dragTarget)return;
+        if (Argent::Input::Mouse::Instance().GetButtonUp(Argent::Input::Mouse::Button::LeftButton))
+        {
+            dragTarget->Destroy(dragTarget);
+        }
+
+        return;
+    }
+
     if (!DragFriend())
     {
         SetFriendByClick();
+    }
+}
+
+void FriendCreater::DrawDebug()
+{
+    BaseActor::DrawDebug();
+    if (ImGui::TreeNode("FriendCreater"))
+    {
+        ImGui::SliderFloat3("CanCreatePos", &createPos.x, 0, 1000.0f);
+
+        ImGui::TreePop();
     }
 }
 
@@ -78,10 +110,17 @@ void FriendCreater::ImagineFriendUpdate()
         result))
     {
         DirectX::XMFLOAT3 pos = { result.position.x,0,result.position.z };
-        GetTransform()->SetPosition(pos);
+        CanCreate(pos);
+        if (canCreate)
+        {
+            GetTransform()->SetPosition(pos);
+            color = { 0,0.3f,0.8f,1 };
+        }
+        else
+        {
+            color = { 1,0.1f,0.1f,1 };
+        }
     }
-
-    
 }
 
 bool FriendCreater::DragFriend()
@@ -117,4 +156,21 @@ bool FriendCreater::DragFriend()
     }
     else dragTarget = nullptr;
     return false;
+}
+
+void FriendCreater::CanCreate(DirectX::XMFLOAT3 pos)
+{
+    canCreate = false;
+
+    float left = createRange.left + createPos.x;
+    float right = createRange.right + createPos.x;
+    float front = createRange.top + createPos.z;
+    float back = createRange.bottom + createPos.z;
+
+    if (left > pos.x)   return;
+    if (right < pos.x)  return;
+    if (front < pos.z)  return;
+    if (back > pos.z)   return;
+
+    canCreate = true;
 }

@@ -12,6 +12,7 @@ public:
     virtual ~Character() {}
 
     void Initialize()override;
+    void Finalize()override;
     void DrawDebug()override;
     void Begin()override;
     

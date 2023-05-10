@@ -16,14 +16,17 @@ void FriendManager::Update()
     if (Argent::Input::GetKeyUp(KeyCode::E))
     {
         AddFriend(new FriendCreature(pos));
-             
     }
 
-    for (auto activer = friendArray.begin();activer != friendArray.end();++activer)
+    std::vector<GameObject*> f;
+    GameObject::FindByTag(GameObject::Tag::Friend, f);
+
+    for (auto activer = f.begin();activer != f.end();++activer)
     {
-        for (auto passiver = activer + 1; passiver != friendArray.end(); ++passiver)
+        for (auto passiver = activer + 1; passiver != f.end(); ++passiver)
         {
-            (*activer)->OnCollision((*passiver)->GetOwner()->GetComponent<Argent::Component::Collider::SphereCollider>());
+            if (!(*passiver)->GetComponent<Argent::Component::Collider::SphereCollider>())continue;
+            (*activer)->GetComponent<Argent::Component::Collider::SphereCollider>()->CollisionDetection((*passiver)->GetComponent<Argent::Component::Collider::SphereCollider>());
         }
     }
 }
@@ -63,18 +66,19 @@ void FriendManager::AddFriend(BaseFriend* _friend)
     /*scene->AddObject(new GameObject(
         "Friend", 
         _friend));*/
-    friendArray.emplace_back(_friend);
 
     //タグ登録はそれぞれのフレンド本体で行っている
 }
 
 BaseFriend* FriendManager::FindFriendComponentFromOwner(GameObject* wFriend) const
 {
-    for (auto& f : friendArray)
+    std::vector<GameObject*> f;
+    GameObject::FindByTag(GameObject::Tag::Friend, f);
+    for (auto& fr : f)
     {
-        if (!f) continue;
-        if (wFriend == f->GetOwner())
-            return f;
+        if (!fr) continue;
+        if (wFriend == fr)
+            return fr->GetComponent<BaseFriend>();
     }
 
     return nullptr;
