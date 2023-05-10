@@ -27,6 +27,7 @@ public:
 		Core =			0x01 << 9,
 		Creature =		0x01 << 10,	
 		Machine =		0x01 << 11,
+		FriendCreatar = 0x01 << 12,
 	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);
 	GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com);

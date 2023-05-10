@@ -98,10 +98,10 @@
     <ClCompile Include="Source\FriendManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\GunRenderer.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Result.cpp" />
     <ClCompile Include="Source\Shadow.cpp" />
     <ClCompile Include="Source\Stage.cpp" />
-    <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Demo.cpp" />
     <ClCompile Include="Source\FriendStateDerived.cpp" />
     <ClCompile Include="Source\StageSelect.cpp" />
@@ -200,11 +200,11 @@
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\GunRenderer.h" />
     <ClInclude Include="Source\muzzleFlash.h" />
+    <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Result.h" />
     <ClInclude Include="Source\Reticle.h" />
     <ClInclude Include="Source\Shadow.h" />
     <ClInclude Include="Source\Stage.h" />
-    <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Demo.h" />
     <ClInclude Include="Source\FriendStateDerived.h" />
     <ClInclude Include="Source\StageSelect.h" />

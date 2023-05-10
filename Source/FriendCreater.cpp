@@ -12,6 +12,8 @@ void FriendCreater::Initialize()
     friendManager = GameObject::FindByName("FriendManager")->GetComponent<FriendManager>();
 
     GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color = color;
+
+    GetOwner()->ReplaceTag(GameObject::Tag::FriendCreatar);
 }
 
 void FriendCreater::Update()

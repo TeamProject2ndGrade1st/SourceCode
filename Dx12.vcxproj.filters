@@ -305,9 +305,6 @@
     <ClCompile Include="Source\BulletManager.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Player.cpp">
-      <Filter>Game\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Source\BaseGun.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
@@ -368,6 +365,9 @@
       <Filter>Game\mame</Filter>
     </ClCompile>
     <ClCompile Include="Source\FriendCreater.cpp" />
+    <ClCompile Include="Source\Player.cpp">
+      <Filter>Game\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -596,9 +596,6 @@
     <ClInclude Include="Source\BulletManager.h">
       <Filter>Game\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Player.h">
-      <Filter>Game\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Source\BaseGun.h">
       <Filter>Game\Player</Filter>
     </ClInclude>
@@ -662,6 +659,9 @@
     <ClInclude Include="Source\FriendCreater.h" />
     <ClInclude Include="Source\Argent\Graphic\SceneConstant.h">
       <Filter>Lib\Argent\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player.h">
+      <Filter>Game\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
