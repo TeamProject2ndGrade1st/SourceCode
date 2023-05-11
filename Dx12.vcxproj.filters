@@ -364,9 +364,14 @@
     <ClCompile Include="Source\EnemyTurretShot.cpp">
       <Filter>Game\mame</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FriendCreater.cpp" />
+    <ClCompile Include="Source\FriendCreater.cpp">
+	  <Filter>Game\善晃</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Player.cpp">
       <Filter>Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyTurretShotManager.cpp">
+      <Filter>Game\mame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -656,12 +661,18 @@
     <ClInclude Include="Source\EnemyTurretShot.h">
       <Filter>Game\mame</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FriendCreater.h" />
+    <ClInclude Include="Source\FriendCreater.h">
+     <Filter>Game\善晃</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Argent\Graphic\SceneConstant.h">
       <Filter>Lib\Argent\Graphic</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player.h">
       <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyTurretShotManager.h">
+      <Filter>Game\mame</Filter>
+
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

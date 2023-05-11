@@ -72,6 +72,9 @@ namespace Enemy::Turret
         void Enter() override;
         void Execute() override;
         void Exit() override;
+
+    private:
+        float shotTimer = 0.0f;
     };
 
     // 起動ステート

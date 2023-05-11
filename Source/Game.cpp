@@ -19,6 +19,7 @@
 #include "EnemyManager.h"
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
+#include "EnemyTurretShotManager.h"
 
 void Game::Initialize()
 {
@@ -50,11 +51,15 @@ void Game::Initialize()
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 	AddObject(new GameObject("EnemyManager", new EnemyManager(this)));
 
+
 	AddObject(new GameObject("FriendCreater", new FriendCreater()));
 	
 	//AddObject(new GameObject("kongure",Argent::Loader::Fbx::LoadFbx("./Resources/Model/kongure_0509_1.fbx", false)));
 
-	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_3_0508_1.fbx"));
+	AddObject(new GameObject("EnemyTurretShotManager", new EnemyTurretShotManager()));
+
+	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_2_0427_3.fbx"));
+
 	GameObject::Instantiate("Box", new Box("./Resources/Model/Stage/boxes_0419_1.fbx"));
 	GameObject::Instantiate("OwnCamp", new OwnCamp("./Resources/Model/Stage/zizin_0419_1.fbx"));
 	GameObject::Instantiate("Core", new Core("./Resources/Model/Stage/core_0419_1.fbx"));

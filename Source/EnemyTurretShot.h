@@ -16,16 +16,26 @@ public:
     void DrawDebug()override;
 
     void SetVelocity(DirectX::XMFLOAT3 velo) { velocity = velo; }
+    DirectX::XMFLOAT3 GetVelocity() { return velocity; }
 
+    //// test
+    //void SetTransfrom(Transform t) { transform = t; }
 
 
     // ˆÚ“®ˆ—
     void UpdateMove();
 
 
+
+public:
+    float eraseTimer = {};  // ’e‚ªÁ‚¦‚é‚Ü‚Å‚ÌŠÔ
+
 private:
     DirectX::XMFLOAT3 velocity{};
     DirectX::XMFLOAT3 moveVec{};
+    DirectX::XMFLOAT3 angle{};
+
+    Transform transform{};
 
 private:
     // ‰ŠúÀ•WˆÊ’u

@@ -15,8 +15,8 @@ public:
 	enum class Tag : unsigned int
 	{
 
-		UnTagged   =	0x01 << 1,	//default 
-		MainCamera =	0x01 << 2,	//カメラが持ってる
+		UnTagged   =		0x01 << 1,	//default 
+		MainCamera =		0x01 << 2,	//カメラが持ってる
 
 		Light =			0x01 << 3,
 		Stage =			0x01 << 4,	//ステージ
@@ -28,6 +28,8 @@ public:
 		Creature =		0x01 << 10,	
 		Machine =		0x01 << 11,
 		FriendCreatar = 0x01 << 12,
+		TurretShot =		0x01 << 13,
+		TurretShotManager = 0x01 << 14,
 	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);
 	GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com);
