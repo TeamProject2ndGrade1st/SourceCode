@@ -19,7 +19,11 @@
 #include "EnemyManager.h"
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
+
 #include "EnemyTurretShotManager.h"
+
+#include "Grenade.h"
+
 
 void Game::Initialize()
 {
@@ -93,8 +97,7 @@ void Game::Initialize()
 	l = GameObject::Instantiate("PointLight", new PointLight(3));
 	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
 
-	GameObject::Instantiate("skyBox",Argent::Loader::Fbx::LoadFbx("./Resources/Model/Sky/skysphere.fbx", false));
-
+	GameObject::Instantiate("Grenade", new Grenade);
 	
 #ifndef _DEBUG
 	ShowCursor(false);

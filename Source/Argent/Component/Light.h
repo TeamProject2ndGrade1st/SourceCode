@@ -33,6 +33,8 @@ public:
 		BaseComponent("PointLight")
     ,   index(index)
     ,   range(range)
+    ,   color(DirectX::XMFLOAT3(1, 1, 1))
+    ,   power(1.0f)
     {}
 
     ~PointLight() override = default;

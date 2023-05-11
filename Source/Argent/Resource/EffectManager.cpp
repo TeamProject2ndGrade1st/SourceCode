@@ -11,7 +11,7 @@ namespace Argent::Resource::Effect
 		//todo spell miss ?
 		if (instance) _ASSERT_EXPR(FALSE, L"already instanciated");
 		instance = this;
-		DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 		efkRenderer = EffekseerRendererDX12::Create(
 			device,
 			cmdQueue,

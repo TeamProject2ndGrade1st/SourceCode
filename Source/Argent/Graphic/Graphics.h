@@ -16,6 +16,10 @@
 #include "FrameResource.h"
 #include "Dx12/Command.h"
 #include "Dx12/DescriptorHeap.h"
+#include "GaussianBlur.h"
+#include "LuminanceExtraction.h"
+#include "Bloom.h"
+#include "SkyMap.h"
 
 namespace Argent::Graphics
 {
@@ -33,11 +37,7 @@ namespace Argent::Graphics
 	public:
 		HWND hWnd;
 		Graphics(HWND hWnd);
-		virtual ~Graphics()
-		{
-			//renderingQueue->SetFence(1);
-			
-		}
+		virtual ~Graphics() = default;
 		Graphics(const Graphics&) = delete;
 		Graphics(const Graphics&&) = delete;
 		Graphics operator=(const Graphics&) = delete;
@@ -87,6 +87,7 @@ namespace Argent::Graphics
 		void SetProjectionMatrix(const DirectX::XMMATRIX& m) { DirectX::XMStoreFloat4x4(&sceneConstant.projection, m); }
 		void SetCameraPosition(const DirectX::XMFLOAT3& p) { sceneConstant.cameraPosition = DirectX::XMFLOAT4(p.x, p.y, p.z, 0); }
 		void SetDirectionalLight(const DirectionalLight& d) { sceneConstant.directionalLight = d; }
+		void SetInv(const DirectX::XMMATRIX f) { DirectX::XMStoreFloat4x4(&sceneConstant.invViewProj, f); }
 		void SetPointLight(const PointLight& p, int index) { sceneConstant.pointLight[index] = p; }
 	private:
 		static Graphics* instance;
@@ -120,6 +121,18 @@ namespace Argent::Graphics
 		UINT backBufferIndex = -1;
 	public:
 		std::unique_ptr<FrameBuffer> frameBuffer[8];
+
+		////高輝度成分抽出
+		//std::unique_ptr<LuminanceExtraction> luminanceExtraction;
+		////ガウシアンブラー
+		//std::unique_ptr<GaussianBlur> gaussianBlur;
+
+		//ブルーム
+		Bloom bloom;
+		std::unique_ptr<RenderingPipeline> defaultRenderingPipeline;
+
+		//背景
+		SkyMap skyMap;
 	};
 
 	HRESULT CreateDevice(IDXGIFactory6* factory, ID3D12Device** device);

@@ -373,6 +373,14 @@
     <ClCompile Include="Source\EnemyTurretShotManager.cpp">
       <Filter>Game\mame</Filter>
     </ClCompile>
+
+    <ClCompile Include="Source\Argent\Graphic\Bloom.cpp" />
+    <ClCompile Include="Source\Argent\Graphic\GaussianBlur.cpp" />
+    <ClCompile Include="Source\Argent\Graphic\LuminanceExtraction.cpp" />
+    <ClCompile Include="Source\Argent\Graphic\FullscreenQuad.cpp" />
+    <ClCompile Include="Source\Argent\Graphic\SkyMap.cpp" />
+    <ClCompile Include="Source\Grenade.cpp" />
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -672,8 +680,14 @@
     </ClInclude>
     <ClInclude Include="Source\EnemyTurretShotManager.h">
       <Filter>Game\mame</Filter>
-
     </ClInclude>
+    <ClInclude Include="Source\Argent\Graphic\Bloom.h" />
+    <ClInclude Include="Source\Argent\Graphic\GaussianBlur.h" />
+    <ClInclude Include="Source\Argent\Graphic\LuminanceExtraction.h" />
+    <ClInclude Include="Source\Argent\Graphic\FullscreenQuad.h" />
+    <ClInclude Include="Source\Argent\Graphic\SkyMap.h" />
+    <ClInclude Include="Source\Grenade.h" />
+
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">
@@ -715,6 +729,17 @@
     <FxCompile Include="Source\Shader\DebugMeshPixel.hlsl">
       <Filter>Lib\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Source\Shader\LuminanceExtractionPixel.hlsl" />
+    <FxCompile Include="Source\Shader\FullscreenQuadVertex.hlsl" />
+    <FxCompile Include="Source\Shader\FullscreenQuadPixel.hlsl">
+      <Filter>Lib\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\GaussianBlurPixel.hlsl" />
+    <FxCompile Include="Source\Shader\GaussianBlurXVertex.hlsl" />
+    <FxCompile Include="Source\Shader\GaussianBlurYVertex.hlsl" />
+    <FxCompile Include="Source\Shader\tmpPixel.hlsl" />
+    <FxCompile Include="Source\Shader\KawaseBloomPixel.hlsl" />
+    <FxCompile Include="Source\Shader\SkyMapPixel.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shader\SpritePrimitive.hlsli">
@@ -747,5 +772,7 @@
     <None Include="Source\Shader\Helper.hlsli">
       <Filter>Lib\Shader</Filter>
     </None>
+    <None Include="Source\Shader\FullscreenQuad.hlsli" />
+    <None Include="Source\Shader\GaussianBlur.hlsli" />
   </ItemGroup>
 </Project>

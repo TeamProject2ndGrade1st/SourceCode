@@ -75,6 +75,8 @@ namespace Argent::Material
 		struct Constant
 		{
 			DirectX::XMFLOAT4 color{ 1, 1, 1, 1 };
+			DirectX::XMFLOAT3 emissiveColor{ 1, 1, 1 };
+			float emissivePower = 0.0f;
 			DirectX::XMFLOAT4 ka{ 0.2f, 0.2f, 0.2f, 1.0f };
 			DirectX::XMFLOAT4 kd{ 0.2f, 0.2f, 0.2f, 1.0f };
 			DirectX::XMFLOAT4 ks{ 0.2f, 0.2f, 0.2f, 1.0f };
@@ -90,28 +92,15 @@ namespace Argent::Material
 		static constexpr int NumTextures = static_cast<int>(TextureUsage::Max);
 		uint64_t textureUniqueId[NumTextures];
 		std::string textureNames[NumTextures];
-		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constant>> constantBuffer{};
+		std::unique_ptr<Argent::Dx12::ConstantBuffer<Constant>> constantBuffer{};
 		Constant constant{};
 		Color color;
 		void CreateTexture(const char* filePath, TextureUsage type);
 
 		void SetOnCommand(ID3D12GraphicsCommandList* cmdList, UINT cbIndex, UINT diffuseIndex, UINT normalIndex) const;
 
-		void DrawDebug()
-		{
-			if (ImGui::TreeNode(GetName()))
-			{
-				ImGui::DragFloat3("Ka", &constant.ka.x, 0.001f, 0, 1.0f);
-				ImGui::DragFloat3("Kd", &constant.kd.x, 0.001f, 0, 1.0f);
-				ImGui::DragFloat3("Ks", &constant.ks.x, 0.001f, 0, 1.0f);
-				ImGui::DragFloat("Shininess", &constant.shininess, 1.0f, 0, FLT_MAX);
-				/*ImGui::ColorEdit4("Color", &constant.color.x,
-				ImGuiColorEditFlags_PickerHueWheel | 
-				ImGuiColorEditFlags_AlphaBar);*/
-				color.DrawDebug();
-				ImGui::TreePop();
-			}
-		}
+		void DrawDebug();
+		
 
 		ReplaceFileName replace;
 	};
