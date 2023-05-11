@@ -47,6 +47,8 @@ protected:
     virtual void OnDead() {}//Ž€–SŽž‚ÉŒÄ‚Î‚ê‚é
     virtual void OnHeal() {}//‰ñ•œŽž‚ÉŒÄ‚Î‚ê‚é
 
+    void ShadowDestroy();
+
 
 protected:
     DirectX::XMFLOAT3 velocity{};

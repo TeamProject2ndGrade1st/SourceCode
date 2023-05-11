@@ -11,6 +11,7 @@ void FriendManager::Initialize()
 
 void FriendManager::Update()
 {
+#if _DEBUG
     static DirectX::XMFLOAT3 pos{};
     pos.z = -440;
     if (Argent::Input::GetKeyUp(KeyCode::E))
@@ -18,9 +19,37 @@ void FriendManager::Update()
         AddFriend(new FriendCreature(pos));
     }
 
+#endif // _DEBUG
+
+    //実際のフレンド配列と同期させる
     std::vector<GameObject*> f;
     GameObject::FindByTag(GameObject::Tag::Friend, f);
-
+    if (friendArray.size() == f.size())
+    {
+        std::vector<std::vector<BaseFriend*>::iterator> destroyArray;
+        for (auto it = friendArray.begin(); it != friendArray.end(); ++it)
+        {
+            bool destroyFlag{ true };
+            for (auto& fr : f)
+            {
+                if (fr == (*it)->GetOwner())
+                {
+                    destroyFlag = false;
+                    break;
+                }
+            }
+            if (destroyFlag)destroyArray.emplace_back(it);
+        }
+        if (destroyArray.size() > 0)
+        {
+            for (auto& d : destroyArray)
+            {
+                friendArray.erase(d);
+            }
+        }
+    }
+   
+    //味方同士の判定   
     for (auto activer = f.begin();activer != f.end();++activer)
     {
         for (auto passiver = activer + 1; passiver != f.end(); ++passiver)
@@ -68,17 +97,20 @@ void FriendManager::AddFriend(BaseFriend* _friend)
         _friend));*/
 
     //タグ登録はそれぞれのフレンド本体で行っている
+    friendArray.emplace_back(_friend);
+
+    //これまでに消されてしまったフレンドの分配列を調整する
+    
+    
 }
 
 BaseFriend* FriendManager::FindFriendComponentFromOwner(GameObject* wFriend) const
 {
-    std::vector<GameObject*> f;
-    GameObject::FindByTag(GameObject::Tag::Friend, f);
-    for (auto& fr : f)
+    for (auto& f : friendArray)
     {
-        if (!fr) continue;
-        if (wFriend == fr)
-            return fr->GetComponent<BaseFriend>();
+        if (!f) continue;
+        if (wFriend == f->GetOwner())
+            return f;
     }
 
     return nullptr;

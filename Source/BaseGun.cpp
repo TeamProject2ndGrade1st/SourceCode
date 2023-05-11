@@ -21,9 +21,9 @@ void BaseGun::Initialize()
 void BaseGun::Update()
 {
 	auto t = GetOwner()->GetTransform();
-	DirectX::XMFLOAT3 f = t->CalcForward() * offset.z;
-	DirectX::XMFLOAT3 u = t->CalcUp() * offset.y;
-	DirectX::XMFLOAT3 r = t->CalcRight() * offset.x;
+	DirectX::XMFLOAT3 f = t->CalcForward() * (offset.z + tremorMove.z + recoilMove.z);
+	DirectX::XMFLOAT3 u = t->CalcUp() * (offset.y + tremorMove.y + recoilMove.y);
+	DirectX::XMFLOAT3 r = t->CalcRight() * (offset.x + tremorMove.x + recoilMove.x);
 
 	//lmg->GetTransform()->SetPosition(f + u + r);
 
@@ -76,6 +76,31 @@ void BaseGun::DrawDebug()
 		ImGui::Checkbox("Enable Shot", &enableShot);
 #endif
 		BaseComponent::DrawDebug();
+		GetOwner()->GetTransform()->DrawDebug();
 		ImGui::TreePop();
 	}
+}
+
+void BaseGun::RecoilUpdate()
+{
+	if (walking)
+	{
+		tremorWalk += Argent::Timer::ArTimer::Instance().DeltaTime();
+		float t = sinf(DirectX::XMConvertToRadians(tremorWalk)*360);
+		tremorMove.y = t * 20;
+	}
+	else if (-1 > tremorMove.y || tremorMove.y > 1)
+	{
+		tremorWalk += Argent::Timer::ArTimer::Instance().DeltaTime();
+		float t = sinf(DirectX::XMConvertToRadians(tremorWalk) * 360);
+		tremorMove.y = t * 20;
+	}
+	else
+	{
+		tremorMove.y = 0;
+	}
+}
+
+void BaseGun::AddRecoil(DirectX::XMFLOAT3 power)
+{
 }

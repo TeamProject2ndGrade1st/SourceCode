@@ -17,8 +17,10 @@ void Character::Initialize()
 
 void Character::Finalize()
 {
-    myShadow->GetOwner()->Destroy(myShadow->GetOwner());
-    BaseActor::Finalize();
+    if (myShadow)
+    {
+        myShadow->GetOwner()->Destroy(myShadow->GetOwner());
+    }
 }
 
 void Character::DrawDebug()
@@ -135,6 +137,12 @@ void Character::Turn(float vx, float vz,float rollSpeed)
     rotation.y += (cross < 0.0f) ? -rollSpeed : rollSpeed;
     GetOwner()->GetTransform()->SetRotation(rotation);
     
+}
+
+void Character::ShadowDestroy()
+{
+    GetOwner()->Destroy(myShadow->GetOwner());
+    myShadow = nullptr;
 }
 
 void Character::AddImpulse(const DirectX::XMFLOAT3& impulse)

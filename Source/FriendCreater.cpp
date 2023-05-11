@@ -50,7 +50,6 @@ void FriendCreater::DrawDebug()
     if (ImGui::TreeNode("FriendCreater"))
     {
         ImGui::SliderFloat3("CanCreatePos", &createPos.x, 0, 1000.0f);
-
         ImGui::TreePop();
     }
 }
@@ -147,7 +146,7 @@ bool FriendCreater::DragFriend()
                     dragTarget = (*it);
                     return true;
                 }
-            }            
+            }
         }
         else
         {

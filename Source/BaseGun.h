@@ -2,7 +2,7 @@
 #include "Argent/Argent.h"
 #include "Bullet.h"
 
-class BaseGun:
+class BaseGun :
 	public Argent::Component::BaseComponent
 {
 public:
@@ -15,6 +15,10 @@ public:
 
 	void DrawDebug() override;
 
+	//•à‚¢‚½‚Ìe‚Ì—h‚ê‚Æ‚©AŒ‚‚Á‚½‚Æ‚«‚Ì”½“®‚Æ‚©
+	void RecoilUpdate();
+	void AddRecoil(DirectX::XMFLOAT3 power);
+
 	float fireRate;
 	int damage;
 	float speed;
@@ -23,8 +27,17 @@ public:
 
 	Bullet::Mode mode;
 	GameObject* lmg;
+
+	//•à‚«‚Æ‚©ŠÉ‚¢U“®—p
+	DirectX::XMFLOAT3 tremorMove;
+	//”­–C‚Æ‚©‚Ì”½“®—p
+	DirectX::XMFLOAT3 recoilMove;
 #ifdef _DEBUG
 	bool enableShot = true;
 
 #endif
+	bool walking{ nullptr };
+
+	//•à‚«‚É‚æ‚éU“®‚ğ•\Œ»‚·‚é‚½‚ß‚Ì•Ï”
+	float tremorWalk;
 };

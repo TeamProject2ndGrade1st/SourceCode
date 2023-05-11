@@ -1,9 +1,9 @@
 #pragma once
 #include "Argent/Argent.h"
 #include "BaseGun.h"
+#include "Character.h"
 
-class Player:
-	public Argent::Component::BaseActor
+class Player: public Character
 {
 public:
 	Player();
@@ -12,7 +12,6 @@ public:
 	void Initialize() override;
 	void Begin() override;
 	void Update() override;
-
 
 	void DrawDebug() override;
 
@@ -40,4 +39,5 @@ protected:
 	//GameObject* gun;
 
 	DirectX::XMFLOAT3 gunOffset;
+	
 };
