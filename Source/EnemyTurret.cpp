@@ -5,8 +5,7 @@ void EnemyTurret::Initialize()
 {
     BaseEnemy::Initialize();
 
-    //GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/gun_turret_animv2.fbx"));
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/gun_turret_animv3.fbx"));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/gun_turret_animv4.fbx"));
 
     // スケーリング
     GetOwner()->GetTransform()->SetScaleFactor(0.2f);
