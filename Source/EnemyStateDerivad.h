@@ -75,6 +75,9 @@ namespace Enemy::Turret
 
     private:
         float shotTimer = 0.0f;
+
+        GameObject* head;
+
     };
 
     // 起動ステート
