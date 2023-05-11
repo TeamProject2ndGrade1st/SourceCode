@@ -24,6 +24,7 @@ public:
 
     void AddShot(const DirectX::XMFLOAT3 pos, const DirectX::XMFLOAT3 targetPos);
 
-private:
+public:
+    //float add{};
     
 };

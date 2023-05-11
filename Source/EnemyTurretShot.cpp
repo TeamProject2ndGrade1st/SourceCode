@@ -23,6 +23,23 @@ void EnemyTurretShot::Initialize()
     //DirectX::XMStoreFloat3(&moveVec, vec);
     SetVelocity(moveVec);
 
+
+#if 0
+    // test
+    DirectX::XMVECTOR myVec = DirectX::XMLoadFloat3(&velo);
+    DirectX::XMFLOAT3 forward = GetOwner()->GetTransform()->CalcForward();
+    DirectX::XMVECTOR fVec = DirectX::XMLoadFloat3(&forward);
+
+    // ³‹K‰»
+    myVec = DirectX::XMVector3Normalize(myVec);
+    fVec = DirectX::XMVector3Normalize(fVec);
+    // DirectX::XMMatrixRotationQuaternion()
+
+    // y²‰ñ“] 
+    //atan2f()
+#endif
+    
+
     // ’e‚ªÁ‚¦‚é‚Ü‚Å‚ÌŠÔ‚ğİ’è‚·‚é
     eraseTimer = 10.0f;
 }
