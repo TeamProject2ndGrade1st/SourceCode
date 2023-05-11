@@ -29,10 +29,6 @@ public:
 	static DirectX::XMFLOAT3 CalcEulerAngleFromRotationMatrix(const DirectX::XMMATRIX& mat);
 	~Transform() override = default;
 	Transform(const Transform&) = default;
-	Transform& operator+=(const Transform& t);
-	Transform& operator=(const Transform& t);
-
-	void Initialize() override;
 	void DrawDebug() override;
 
 
@@ -69,8 +65,7 @@ public:
 	float GetScaleFactor() const { return scaleFactor;  }
 	void SetScaleFactor(float f) { scaleFactor = f;  }
 
-	void SetTransform(const Transform& t);
-
+	//v
 	/**
 	 * \brief 正規化された前方ベクトルを返す(回転値が(0, 0, 0)の時の前方ベクトルは(0, 0, 1))
 	 */
@@ -87,7 +82,7 @@ private:
 	DirectX::XMFLOAT3 scale;
 	DirectX::XMFLOAT4 rotation;
 	DirectX::XMFLOAT4 postRotation;
-	DirectX::XMFLOAT4 orientation;
+	//DirectX::XMFLOAT4 orientation;
 
 	float scaleFactor;
 

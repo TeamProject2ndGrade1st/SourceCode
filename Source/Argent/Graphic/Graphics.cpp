@@ -122,6 +122,8 @@ namespace Argent::Graphics
 		//gaussianBlur = std::make_unique<GaussianBlur>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), clearColor);
 		bloom.Init(device.Get(), frameResources.at(0)->GetBackBufferDesc(), clearColor);
 
+		skyMap.Initialize("./Resources/Image/SkyMap.png", device.Get(), srvCbvHeap->PopDescriptor());
+
 		device->SetName(L"Device");
 	}
 
@@ -157,6 +159,9 @@ namespace Argent::Graphics
 		curFrameResource->GetCmdList(RenderType::Sprite)->SetDescriptorHeaps(_countof(setHeap), setHeap);
 		curFrameResource->GetCmdList(RenderType::Mesh)->SetDescriptorHeaps(_countof(setHeap), setHeap);
 		curFrameResource->GetCmdList(RenderType::PostRendering)->SetDescriptorHeaps(_countof(setHeap), setHeap);
+
+		//SkyMapの描画
+		skyMap.Draw(GetCommandList(RenderType::Mesh), sceneConstant.invViewProj);
 	}
 		
 	void Graphics::End()
@@ -185,9 +190,11 @@ namespace Argent::Graphics
 
 		//加算合成
 		bloom.Draw(cmdList);
-
 		cmdList->SetGraphicsRootDescriptorTable(0, frameBuffer[0]->GetSrvGPUHandle());
 		cmdList->DrawInstanced(4, 1, 0, 0);
+
+		//frameBuffer[0]->Draw(this);
+
 
 		//アルファブレンドなパイプラインに戻してUI描画
 		frameBuffer[1]->Draw(this);

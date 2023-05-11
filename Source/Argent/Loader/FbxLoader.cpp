@@ -467,7 +467,6 @@ namespace Argent::Loader::Fbx
 				if(material.get()->textureNames[static_cast<int>(Material::MeshMaterial::TextureUsage::Normal)].empty())
 				{
 					material->CreateTexture(path.generic_string().c_str(), Material::MeshMaterial::TextureUsage::Normal);
-					
 				}
 			}
 		}

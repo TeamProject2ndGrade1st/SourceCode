@@ -152,12 +152,16 @@ void Camera::LateUpdate()
 
 	if(isSceneCamera)
 	{
+		auto P = GetProjectionMatrix();
+		auto V = GetViewMatrix();
+
 		auto g = Argent::Graphics::Graphics::Instance();
 		auto ga = GetOwner();
 		auto p = GetOwner()->GetTransform()->GetPosition();
 		g->SetCameraPosition(GetOwner()->GetTransform()->GetPosition());
-		g->SetProjectionMatrix(GetProjectionMatrix());
-		g->SetViewMatrix(GetViewMatrix());
+		g->SetProjectionMatrix(P);
+		g->SetViewMatrix(V);
+		g->SetInv(DirectX::XMMatrixInverse(nullptr, V * P));
 	}
 }
 
@@ -229,10 +233,6 @@ DirectX::XMMATRIX Camera::GetViewMatrix() const
 	DirectX::XMMATRIX Eye = DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
 	DirectX::XMMATRIX View = Rot * Eye;
 	return DirectX::XMMatrixInverse(nullptr, View);
-
-	const DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	const DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(eye, focus, up);//
-	return view;
 }
 
 DirectX::XMMATRIX Camera::GetProjectionMatrix() const

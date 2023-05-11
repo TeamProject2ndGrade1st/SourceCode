@@ -19,7 +19,7 @@ public:
 	int damage;
 	float speed;
 
-	DirectX::XMFLOAT3 offset;
+	//DirectX::XMFLOAT3 offset;
 
 	Bullet::Mode mode;
 	GameObject* lmg;

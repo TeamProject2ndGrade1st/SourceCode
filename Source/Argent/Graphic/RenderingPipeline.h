@@ -40,6 +40,7 @@ namespace Argent
 			static std::unique_ptr<RenderingPipeline> CreateBloomPipeline();
 			static std::unique_ptr<RenderingPipeline> CreateCombineBokeColorPipeline();
 			static std::unique_ptr<RenderingPipeline> CreateFullscreenQuadAlphaPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateSkyMapPipeline();
 		private:
 			/**
 			 * \brief 頂点シェーダーとピクセルシェーダー、ルートシグネチャの値は入れなくてもいい

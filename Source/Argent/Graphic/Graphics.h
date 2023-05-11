@@ -19,6 +19,7 @@
 #include "GaussianBlur.h"
 #include "LuminanceExtraction.h"
 #include "Bloom.h"
+#include "SkyMap.h"
 
 namespace Argent::Graphics
 {
@@ -86,6 +87,7 @@ namespace Argent::Graphics
 		void SetProjectionMatrix(const DirectX::XMMATRIX& m) { DirectX::XMStoreFloat4x4(&sceneConstant.projection, m); }
 		void SetCameraPosition(const DirectX::XMFLOAT3& p) { sceneConstant.cameraPosition = DirectX::XMFLOAT4(p.x, p.y, p.z, 0); }
 		void SetDirectionalLight(const DirectionalLight& d) { sceneConstant.directionalLight = d; }
+		void SetInv(const DirectX::XMMATRIX f) { DirectX::XMStoreFloat4x4(&sceneConstant.invViewProj, f); }
 		void SetPointLight(const PointLight& p, int index) { sceneConstant.pointLight[index] = p; }
 	private:
 		static Graphics* instance;
@@ -128,6 +130,9 @@ namespace Argent::Graphics
 		//ÉuÉãÅ[ÉÄ
 		Bloom bloom;
 		std::unique_ptr<RenderingPipeline> defaultRenderingPipeline;
+
+		//îwåi
+		SkyMap skyMap;
 	};
 
 	HRESULT CreateDevice(IDXGIFactory6* factory, ID3D12Device** device);

@@ -954,4 +954,75 @@ namespace Argent::Graphics
 			&rootSignatureDesc, &pipelineDesc
 		);
 	}
+
+	std::unique_ptr<RenderingPipeline> RenderingPipeline::CreateSkyMapPipeline()
+	{
+		HRESULT hr{ S_OK };
+		ID3D12Device* device = Graphics::Graphics::Instance()->GetDevice();
+
+		//ルートシグネチャ用
+		D3D12_DESCRIPTOR_RANGE range[2]{};
+		range[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+		range[0].BaseShaderRegister = 0;
+		range[0].NumDescriptors = 1;
+
+		range[1].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
+		range[1].BaseShaderRegister = 0;
+		range[1].NumDescriptors = 1;
+
+
+
+		D3D12_ROOT_PARAMETER rootParam[2]{};
+		rootParam[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+		rootParam[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+		rootParam[0].DescriptorTable.pDescriptorRanges = &range[0];
+		rootParam[0].DescriptorTable.NumDescriptorRanges = 1;
+
+		rootParam[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+		rootParam[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+		rootParam[1].DescriptorTable.pDescriptorRanges = &range[1];
+		rootParam[1].DescriptorTable.NumDescriptorRanges = 1;
+
+
+		D3D12_STATIC_SAMPLER_DESC samplerDesc =GenerateSamplerDesc(Helper::Dx12::Sampler::FilterMode::fAnisotropic, 
+			Helper::Dx12::Sampler::WrapMode::wRepeat);
+
+		D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
+		rootSignatureDesc.NumParameters = 2;
+		rootSignatureDesc.pParameters = rootParam;
+		rootSignatureDesc.NumStaticSamplers = 1;
+		rootSignatureDesc.pStaticSamplers = &samplerDesc;
+		rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+
+
+		D3D12_RENDER_TARGET_BLEND_DESC rtvBlendDesc{};
+		rtvBlendDesc = GenerateRenderTargetBlendDesc(Helper::Dx12::Blend::BlendMode::bAlpha);
+
+		//パイプラインステート用
+		D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
+
+		pipelineDesc.DepthStencilState.DepthEnable = false;
+		pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+		pipelineDesc.InputLayout.NumElements = 0;
+		pipelineDesc.InputLayout.pInputElementDescs = nullptr;
+		pipelineDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+		pipelineDesc.BlendState.AlphaToCoverageEnable = FALSE;
+		pipelineDesc.BlendState.IndependentBlendEnable = FALSE;
+		pipelineDesc.BlendState.RenderTarget[0] = rtvBlendDesc;
+		pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		pipelineDesc.NumRenderTargets = 1;
+		pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		pipelineDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+		pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+		pipelineDesc.SampleDesc.Count = 1;
+		pipelineDesc.SampleDesc.Quality = 0;
+		pipelineDesc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
+
+
+		return std::make_unique<RenderingPipeline>(
+			 "./Resources/Shader/FullscreenQuadVertex.cso",
+			"./Resources/Shader/SkyMapPixel.cso",
+			&rootSignatureDesc, &pipelineDesc
+		);
+	}
 }

@@ -20,10 +20,14 @@ void BaseGun::Initialize()
 
 void BaseGun::Update()
 {
-	auto t = GetOwner()->GetTransform();
-	DirectX::XMFLOAT3 f = t->CalcForward() * offset.z;
-	DirectX::XMFLOAT3 u = t->CalcUp() * offset.y;
-	DirectX::XMFLOAT3 r = t->CalcRight() * offset.x;
+		lmg->GetTransform()->SetPosition(DirectX::XMFLOAT3(-3.0f, -3.0f, 3.0f));
+	lmg->GetTransform()->SetRotation(DirectX::XMFLOAT4(-2.0f, -86.5f, 0.0f, 0.0f));
+	lmg->GetTransform()->SetScaleFactor(0.1f);
+
+	//auto t = GetOwner()->GetTransform();
+	//DirectX::XMFLOAT3 f = t->CalcForward() * offset.z;
+	//DirectX::XMFLOAT3 u = t->CalcUp() * offset.y;
+	//DirectX::XMFLOAT3 r = t->CalcRight() * offset.x;
 
 	//lmg->GetTransform()->SetPosition(f + u + r);
 
@@ -71,7 +75,6 @@ void BaseGun::DrawDebug()
 		ImGui::DragFloat("Fire Rate", &fireRate, 0.05f, 0.05f, 10.0f);
 		ImGui::SliderInt("Damage", &damage, 0, 10);
 		ImGui::SliderFloat("Speed", &speed, 1.0f, 100.0f);
-		ImGui::DragFloat3("LMG Offset", &offset.x, 0.1f, -100, 100);
 #ifdef _DEBUG
 		ImGui::Checkbox("Enable Shot", &enableShot);
 #endif
