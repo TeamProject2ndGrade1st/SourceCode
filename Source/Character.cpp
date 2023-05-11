@@ -8,19 +8,13 @@ void Character::Initialize()
     BaseActor::Initialize();
     
     //‰e‚Ì•\Ž¦
-    GameObject::Instantiate("Shadow", myShadow = new Shadow(this));
+    myShadow = new GameObject("Shadow", new Shadow(this));
+    GetOwner()->AddChild(myShadow);
+    
 
     GetOwner()->AddComponent(new Argent::Component::Collider::SphereCollider(10.0f));
 
     GetOwner()->GetTransform()->SetPosition(init_position);
-}
-
-void Character::Finalize()
-{
-    if (myShadow)
-    {
-        myShadow->GetOwner()->Destroy(myShadow->GetOwner());
-    }
 }
 
 void Character::DrawDebug()
@@ -137,12 +131,6 @@ void Character::Turn(float vx, float vz,float rollSpeed)
     rotation.y += (cross < 0.0f) ? -rollSpeed : rollSpeed;
     GetOwner()->GetTransform()->SetRotation(rotation);
     
-}
-
-void Character::ShadowDestroy()
-{
-    GetOwner()->Destroy(myShadow->GetOwner());
-    myShadow = nullptr;
 }
 
 void Character::AddImpulse(const DirectX::XMFLOAT3& impulse)

@@ -3,7 +3,7 @@
 #include "BaseGun.h"
 #include "Character.h"
 
-class Player: public Character
+class Player: public Argent::Component::BaseActor
 {
 public:
 	Player();

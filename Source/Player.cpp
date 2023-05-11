@@ -4,7 +4,7 @@
 #include "Argent/Input/Mouse.h"
 #include "Shadow.h"
 
-Player::Player() :Character("player")
+Player::Player() :BaseActor("player")
 {
     movement = 10;
     sensitivity = 0.3f;
@@ -12,9 +12,6 @@ Player::Player() :Character("player")
 
 void Player::Initialize()
 {
-    Character::Initialize();
-    ShadowDestroy();
-
     ray = new Argent::Component::Collision::RayCast();
     auto g = GetOwner();
     g->AddComponent(ray);
@@ -205,8 +202,8 @@ void Player::MoveCamera()
     if (Argent::Input::GetKey(KeyCode::W))ay = 1.0f;
     if (Argent::Input::GetKey(KeyCode::S))ay = -1.0f;
 
-    if (ax + ay == 0)gun->walking = false;
-    else gun->walking = true;
+    if (!(ax == 0 && ay == 0))gun->walking = true;
+    else gun->walking = false;
 
     // カメラ方向とスティック入力値によって進行方向を計算する
     Transform* t = camera->GetTransform();

@@ -21,17 +21,14 @@ void BaseGun::Initialize()
 void BaseGun::Update()
 {
 	RecoilUpdate();
-
-	if (tremorMove.y != 0)
-	{
-		int i{ 0 };
-	}
+	TremorUpdate();
+	
 	auto t = GetOwner()->GetTransform();
 	DirectX::XMFLOAT3 f = t->CalcForward() * (offset.z + tremorMove.z + recoilMove.z);
 	DirectX::XMFLOAT3 u = t->CalcUp() * (offset.y + tremorMove.y + recoilMove.y);
 	DirectX::XMFLOAT3 r = t->CalcRight() * (offset.x + tremorMove.x + recoilMove.x);
 
-	lmg->GetTransform()->SetPosition(f + u + r);
+	t->SetPosition(t->GetPosition() + f + u + r);
 
 #ifdef _DEBUG
 	if(Argent::Input::GetKeyUp(KeyCode::F3))
@@ -52,6 +49,7 @@ void BaseGun::Update()
 			auto t = GetOwner()->GetTransform();
 			Bullet::Shot(t->GetPosition(), t->GetRotation(), t->CalcForward(),
 				damage, speed, mode);
+			AddRecoil(DirectX::XMFLOAT3(0, 0, -3));
 		}
 	}
 
@@ -81,6 +79,9 @@ void BaseGun::DrawDebug()
 
 		ImGui::SliderFloat("TremorSpeed", &tremorSpeed, 0, 1000);
 		ImGui::SliderFloat("TremorAmp", &tremorAmp, 0.01f, 1.00f);
+
+		ImGui::SliderFloat("RecoilUpTime", &recoilUpTime, 0, 0.1f);
+		ImGui::SliderFloat("RecoilDowmTime", &recoilDownTime, 0, 0.1f);
 #ifdef _DEBUG
 		ImGui::Checkbox("Enable Shot", &enableShot);
 #endif
@@ -92,11 +93,52 @@ void BaseGun::DrawDebug()
 
 void BaseGun::RecoilUpdate()
 {
+	if (recoilPower.x || recoilPower.y || recoilPower.z)
+	{
+		if (recoilUpTimer <= 0)recoilUpTimer = recoilUpTime;
 
+		float deltaTime = Argent::Timer::ArTimer::Instance().DeltaTime();
+
+		recoilMove.x += recoilPower.x * (deltaTime / recoilUpTime);
+		recoilMove.y += recoilPower.y * (deltaTime / recoilUpTime);
+		recoilMove.z += recoilPower.z * (deltaTime / recoilUpTime);
+		recoilUpTimer -= deltaTime;
+
+		if (recoilUpTimer <= 0)
+		{
+			recoilPower = {};
+		}
+
+		//ƒŠƒRƒCƒ‹‘‰Á’†‚ÍŒ¸Šˆ—‚Ü‚¦‚Éretuan
+		return;
+	}
+
+	if (!(recoilMove.x || recoilMove.y || recoilMove.z))return;
+	if (recoilDownTimer >= 0)
+	{
+		recoilDownTimer = recoilDownTime;
+	}
+	float deltaTime = Argent::Timer::ArTimer::Instance().DeltaTime();
+	recoilMove.x -= recoilMove.x * (deltaTime/recoilDownTime);
+	recoilMove.y -= recoilMove.y * (deltaTime/recoilDownTime);
+	recoilMove.z -= recoilMove.z * (deltaTime/recoilDownTime);
+	recoilDownTimer -= deltaTime;
+
+	if (recoilDownTimer <= 0)
+	{
+		recoilDownTimer = 0;
+		recoilMove = {};
+	}
+	
+}
+
+void BaseGun::TremorUpdate()
+{
+	//•à‚¢‚Ä‚éŽž‚Ì—h‚ê
 	if (walking)
 	{
 		tremorWalk += Argent::Timer::ArTimer::Instance().DeltaTime();
-		float t = sinf(DirectX::XMConvertToRadians(tremorWalk)*tremorSpeed);
+		float t = sinf(DirectX::XMConvertToRadians(tremorWalk) * tremorSpeed);
 		tremorMove.y = t * tremorAmp;
 	}
 	else if (-0.01f > tremorMove.y || tremorMove.y > 0.01f)
@@ -114,4 +156,7 @@ void BaseGun::RecoilUpdate()
 
 void BaseGun::AddRecoil(DirectX::XMFLOAT3 power)
 {
+	recoilPower.x = power.x;
+	recoilPower.y = power.y;
+	recoilPower.z = power.z;
 }

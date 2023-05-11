@@ -17,24 +17,27 @@ public:
 
 	//•à‚¢‚½‚Ìe‚Ì—h‚ê‚Æ‚©AŒ‚‚Á‚½‚Æ‚«‚Ì”½“®‚Æ‚©
 	void RecoilUpdate();
+	void TremorUpdate();
 	void AddRecoil(DirectX::XMFLOAT3 power);
 
 	float fireRate;
 	int damage;
 	float speed;
 
-	DirectX::XMFLOAT3 offset{ -3.0f, -3.0f, 3.0f };
+	//DirectX::XMFLOAT3 offset{ -3.0f, -3.0f, 3.0f };
+	DirectX::XMFLOAT3 offset;
 
 	Bullet::Mode mode;
 	GameObject* lmg;
 
 	//•à‚«‚Æ‚©ŠÉ‚¢U“®—p
 	DirectX::XMFLOAT3 tremorMove;
-	float tremorSpeed{360};
+	float tremorSpeed{800};
 	//e‚ÌU‚ê•
-	float tremorAmp{0.5f};
+	float tremorAmp{0.12f};
 	//”­–C‚Æ‚©‚Ì”½“®—p
 	DirectX::XMFLOAT3 recoilMove;
+	DirectX::XMFLOAT3 recoilPower;
 #ifdef _DEBUG
 	bool enableShot = true;
 
@@ -43,4 +46,10 @@ public:
 
 	//•à‚«‚É‚æ‚éU“®‚ğ•\Œ»‚·‚é‚½‚ß‚Ì•Ï”
 	float tremorWalk;
+	float recoilUpTimer;
+	float recoilDownTimer;
+
+	//IMGUI—p
+	float recoilUpTime{0.03f};
+	float recoilDownTime{0.05f};
 };

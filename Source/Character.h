@@ -12,7 +12,6 @@ public:
     virtual ~Character() {}
 
     void Initialize()override;
-    void Finalize()override;
     void DrawDebug()override;
     void Begin()override;
     
@@ -47,7 +46,6 @@ protected:
     virtual void OnDead() {}//€–S‚ÉŒÄ‚Î‚ê‚é
     virtual void OnHeal() {}//‰ñ•œ‚ÉŒÄ‚Î‚ê‚é
 
-    void ShadowDestroy();
 
 
 protected:
@@ -64,7 +62,7 @@ protected:
 
     float weight = { 30.0f };//‘Ìd(Å‘å‚Å100)
 
-    Shadow* myShadow{ nullptr };
+    GameObject* myShadow{ nullptr };
 
 private:
     //‰ŠúÀ•W

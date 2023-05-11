@@ -42,7 +42,7 @@ namespace Argent::Input
 
 		for (auto& m : mouseState)
 		{
-			const SHORT State = GetKeyState(static_cast<int>(m.first));
+			const SHORT State = GetAsyncKeyState(static_cast<int>(m.first));
 			if (State & 0x8000)
 			{
 				switch (m.second)
