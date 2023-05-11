@@ -20,12 +20,18 @@ void BaseGun::Initialize()
 
 void BaseGun::Update()
 {
+	RecoilUpdate();
+
+	if (tremorMove.y != 0)
+	{
+		int i{ 0 };
+	}
 	auto t = GetOwner()->GetTransform();
 	DirectX::XMFLOAT3 f = t->CalcForward() * (offset.z + tremorMove.z + recoilMove.z);
 	DirectX::XMFLOAT3 u = t->CalcUp() * (offset.y + tremorMove.y + recoilMove.y);
 	DirectX::XMFLOAT3 r = t->CalcRight() * (offset.x + tremorMove.x + recoilMove.x);
 
-	//lmg->GetTransform()->SetPosition(f + u + r);
+	lmg->GetTransform()->SetPosition(f + u + r);
 
 #ifdef _DEBUG
 	if(Argent::Input::GetKeyUp(KeyCode::F3))
@@ -72,6 +78,9 @@ void BaseGun::DrawDebug()
 		ImGui::SliderInt("Damage", &damage, 0, 10);
 		ImGui::SliderFloat("Speed", &speed, 1.0f, 100.0f);
 		ImGui::DragFloat3("LMG Offset", &offset.x, 0.1f, -100, 100);
+
+		ImGui::SliderFloat("TremorSpeed", &tremorSpeed, 0, 1000);
+		ImGui::SliderFloat("TremorAmp", &tremorAmp, 0.01f, 1.00f);
 #ifdef _DEBUG
 		ImGui::Checkbox("Enable Shot", &enableShot);
 #endif
@@ -83,21 +92,23 @@ void BaseGun::DrawDebug()
 
 void BaseGun::RecoilUpdate()
 {
+
 	if (walking)
 	{
 		tremorWalk += Argent::Timer::ArTimer::Instance().DeltaTime();
-		float t = sinf(DirectX::XMConvertToRadians(tremorWalk)*360);
-		tremorMove.y = t * 20;
+		float t = sinf(DirectX::XMConvertToRadians(tremorWalk)*tremorSpeed);
+		tremorMove.y = t * tremorAmp;
 	}
-	else if (-1 > tremorMove.y || tremorMove.y > 1)
+	else if (-0.01f > tremorMove.y || tremorMove.y > 0.01f)
 	{
 		tremorWalk += Argent::Timer::ArTimer::Instance().DeltaTime();
-		float t = sinf(DirectX::XMConvertToRadians(tremorWalk) * 360);
-		tremorMove.y = t * 20;
+		float t = sinf(DirectX::XMConvertToRadians(tremorWalk) * tremorSpeed);
+		tremorMove.y = t * tremorAmp;
 	}
 	else
 	{
 		tremorMove.y = 0;
+		tremorWalk = 0;
 	}
 }
 

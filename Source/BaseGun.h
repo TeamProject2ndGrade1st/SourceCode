@@ -23,13 +23,16 @@ public:
 	int damage;
 	float speed;
 
-	DirectX::XMFLOAT3 offset;
+	DirectX::XMFLOAT3 offset{ -3.0f, -3.0f, 3.0f };
 
 	Bullet::Mode mode;
 	GameObject* lmg;
 
 	//•à‚«‚Æ‚©ŠÉ‚¢U“®—p
 	DirectX::XMFLOAT3 tremorMove;
+	float tremorSpeed{360};
+	//e‚ÌU‚ê•
+	float tremorAmp{0.5f};
 	//”­–C‚Æ‚©‚Ì”½“®—p
 	DirectX::XMFLOAT3 recoilMove;
 #ifdef _DEBUG

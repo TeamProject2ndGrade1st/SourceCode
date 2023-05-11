@@ -6,7 +6,7 @@
 void FriendCreater::Initialize()
 {
     BaseActor::Initialize();
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver10.fbx", false));
     GetOwner()->GetTransform()->SetScaleFactor(0.15f);
     GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
     friendManager = GameObject::FindByName("FriendManager")->GetComponent<FriendManager>();
