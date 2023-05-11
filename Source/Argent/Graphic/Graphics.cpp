@@ -115,10 +115,12 @@ namespace Argent::Graphics
 			                                       clearColor);
 		}
 
+		defaultRenderingPipeline = RenderingPipeline::CreateFullscreenQuadAlphaPipeline();
+
 		//高輝度成分用のバッファを作成
-		luminanceExtraction = std::make_unique<LuminanceExtraction>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), clearColor);
-		gaussianBlur = std::make_unique<GaussianBlur>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), clearColor);
-		bloom = std::make_unique<Bloom>();
+		//luminanceExtraction = std::make_unique<LuminanceExtraction>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), clearColor);
+		//gaussianBlur = std::make_unique<GaussianBlur>(device.Get(), frameResources.at(0)->GetBackBufferDesc(), clearColor);
+		bloom.Init(device.Get(), frameResources.at(0)->GetBackBufferDesc(), clearColor);
 
 		device->SetName(L"Device");
 	}
@@ -177,27 +179,20 @@ namespace Argent::Graphics
 		curFrameResource->SetRenderTarget(viewport, scissorRect, clearColor);
 		luminanceExtraction->Output(cmdList);
 #else
-		//高輝度成分を抽出する
-
-		luminanceExtraction->Draw(cmdList,
-			scissorRect, frameBuffer[0]->GetSrvGPUHandle(), viewport);
-
-		//luminanceExtraction->SetOnCommandList(cmdList, 0);
-
-		gaussianBlur->Execute(cmdList, scissorRect, luminanceExtraction->GetSrvGPUHandle());
+		bloom.Execute(cmdList, frameBuffer[0]->GetSrvGPUHandle(), viewport, scissorRect);
 
 		curFrameResource->SetRenderTarget(viewport, scissorRect, clearColor);
 
-		bloom->Begin(cmdList);
-
+		//加算合成
+		bloom.Draw(cmdList);
 
 		cmdList->SetGraphicsRootDescriptorTable(0, frameBuffer[0]->GetSrvGPUHandle());
 		cmdList->DrawInstanced(4, 1, 0, 0);
 
-		gaussianBlur->SetOnCommandList(cmdList, 0);
-		cmdList->DrawInstanced(4, 1, 0, 0);
-		//luminanceExtraction->Output(curFrameResource->GetCmdList(RenderType::PostRendering));
+		//アルファブレンドなパイプラインに戻してUI描画
+		frameBuffer[1]->Draw(this);
 #endif
+
 #ifdef _DEBUG	
 		ImguiCtrl::End(curFrameResource->GetCmdList(RenderType::PostRendering), this->GetGUIHeap());
 #endif

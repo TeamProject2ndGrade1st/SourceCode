@@ -370,6 +370,7 @@
     <ClCompile Include="Source\Argent\Graphic\Bloom.cpp" />
     <ClCompile Include="Source\Argent\Graphic\GaussianBlur.cpp" />
     <ClCompile Include="Source\Argent\Graphic\LuminanceExtraction.cpp" />
+    <ClCompile Include="Source\Argent\Graphic\FullscreenQuad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -667,6 +668,7 @@
     <ClInclude Include="Source\Argent\Graphic\Bloom.h" />
     <ClInclude Include="Source\Argent\Graphic\GaussianBlur.h" />
     <ClInclude Include="Source\Argent\Graphic\LuminanceExtraction.h" />
+    <ClInclude Include="Source\Argent\Graphic\FullscreenQuad.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

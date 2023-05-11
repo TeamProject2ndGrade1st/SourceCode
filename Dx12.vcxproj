@@ -51,6 +51,7 @@
     <ClCompile Include="Source\Argent\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Argent\Graphic\Bloom.cpp" />
     <ClCompile Include="Source\Argent\Graphic\FrameResource.cpp" />
+    <ClCompile Include="Source\Argent\Graphic\FullscreenQuad.cpp" />
     <ClCompile Include="Source\Argent\Graphic\GaussianBlur.cpp" />
     <ClCompile Include="Source\Argent\Graphic\Graphics.cpp" />
     <ClCompile Include="Source\Argent\Graphic\LuminanceExtraction.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Source\Argent\GameObject\GameObject.h" />
     <ClInclude Include="Source\Argent\Graphic\Bloom.h" />
     <ClInclude Include="Source\Argent\Graphic\FrameResource.h" />
+    <ClInclude Include="Source\Argent\Graphic\FullscreenQuad.h" />
     <ClInclude Include="Source\Argent\Graphic\GaussianBlur.h" />
     <ClInclude Include="Source\Argent\Graphic\Graphics.h" />
     <ClInclude Include="Source\Argent\Graphic\LuminanceExtraction.h" />

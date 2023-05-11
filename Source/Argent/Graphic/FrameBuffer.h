@@ -28,7 +28,9 @@ namespace Argent::Graphics
 		void Draw(const Graphics* gfx) const;
 
 		D3D12_GPU_DESCRIPTOR_HANDLE GetSrvGPUHandle()const { return srvDescriptor->GetGPUHandle(); }
-	private:
+
+
+		//private:
 		Microsoft::WRL::ComPtr<ID3D12Resource> resource;	//レンダーターゲットorシェーダーリソース
 		Microsoft::WRL::ComPtr<ID3D12Resource> depthResource;	//深度バッファ
 		std::unique_ptr<RenderingPipeline> renderingPipeline;

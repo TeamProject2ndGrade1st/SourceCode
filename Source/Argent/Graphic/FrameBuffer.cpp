@@ -69,7 +69,7 @@ namespace Argent::Graphics
 		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_DEPTH_WRITE, 
 		                                     &depthClearValue, IID_PPV_ARGS(depthResource.ReleaseAndGetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
-			
+
 
 		D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc{};
 		descHeapDesc.NumDescriptors = 1;
@@ -81,7 +81,7 @@ namespace Argent::Graphics
 		device->CreateDepthStencilView(depthResource.Get(), &dsView, dsvDescriptor->GetCPUHandle());
 
 		resource->SetName(L"FrameBuffer");
-		renderingPipeline = RenderingPipeline::CreateDefaultFrameBufferPipeline();
+		renderingPipeline = RenderingPipeline::CreateFullscreenQuadAlphaPipeline();
 	}
 
 	void FrameBuffer::Begin(const Graphics* gfx, ID3D12GraphicsCommandList* cList)
@@ -130,6 +130,6 @@ namespace Argent::Graphics
 		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		//vertexBuffer->SetOnCommandList(commandList, 0);
 		commandList->IASetVertexBuffers(0, 0, nullptr);
-	//	commandList->DrawInstanced(4, 1, 0, 0);
+		commandList->DrawInstanced(4, 1, 0, 0);
 	}
 }

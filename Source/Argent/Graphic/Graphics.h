@@ -120,13 +120,14 @@ namespace Argent::Graphics
 	public:
 		std::unique_ptr<FrameBuffer> frameBuffer[8];
 
-		//高輝度成分抽出
-		std::unique_ptr<LuminanceExtraction> luminanceExtraction;
-		//ガウシアンブラー
-		std::unique_ptr<GaussianBlur> gaussianBlur;
+		////高輝度成分抽出
+		//std::unique_ptr<LuminanceExtraction> luminanceExtraction;
+		////ガウシアンブラー
+		//std::unique_ptr<GaussianBlur> gaussianBlur;
 
 		//ブルーム
-		std::unique_ptr<Bloom> bloom;
+		Bloom bloom;
+		std::unique_ptr<RenderingPipeline> defaultRenderingPipeline;
 	};
 
 	HRESULT CreateDevice(IDXGIFactory6* factory, ID3D12Device** device);
