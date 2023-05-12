@@ -24,10 +24,12 @@ private:
     GameObject* dragTarget{ nullptr };
 
     //¶¬‰Â”\‚È”ÍˆÍ
-    RECT createRange{ -100,100,100,-100 };
+    RECT createRange{ -200,100,200,-100 };
     //‚»‚Ì”ÍˆÍ‚Ì’†S“_
     DirectX::XMFLOAT3 createPos{ 0,0,-100 };
 
     bool canCreate{ nullptr };
     DirectX::XMFLOAT4 color{1,0,0,1};
+
+    Camera* camera{ nullptr };
 };

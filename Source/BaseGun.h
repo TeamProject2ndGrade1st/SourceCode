@@ -18,7 +18,7 @@ public:
 	//•à‚¢‚½‚Ìe‚Ì—h‚ê‚Æ‚©AŒ‚‚Á‚½‚Æ‚«‚Ì”½“®‚Æ‚©
 	void RecoilUpdate();
 	void TremorUpdate();
-	void AddRecoil(DirectX::XMFLOAT3 power);
+	void AddRecoil(DirectX::XMFLOAT3 power,float downTime);
 
 	float fireRate;
 	int damage;
