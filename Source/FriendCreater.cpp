@@ -14,6 +14,11 @@ void FriendCreater::Initialize()
     GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color = color;
 
     GetOwner()->ReplaceTag(GameObject::Tag::FriendCreatar);
+
+    //ê—p‚ÌƒJƒƒ‰¶¬
+    GameObject::Instantiate("SecondCamera", camera = new Camera(false, 1280, 720));
+    camera->GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(0,200,0));
+    camera->GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(70,180,0,0));
 }
 
 void FriendCreater::Update()
@@ -71,9 +76,6 @@ void FriendCreater::ImagineFriendUpdate()
     D3D12_VIEWPORT viewport = Argent::Graphics::Graphics::Instance()->GetViewport();
 
     //ŒğŠ·s—ñ
-    std::vector<GameObject*> _camera;
-    GameObject::FindByTag(GameObject::Tag::MainCamera, _camera);
-    Camera* camera = _camera.at(0)->GetComponent<Camera>();
     DirectX::XMMATRIX View = camera->GetViewMatrix();
     DirectX::XMMATRIX Projection = camera->GetProjectionMatrix();
     DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();

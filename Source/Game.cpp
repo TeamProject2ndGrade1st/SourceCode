@@ -29,7 +29,7 @@ void Game::Initialize()
 {
 	ClearGameObject();
 	BaseScene::Initialize();
-	GameObject::Instantiate("addCamera", new Camera(false, 1280, 720));
+	
 	Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Cube.fbx");
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Sphere.fbx");
 	auto g = GameObject::Instantiate("UI", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/UI.png"));
@@ -38,8 +38,11 @@ void Game::Initialize()
 	
 	//AddObject(new GameObject("EffectSlash", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects")));
 	GameObject::Instantiate("Reticle", new Reticle("./Resources/Image/ReticleYellow.png"));
-	//AddObject(new GameObject("player", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx")));
-	// player ついか
+
+	//FriendManagerはFriendCreaterより上にする（順番は変えても良いようにしたい）
+	AddObject(new GameObject("FriendManager", new FriendManager(this)));
+	//FriendCreaterはPlayerより上にすること！(カメラの切り替えがうまくいかなくなる)
+	AddObject(new GameObject("FriendCreater", new FriendCreater()));
 	AddObject(new GameObject("player", new Player));
 	//GetGameObject("player")->AddComponent(new Player);
 //	AddObject(new GameObject("player", new Player));
@@ -52,11 +55,9 @@ void Game::Initialize()
 	//AddObject(new GameObject("turret", new EnemyTurret()));
 
 	//AddObject(new GameObject("friend", new FriendCreature()));
-	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 	AddObject(new GameObject("EnemyManager", new EnemyManager(this)));
 
 
-	AddObject(new GameObject("FriendCreater", new FriendCreater()));
 	
 	//AddObject(new GameObject("kongure",Argent::Loader::Fbx::LoadFbx("./Resources/Model/kongure_0509_1.fbx", false)));
 
@@ -67,9 +68,9 @@ void Game::Initialize()
 	GameObject::Instantiate("Box", new Box("./Resources/Model/Stage/boxes_0419_1.fbx"));
 	GameObject::Instantiate("OwnCamp", new OwnCamp("./Resources/Model/Stage/zizin_0419_1.fbx"));
 	GameObject::Instantiate("Core", new Core("./Resources/Model/Stage/core_0419_1.fbx"));
-	GameObject::Instantiate("HoneyComb", new Honeycomb("./Resources/Model/Stage/hanikamu_0425_1.fbx"));
+	//GameObject::Instantiate("HoneyComb", new Honeycomb("./Resources/Model/Stage/hanikamu_0425_1.fbx"));
 	GameObject::Instantiate("Barricade", new Barricade("./Resources/Model/Stage/barike-do_0419_1.fbx"));
-	GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_1_0426_5.fbx"));
+	//GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_1_0426_5.fbx"));
 
 
 	

@@ -67,25 +67,12 @@ void Player::Begin()
 
 void Player::Update()
 {
+    Turn();
+
+    if (camera == GameObject::FindByName("SecondCamera"))return;
+
     UpdateVerticalMove();
-    // switch (state)
-    // {
-    // case 0:
-    //     //camera = Argent::Scene::SceneManager::Instance()->GetCurrentScene()->GetGameObject("Camera");
-    ////     camera = GameObject::FindByName("Camera"); // こっちで
-    ////     movement = 50.5f;
-
-    ////     {
-    ////         auto c = camera->GetComponent<Camera>();
-    ////         c->SetMaxRotation(DirectX::XMFLOAT4(70, 370, 0, 0));
-             ////c->SetMinRotation(DirectX::XMFLOAT4(-70, -10, 0, 0));
-    ////     }
-
-    //     ++state;
-    //     break;
-    // case 1:
-
-         // 移動
+   
     MoveCamera();
 
     //ジャンプ
@@ -114,71 +101,8 @@ void Player::Update()
     }
 #endif
 
-    // マウスのポジション
-#if 1
-        // マウスの位置を取る
-    mousePos = Argent::Input::Mouse::Instance().GetPosition();
-    // マウスの移動量を取る
-    DirectX::XMFLOAT2 mouseVec = Argent::Input::Mouse::Instance().GetMoveVec();
-
-
-    // カメラのtransformを取る
-    Transform* t = camera->GetTransform();
-    // カメラの回転値を取るw
-    DirectX::XMFLOAT4 cameraRot = t->GetRotation();
-
-    DirectX::XMFLOAT4 mouseMovement{ mouseVec.y * sensitivity,mouseVec.x * sensitivity,0,0 };
-
-    DirectX::XMFLOAT4 setRotation{};
-    setRotation = cameraRot;
-    setRotation.x += mouseMovement.x;
-    setRotation.y += mouseMovement.y;
-
-    // カメラ横のやつ(回転できるようにする)
-    if (setRotation.y > 360)setRotation.y -= 360;
-    if (setRotation.y < 0)setRotation.y += 360;
-#endif
-#ifdef _DEBUG
-    static bool use = false;
-
-    if (Argent::Input::GetKeyUp(KeyCode::U))
-    {
-        use = !use;
-    }
-    if (use)
-    {
-        t->SetRotation(setRotation);
-    }
-#else
-    t->SetRotation(setRotation);
-#endif
-    //   break;
-  // }
-
     GetTransform()->SetPosition(camera->GetTransform()->GetPosition());
     GetTransform()->SetRotation(camera->GetTransform()->GetRotation());
-
-
-    //銃の位置
-
-    DirectX::XMFLOAT3 forward = GetTransform()->CalcForward();
-    DirectX::XMFLOAT3 up = GetTransform()->CalcUp();
-    DirectX::XMFLOAT3 right = GetTransform()->CalcRight();
-
-    DirectX::XMFLOAT3 NormForward = forward;
-    NormForward.y = 0;
-
-    float dot{};
-    DirectX::XMStoreFloat(&dot, DirectX::XMVector3Dot(DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&forward)), DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&NormForward))));
-
-    //DirectX::XMFLOAT3 offsetPosition = forward * gunOffset.z + up * gunOffset.y + right * gunOffset.x;
-    //gun->GetTransform()->SetPosition(offsetPosition + GetOwner()->GetTransform()->GetPosition());
-
-    //DirectX::XMFLOAT4 setRotation = GetOwner()->GetTransform()->GetRotation();
-    //setRotation = Absolute(setRotation);
-    //setRotation.x = DirectX::XMConvertToDegrees(acosf(dot));
-    //gun->GetTransform()->SetRotation(setRotation);
-
 }
 
 void Player::DrawDebug()
@@ -201,6 +125,44 @@ void Player::DrawDebug()
         BaseActor::DrawDebug();
         ImGui::TreePop();
     }
+}
+
+void Player::Turn()
+{
+    // マウスの位置を取る
+    mousePos = Argent::Input::Mouse::Instance().GetPosition();
+    // マウスの移動量を取る
+    DirectX::XMFLOAT2 mouseVec = Argent::Input::Mouse::Instance().GetMoveVec();
+
+
+    // カメラのtransformを取る
+    Transform* t = camera->GetTransform();
+    // カメラの回転値を取るw
+    DirectX::XMFLOAT4 cameraRot = t->GetRotation();
+
+    DirectX::XMFLOAT4 mouseMovement{ mouseVec.y * sensitivity,mouseVec.x * sensitivity,0,0 };
+
+    DirectX::XMFLOAT4 setRotation{};
+    setRotation = cameraRot;
+    setRotation.x += mouseMovement.x;
+    setRotation.y += mouseMovement.y;
+
+    // カメラ横のやつ(回転できるようにする)
+    if (setRotation.y > 360)setRotation.y -= 360;
+    if (setRotation.y < 0)setRotation.y += 360;
+
+#ifdef _DEBUG
+    static bool use = false;
+
+    if (Argent::Input::GetKeyUp(KeyCode::U))
+    {
+        use = !use;
+    }
+    if (use)
+    {
+        t->SetRotation(setRotation);
+    }
+#endif
 }
 
 void Player::UpdateVerticalMove()
@@ -229,8 +191,8 @@ void Player::UpdateVerticalMove()
             velocity.y /= 2;
         }
 
-        camera->GetTransform()->SetPosition(pos);
     }
+    camera->GetTransform()->SetPosition(pos);
 }
 
 void Player::Jump(float power)

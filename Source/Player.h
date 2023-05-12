@@ -15,6 +15,8 @@ public:
 
 	void DrawDebug() override;
 
+	void Turn();
+
 	void UpdateVerticalMove();
 
 	void Jump(float power);
