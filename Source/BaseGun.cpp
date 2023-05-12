@@ -49,7 +49,7 @@ void BaseGun::Update()
 			auto t = GetOwner()->GetTransform();
 			Bullet::Shot(t->GetPosition(), t->GetRotation(), t->CalcForward(),
 				damage, speed, mode);
-			AddRecoil(DirectX::XMFLOAT3(0, 0, -3));
+			AddRecoil(DirectX::XMFLOAT3(0, 0, -3),0.05f);
 		}
 	}
 
@@ -58,7 +58,6 @@ void BaseGun::Update()
 		if(mode == Bullet::Mode::Creature) mode = Bullet::Mode::Machine;
 		else if(mode == Bullet::Mode::Machine) mode = Bullet::Mode::Creature;
 	}
-
 }
 
 void BaseGun::Finalize()
@@ -154,9 +153,11 @@ void BaseGun::TremorUpdate()
 	}
 }
 
-void BaseGun::AddRecoil(DirectX::XMFLOAT3 power)
+void BaseGun::AddRecoil(DirectX::XMFLOAT3 power,float downTime)
 {
 	recoilPower.x = power.x;
 	recoilPower.y = power.y;
 	recoilPower.z = power.z;
+
+	recoilDownTime = downTime;
 }

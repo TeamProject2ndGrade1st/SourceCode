@@ -17,8 +17,8 @@ void Player::Initialize()
     g->AddComponent(ray);
 
 
-
     movement = 50.5f;
+
     //  camera = GameObject::FindByName("Camera"); // こっちで
     //  camera->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 16.0f, 0));
     //  {
@@ -67,6 +67,7 @@ void Player::Begin()
 
 void Player::Update()
 {
+    UpdateVerticalMove();
     // switch (state)
     // {
     // case 0:
@@ -86,6 +87,14 @@ void Player::Update()
 
          // 移動
     MoveCamera();
+
+    //ジャンプ
+    if (Argent::Input::GetKeyDown(KeyCode::Space))
+    {
+        Jump(jumpPower);
+    }
+
+    FlyUpdate();
 
     // デバッグ用
 #ifdef _DEBUG
@@ -179,6 +188,13 @@ void Player::DrawDebug()
 {
     if (ImGui::TreeNode(GetName()))
     {
+        ImGui::SliderFloat("Gravity", &gravity, 0, 300);
+        ImGui::SliderFloat("JumpPower", &jumpPower, 0, 300);
+        ImGui::SliderFloat("FlyPower", &flyPower, 0, 1000);
+        ImGui::SliderFloat("FlyEnergy", &flyEnergy, 0, 5);
+        ImGui::SliderFloat("MaxFlyEnergy", &maxFlyEnergy, 0, 5);
+        
+
         ImGui::Checkbox("UseCameraControl", &useCameraControl);
         ImGui::SliderFloat("movement", &movement, 0.1f, 10.0);
         ImGui::DragFloat2("mouse", &mousePos.x);
@@ -188,6 +204,104 @@ void Player::DrawDebug()
         BaseActor::DrawDebug();
         ImGui::TreePop();
     }
+}
+
+void Player::UpdateVerticalMove()
+{
+    auto pos = camera->GetTransform()->GetPosition();
+
+    //着地
+    if (pos.y < groundPosY && velocity.y < 0)
+    {
+        pos.y = groundPosY;
+        velocity.y = 0;
+        gun->AddRecoil(DirectX::XMFLOAT3(0,5, 0),0.2f);
+        isGround = true;
+    }
+
+    if (!isGround)
+    {
+        float deltaTime = Argent::Timer::ArTimer::Instance().DeltaTime();
+        velocity.y -= gravity * deltaTime;
+
+        pos.y += velocity.y * deltaTime;
+
+        if (pos.y > maxPosY)
+        {
+            pos.y = maxPosY;
+            velocity.y /= 2;
+        }
+
+        camera->GetTransform()->SetPosition(pos);
+    }
+}
+
+void Player::Jump(float power)
+{
+    if (!isGround)return;
+
+    velocity.y += power;
+    gun->AddRecoil(DirectX::XMFLOAT3(0,-10,0),0.08f);
+    
+    isGround = false;
+}
+
+void Player::Fly(float power)
+{
+    if (isGround)return;
+    if (flyEnergy <= 0)return;
+
+    velocity.y += power * Argent::Timer::ArTimer::Instance().DeltaTime();
+    static float time;
+    time += Argent::Timer::ArTimer::Instance().DeltaTime();
+    flyEnergy -= Argent::Timer::ArTimer::Instance().DeltaTime();
+    if (time > 0.05f)
+    {
+        gun->AddRecoil(DirectX::XMFLOAT3(0, -0.2, 0), 0.08f);
+        time = 0;
+    }
+}
+
+void Player::FlyUpdate()
+{
+
+    //ジャンプしてからすぐ飛ぶと
+    static bool jump;
+    static float timer;
+    if (jump != isGround)
+    {
+        jump = isGround;
+        if (isGround == false)
+        {
+            timer = 0.3f;
+        }
+    }
+    
+    timer -= Argent::Timer::ArTimer::Instance().DeltaTime();
+
+    
+
+    //上昇
+    if (Argent::Input::GetKey(KeyCode::Space))
+    {
+        if (timer <= 0)
+        {
+            Fly(flyPower);
+        }
+    }
+    else
+    {
+        if (maxFlyEnergy <= flyEnergy)
+        {
+            flyEnergy = maxFlyEnergy;
+        }
+        else
+        {
+            flyEnergy += Argent::Timer::ArTimer::Instance().DeltaTime() * 0.8f;
+        }
+    }
+
+
 }
 
 // カメラの移動
@@ -213,13 +327,11 @@ void Player::MoveCamera()
     DirectX::XMFLOAT3 cameraRight = t->CalcRight();
     DirectX::XMFLOAT3 cameraFront = t->CalcForward();
 
-
     cameraRight.y = 0;
     cameraFront.y = 0;
 
     cameraRight = Normalize(cameraRight);
     cameraFront = Normalize(cameraFront);
-
 
     cameraRight = cameraRight * ax;
     cameraFront = cameraFront * ay;
