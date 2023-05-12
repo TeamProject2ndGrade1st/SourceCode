@@ -101,7 +101,7 @@ void Game::Initialize()
 	GameObject::Instantiate("Grenade", new Grenade);
 
 	//skyMap
-	GameObject::Instantiate("SkyMap001", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Sky/skysphere.fbx"));
+	//GameObject::Instantiate("SkyMap001", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Sky/skysphere.fbx"));
 	
 #ifndef _DEBUG
 	ShowCursor(false);
