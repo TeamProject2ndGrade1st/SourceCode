@@ -14,8 +14,7 @@ public:
     };
 
 
-    FriendManager(Argent::Scene::BaseScene* currentScene) : 
-        BaseActor("FriendManager"), scene(currentScene){}
+    FriendManager(Argent::Scene::BaseScene* currentScene);
     ~FriendManager() {}
 
     void Initialize()override;
@@ -24,10 +23,12 @@ public:
 
     void AddFriend(BaseFriend* _friend);
     
-
     
 
     BaseFriend* FindFriendComponentFromOwner(GameObject* wFriend) const;
+
+    bool battleFlag{ false };
+
 private:
     Argent::Scene::BaseScene* scene;
     std::vector<BaseFriend*> friendArray;

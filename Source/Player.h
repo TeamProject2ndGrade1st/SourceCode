@@ -2,6 +2,7 @@
 #include "Argent/Argent.h"
 #include "BaseGun.h"
 #include "Character.h"
+#include "FriendCreater.h"
 
 class Player: public Argent::Component::BaseActor
 {
@@ -62,4 +63,6 @@ protected:
 	float flyPower{ 600 };
 	float flyEnergy{ 1 };
 	float maxFlyEnergy{ 1 };
+
+	FriendCreater* friendCreater{ nullptr };
 };

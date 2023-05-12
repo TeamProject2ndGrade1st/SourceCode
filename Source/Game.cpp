@@ -42,7 +42,7 @@ void Game::Initialize()
 	//FriendManagerはFriendCreaterより上にする（順番は変えても良いようにしたい）
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 	//FriendCreaterはPlayerより上にすること！(カメラの切り替えがうまくいかなくなる)
-	AddObject(new GameObject("FriendCreater", new FriendCreater()));
+
 	AddObject(new GameObject("player", new Player));
 	//GetGameObject("player")->AddComponent(new Player);
 //	AddObject(new GameObject("player", new Player));

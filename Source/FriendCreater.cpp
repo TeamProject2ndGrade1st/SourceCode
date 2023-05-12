@@ -23,6 +23,9 @@ void FriendCreater::Initialize()
 
 void FriendCreater::Update()
 {
+
+
+
     ImagineFriendUpdate();
 
     if (!GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color.x == color.x)
