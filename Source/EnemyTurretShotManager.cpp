@@ -36,6 +36,24 @@ void EnemyTurretShotManager::AddShot(const DirectX::XMFLOAT3 pos, const DirectX:
     EnemyTurretShot* shot = new EnemyTurretShot("shot", pos);
     shot->SetVelocity(targetPos);
     GameObject::Instantiate("shot", shot);
+
+    DirectX::XMVECTOR front = { 0,0,-1 };
+    DirectX::XMVECTOR axis = { 0,1,0 };
+    DirectX::XMVECTOR right = { -1,0,0 };
+
+    float angle = DirectX::XMVectorGetX(DirectX::XMVector3Dot(front, DirectX::XMLoadFloat3(&targetPos)));
+    float LR = DirectX::XMVectorGetX(DirectX::XMVector3Dot(right, DirectX::XMLoadFloat3(&targetPos)));
+    
+
+    if (angle < 0.99f)
+    {
+        angle = acosf(angle);
+        if (LR < 0)angle *= -1;
+
+        shot->GetOwner()->GetTransform()->SetRotation({ 0,DirectX::XMConvertToDegrees(angle),0,0 });
+    }
+    
+    // test
     
     // shotÇÃêiÇﬁï˚å¸Çê›íËÇ∑ÇÈ
     

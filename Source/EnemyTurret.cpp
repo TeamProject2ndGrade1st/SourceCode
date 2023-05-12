@@ -5,13 +5,21 @@ void EnemyTurret::Initialize()
 {
     BaseEnemy::Initialize();
 
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/gun_turret_animv2.fbx"));
+    //GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/gun_turret_animv2.fbx"));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/gun_turret_animv4.fbx"));
 
     // スケーリング
     GetOwner()->GetTransform()->SetScaleFactor(0.2f);
 
     // 向きを整える
     GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 90.0f, 0.0f, 0.0f));
+    //GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f));
+
+    // デバックシリンダー
+    GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube));
+    GetOwner()->GetComponent<Argent::Component::Collider::RayCastCollider>()->scale = { 500.0f,100.0f,500.0f };
+
+
 
     // ステートマシンをセット
     stateMachine.reset(new EnemyStateMachine);
@@ -36,7 +44,7 @@ void EnemyTurret::Begin()
 {
     BaseEnemy::Begin();
 
-    GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 90.0f, 0.0f, 0.0f));
+    //GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 90.0f, 0.0f, 0.0f));
 }
 
 void EnemyTurret::Update()

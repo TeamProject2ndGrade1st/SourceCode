@@ -102,7 +102,7 @@ namespace Argent::Component::Renderer
 		void SetStopTime(float t) { stopTimer = t; }
 
 	private:
-		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> objectConstantBuffer;
+		std::unique_ptr<Argent::Dx12::ConstantBuffer<Constants>> objectConstantBuffer;
 
 		std::shared_ptr<Argent::Resource::Mesh::SkinnedMesh> skinnedMesh;
 		int clipIndex{};

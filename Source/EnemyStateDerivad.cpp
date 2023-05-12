@@ -4,6 +4,7 @@
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
 #include "EnemyTurretShot.h"
+#include "EnemyTurretShotManager.h"
 
 // スパイクボット
 namespace Enemy::SpikeBot
@@ -112,9 +113,11 @@ namespace Enemy::Turret
 
         // タイマーを設定
         owner->SetStateTimer(4.0f);
+        
+        // ショットタイマーをセット
+        shotTimer = 0.0f;
 
-        DirectX::XMFLOAT3 pos{ owner->GetOwner()->GetTransform()->GetPosition() };
-        GameObject::Instantiate("shot", new EnemyTurretShot("shot", pos));
+
     }
 
     void AttackState::Execute()
@@ -126,6 +129,53 @@ namespace Enemy::Turret
         {
             owner->GetStateMachine()->ChangeState(static_cast<int>(EnemyTurret::State::Idle));
         }
+
+        if (shotTimer <= 0.0f)
+        {
+            // test
+            DirectX::XMFLOAT3 targetPos{};
+            
+            std::vector<GameObject*> Friend;
+            GameObject::FindByTag(GameObject::Tag::Friend, Friend);
+            auto fManager = GameObject::FindByName("FriendManager")->GetComponent<FriendManager>();
+            //fManager->FindFriendComponentFromOwner()
+            
+            //Friend.at(0);
+            //owner->SetFriend(owner->SearchFriend1());
+            DirectX::XMFLOAT3 tPos{};
+            if (Friend.size()!=0)
+            {
+                float length0 = FLT_MAX;
+                for (auto it = Friend.begin(); it != Friend.end(); ++it)
+                {
+                    DirectX::XMFLOAT3 friendPos = (*it)->GetTransform()->GetPosition();
+                    //DirectX::XMFLOAT3 friendPos = owner->_friend->GetTargetPosition();
+                    DirectX::XMFLOAT3 turretPos = owner->GetOwner()->GetTransform()->GetPosition();
+                    DirectX::XMVECTOR fv = DirectX::XMLoadFloat3(&friendPos);
+                    DirectX::XMVECTOR tv = DirectX::XMLoadFloat3(&turretPos);
+                    DirectX::XMVECTOR v = DirectX::XMVectorSubtract(fv, tv);
+                    DirectX::XMVECTOR Length = DirectX::XMVector3Length(v);
+                    float length;
+                    DirectX::XMStoreFloat(&length, Length);
+
+                    if (length < length0)
+                    {
+                        v = DirectX::XMVector3Normalize(v);
+                        DirectX::XMStoreFloat3(&targetPos, v);
+                        length0 = length;
+                        tPos = targetPos;
+                    }
+                }
+            }
+
+            // タレットの位置を取る
+            DirectX::XMFLOAT3 pos{ owner->GetOwner()->GetTransform()->GetPosition() };
+            // 弾を生成する
+            EnemyTurretShotManager::Instance().AddShot(pos, tPos);
+            shotTimer = 0.4f;
+        }
+        shotTimer -= Argent::Timer::GetDeltaTime();
+
     }
 
     void AttackState::Exit()

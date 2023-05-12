@@ -24,9 +24,6 @@ public:
 	int damage;
 	float speed;
 
-	//DirectX::XMFLOAT3 offset{ -3.0f, -3.0f, 3.0f };
-	DirectX::XMFLOAT3 offset;
-
 	Bullet::Mode mode;
 	GameObject* lmg;
 
@@ -52,4 +49,6 @@ public:
 	//IMGUI—p
 	float recoilUpTime{0.03f};
 	float recoilDownTime{0.05f};
+
+	DirectX::XMFLOAT3 offset;
 };

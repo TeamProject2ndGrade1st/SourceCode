@@ -50,7 +50,7 @@ namespace Argent::Component::Renderer
 		void CreateComObject(ID3D12Device* device);
 
 	private:
-		std::unique_ptr<Argent::Dx12::ArConstantBuffer<Constants>> constantBuffer{};
+		std::unique_ptr<Argent::Dx12::ConstantBuffer<Constants>> constantBuffer{};
 
 	protected:
 		std::shared_ptr<Resource::Mesh::Mesh> mesh{};

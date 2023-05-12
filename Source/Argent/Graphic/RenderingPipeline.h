@@ -33,6 +33,14 @@ namespace Argent
 			static std::unique_ptr<RenderingPipeline> CreateDefaultSkinnedMeshPipeline();
 			static std::unique_ptr<RenderingPipeline> CreateDebugRendererPipeline();
 			static std::unique_ptr<RenderingPipeline> CreateDefaultFrameBufferPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateLuminanceExtractionPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateGaussianBlurPipelineX();
+			static std::unique_ptr<RenderingPipeline> CreateGaussianBlurPipelineY();
+			static std::unique_ptr<RenderingPipeline> CreateTmpPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateBloomPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateCombineBokeColorPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateFullscreenQuadAlphaPipeline();
+			static std::unique_ptr<RenderingPipeline> CreateSkyMapPipeline();
 		private:
 			/**
 			 * \brief 頂点シェーダーとピクセルシェーダー、ルートシグネチャの値は入れなくてもいい

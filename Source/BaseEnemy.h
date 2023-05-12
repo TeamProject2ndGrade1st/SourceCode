@@ -23,14 +23,34 @@ public:
     void SetAnimation(int index)
     {
         GameObject* g = GetOwner();
-        auto com = g->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
+        //auto com = g->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
 
-        com->SetAnimation(index);
+        std::vector<GameObject*> childArray;
+        g->GetChildArray(childArray);
+
+        for (auto& c : childArray)
+        {
+            auto com = c->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
+            com->SetAnimation(index);
+        }
+
+       // com->SetAnimation(index);
     }
 
     bool IsAnimationEnd()
     {
-        return GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->IsAnimationEnd();
+        GameObject* g = GetOwner();
+        //auto com = g->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
+
+        std::vector<GameObject*> childArray;
+        g->GetChildArray(childArray);
+
+        for (auto& c : childArray)
+        {
+            auto com = c->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
+            return com->IsAnimationEnd();
+        }
+      //  return GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->IsAnimationEnd();
     }
 
     void SetStateTimer(float timer) { stateTimer = timer; }
@@ -54,6 +74,7 @@ public:
     void SetFriend(BaseFriend* f) { _friend = f; }
 
 
+
     BaseFriend* SearchFriend1();
 protected:
     // –Ú“IÀ•W
@@ -63,4 +84,6 @@ protected:
 
     std::unique_ptr<EnemyStateMachine> stateMachine = nullptr;
     FriendManager* fManager = nullptr;
+
+    Argent::Component::Renderer::SkinnedMeshRenderer* renderer;
 };

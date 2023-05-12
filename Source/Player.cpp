@@ -134,9 +134,6 @@ void Player::Update()
     setRotation.x += mouseMovement.x;
     setRotation.y += mouseMovement.y;
 
-
-
-
     // ƒJƒƒ‰‰¡‚Ì‚â‚Â(‰ñ“]‚Å‚«‚é‚æ‚¤‚É‚·‚é)
     if (setRotation.y > 360)setRotation.y -= 360;
     if (setRotation.y < 0)setRotation.y += 360;

@@ -26,6 +26,7 @@ cbuffer ObjectConstant : register(b1)
 cbuffer MaterialConstant : register(b2)
 {
 	float4 materialColor;
+    float4 emissiveColor;
 	float4 ka;
 	float4 kd;
 	float4 ks;

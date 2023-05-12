@@ -21,4 +21,5 @@ cbuffer SceneConstant : register(b0)
     
     DirectionalLight directionalLight;
     PointLight pointLight[NumPointLight];
+    row_major float4x4 invViewProjection;
 }

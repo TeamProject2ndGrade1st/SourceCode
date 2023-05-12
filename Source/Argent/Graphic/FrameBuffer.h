@@ -17,13 +17,8 @@ namespace Argent::Graphics
 {
 	class FrameBuffer
 	{
-		struct Vertex
-		{
-			DirectX::XMFLOAT3 position;
-			DirectX::XMFLOAT2 texcoord;
-		};
 	public:
-		FrameBuffer(ID3D12Device* device, D3D12_RESOURCE_DESC rsDesc, 
+		FrameBuffer(ID3D12Device* device, D3D12_RESOURCE_DESC rsDesc,  DXGI_FORMAT format,
 			float clearColor[4]);
 		virtual ~FrameBuffer() = default;
 
@@ -31,13 +26,14 @@ namespace Argent::Graphics
 		void Begin(const Graphics* gfx, ID3D12GraphicsCommandList* cList);
 		void End(const Graphics* gfx) const;
 		void Draw(const Graphics* gfx) const;
-	private:
+
+		D3D12_GPU_DESCRIPTOR_HANDLE GetSrvGPUHandle()const { return srvDescriptor->GetGPUHandle(); }
+
+
+		//private:
 		Microsoft::WRL::ComPtr<ID3D12Resource> resource;	//レンダーターゲットorシェーダーリソース
 		Microsoft::WRL::ComPtr<ID3D12Resource> depthResource;	//深度バッファ
-		std::unique_ptr<Resource::Shader> vertexShader;
-		std::unique_ptr<Resource::Shader> pixelShader;
 		std::unique_ptr<RenderingPipeline> renderingPipeline;
-		std::shared_ptr<Dx12::ArVertexBuffer<Vertex>> vertexBuffer;
 		Dx12::Descriptor* srvDescriptor;
 		Dx12::Descriptor* rtvDescriptor;
 		Dx12::Descriptor* dsvDescriptor;

@@ -20,6 +20,11 @@
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
 
+#include "EnemyTurretShotManager.h"
+
+#include "Grenade.h"
+
+
 void Game::Initialize()
 {
 	ClearGameObject();
@@ -50,11 +55,15 @@ void Game::Initialize()
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 	AddObject(new GameObject("EnemyManager", new EnemyManager(this)));
 
+
 	AddObject(new GameObject("FriendCreater", new FriendCreater()));
 	
 	//AddObject(new GameObject("kongure",Argent::Loader::Fbx::LoadFbx("./Resources/Model/kongure_0509_1.fbx", false)));
 
+	AddObject(new GameObject("EnemyTurretShotManager", new EnemyTurretShotManager()));
+
 	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_3_0508_1.fbx"));
+
 	GameObject::Instantiate("Box", new Box("./Resources/Model/Stage/boxes_0419_1.fbx"));
 	GameObject::Instantiate("OwnCamp", new OwnCamp("./Resources/Model/Stage/zizin_0419_1.fbx"));
 	GameObject::Instantiate("Core", new Core("./Resources/Model/Stage/core_0419_1.fbx"));
@@ -88,8 +97,7 @@ void Game::Initialize()
 	l = GameObject::Instantiate("PointLight", new PointLight(3));
 	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
 
-	GameObject::Instantiate("skyBox",Argent::Loader::Fbx::LoadFbx("./Resources/Model/Sky/skysphere.fbx", false));
-
+	GameObject::Instantiate("Grenade", new Grenade);
 	
 #ifndef _DEBUG
 	ShowCursor(false);

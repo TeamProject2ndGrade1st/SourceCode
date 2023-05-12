@@ -7,7 +7,7 @@
 
 namespace Argent::Graphics
 {
-	FrameBuffer::FrameBuffer(ID3D12Device* device, D3D12_RESOURCE_DESC rsDesc,
+	FrameBuffer::FrameBuffer(ID3D12Device* device, D3D12_RESOURCE_DESC rsDesc, DXGI_FORMAT format,
 		float clearColor[4])
 	{
 		this->clearColor[0] = clearColor[0];
@@ -22,6 +22,7 @@ namespace Argent::Graphics
 		rtvDescriptor = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)->PopDescriptor();
 		dsvDescriptor = Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)->PopDescriptor();
 
+		rsDesc.Format = format;
 
 		D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 		D3D12_CLEAR_VALUE clearValue = CD3DX12_CLEAR_VALUE(rsDesc.Format, clearColor);
@@ -35,7 +36,6 @@ namespace Argent::Graphics
 		D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 		rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 		rtvDesc.Format = rsDesc.Format;
-		//rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		auto handle = rtvDescriptor->GetCPUHandle();
 		device->CreateRenderTargetView(resource.Get(), &rtvDesc, handle);
 
@@ -69,7 +69,7 @@ namespace Argent::Graphics
 		hr = device->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc, D3D12_RESOURCE_STATE_DEPTH_WRITE, 
 		                                     &depthClearValue, IID_PPV_ARGS(depthResource.ReleaseAndGetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
-			
+
 
 		D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc{};
 		descHeapDesc.NumDescriptors = 1;
@@ -80,19 +80,8 @@ namespace Argent::Graphics
 		dsView.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 		device->CreateDepthStencilView(depthResource.Get(), &dsView, dsvDescriptor->GetCPUHandle());
 
-
-
-		//頂点情報を入れる(スクリーンサイズの長方形)
-		std::vector<Vertex> vertice
-		{
-			{{ -1.f,  1.f, 0.0f },{ 0.0f, 0.0f }},
-			{{  1.f,  1.f, 0.0f },{ 1.0f, 0.0f }},
-			{{ -1.f, -1.f, 0.0f },{ 0.0f, 1.0f }},
-			{{  1.f, -1.f, 0.0f },{ 1.0f, 1.0f }},
-		};
-
-		vertexBuffer = std::make_unique<Dx12::ArVertexBuffer<Vertex>>(device, vertice);
-		renderingPipeline = RenderingPipeline::CreateDefaultFrameBufferPipeline();
+		resource->SetName(L"FrameBuffer");
+		renderingPipeline = RenderingPipeline::CreateFullscreenQuadAlphaPipeline();
 	}
 
 	void FrameBuffer::Begin(const Graphics* gfx, ID3D12GraphicsCommandList* cList)
@@ -111,7 +100,6 @@ namespace Argent::Graphics
 		cmdList->OMSetRenderTargets(1, &rtvHandle,
 			false, &dsvHandle);
 
-		//auto dsvHandle = gfx->GetDepthHandle();
 		//todo
 		const D3D12_VIEWPORT viewport = gfx->GetViewport();
 		const D3D12_RECT rect = gfx->GetRect();
@@ -140,7 +128,8 @@ namespace Argent::Graphics
 		commandList->SetGraphicsRootDescriptorTable(0, srvDescriptor->GetGPUHandle());
 
 		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-		vertexBuffer->SetOnCommandList(commandList, 0);
+		//vertexBuffer->SetOnCommandList(commandList, 0);
+		commandList->IASetVertexBuffers(0, 0, nullptr);
 		commandList->DrawInstanced(4, 1, 0, 0);
 	}
 }

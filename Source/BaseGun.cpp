@@ -22,11 +22,16 @@ void BaseGun::Update()
 {
 	RecoilUpdate();
 	TremorUpdate();
+
+	lmg->GetTransform()->SetPosition(DirectX::XMFLOAT3(-3.0f, -3.0f, 3.0f));
+	lmg->GetTransform()->SetRotation(DirectX::XMFLOAT4(-2.0f, -86.5f, 0.0f, 0.0f));
+	lmg->GetTransform()->SetScaleFactor(0.1f);
 	
 	auto t = GetOwner()->GetTransform();
 	DirectX::XMFLOAT3 f = t->CalcForward() * (offset.z + tremorMove.z + recoilMove.z);
 	DirectX::XMFLOAT3 u = t->CalcUp() * (offset.y + tremorMove.y + recoilMove.y);
 	DirectX::XMFLOAT3 r = t->CalcRight() * (offset.x + tremorMove.x + recoilMove.x);
+
 
 	t->SetPosition(t->GetPosition() + f + u + r);
 
@@ -74,13 +79,16 @@ void BaseGun::DrawDebug()
 		ImGui::DragFloat("Fire Rate", &fireRate, 0.05f, 0.05f, 10.0f);
 		ImGui::SliderInt("Damage", &damage, 0, 10);
 		ImGui::SliderFloat("Speed", &speed, 1.0f, 100.0f);
-		ImGui::DragFloat3("LMG Offset", &offset.x, 0.1f, -100, 100);
+//<<<<<<< HEAD
+	//	ImGui::DragFloat3("LMG Offset", &offset.x, 0.1f, -100, 100);
 
 		ImGui::SliderFloat("TremorSpeed", &tremorSpeed, 0, 1000);
 		ImGui::SliderFloat("TremorAmp", &tremorAmp, 0.01f, 1.00f);
 
 		ImGui::SliderFloat("RecoilUpTime", &recoilUpTime, 0, 0.1f);
 		ImGui::SliderFloat("RecoilDowmTime", &recoilDownTime, 0, 0.1f);
+//=======
+//>>>>>>> GinNote
 #ifdef _DEBUG
 		ImGui::Checkbox("Enable Shot", &enableShot);
 #endif

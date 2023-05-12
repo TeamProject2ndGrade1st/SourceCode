@@ -10,10 +10,6 @@ void EnemySpikeBot::Initialize()
     // スケーリング
     GetOwner()->GetTransform()->SetScaleFactor(0.2f);
 
-    // test
-    //GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 90.0f, 0.0f, 0.0f));
-    //GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, -200.0f));
-
     // デバッグシリンダー
     GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube));
     GetOwner()->GetComponent<Argent::Component::Collider::RayCastCollider>()->scale = { 500.0f,100.0f,500.0f };
