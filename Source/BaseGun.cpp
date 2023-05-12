@@ -4,8 +4,8 @@ BaseGun::BaseGun(const char* name):
 	BaseComponent(name)
 {
 	damage = 1;
-	speed = 100.0f;
-	fireRate = 1.0f;
+	speed = 700.0f;
+	fireRate = 0.7f;
 }
 
 void BaseGun::Initialize()
@@ -70,7 +70,6 @@ void BaseGun::Finalize()
 	Bullet::ClearFriendManager();
 }
 
-
 void BaseGun::DrawDebug()
 {
 	if(ImGui::TreeNode(GetName()))
@@ -78,8 +77,8 @@ void BaseGun::DrawDebug()
 		//Apex R-99ÇÃÉåÅ[ÉgÇ™ç≈í·íl
 		ImGui::DragFloat("Fire Rate", &fireRate, 0.05f, 0.05f, 10.0f);
 		ImGui::SliderInt("Damage", &damage, 0, 10);
-		ImGui::SliderFloat("Speed", &speed, 1.0f, 100.0f);
-//<<<<<<< HEAD
+		ImGui::SliderFloat("Speed", &speed, 1.0f, 2000.0f);
+
 	//	ImGui::DragFloat3("LMG Offset", &offset.x, 0.1f, -100, 100);
 
 		ImGui::SliderFloat("TremorSpeed", &tremorSpeed, 0, 1000);
@@ -87,8 +86,7 @@ void BaseGun::DrawDebug()
 
 		ImGui::SliderFloat("RecoilUpTime", &recoilUpTime, 0, 0.1f);
 		ImGui::SliderFloat("RecoilDowmTime", &recoilDownTime, 0, 0.1f);
-//=======
-//>>>>>>> GinNote
+
 #ifdef _DEBUG
 		ImGui::Checkbox("Enable Shot", &enableShot);
 #endif

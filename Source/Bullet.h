@@ -61,7 +61,7 @@ protected:
 	Mode mode;
 
 
-	inline static float validTime = 5.0f;
+	inline static float validTime = 2.0f;
 	inline static FriendManager* friendManager = nullptr;
 
 	//現在のシーンからフレンドマネージャーを取得する

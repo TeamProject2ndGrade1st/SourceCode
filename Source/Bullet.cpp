@@ -23,6 +23,7 @@ void Bullet::Initialize()
 	rC->scale = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
 	GetOwner()->AddComponent(rC);*/
 	auto e = new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_test2.efk", "./Resources/Effects");
+	e->scale = { 5,5,5};
 	GetOwner()->AddComponent(e);
 	e->OnPlay(0);
 }
@@ -141,7 +142,7 @@ void Bullet::DrawDebug()
 	if(ImGui::TreeNode(GetName()))
 	{
 		ImGui::SliderInt("Damage", &damage, 0, 10.0f);
-		ImGui::SliderFloat("Speed", &speed, 0, 100.0f);
+		ImGui::SliderFloat("Speed", &speed, 0, 2000.0f);
 		ImGui::InputFloat3("Direction", &direction.x);
 		ImGui::SliderFloat("ElapsedTime", &elapsedTime, 0.0f, validTime);
 		if(ray)
