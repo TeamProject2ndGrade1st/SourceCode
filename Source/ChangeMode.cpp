@@ -1,0 +1,45 @@
+#include "ChangeMode.h"
+#include <vector>
+
+void ChangeMode::Initialize()
+{
+    BaseComponent::Initialize();
+
+    ChangeReadyMode();
+}
+
+void ChangeMode::Update()
+{
+}
+
+void ChangeMode::ChangeBattleMode()
+{
+    battleFlag = true;
+    std::vector<GameObject*> _friend;
+    std::vector<GameObject*> _enemy;
+
+    GameObject::FindByTag(GameObject::Tag::Friend, _friend);
+    GameObject::FindByTag(GameObject::Tag::Enemy, _enemy);
+
+    for (auto& f : _friend)f->SetActive(true);
+    for (auto& e : _enemy)e->SetActive(true);
+}
+
+void ChangeMode::ChangeReadyMode()
+{
+    battleFlag = false;
+    std::vector<GameObject*> _friend;
+    std::vector<GameObject*> _enemy;
+
+    GameObject::FindByTag(GameObject::Tag::Friend, _friend);
+    GameObject::FindByTag(GameObject::Tag::Enemy, _enemy);
+
+    for (auto& f : _friend)f->SetActive(false);
+    for (auto& e : _enemy)e->SetActive(false);
+
+}
+
+bool ChangeMode::OpenShop()
+{
+    return battleFlag ? openShop = false : openShop = true;
+}

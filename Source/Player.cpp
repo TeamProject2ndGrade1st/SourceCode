@@ -200,7 +200,7 @@ void Player::UpdateVerticalMove()
 
         pos.y += velocity.y * deltaTime;
 
-        if (pos.y > maxPosY)
+        if(pos.y > maxPosY)
         {
             pos.y = maxPosY;
             velocity.y /= 2;

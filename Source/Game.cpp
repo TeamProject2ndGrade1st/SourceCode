@@ -63,7 +63,7 @@ void Game::Initialize()
 
 	AddObject(new GameObject("EnemyTurretShotManager", new EnemyTurretShotManager()));
 
-	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_3_0508_1.fbx"));
+	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_3_0515_6.fbx"));
 
 	GameObject::Instantiate("Box", new Box("./Resources/Model/Stage/boxes_0419_1.fbx"));
 	GameObject::Instantiate("OwnCamp", new OwnCamp("./Resources/Model/Stage/zizin_0419_1.fbx"));

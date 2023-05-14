@@ -85,6 +85,7 @@
     <ClCompile Include="Source\Argent\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\BaseEnemy.cpp" />
     <ClCompile Include="Source\BaseEnemyState.cpp" />
+    <ClCompile Include="Source\ChangeMode.cpp" />
     <ClCompile Include="Source\Bullet.cpp" />
     <ClCompile Include="Source\BulletManager.cpp" />
     <ClCompile Include="Source\BaseFriend.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="Source\Argent\Scene\SceneManager.h" />
     <ClInclude Include="Source\BaseEnemy.h" />
     <ClInclude Include="Source\BaseEnemyState.h" />
+    <ClInclude Include="Source\ChangeMode.h" />
     <ClInclude Include="Source\Bullet.h" />
     <ClInclude Include="Source\BulletManager.h" />
     <ClInclude Include="Source\BaseFriend.h" />
