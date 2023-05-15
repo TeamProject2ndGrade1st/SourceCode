@@ -365,7 +365,7 @@
       <Filter>Game\mame</Filter>
     </ClCompile>
     <ClCompile Include="Source\FriendCreater.cpp">
-	  <Filter>Game\善晃</Filter>
+      <Filter>Game\善晃</Filter>
     </ClCompile>
     <ClCompile Include="Source\Player.cpp">
       <Filter>Game\Player</Filter>
@@ -373,14 +373,12 @@
     <ClCompile Include="Source\EnemyTurretShotManager.cpp">
       <Filter>Game\mame</Filter>
     </ClCompile>
-
     <ClCompile Include="Source\Argent\Graphic\Bloom.cpp" />
     <ClCompile Include="Source\Argent\Graphic\GaussianBlur.cpp" />
     <ClCompile Include="Source\Argent\Graphic\LuminanceExtraction.cpp" />
     <ClCompile Include="Source\Argent\Graphic\FullscreenQuad.cpp" />
     <ClCompile Include="Source\Argent\Graphic\SkyMap.cpp" />
     <ClCompile Include="Source\Grenade.cpp" />
-
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -670,7 +668,7 @@
       <Filter>Game\mame</Filter>
     </ClInclude>
     <ClInclude Include="Source\FriendCreater.h">
-     <Filter>Game\善晃</Filter>
+      <Filter>Game\善晃</Filter>
     </ClInclude>
     <ClInclude Include="Source\Argent\Graphic\SceneConstant.h">
       <Filter>Lib\Argent\Graphic</Filter>
@@ -687,7 +685,6 @@
     <ClInclude Include="Source\Argent\Graphic\FullscreenQuad.h" />
     <ClInclude Include="Source\Argent\Graphic\SkyMap.h" />
     <ClInclude Include="Source\Grenade.h" />
-
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

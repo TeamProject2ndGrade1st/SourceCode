@@ -984,7 +984,7 @@ namespace Argent::Graphics
 		rootParam[1].DescriptorTable.NumDescriptorRanges = 1;
 
 
-		D3D12_STATIC_SAMPLER_DESC samplerDesc =GenerateSamplerDesc(Helper::Dx12::Sampler::FilterMode::fAnisotropic, 
+		D3D12_STATIC_SAMPLER_DESC samplerDesc =GenerateSamplerDesc(Helper::Dx12::Sampler::FilterMode::fLinear, 
 			Helper::Dx12::Sampler::WrapMode::wRepeat);
 
 		D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
@@ -997,6 +997,17 @@ namespace Argent::Graphics
 
 		D3D12_RENDER_TARGET_BLEND_DESC rtvBlendDesc{};
 		rtvBlendDesc = GenerateRenderTargetBlendDesc(Helper::Dx12::Blend::BlendMode::bAlpha);
+
+		D3D12_RASTERIZER_DESC rsDesc{};
+		rsDesc.FrontCounterClockwise = true;
+		rsDesc.DepthBias = 0;
+		rsDesc.DepthBiasClamp = 0;
+		rsDesc.SlopeScaledDepthBias = 0;
+		rsDesc.DepthClipEnable = TRUE;
+		rsDesc.MultisampleEnable = false;
+		rsDesc.AntialiasedLineEnable = TRUE;
+		rsDesc.FillMode = D3D12_FILL_MODE_SOLID;
+		rsDesc.CullMode = D3D12_CULL_MODE_NONE;
 
 		//パイプラインステート用
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
@@ -1012,7 +1023,7 @@ namespace Argent::Graphics
 		pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 		pipelineDesc.NumRenderTargets = 1;
 		pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
-		pipelineDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+		pipelineDesc.RasterizerState = rsDesc;
 		pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 		pipelineDesc.SampleDesc.Count = 1;
 		pipelineDesc.SampleDesc.Quality = 0;
