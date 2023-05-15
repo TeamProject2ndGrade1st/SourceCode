@@ -15,6 +15,14 @@ public:
 
 	void DrawDebug() override;
 
+	void Turn();
+
+	void UpdateVerticalMove();
+
+	void Jump(float power);
+	void Fly(float power);
+	void FlyUpdate();
+
 
 private:
 	int state = 0;
@@ -27,10 +35,10 @@ private:
 
 	DirectX::XMFLOAT2 mousePos;
 
-
 	void MoveCamera();
 
 	Argent::Component::Collision::RayCast* ray;
+
 protected:
 	bool useCameraControl = true;
 	float offsetLength;
@@ -40,4 +48,18 @@ protected:
 
 	DirectX::XMFLOAT3 gunOffset;
 	
+	float groundPosY = 22;
+	float maxPosY = 250;
+	bool isGround{ true };
+
+	DirectX::XMFLOAT3 velocity;
+	float gravity{ 255.0f };
+	float frictoin{50};
+	float airControl{0.3f};
+
+	float jumpPower{ 125 };
+
+	float flyPower{ 600 };
+	float flyEnergy{ 1 };
+	float maxFlyEnergy{ 1 };
 };

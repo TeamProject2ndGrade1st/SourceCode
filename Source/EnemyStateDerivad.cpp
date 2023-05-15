@@ -117,11 +117,21 @@ namespace Enemy::Turret
         // ショットタイマーをセット
         shotTimer = 0.0f;
 
-
+        std::vector<GameObject*>chiledArray;
+        owner->GetOwner()->GetChildArray(chiledArray);
+        for (auto& c : chiledArray)
+        {
+            if (c->GetName() == "polySurface1")
+            {
+                head = c;
+                break;
+            }
+        }
     }
 
     void AttackState::Execute()
     {
+        DirectX::XMFLOAT3 tPos{};
         float stateTimer = owner->GetStateTimer();
         owner->SetStateTimer(stateTimer -= Argent::Timer::GetDeltaTime());
 
@@ -142,7 +152,6 @@ namespace Enemy::Turret
             
             //Friend.at(0);
             //owner->SetFriend(owner->SearchFriend1());
-            DirectX::XMFLOAT3 tPos{};
             if (Friend.size()!=0)
             {
                 float length0 = FLT_MAX;
@@ -175,6 +184,28 @@ namespace Enemy::Turret
             shotTimer = 0.4f;
         }
         shotTimer -= Argent::Timer::GetDeltaTime();
+
+        // todoここ
+        if (head->GetName() == "polySurface1")
+        {
+            DirectX::XMFLOAT3 f = head->GetTransform()->CalcForward();
+            DirectX::XMVECTOR front = DirectX::XMLoadFloat3(&f);
+            DirectX::XMVECTOR axis = { 0,1,0 };
+            DirectX::XMFLOAT3 r = head->GetTransform()->CalcRight();
+            DirectX::XMVECTOR right = DirectX::XMLoadFloat3(&r);
+
+            float angle = DirectX::XMVectorGetX(DirectX::XMVector3Dot(front, DirectX::XMLoadFloat3(&tPos)));
+            float LR = DirectX::XMVectorGetX(DirectX::XMVector3Dot(right, DirectX::XMLoadFloat3(&tPos)));
+
+            if (angle < 0.99f)
+            {
+                angle = acosf(angle);
+                if (LR < 0)angle *= -1;
+
+
+                head->GetTransform()->SetRotation({ 0,DirectX::XMConvertToDegrees(angle)+180,0,0 });
+            }
+        }
 
     }
 

@@ -208,7 +208,6 @@ void Camera::DrawDebug()
 	}
 }
 
-
 DirectX::XMMATRIX Camera::GetViewProjectionMatrix() const
 {
 	return GetViewMatrix() * GetProjectionMatrix();
