@@ -29,23 +29,25 @@ void Game::Initialize()
 {
 	ClearGameObject();
 	BaseScene::Initialize();
-	
+
+	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_3_0508_1.fbx"));
+
 	Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Cube.fbx");
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Sphere.fbx");
 	auto g = GameObject::Instantiate("UI", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/UI.png"));
 	g->GetTransform()->SetPosition(DirectX::XMFLOAT3(250, 615, 0));
 	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
 	
-	//AddObject(new GameObject("EffectSlash", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects")));
+	AddObject(new GameObject("EffectSlash", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects")));
 	GameObject::Instantiate("Reticle", new Reticle("./Resources/Image/ReticleYellow.png"));
 
 	//FriendManagerはFriendCreaterより上にする（順番は変えても良いようにしたい）
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 	//FriendCreaterはPlayerより上にすること！(カメラの切り替えがうまくいかなくなる)
-
+	AddObject(new GameObject("FriendCreater", new FriendCreater()));
 	AddObject(new GameObject("player", new Player));
 	//GetGameObject("player")->AddComponent(new Player);
-//	AddObject(new GameObject("player", new Player));
+	//AddObject(new GameObject("player", new Player));
 
 	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/barel_test.efk", "./Resources/Effects"));
 
@@ -56,14 +58,11 @@ void Game::Initialize()
 
 	//AddObject(new GameObject("friend", new FriendCreature()));
 	AddObject(new GameObject("EnemyManager", new EnemyManager(this)));
-
-
 	
 	//AddObject(new GameObject("kongure",Argent::Loader::Fbx::LoadFbx("./Resources/Model/kongure_0509_1.fbx", false)));
 
 	AddObject(new GameObject("EnemyTurretShotManager", new EnemyTurretShotManager()));
 
-	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_3_0515_6.fbx"));
 
 	GameObject::Instantiate("Box", new Box("./Resources/Model/Stage/boxes_0419_1.fbx"));
 	GameObject::Instantiate("OwnCamp", new OwnCamp("./Resources/Model/Stage/zizin_0419_1.fbx"));
@@ -101,7 +100,7 @@ void Game::Initialize()
 	GameObject::Instantiate("Grenade", new Grenade);
 
 	//skyMap
-	//GameObject::Instantiate("SkyMap001", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Sky/skysphere.fbx"));
+	GameObject::Instantiate("SkyMap001", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Sky/skysphere.fbx"));
 	
 #ifndef _DEBUG
 	ShowCursor(false);

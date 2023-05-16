@@ -84,7 +84,7 @@ void Player::Update()
 {
     Turn();
 
-    if (camera == GameObject::FindByName("SecondCamera"))return;
+    //if (camera == GameObject::FindByName("SecondCamera"))return;
 
     UpdateVerticalMove();
    
