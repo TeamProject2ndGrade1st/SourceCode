@@ -7,7 +7,7 @@ void FriendDrone::Initialize()
 
     BaseFriend::Initialize();
 
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx", false));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0516_1.fbx", false));
 
 
     auto c = new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube);

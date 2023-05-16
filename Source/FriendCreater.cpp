@@ -2,16 +2,24 @@
 #include <d3d12.h>
 #include <vector>
 #include "FriendCreature.h"
+#include "FriendDrone.h"
 
 void FriendCreater::Initialize()
 {
     BaseActor::Initialize();
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
+    //GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
+
+    imageFriend[0] = new GameObject("ImageCreature", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
+    imageFriend[1] = new GameObject("ImageDrone", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0516_1_i.fbx", false));
+    GetOwner()->AddChild(imageFriend[0]);
+    GetOwner()->AddChild(imageFriend[1]);
+    imageFriend[1]->GetTransform()->AddPosition(DirectX::XMFLOAT3(1000000,0,0));
+
     GetOwner()->GetTransform()->SetScaleFactor(0.15f);
     GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
     friendManager = GameObject::FindByName("FriendManager")->GetComponent<FriendManager>();
 
-    GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color = color;
+    //GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color = color;
 
     GetOwner()->ReplaceTag(GameObject::Tag::FriendCreatar);
 
@@ -23,14 +31,22 @@ void FriendCreater::Initialize()
 
 void FriendCreater::Update()
 {
-
-
-
     ImagineFriendUpdate();
 
-    if (!GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color.x == color.x)
+    /*if (!GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color.x == color.x)
     {
         GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color = color;
+    }*/
+
+    if (Argent::Input::GetKeyUp(KeyCode::D1))
+    {
+        createType = static_cast<int>(FriendManager::Type::Creature);
+    }
+    if (Argent::Input::GetKeyDown(KeyCode::D2))
+    {
+        createType = static_cast<int>(FriendManager::Type::Drone);
+        
+        GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0516_1_i.fbx", false));
     }
 
     //生成範囲外にでたらドラッグと生成の処理をしない
@@ -69,7 +85,15 @@ void FriendCreater::SetFriendByClick()
     {
         DirectX::XMFLOAT3 pos = { GetTransform()->GetPosition() };
         pos.y = 0;
-        friendManager->AddFriend(new FriendCreature(pos));
+        switch (createType)
+        {
+        case static_cast<int>(FriendManager::Type::Creature):
+            friendManager->AddFriend(new FriendCreature(pos));
+            break;
+        case static_cast<int>(FriendManager::Type::Drone):
+            friendManager->AddFriend(new FriendDrone(pos));
+            break;
+        }
     }
 }
 

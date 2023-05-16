@@ -50,7 +50,7 @@ protected:
 	DirectX::XMFLOAT3 gunOffset;
 	
 	float groundPosY = 22;
-	float maxPosY = 250;
+	float maxPosY = 1000;
 	bool isGround{ true };
 
 	DirectX::XMFLOAT3 velocity;
