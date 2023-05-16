@@ -3,6 +3,7 @@
 #include "Argent/Graphic/Graphics.h"
 #include "Argent/Input/Mouse.h"
 #include "Shadow.h"
+#include "Grenade.h"
 
 Player::Player() :BaseActor("player")
 {
@@ -68,6 +69,7 @@ void Player::Begin()
 void Player::Update()
 {
     Turn();
+    ThrowGrenade();
 
     if (camera == GameObject::FindByName("SecondCamera"))return;
 
@@ -163,6 +165,14 @@ void Player::Turn()
         t->SetRotation(setRotation);
     }
 #endif
+}
+
+void Player::ThrowGrenade()
+{
+    if(Argent::Input::GetKeyDown(KeyCode::G))
+    {
+		GameObject::Instantiate("Grenade", new Grenade(Grenade::Mode::Machine, GetOwner()->GetTransform()->GetPosition(), GetOwner()->GetTransform()->CalcForward()));
+    }
 }
 
 void Player::UpdateVerticalMove()

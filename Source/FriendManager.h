@@ -23,12 +23,9 @@ public:
     void DrawDebug()override;
 
     void AddFriend(BaseFriend* _friend);
-    
-
-    
 
     BaseFriend* FindFriendComponentFromOwner(GameObject* wFriend) const;
-private:
+public:
     Argent::Scene::BaseScene* scene;
     std::vector<BaseFriend*> friendArray;
 };

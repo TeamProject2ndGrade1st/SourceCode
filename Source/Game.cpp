@@ -98,7 +98,7 @@ void Game::Initialize()
 	l = GameObject::Instantiate("PointLight", new PointLight(3));
 	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
 
-	GameObject::Instantiate("Grenade", new Grenade);
+	//GameObject::Instantiate("Grenade", new Grenade(Grenade::Creature, DirectX::XMFLOAT3(0, 0, -1)));
 
 	//skyMap
 	//GameObject::Instantiate("SkyMap001", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Sky/skysphere.fbx"));

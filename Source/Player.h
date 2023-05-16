@@ -17,6 +17,8 @@ public:
 
 	void Turn();
 
+	void ThrowGrenade();
+
 	void UpdateVerticalMove();
 
 	void Jump(float power);
