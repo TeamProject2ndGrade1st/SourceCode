@@ -84,7 +84,8 @@ void Player::Update()
 {
     Turn();
 
-    //if (camera == GameObject::FindByName("SecondCamera"))return;
+    //味方設置モードの時は移動関連の更新を止める
+    if (camera == GameObject::FindByName("SecondCamera"))return;
 
     UpdateVerticalMove();
    
