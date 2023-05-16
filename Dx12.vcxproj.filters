@@ -379,7 +379,9 @@
     <ClCompile Include="Source\Argent\Graphic\FullscreenQuad.cpp" />
     <ClCompile Include="Source\Argent\Graphic\SkyMap.cpp" />
     <ClCompile Include="Source\Grenade.cpp" />
-    <ClCompile Include="Source\ChangeMode.cpp" />
+    <ClCompile Include="Source\ChangeMode.cpp">
+      <Filter>Game\善晃</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -686,7 +688,9 @@
     <ClInclude Include="Source\Argent\Graphic\FullscreenQuad.h" />
     <ClInclude Include="Source\Argent\Graphic\SkyMap.h" />
     <ClInclude Include="Source\Grenade.h" />
-    <ClInclude Include="Source\ChangeMode.h" />
+    <ClInclude Include="Source\ChangeMode.h">
+      <Filter>Game\善晃</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

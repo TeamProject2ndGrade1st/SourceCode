@@ -99,6 +99,9 @@ void Game::Initialize()
 	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());
 
 	GameObject::Instantiate("Grenade", new Grenade);
+
+	//skyMap
+	//GameObject::Instantiate("SkyMap001", Argent::Loader::Fbx::LoadFbx("./Resources/Model/Sky/skysphere.fbx"));
 	
 #ifndef _DEBUG
 	ShowCursor(false);

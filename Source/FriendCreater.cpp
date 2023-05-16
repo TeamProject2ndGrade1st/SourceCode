@@ -10,16 +10,13 @@ void FriendCreater::Initialize()
     //GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
 
     imageFriend[0] = new GameObject("ImageCreature", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
-    imageFriend[1] = new GameObject("ImageDrone", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0516_1_i.fbx", false));
+    imageFriend[1] = new GameObject("ImageDrone", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0516_2.fbx", false));
     GetOwner()->AddChild(imageFriend[0]);
     GetOwner()->AddChild(imageFriend[1]);
-    imageFriend[1]->GetTransform()->AddPosition(DirectX::XMFLOAT3(1000000,0,0));
 
     GetOwner()->GetTransform()->SetScaleFactor(0.15f);
     GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
     friendManager = GameObject::FindByName("FriendManager")->GetComponent<FriendManager>();
-
-    //GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color = color;
 
     GetOwner()->ReplaceTag(GameObject::Tag::FriendCreatar);
 
@@ -33,10 +30,29 @@ void FriendCreater::Update()
 {
     ImagineFriendUpdate();
 
-    /*if (!GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color.x == color.x)
+    std::vector<GameObject*> f;
+    GetOwner()->GetChildArray(f);
+    for (auto& fr : f )
     {
-        GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color = color;
-    }*/
+        //ふっとばす
+        fr->GetTransform()->SetPosition(DirectX::XMFLOAT3(1000000, 0, 0));
+
+        
+    }
+    //片方もどす
+    f.at(createType)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0,0,0));
+
+    //色変更
+    //スキンドメッシュレンダラーとメッシュレンダラー用の処理を作る
+    if (f.at(0)->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color.x != color.x)
+    {
+        f.at(0)->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->GetMaterial()->color.color = color;
+    }
+    if (f.at(1)->GetComponent<Argent::Component::Renderer::MeshRenderer>()->GetMaterial()->color.color.x != color.x)
+    {
+        f.at(1)->GetComponent<Argent::Component::Renderer::MeshRenderer>()->GetMaterial()->color.color = color;
+    }
+    
 
     if (Argent::Input::GetKeyUp(KeyCode::D1))
     {
@@ -45,8 +61,6 @@ void FriendCreater::Update()
     if (Argent::Input::GetKeyDown(KeyCode::D2))
     {
         createType = static_cast<int>(FriendManager::Type::Drone);
-        
-        GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0516_1_i.fbx", false));
     }
 
     //生成範囲外にでたらドラッグと生成の処理をしない
@@ -144,11 +158,11 @@ void FriendCreater::ImagineFriendUpdate()
         if (canCreate)
         {
             GetTransform()->SetPosition(pos);
-            color = { 0,0.3f,0.8f,1 };
+            color = { 0,0.3f,0.8f,0.5f };
         }
         else
         {
-            color = { 1,0.1f,0.1f,1 };
+            color = { 1,0.1f,0.1f,0.5f };
         }
     }
 }

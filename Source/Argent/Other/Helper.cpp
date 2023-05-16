@@ -7,6 +7,8 @@
 #include "../Graphic/Graphics.h"
 
 #include "../Component/RayCast.h"
+#include "../../../Dx12TK/Inc/DDSTextureLoader.h"
+#include "../../../Dx12TK/Inc/ResourceUploadBatch.h"
 
 namespace Argent
 {
@@ -34,6 +36,7 @@ namespace Argent
 
 				return tmp;
 			}
+
 			DirectX::XMFLOAT3 ToNDC(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT2& windowSize)
 			{
 				DirectX::XMFLOAT3 tmp{ 0, 0, 0 };
@@ -43,6 +46,7 @@ namespace Argent
 				tmp = { 2.0f * pos.x / windowSize.x - 1.0f, 1.0f - 2.0f * pos.y / windowSize.y , 0 };
 				return tmp;
 			}
+
 			DirectX::XMFLOAT2 CalcUVValue(const DirectX::XMFLOAT2& texPos, const DirectX::XMFLOAT2& texSize,
 				const DirectX::XMFLOAT2& rowTextureSize)
 			{
@@ -56,8 +60,6 @@ namespace Argent
 				return tmp;
 			}
 
-
-
 			DirectX::XMFLOAT3 CalcScale(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT2& center,
 				const DirectX::XMFLOAT2& scale)
 			{
@@ -67,8 +69,6 @@ namespace Argent
 				tmp.x = center.x + dist.x * scale.x;
 				tmp.y = center.y + dist.y * scale.y;
 				tmp.z = 0;
-
-
 
 				return tmp;
 			}
@@ -205,15 +205,37 @@ namespace Argent
 
 				HRESULT hr{ S_OK };
 
+				std::filesystem::path ddsFileName(filepath);
+				ddsFileName.replace_extension("DDS");
+
+
+				if(std::filesystem::exists(ddsFileName.c_str()))
+				{
+
+					std::unique_ptr<uint8_t[]> ddsData;
+					std::vector<D3D12_SUBRESOURCE_DATA> subresourceData;
+
+					DirectX::ResourceUploadBatch resourceUpload(device);
+
+					resourceUpload.Begin();
+
+					hr =  DirectX::CreateDDSTextureFromFile(device, resourceUpload, ddsFileName.c_str(), resource/*, ddsData, subresourceData*/);
+					_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+
+					// Upload the resources to the GPU.
+					auto uploadResourcesFinished = resourceUpload.End(cmdQueue->cmdQueue.Get());
+
+					// Wait for the upload thread to terminate
+					uploadResourcesFinished.wait();
+
+					return hr;
+				}
 				hr = DirectX::LoadFromWICFile(filepath, DirectX::WIC_FLAGS_NONE, &metaData, scratchImage);
-
-
 
 				//todo ’¼‚¹
 				if(FAILED(hr))
 				{
 					hr =Argent::Graphics::Graphics::Instance()->CreateWhiteTexture(resource);
-					//hr =Argent::Graphics::Graphics::Instance()->CreateNoiseTexture(resource);
 					_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));;
 					return hr;
 				}

@@ -69,12 +69,12 @@ public:
 	/**
 	 * \brief 正規化された前方ベクトルを返す(回転値が(0, 0, 0)の時の前方ベクトルは(0, 0, 1))
 	 */
-	DirectX::XMFLOAT3 CalcForward();
+	DirectX::XMFLOAT3 CalcForward() const;
 	/**
 	 * \brief 
 	 * \return 正規化済み上方ベクトルを返す（回転値(0, 0, 0)の場合は(0, 1, 0)
 	 */
-	DirectX::XMFLOAT3 CalcUp();
+	DirectX::XMFLOAT3 CalcUp() const ;
 	DirectX::XMFLOAT3 CalcRight();
 private:
 

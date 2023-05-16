@@ -215,6 +215,19 @@ DirectX::XMMATRIX Camera::GetViewProjectionMatrix() const
 
 DirectX::XMMATRIX Camera::GetViewMatrix() const
 {
+#if 1
+	const Transform* t = GetOwner()->GetTransform();
+	const DirectX::XMFLOAT3 e = t->GetPosition();
+	const DirectX::XMFLOAT3 forward = t->CalcForward();
+
+	//const DirectX::XMFLOAT3 up = t->CalcUp();
+	const DirectX::XMFLOAT3 up = DirectX::XMFLOAT3(0, 1, 0);
+	const DirectX::XMVECTOR Eye = DirectX::XMLoadFloat3(&e);
+	const DirectX::XMVECTOR Focus = DirectX::XMVectorAdd(Eye, DirectX::XMLoadFloat3(&forward));
+	const DirectX::XMVECTOR Up = DirectX::XMLoadFloat3(&up);
+
+	return DirectX::XMMatrixLookAtLH(Eye, Focus, Up);
+#else
 	const Transform* transform = GetOwner()->GetTransform();
 	const DirectX::XMVECTOR forwardBaseVector = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 
@@ -232,6 +245,7 @@ DirectX::XMMATRIX Camera::GetViewMatrix() const
 	DirectX::XMMATRIX Eye = DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
 	DirectX::XMMATRIX View = Rot * Eye;
 	return DirectX::XMMatrixInverse(nullptr, View);
+#endif
 }
 
 DirectX::XMMATRIX Camera::GetProjectionMatrix() const

@@ -13,13 +13,13 @@ float4 sample_skybox(float3 v, float roughness)
     uint width, height, number_of_levels;
     skybox.GetDimensions(0, width, height, number_of_levels);
 
-    //多分ミップマップと下を使うよう？　おそらく
+    //多分ミップマップを使うよう？　おそらく 今は０固定(roughnessに0を入れているため)
     float lod = roughness * float(number_of_levels - 1);
     v = normalize(v);
 
-	//zとxからタンジェントを求めそれを角度に変換する　その場合は範囲は
-    //-pi ~ piになる　uv座標は0~1の範囲に収めたいのでいい感じの計算式を使う
-    //yの場合はサインから角度を求め、真上向いたときはPI(このときのV座標は０）
+	//zとxからタンジェントを求めそれを角度に変換する　その場合、範囲は
+    //-pi ~ piになる　uv座標は0~1の範囲に収めたいのでいい感じになるように計算を行う
+    //yの場合はサインから角度を求め(例によって-pi~pi)、真上向いたときはPI(このときのV座標は０）
     //真下を向いたときは-pI(このときのV座標は1)になるようないい感じの計算式を使う
     float2 sample_point;
     sample_point.x = (atan2(v.z, v.x) + PI) / (PI * 2.0);
@@ -42,6 +42,10 @@ float4 main(VS_OUT pin) : SV_TARGET
     float4 R = mul(ndc, invViewProjection);
 
     //これはなんですか？？？
+    //W成分は視錐台の拡大率にあたるらしい
+    //そのためw成分で割ることで-1~1の範囲に値を収められる
+    //ただの座標変換では直接使うことはないがプロジェクション行列が関わったら
+    //重要っぽい…
     R /= R.w;
     const float roughness = 0;
     return sample_skybox(R.xyz, roughness);
