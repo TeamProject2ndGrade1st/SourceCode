@@ -48,7 +48,7 @@ void BaseFriend::Update()
 
     if (attackTimer > 0)attackTimer -= Argent::Timer::GetDeltaTime();
 
-    stateMachine.get()->Update();
+    if(activeState)stateMachine.get()->Update();
 
     UpdateVelocity();
     UpdateMove();

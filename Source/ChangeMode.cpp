@@ -1,4 +1,6 @@
 #include "ChangeMode.h"
+#include "Character.h"
+
 #include <vector>
 
 void ChangeMode::Initialize()
@@ -21,8 +23,8 @@ void ChangeMode::ChangeBattleMode()
     GameObject::FindByTag(GameObject::Tag::Friend, _friend);
     GameObject::FindByTag(GameObject::Tag::Enemy, _enemy);
 
-    for (auto& f : _friend)f->SetActive(true);
-    for (auto& e : _enemy)e->SetActive(true);
+    for (auto& f : _friend)f->GetComponent<Character>()->SetActiveState(true);
+    for (auto& e : _enemy)e->GetComponent<Character>()->SetActiveState(true);
 }
 
 void ChangeMode::ChangeReadyMode()
@@ -34,8 +36,8 @@ void ChangeMode::ChangeReadyMode()
     GameObject::FindByTag(GameObject::Tag::Friend, _friend);
     GameObject::FindByTag(GameObject::Tag::Enemy, _enemy);
 
-    for (auto& f : _friend)f->SetActive(false);
-    for (auto& e : _enemy)e->SetActive(false);
+    for (auto& f : _friend)f->GetComponent<Character>()->SetActiveState(false);
+    for (auto& e : _enemy)e->GetComponent<Character>()->SetActiveState(false);
 
 }
 

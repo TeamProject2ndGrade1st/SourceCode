@@ -97,6 +97,7 @@ void FriendManager::DrawDebug()
 
 void FriendManager::AddFriend(BaseFriend* _friend)
 {
+    _friend->SetActiveState(false);
     GameObject::Instantiate("Friend", _friend);
     /*scene->AddObject(new GameObject(
         "Friend", 
