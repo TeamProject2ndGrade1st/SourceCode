@@ -21,6 +21,12 @@ void Shop::Initialize()
     s = "OutCubic";easeFunctoins.push_back(s);
     s = "OutQuart";easeFunctoins.push_back(s);
     s = "OutBounce";easeFunctoins.push_back(s);
+    s = "InExp"; easeFunctoins.push_back(s);
+    s = "InSine"; easeFunctoins.push_back(s);
+    s = "InQuad"; easeFunctoins.push_back(s);
+    s = "InCubic"; easeFunctoins.push_back(s);
+    s = "InQuart"; easeFunctoins.push_back(s);
+    s = "InBounce"; easeFunctoins.push_back(s);
 
     easeFuncs.push_back(&Easing::OutExp);
     easeFuncs.push_back(&Easing::OutSine);
@@ -28,6 +34,12 @@ void Shop::Initialize()
     easeFuncs.push_back(&Easing::OutCubic);
     easeFuncs.push_back(&Easing::OutQuart);
     easeFuncs.push_back(&Easing::OutBounce);
+    easeFuncs.push_back(&Easing::InExp);
+    easeFuncs.push_back(&Easing::InSine);
+    easeFuncs.push_back(&Easing::InQuad);
+    easeFuncs.push_back(&Easing::InCubic);
+    easeFuncs.push_back(&Easing::InQuart);
+    easeFuncs.push_back(&Easing::InBounce);
 #endif // _DEBUG                
 
 }
@@ -62,27 +74,35 @@ void Shop::Update()
 
 void Shop::OpenUpdate()
 {
-    if (GetOwner()->GetTransform()->GetPosition().x >= 0)
+    if (!easeEnd)
     {
         GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(
             (*easeFunc)(timer, easeMaxTime, 0.0f, Argent::Graphics::GetWindowWidth()),
             0,0)
         );
         if(timer < easeMaxTime)timer += Argent::Timer::GetDeltaTime();
-        else easeEnd = true;
+        else
+        {
+            GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 0, 0));
+            easeEnd = true;
+        }
     }
 }
 
 void Shop::CloseUpdate()
 {
-    if (GetOwner()->GetTransform()->GetPosition().x <= Argent::Graphics::GetWindowWidth())
+    if (!easeEnd)
     {
         GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(
             (*easeFunc)(timer, easeMaxTime, Argent::Graphics::GetWindowWidth(), 0.0f),
             0, 0)
         );
         if (timer < easeMaxTime)timer += Argent::Timer::GetDeltaTime();
-        else easeEnd = true;
+        else 
+        { 
+            GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, Argent::Graphics::GetWindowWidth(), 0));
+            easeEnd = true;
+        }
     }
 }
 
@@ -101,10 +121,22 @@ void Item::Update(float x, float y)
     float top = pos.y + button.top;
     float bottom = pos.y - button.bottom;
 
-    if (left > pos.x)   return;
-    if (right < pos.x)  return;
-    if (top < pos.y)  return;
-    if (bottom > pos.y)   return;
+    if (left > x)   return;
+    if (right < x)  return;
+    if (top < y)  return;
+    if (bottom > y)   return;
 
+    if (Argent::Input::GetButtonDown(MouseButton::LeftButton))
+    {
+        if(pos.x < x)Buy();
+        else Sale();
+    }
+}
 
+void Item::Buy()
+{
+}
+
+void Item::Sale()
+{
 }

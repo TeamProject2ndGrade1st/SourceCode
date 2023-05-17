@@ -10,6 +10,7 @@ public:
 
     void Initialize()override;
     void Update()override;
+    void DrawDebug()override;
 
     void ChangeBattleMode();
 

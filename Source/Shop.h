@@ -27,15 +27,6 @@ public:
         ElectricGrenade,
     };
 
-    //ショップはゲーム終了までリセットされないようにしたい
-    //インスタンシングでシーン遷移後も継続されるようにする
-    //まだやってないけど無理そやなw
-    /*static Shop& Instance()
-    {
-        static Shop instance;
-        return instance;
-    }*/
-
     void Initialize()override;
     void Begin()override;
     void Update()override;
@@ -113,7 +104,7 @@ public:
     void Buy();//購入
     void Sale();//売却
 
-    int amount;//金額
+    int price;//金額
     Shop::ItemType type;
     int num;//購入数
     float priceIncreasePersent;//１購入ごとの値上げ倍率

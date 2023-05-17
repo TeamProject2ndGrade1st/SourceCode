@@ -32,8 +32,6 @@ public:
 
     void HitStop(float t) { GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->SetStopTime(t); }
 
-    void SetActiveState(bool active) { activeState = active; }
-
 protected:
     //‘¬—Íˆ—(…•½‚Ì‚İ)
     void UpdateVelocity();
@@ -65,8 +63,6 @@ protected:
     float weight = { 30.0f };//‘Ìd(Å‘å‚Å100)
 
     GameObject* myShadow{ nullptr };
-
-    bool activeState{true};
 
 private:
     //‰ŠúÀ•W

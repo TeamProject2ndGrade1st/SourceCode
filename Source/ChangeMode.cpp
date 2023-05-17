@@ -1,5 +1,6 @@
 #include "ChangeMode.h"
 #include "Character.h"
+#include "FriendManager.h"
 
 #include <vector>
 
@@ -16,30 +17,33 @@ void ChangeMode::Update()
 {
 }
 
+void ChangeMode::DrawDebug()
+{
+    ImGui::Text("CHECKBOX OSUNA! KAKUNINYOU DESU");
+    ImGui::Checkbox("BattleFlag", &battleFlag);
+    if(ImGui::Button("ChangeBattleMode"))ChangeBattleMode();
+    if(ImGui::Button("ChangeReadyMode"))ChangeReadyMode();
+}
+
 void ChangeMode::ChangeBattleMode()
 {
     battleFlag = true;
-    std::vector<GameObject*> _friend;
-    std::vector<GameObject*> _enemy;
+    std::vector<GameObject*> friendM;
+    //std::vector<GameObject*> _enemy;
 
-    GameObject::FindByTag(GameObject::Tag::Friend, _friend);
-    GameObject::FindByTag(GameObject::Tag::Enemy, _enemy);
+    GameObject::FindByTag(GameObject::Tag::FriendManager, friendM);
+    friendM.at(0)->GetComponent<FriendManager>()->battleFlag = true;
 
-    for (auto& f : _friend)f->GetComponent<Character>()->SetActiveState(true);
-    for (auto& e : _enemy)e->GetComponent<Character>()->SetActiveState(true);
 }
 
 void ChangeMode::ChangeReadyMode()
 {
     battleFlag = false;
-    std::vector<GameObject*> _friend;
-    std::vector<GameObject*> _enemy;
+    std::vector<GameObject*> friendM;
+    //std::vector<GameObject*> _enemy;
 
-    GameObject::FindByTag(GameObject::Tag::Friend, _friend);
-    GameObject::FindByTag(GameObject::Tag::Enemy, _enemy);
-
-    for (auto& f : _friend)f->GetComponent<Character>()->SetActiveState(false);
-    for (auto& e : _enemy)e->GetComponent<Character>()->SetActiveState(false);
+    GameObject::FindByTag(GameObject::Tag::FriendManager, friendM);
+    friendM.at(0)->GetComponent<FriendManager>()->battleFlag = false;
 
 }
 
