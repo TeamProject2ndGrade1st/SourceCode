@@ -34,7 +34,6 @@ void FriendCreature::Initialize()
     friction = init_friction;
 
     //ƒ^ƒO•t‚¯
-
     GetOwner()->ReplaceTag(GameObject::Tag::Friend);
     GetOwner()->AddTag(GameObject::Tag::Creature);
     

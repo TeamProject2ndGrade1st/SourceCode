@@ -71,6 +71,5 @@ private:
     //なんか座標の初期化がinitializeから
     //begin処理の間でリセットされるから一旦無理やりbeginに初期座標入れとく
     bool initOnce;
-
 };
 

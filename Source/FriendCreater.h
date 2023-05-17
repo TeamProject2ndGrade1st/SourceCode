@@ -32,4 +32,8 @@ private:
     DirectX::XMFLOAT4 color{1,0,0,1};
 
     Camera* camera{ nullptr };
+
+    int createType{static_cast<int>(FriendManager::Type::Creature)};
+
+    GameObject* imageFriend[2];
 };

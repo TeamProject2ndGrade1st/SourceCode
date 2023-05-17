@@ -24,13 +24,15 @@
 
 #include "Grenade.h"
 
+#include "Shop.h"
+
 
 void Game::Initialize()
 {
 	ClearGameObject();
 	BaseScene::Initialize();
 
-	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_3_0508_1.fbx"));
+	GameObject::Instantiate("Main Stage", new Stage("./Resources/Model/Stage/map_3_0515_6.fbx"));
 
 	Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Cube.fbx");
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Sphere.fbx");
@@ -44,7 +46,7 @@ void Game::Initialize()
 	//FriendManagerはFriendCreaterより上にする（順番は変えても良いようにしたい）
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
 	//FriendCreaterはPlayerより上にすること！(カメラの切り替えがうまくいかなくなる)
-	AddObject(new GameObject("FriendCreater", new FriendCreater()));
+	//AddObject(new GameObject("FriendCreater", new FriendCreater()));
 	AddObject(new GameObject("player", new Player));
 	//GetGameObject("player")->AddComponent(new Player);
 	//AddObject(new GameObject("player", new Player));
@@ -71,7 +73,8 @@ void Game::Initialize()
 	GameObject::Instantiate("Barricade", new Barricade("./Resources/Model/Stage/barike-do_0419_1.fbx"));
 	//GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_1_0426_5.fbx"));
 
-
+	GameObject::Instantiate("Shop", new Shop);
+	GameObject::Instantiate("Mode", new ChangeMode);
 	
 	std::vector<GameObject*> lightArray;
 	GameObject::FindByTag(GameObject::Tag::Light, lightArray);

@@ -2,6 +2,7 @@
 #include "Argent/Argent.h"
 #include "BaseGun.h"
 #include "Character.h"
+#include "FriendCreater.h"
 
 class Player: public Argent::Component::BaseActor
 {
@@ -49,7 +50,7 @@ protected:
 	DirectX::XMFLOAT3 gunOffset;
 	
 	float groundPosY = 22;
-	float maxPosY = 250;
+	float maxPosY = 1000;
 	bool isGround{ true };
 
 	DirectX::XMFLOAT3 velocity;
@@ -62,4 +63,6 @@ protected:
 	float flyPower{ 600 };
 	float flyEnergy{ 1 };
 	float maxFlyEnergy{ 1 };
+
+	FriendCreater* friendCreater{ nullptr };
 };

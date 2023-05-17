@@ -182,7 +182,7 @@ DirectX::XMMATRIX Transform::CalcLocalMatrix()
 }
 
 
-DirectX::XMFLOAT3 Transform::CalcForward()
+DirectX::XMFLOAT3 Transform::CalcForward() const
 {
 	DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(rotation.x), DirectX::XMConvertToRadians(rotation.y), DirectX::XMConvertToRadians(rotation.z));
 	DirectX::XMFLOAT3 ret{};
@@ -190,7 +190,7 @@ DirectX::XMFLOAT3 Transform::CalcForward()
 	return ret;
 }
 
-DirectX::XMFLOAT3 Transform::CalcUp()
+DirectX::XMFLOAT3 Transform::CalcUp() const 
 {
 	DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(rotation.x), DirectX::XMConvertToRadians(rotation.y), DirectX::XMConvertToRadians(rotation.z));
 	DirectX::XMFLOAT3 ret{};

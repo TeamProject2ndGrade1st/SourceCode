@@ -49,6 +49,8 @@ namespace Argent::Component::Renderer
 
 		void CreateComObject(ID3D12Device* device);
 
+		Argent::Material::MeshMaterial* GetMaterial();
+
 	private:
 		std::unique_ptr<Argent::Dx12::ConstantBuffer<Constants>> constantBuffer{};
 

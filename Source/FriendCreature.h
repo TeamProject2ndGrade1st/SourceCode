@@ -39,5 +39,7 @@ public:
 
 private:
     std::vector<Argent::Component::Renderer::EffekseerEmitter*> effectVector;
+
+    FriendManager* friendManager{ nullptr };
 };
 

@@ -29,6 +29,7 @@ namespace Argent::App
 		arGfx->Initialize();
 #ifdef _DEBUG
 		ImguiCtrl::Initialize(window->GetHandle(), arGfx->GetDevice(), arGfx->GetGUIHeap());
+		ImGui::GetStyle().Alpha = 0.7f;
 #endif
 		Resource::ResourceManager::Instance().Initialize();
 	}

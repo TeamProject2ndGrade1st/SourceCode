@@ -25,6 +25,8 @@ void BaseFriend::Initialize()
 
     attackAreaRadius = init_attackAreaRadius * GetTransform()->GetScaleFactor();
 
+    friendManager = GameObject::FindByName("FriendManager")->GetComponent<FriendManager>();
+
 }
 
 void BaseFriend::Begin()
@@ -42,6 +44,7 @@ void BaseFriend::Begin()
 
 void BaseFriend::Update()
 {
+    if (!friendManager->battleFlag)return;
 
     if (attackTimer > 0)attackTimer -= Argent::Timer::GetDeltaTime();
 

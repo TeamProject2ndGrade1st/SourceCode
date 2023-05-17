@@ -155,14 +155,14 @@ namespace Argent::Scene
 
 		DrawDebugNumGameObject();
 
-		if (ImGui::TreeNode("Object"))
+		if (ImGui::BeginMenu("Object"))
 		{
 			for(size_t i = 0; i < objects.size(); ++i)
 			{
 				if(!objects.at(i).get()) continue;
 					ImGuiCheckBox(objects.at(i).get());
 			}
-			ImGui::TreePop();
+			ImGui::EndMenu();
 		}
 		for(size_t i = 0; i < objects.size(); ++i)
 		{

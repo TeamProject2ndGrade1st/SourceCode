@@ -101,5 +101,7 @@ protected:
     bool once;
 
     std::vector<RelayPoint> relayPoint;
+
+    FriendManager* friendManager{ nullptr };
 };
 

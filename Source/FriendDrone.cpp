@@ -7,13 +7,15 @@ void FriendDrone::Initialize()
 
     BaseFriend::Initialize();
 
-    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0410_ver4.fbx", false));
+    GetOwner()->AddComponent(Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0516_1.fbx", false));
+
+    GetOwner()->GetTransform()->SetScaleFactor(0.25f);
 
 
     auto c = new Argent::Component::Collider::RayCastCollider(Argent::Component::Collider::RayCastCollider::MeshType::Cube);
     GetOwner()->AddComponent(c);
-    c->offset = DirectX::XMFLOAT3(0, 0, 0);
-    c->scale = DirectX::XMFLOAT3(100, 100, 100);
+    c->offset = DirectX::XMFLOAT3(0, -2, 1);
+    c->scale = DirectX::XMFLOAT3(34, 62, 57);
 
     //攻撃範囲の視覚化
     /*GetOwner()->AddComponent(new Argent::Component::Collider::RayCastCollider(
@@ -33,6 +35,7 @@ void FriendDrone::Initialize()
     maxMoveSpeed     = init_maxMoveSpeed;
     friction         = init_friction;
     attackAreaRadius = init_attackAreaRadius * GetTransform()->GetScaleFactor();
+    offsetY = 25.7f;
 
     //タグ付け
     GetOwner()->ReplaceTag(GameObject::Tag::Friend);
@@ -66,13 +69,15 @@ void FriendDrone::Update()
     pos = GetTransform()->GetPosition();
     huwahuwaDegree += huwahuwaSpeed;
     if (huwahuwaDegree > 360)huwahuwaDegree = 0;
-    float huwahuwa = sinf(DirectX::XMConvertToRadians(huwahuwaDegree)) * 0.2f;
-    GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, 1.5f + huwahuwa, pos.z));
+    float huwahuwa = sinf(DirectX::XMConvertToRadians(huwahuwaDegree)) * 1.2f;
+    GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x, offsetY + huwahuwa, pos.z));
 }
 
 void FriendDrone::DrawDebug()
 {
     BaseFriend::DrawDebug();
+
+    ImGui::SliderFloat("OffsetY", &offsetY, 0, 100);
 
     if (ImGui::TreeNode("State"))
     {

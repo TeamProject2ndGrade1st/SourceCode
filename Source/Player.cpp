@@ -32,6 +32,9 @@ void Player::Initialize()
     //gun = GameObject::Instantiate("Gun", new BaseGun("Base Gun"));
     GetOwner()->AddComponent(gun);
 
+    GameObject::Instantiate("FriendCreater", friendCreater = new FriendCreater);
+    friendCreater->GetOwner()->SetActive(false);
+
     std::vector<GameObject*> gameObject;
     GameObject::FindByTag(GameObject::Tag::MainCamera, gameObject);
     for (auto g : gameObject)
@@ -51,6 +54,7 @@ void Player::Initialize()
             break;
         }
     }
+
 }
 
 void Player::Begin()
@@ -59,7 +63,18 @@ void Player::Begin()
     {
         if (c->GetIsSceneCamera())
         {
-            camera = c->GetOwner();
+            if (camera != c->GetOwner())
+            {
+                camera = c->GetOwner();
+                if (GameObject::FindByName("SecondCamera") == camera)
+                {
+                    friendCreater->GetOwner()->SetActive(true);
+                }
+                else
+                {
+                    friendCreater->GetOwner()->SetActive(false);
+                }
+            }
             break;
         }
     }
@@ -69,7 +84,8 @@ void Player::Update()
 {
     Turn();
 
-    //if (camera == GameObject::FindByName("SecondCamera"))return;
+    //味方設置モードの時は移動関連の更新を止める
+    if (camera == GameObject::FindByName("SecondCamera"))return;
 
     UpdateVerticalMove();
    
@@ -185,7 +201,7 @@ void Player::UpdateVerticalMove()
 
         pos.y += velocity.y * deltaTime;
 
-        if (pos.y > maxPosY)
+        if(pos.y > maxPosY)
         {
             pos.y = maxPosY;
             velocity.y /= 2;

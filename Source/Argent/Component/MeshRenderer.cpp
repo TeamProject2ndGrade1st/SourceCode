@@ -97,4 +97,11 @@ namespace Argent::Component::Renderer
 		}
 		constantBuffer = std::make_unique<Argent::Dx12::ConstantBuffer<Constants>>(device, Graphics::Graphics::Instance()->GetHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->PopDescriptor());
 	}
+	Argent::Material::MeshMaterial* MeshRenderer::GetMaterial()
+	{
+		for (auto& s : mesh->subsets)
+		{
+			return s.material.get();
+		}
+	}
 }
