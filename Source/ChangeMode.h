@@ -17,8 +17,8 @@ public:
     void ChangeReadyMode();
 
     bool OpenShop();
+    void CloseShop();
 
-private:
     bool battleFlag{false};
     bool openShop{false};
 };

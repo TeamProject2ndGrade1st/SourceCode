@@ -30,6 +30,9 @@ public:
 		FriendCreatar = 0x01 << 12,
 		TurretShot =		0x01 << 13,
 		TurretShotManager = 0x01 << 14,
+
+		ChangeMode = 0x01 << 15,
+		Shop = 0x01 << 16,
 	};
 	GameObject(std::string name = "gameObject", Argent::Component::BaseComponent* c = nullptr);
 	GameObject(std::string name, std::vector<Argent::Component::BaseComponent*> com);

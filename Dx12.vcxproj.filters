@@ -382,6 +382,9 @@
     <ClCompile Include="Source\ChangeMode.cpp">
       <Filter>Game\善晃</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Shop.cpp">
+      <Filter>Game\善晃</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -689,6 +692,12 @@
     <ClInclude Include="Source\Argent\Graphic\SkyMap.h" />
     <ClInclude Include="Source\Grenade.h" />
     <ClInclude Include="Source\ChangeMode.h">
+      <Filter>Game\善晃</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shop.h">
+      <Filter>Game\善晃</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Easing.h">
       <Filter>Game\善晃</Filter>
     </ClInclude>
   </ItemGroup>

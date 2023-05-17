@@ -8,6 +8,8 @@ void ChangeMode::Initialize()
     BaseComponent::Initialize();
 
     ChangeReadyMode();
+
+    GetOwner()->ReplaceTag(GameObject::Tag::ChangeMode);
 }
 
 void ChangeMode::Update()
@@ -43,5 +45,11 @@ void ChangeMode::ChangeReadyMode()
 
 bool ChangeMode::OpenShop()
 {
+    //êÌì¨íÜÇÕÇ–ÇÁÇØÇ»Ç¢
     return battleFlag ? openShop = false : openShop = true;
+}
+
+void ChangeMode::CloseShop()
+{
+    openShop = false;
 }

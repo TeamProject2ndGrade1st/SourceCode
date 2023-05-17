@@ -109,6 +109,7 @@
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Result.cpp" />
     <ClCompile Include="Source\Shadow.cpp" />
+    <ClCompile Include="Source\Shop.cpp" />
     <ClCompile Include="Source\Stage.cpp" />
     <ClCompile Include="Source\Demo.cpp" />
     <ClCompile Include="Source\FriendStateDerived.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="Source\BaseState.h" />
     <ClInclude Include="Source\Character.h" />
     <ClInclude Include="Source\DemoShaderMacro.h" />
+    <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\EnemyManager.h" />
     <ClInclude Include="Source\EnemySpikeBot.h" />
     <ClInclude Include="Source\EnemyStateDerivad.h" />
@@ -220,6 +222,7 @@
     <ClInclude Include="Source\Result.h" />
     <ClInclude Include="Source\Reticle.h" />
     <ClInclude Include="Source\Shadow.h" />
+    <ClInclude Include="Source\Shop.h" />
     <ClInclude Include="Source\Stage.h" />
     <ClInclude Include="Source\Demo.h" />
     <ClInclude Include="Source\FriendStateDerived.h" />
