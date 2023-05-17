@@ -25,6 +25,7 @@ public:
         GameObject* g = GetOwner();
         //auto com = g->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
 
+
         std::vector<GameObject*> childArray;
         g->GetChildArray(childArray);
 
@@ -34,7 +35,7 @@ public:
             com->SetAnimation(index);
         }
 
-       // com->SetAnimation(index);
+        //com->SetAnimation(static_cast<int>(index));
     }
 
     bool IsAnimationEnd()
@@ -50,7 +51,7 @@ public:
             auto com = c->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>();
             return com->IsAnimationEnd();
         }
-      //  return GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->IsAnimationEnd();
+        //return GetOwner()->GetComponent<Argent::Component::Renderer::SkinnedMeshRenderer>()->IsAnimationEnd();
     }
 
     void SetStateTimer(float timer) { stateTimer = timer; }

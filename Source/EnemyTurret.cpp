@@ -20,7 +20,8 @@ void EnemyTurret::Initialize()
 
 
     // ステートマシンをセット
-    stateMachine.reset(new EnemyStateMachine);
+    //stateMachine.reset(new EnemyStateMachine);
+    stateMachine = std::make_unique<EnemyStateMachine>();
 
     stateMachine.get()->RegisterState(new Enemy::Turret::StartUpState(this));
     stateMachine.get()->RegisterState(new Enemy::Turret::AttackState(this));
@@ -41,8 +42,6 @@ void EnemyTurret::Initialize()
 void EnemyTurret::Begin()
 {
     BaseEnemy::Begin();
-
-    //GetOwner()->GetTransform()->SetRotation(DirectX::XMFLOAT4(0.0f, 90.0f, 0.0f, 0.0f));
 }
 
 void EnemyTurret::Update()

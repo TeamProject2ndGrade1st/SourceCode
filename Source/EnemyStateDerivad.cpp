@@ -86,7 +86,7 @@ namespace Enemy::Turret
         owner->SetAnimation(static_cast<int>(TurretAnimation::Idle));
 
         // タイマーを設定
-        owner->SetStateTimer(3.0f);
+        owner->SetStateTimer(10.0f);
     }
 
     void IdleState::Execute()
@@ -202,11 +202,10 @@ namespace Enemy::Turret
                 angle = acosf(angle);
                 if (LR < 0)angle *= -1;
 
-
-                head->GetTransform()->SetRotation({ 0,DirectX::XMConvertToDegrees(angle)+180,0,0 });
+                auto angleY = head->GetTransform()->GetRotation().y;
+                head->GetTransform()->SetRotation({ 0,DirectX::XMConvertToDegrees(angle) +angleY,0,0 });
             }
         }
-
     }
 
     void AttackState::Exit()
