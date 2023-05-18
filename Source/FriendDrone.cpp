@@ -49,6 +49,8 @@ void FriendDrone::Initialize()
     stateMachine.get()->RegisterState(new Friend::Drone::AttackState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
+
+    healEffect->offset.y = -3;
 }
 
 void FriendDrone::Update()
