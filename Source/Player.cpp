@@ -27,6 +27,7 @@ void Player::Initialize()
           //c->SetMinRotation(DirectX::XMFLOAT4(-70, -10, 0, 0));
     //  }
 
+    GetOwner()->ReplaceTag(GameObject::Tag::Player);
 
     gun = new BaseGun("Base Gun");
     //gun = GameObject::Instantiate("Gun", new BaseGun("Base Gun"));

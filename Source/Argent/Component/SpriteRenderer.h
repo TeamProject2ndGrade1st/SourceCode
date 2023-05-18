@@ -35,6 +35,8 @@ namespace Argent::Component::Renderer
 		DirectX::XMFLOAT3 GetScale() const { return scale; }
 		DirectX::XMFLOAT2 GetTexPos() const { return texPos; }
 
+		Material::SpriteMaterial* GetMaterial() { return material.get(); }
+
 	private:
 		std::unique_ptr<Resource::Sprite::Sprite> sprite;
 		std::shared_ptr<Material::SpriteMaterial> material;

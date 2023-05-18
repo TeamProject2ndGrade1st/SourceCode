@@ -20,6 +20,7 @@ public:
 	void TremorUpdate();
 	void AddRecoil(DirectX::XMFLOAT3 power,float downTime);
 
+	Bullet::Mode GetMode() { return mode; }
 	float fireRate;
 	int damage;
 	float speed;

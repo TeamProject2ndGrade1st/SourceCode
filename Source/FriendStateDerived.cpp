@@ -22,7 +22,7 @@ namespace Friend::Creature
 		if (owner->IsTargetInAttackArea())
 		{
 			if (owner->GetAttackTimer() > 0)return;
-		}
+		}   
 		
 		
 		owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Action));
@@ -57,8 +57,6 @@ namespace Friend::Creature
 		{
 			owner->GetStateMachine()->ChangeState(static_cast<int>(FriendCreature::State::Walk));
 		}
-
-
 	}
 
 	void ActionState::Exit()

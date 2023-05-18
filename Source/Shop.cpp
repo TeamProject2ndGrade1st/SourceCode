@@ -5,16 +5,16 @@ void Shop::Initialize()
 {
     BaseComponent::Initialize();
 
-    GetOwner()->AddComponent(new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/UI_0516_2.png"));
+    GetOwner()->AddComponent(new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Shop.png"));
 
     GetOwner()->ReplaceTag(GameObject::Tag::Shop);
 
     GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(Argent::Graphics::GetWindowWidth(), 0, 0));
 
-    easeFunc = &Easing::OutExp;
+    easeFunc = &Easing::OutBounce;
 
 #ifdef _DEBUG
-    currentEase = "OutExp";
+    currentEase = "OutBounce";
     std::string s = "OutExp"; easeFunctoins.push_back(s);
     s = "OutSine";easeFunctoins.push_back(s);
     s = "OutQuad";easeFunctoins.push_back(s);
@@ -111,7 +111,16 @@ void Shop::DrawDebug()
     ImGui::SliderFloat("Timer", &timer,0,easeMaxTime);
     ImGui::DragFloat("MaxTimer", &easeMaxTime,0.01f);
 
+#ifdef _DEBUG
     ImGuiComboUI("Easing",currentEase,easeFunctoins);
+#endif // _DEBUG
+
+}
+
+void Shop::SetItem()
+{
+    items.emplace_back(Item(ItemType::Creature, 100, 2.0f, { 270,720 }));
+    items.emplace_back(Item(ItemType::Drone, 20, 1.5f, { 478,676 }));
 }
 
 void Item::Update(float x, float y)

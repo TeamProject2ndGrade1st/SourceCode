@@ -45,7 +45,7 @@ public:
     }*/
 
     int money;
-    std::vector<Item> itemArray;
+    std::vector<Item> items;
 
     typedef float (*EasingP)(float, float, float, float);
     EasingP easeFunc;
@@ -56,7 +56,10 @@ public:
     float easeMaxTime{1};
 
     //イージング終わってるか
-    bool easeEnd;
+    bool easeEnd{true};
+
+private:
+    void SetItem();
 
 #ifdef _DEBUG
     std::string currentEase;
@@ -96,7 +99,10 @@ public:
 class Item
 {
 public:
-    Item() {}
+    Item(const Shop::ItemType type,int price, float priceIncreasePersent, const DirectX::XMFLOAT2 pos, const RECT button = { -65, 30, 65, -30 })
+        : price(price), type(type),  priceIncreasePersent(priceIncreasePersent), pos(pos), button(button) 
+    {
+    }
     ~Item() {}
 
     void Update(float x, float y);
@@ -111,4 +117,5 @@ public:
 
     DirectX::XMFLOAT2 pos;//中心
     RECT button;//購入、売却ボタンの当たり判定用矩形
+
 };

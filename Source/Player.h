@@ -24,6 +24,12 @@ public:
 	void Fly(float power);
 	void FlyUpdate();
 
+	float FuelRatio()
+	{
+		return flyEnergy / maxFlyEnergy;
+	}
+
+	BaseGun* GetGun() { return gun; }
 
 private:
 	int state = 0;

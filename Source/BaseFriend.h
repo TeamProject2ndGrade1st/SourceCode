@@ -103,5 +103,8 @@ protected:
     std::vector<RelayPoint> relayPoint;
 
     FriendManager* friendManager{ nullptr };
+
+    Argent::Component::Renderer::EffekseerEmitter* healEffect;
+    Argent::Component::Renderer::EffekseerEmitter* spdUpEffect;
 };
 

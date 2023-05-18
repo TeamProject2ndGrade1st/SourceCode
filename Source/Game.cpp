@@ -25,6 +25,7 @@
 #include "Grenade.h"
 
 #include "Shop.h"
+#include "UI.h"
 
 
 void Game::Initialize()
@@ -36,12 +37,10 @@ void Game::Initialize()
 
 	Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Cube.fbx");
 	//Argent::Loader::Fbx::LoadDebug("./Resources/Model/Collision/Sphere.fbx");
-	auto g = GameObject::Instantiate("UI", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/UI.png"));
-	g->GetTransform()->SetPosition(DirectX::XMFLOAT3(250, 615, 0));
 	//AddObject(new GameObject("Demo", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Sample256.png")));
 	
 	AddObject(new GameObject("EffectSlash", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/slash.efk", "./Resources/Effects")));
-	GameObject::Instantiate("Reticle", new Reticle("./Resources/Image/ReticleYellow.png"));
+
 
 	//FriendManager‚ÍFriendCreater‚æ‚èã‚É‚·‚éi‡”Ô‚Í•Ï‚¦‚Ä‚à—Ç‚¢‚æ‚¤‚É‚µ‚½‚¢j
 	AddObject(new GameObject("FriendManager", new FriendManager(this)));
@@ -90,6 +89,7 @@ void Game::Initialize()
 
 	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/shield_bash.efk", "./Resources/Effects/"));
 
+	GameObject::Instantiate("UI",new UI());
 
 	auto l = GameObject::Instantiate("PointLight", new PointLight(0));
 	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());

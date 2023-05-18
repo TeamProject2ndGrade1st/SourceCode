@@ -27,6 +27,11 @@ void BaseFriend::Initialize()
 
     friendManager = GameObject::FindByName("FriendManager")->GetComponent<FriendManager>();
 
+    GetOwner()->AddComponent(healEffect = new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/heal.efk","./Resources/Effects"));
+    healEffect->offset.y = 17.5f;
+    healEffect->scale = { 10,10,10 };
+    GetOwner()->AddComponent(spdUpEffect = new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/speedup.efk","./Resources/Effects"));
+    spdUpEffect->scale = { 6,6,6 };
 }
 
 void BaseFriend::Begin()
@@ -127,6 +132,7 @@ void BaseFriend::OnDead()
 
 void BaseFriend::OnHeal()
 {
+    healEffect->OnPlay();
 }
 
 //ターゲットが攻撃範囲内にいるかどうか
