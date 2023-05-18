@@ -29,7 +29,7 @@ public:
 
     bool battleFlag{ false };
 
-private:
+public:
     Argent::Scene::BaseScene* scene;
     std::vector<BaseFriend*> friendArray;
 };

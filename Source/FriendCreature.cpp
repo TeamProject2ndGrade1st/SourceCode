@@ -45,6 +45,7 @@ void FriendCreature::Initialize()
     stateMachine.get()->RegisterState(new Friend::Creature::ActionState(this));
     stateMachine.get()->RegisterState(new Friend::Creature::WalkState(this));
     stateMachine.get()->RegisterState(new Friend::Creature::AttackState(this));
+    stateMachine.get()->RegisterState(new Friend::Creature::DieState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
 }

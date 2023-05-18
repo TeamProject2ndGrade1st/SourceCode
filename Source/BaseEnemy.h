@@ -76,6 +76,7 @@ public:
 
 
 
+    BaseFriend* SearchFriend();
     BaseFriend* SearchFriend1();
 protected:
     // –Ú“IÀ•W
