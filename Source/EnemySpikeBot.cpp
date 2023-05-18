@@ -33,6 +33,8 @@ void EnemySpikeBot::Initialize()
 
     SetAccelaration(0);
     
+    // UŒ‚—Íİ’è
+    attack = 3;
 }
 
 void EnemySpikeBot::Begin()

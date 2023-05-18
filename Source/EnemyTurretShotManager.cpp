@@ -51,12 +51,7 @@ void EnemyTurretShotManager::AddShot(const DirectX::XMFLOAT3 pos, const DirectX:
         if (LR < 0)angle *= -1;
 
         shot->GetOwner()->GetTransform()->SetRotation({ 0,DirectX::XMConvertToDegrees(angle),0,0 });
-    }
-    
-    // test
-    
-    // shot‚Ìi‚Ş•ûŒü‚ğİ’è‚·‚é
-    
+    }    
     
     // shot‚ğ”z—ñ‚É“o˜^‚·‚é
     shotArray.emplace_back(shot);

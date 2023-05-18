@@ -58,6 +58,7 @@ namespace Enemy::SpikeBot
                 f->AddImpulse(DirectX::XMFLOAT3(0, 0, -1000));
                 owner->GetOwner()->GetComponent<Argent::Component::Renderer::EffekseerEmitter>()->OnPlay(0);
                 
+                f->ApplyDamage(owner->GetAttack());
 
                 once = true;
             }
@@ -86,7 +87,7 @@ namespace Enemy::Turret
         owner->SetAnimation(static_cast<int>(TurretAnimation::Idle));
 
         // タイマーを設定
-        owner->SetStateTimer(3.0f);
+        owner->SetStateTimer(10.0f);
     }
 
     void IdleState::Execute()
@@ -155,7 +156,9 @@ namespace Enemy::Turret
             if (Friend.size()!=0)
             {
                 float length0 = FLT_MAX;
-                for (auto it = Friend.begin(); it != Friend.end(); ++it)
+                int  num = 0;
+                int i = 0;
+                for (auto it = Friend.begin(); it != Friend.end(); ++it,++i)
                 {
                     DirectX::XMFLOAT3 friendPos = (*it)->GetTransform()->GetPosition();
                     //DirectX::XMFLOAT3 friendPos = owner->_friend->GetTargetPosition();
@@ -173,14 +176,21 @@ namespace Enemy::Turret
                         DirectX::XMStoreFloat3(&targetPos, v);
                         length0 = length;
                         tPos = targetPos;
-                    }
+                        num = i;
+                    }                    
                 }
+                
+                auto f_riend = fManager->friendArray.at(num);
+                f_riend->ApplyDamage(owner->GetAttack());
             }
 
             // タレットの位置を取る
             DirectX::XMFLOAT3 pos{ owner->GetOwner()->GetTransform()->GetPosition() };
             // 弾を生成する
             EnemyTurretShotManager::Instance().AddShot(pos, tPos);
+            // ダメージ入れる
+            
+
             shotTimer = 0.4f;
         }
         shotTimer -= Argent::Timer::GetDeltaTime();
@@ -200,13 +210,12 @@ namespace Enemy::Turret
             if (angle < 0.99f)
             {
                 angle = acosf(angle);
-                if (LR < 0)angle *= -1;
+                if (LR < 0)angle *= -1; 
 
-
-                head->GetTransform()->SetRotation({ 0,DirectX::XMConvertToDegrees(angle)+180,0,0 });
+                auto angleY = head->GetTransform()->GetRotation().y;
+                head->GetTransform()->SetRotation({ 0,DirectX::XMConvertToDegrees(angle) +angleY,0,0 });
             }
         }
-
     }
 
     void AttackState::Exit()

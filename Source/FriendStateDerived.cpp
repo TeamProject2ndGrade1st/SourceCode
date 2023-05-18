@@ -195,12 +195,13 @@ namespace Friend::Creature
 	{
 		if (owner->IsAnimationEnd())
 		{
-			owner->GetOwner()->Destroy(owner->GetOwner());
+			owner->GetOwner()->SetActive(false);
 		}
 	}
 
 	void DieState::Exit()
 	{
+
 	}
 }
 

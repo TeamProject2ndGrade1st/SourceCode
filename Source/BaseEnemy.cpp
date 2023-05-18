@@ -102,3 +102,51 @@ BaseFriend* BaseEnemy::SearchFriend1()
     }
     return nullptr;
 }
+BaseFriend* BaseEnemy::SearchFriend()
+{
+    // TODO: return ステートメントをここに挿入します
+        // Friendタグが付いているGameObjectを探す
+    std::vector<GameObject*> Friend;
+    GameObject::FindByTag(GameObject::Tag::Friend, Friend);
+
+    DirectX::XMFLOAT3 pos = GetOwner()->GetTransform()->GetPosition();
+    DirectX::XMFLOAT4 angle = GetOwner()->GetTransform()->GetRotation();
+
+    // TO DO 途中
+
+
+    for (auto f : Friend)
+    {
+
+
+         //Friend の positionを取る
+        DirectX::XMFLOAT3 friendPos = f->GetTransform()->GetPosition();
+
+        float vx = pos.x - friendPos.x;
+        float vy = pos.y - friendPos.y;
+        float vz = pos.z - friendPos.z;
+        float dist = sqrtf(vx * vx + vz * vz);
+
+        //if (dist < 50)
+        //{
+        float distXZ = sqrtf(vx * vx + vz * vz);
+        //単位ベクトル化
+        vx /= distXZ;
+        vz /= distXZ;
+
+        //方向ベクトル化
+        float frontX = sinf(angle.y);
+        float frontZ = cosf(angle.y);
+        //2つのベクトルの内積値で前後判定
+        float dot = (frontX * vx) + (frontZ * vz);
+        if (dot > 0.0f)
+        {
+            f->GetTransform()->SetPosition(friendPos);
+            auto* ret = fManager->FindFriendComponentFromOwner(f);
+            return ret;
+            //return f;
+        }
+        //}
+    }
+    return nullptr;
+}
