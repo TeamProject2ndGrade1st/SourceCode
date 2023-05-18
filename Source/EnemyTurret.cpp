@@ -36,7 +36,6 @@ void EnemyTurret::Initialize()
     // ポジションをセット
     //DirectX::XMFLOAT3 pos = { 0.0f,0.0f,60.0f };
     auto transform = GetOwner()->GetTransform();
-    GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 60.0f));
 }
 
 void EnemyTurret::Begin()

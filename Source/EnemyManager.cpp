@@ -2,10 +2,14 @@
 #include "EnemySpikeBot.h"
 #include "EnemyTurret.h"
 
+bool EnemyManager::battleFlag = false;
+
 void EnemyManager::Initialize()
 {
     BaseActor::Initialize();
     GetOwner()->ReplaceTag(GameObject::Tag::EnemyManager);
+
+    SetEnemyOnStage();
 }
 
 void EnemyManager::Update()
@@ -51,6 +55,19 @@ void EnemyManager::AddEnemy(BaseEnemy* _enemy)
     enemyArray.emplace_back(_enemy);
 
     // タグ登録はそれぞれのエネミー本体で行っている
+}
+
+void EnemyManager::SetEnemyOnStage()
+{
+    AddEnemy(new EnemySpikeBot(DirectX::XMFLOAT3(- 150, 0, 150)));
+    AddEnemy(new EnemySpikeBot(DirectX::XMFLOAT3(150, 0, 150)));
+    AddEnemy(new EnemySpikeBot(DirectX::XMFLOAT3(0, 0, 130)));
+
+    AddEnemy(new EnemyTurret(DirectX::XMFLOAT3(0, 0, 56)));
+    AddEnemy(new EnemyTurret(DirectX::XMFLOAT3(80, 0, 70)));
+    AddEnemy(new EnemyTurret(DirectX::XMFLOAT3(-80, 0, 70)));
+    AddEnemy(new EnemyTurret(DirectX::XMFLOAT3(150, 0, 90)));
+    AddEnemy(new EnemyTurret(DirectX::XMFLOAT3(-150, 0, 90)));
 }
 
 BaseEnemy* EnemyManager::FindEnemyComponentFromOwner(GameObject* wEnemy) const

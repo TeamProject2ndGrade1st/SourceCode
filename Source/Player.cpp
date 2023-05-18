@@ -167,19 +167,19 @@ void Player::Turn()
     // ƒJƒƒ‰‰¡‚Ì‚â‚Â(‰ñ“]‚Å‚«‚é‚æ‚¤‚É‚·‚é)
     if (setRotation.y > 360)setRotation.y -= 360;
     if (setRotation.y < 0)setRotation.y += 360;
+    
+    static bool use = true;
 
 #ifdef _DEBUG
-    static bool use = false;
-
     if (Argent::Input::GetKeyUp(KeyCode::U))
     {
         use = !use;
     }
+#endif
     if (use)
     {
         t->SetRotation(setRotation);
     }
-#endif
 }
 
 void Player::UpdateVerticalMove()

@@ -1,9 +1,13 @@
 #include "BaseFriend.h"
 #include "FriendStateDerived.h"
+#include "EnemyManager.h"
+
+int BaseFriend::num = 0;
 
 BaseFriend::BaseFriend(const char* name, DirectX::XMFLOAT3 pos, Route route) : 
     Character(name, pos)
 {
+    num++;
     //RouteSearch(relayPoint, route);
 }
 
@@ -49,7 +53,7 @@ void BaseFriend::Begin()
 
 void BaseFriend::Update()
 {
-    if (!friendManager->battleFlag)return;
+    if (!FriendManager::battleFlag)return;
 
     if (attackTimer > 0)attackTimer -= Argent::Timer::GetDeltaTime();
 
@@ -128,6 +132,8 @@ void BaseFriend::OnDamaged()
 
 void BaseFriend::OnDead()
 {
+    GetOwner()->SetActive(false);
+    num--;
 }
 
 void BaseFriend::OnHeal()

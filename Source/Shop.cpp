@@ -42,16 +42,19 @@ void Shop::Initialize()
     easeFuncs.push_back(&Easing::InBounce);
 #endif // _DEBUG                
 
+    std::vector<GameObject*> m;
+    GameObject::FindByTag(GameObject::Tag::ChangeMode, m);
+    mode = m.at(0)->GetComponent<ChangeMode>();
+
+    /*SetItem();
+    for (auto& item : items)
+    {
+        GetOwner()->AddComponent();
+    }*/
 }
 
 void Shop::Begin()
 {
-    static bool callOnce = [&]() {
-        std::vector<GameObject*> m;
-        GameObject::FindByTag(GameObject::Tag::ChangeMode, m);
-        mode = m.at(0)->GetComponent<ChangeMode>();
-        return true;
-    }();
 }
 
 void Shop::Update()
@@ -64,12 +67,15 @@ void Shop::Update()
             if (mode->openShop)mode->CloseShop();
             else mode->OpenShop();
             easeEnd = false;
+            mode->canChange = false;
         }
     }
     
 
     if (mode->openShop)OpenUpdate();
     else CloseUpdate();
+
+    
 }
 
 void Shop::OpenUpdate()
@@ -78,19 +84,21 @@ void Shop::OpenUpdate()
     {
         GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(
             (*easeFunc)(timer, easeMaxTime, 0.0f, Argent::Graphics::GetWindowWidth()),
-            0,0)
+            0, 0)
         );
-        if(timer < easeMaxTime)timer += Argent::Timer::GetDeltaTime();
+        if (timer < easeMaxTime)timer += Argent::Timer::GetDeltaTime();
         else
         {
             GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, 0, 0));
             easeEnd = true;
+            mode->canChange = true;
         }
     }
 }
 
 void Shop::CloseUpdate()
 {
+    if (mode->battleFlag)return;
     if (!easeEnd)
     {
         GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(
@@ -102,6 +110,7 @@ void Shop::CloseUpdate()
         { 
             GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(0, Argent::Graphics::GetWindowWidth(), 0));
             easeEnd = true;
+            mode->canChange = true;
         }
     }
 }
@@ -119,27 +128,42 @@ void Shop::DrawDebug()
 
 void Shop::SetItem()
 {
-    items.emplace_back(Item(ItemType::Creature, 100, 2.0f, { 270,720 }));
-    items.emplace_back(Item(ItemType::Drone, 20, 1.5f, { 478,676 }));
+    items.emplace_back(new Item(ItemType::Creature, 100, 2.0f, { 270,720 }));
+    items.emplace_back(new Item(ItemType::Drone, 20, 1.5f, { 478,676 }));
+    items.emplace_back(new Item(ItemType::BloodAmo, 20, 1.5f, { 478,676 }));
+    items.emplace_back(new Item(ItemType::ElectricAmo, 20, 1.5f, { 478,676 }));
+    items.emplace_back(new Item(ItemType::BloodGrenade, 20, 1.5f, { 478,676 }));
+    items.emplace_back(new Item(ItemType::ElectricGrenade, 20, 1.5f, { 478,676 }));
+    items.emplace_back(new Item(ItemType::ChangeFight, 0, 1.5f, { 890,710 }));
+    items.emplace_back(new Item(ItemType::ChangeEdit, 0, 1.5f, { 1150,710 }));
 }
 
-void Item::Update(float x, float y)
+void Item::Update()
 {
+    auto mousePos = Argent::Input::Mouse::Instance().GetPosition();
+    auto pos = GetOwner()->GetTransform()->GetPosition();
+
     float left = pos.x - button.left;
     float right = pos.x + button.right;
     float top = pos.y + button.top;
     float bottom = pos.y - button.bottom;
 
-    if (left > x)   return;
-    if (right < x)  return;
-    if (top < y)  return;
-    if (bottom > y)   return;
+    if (left > mousePos.x)   return;
+    if (right < mousePos.x)  return;
+    if (top < mousePos.y)  return;
+    if (bottom > mousePos.y)   return;
 
     if (Argent::Input::GetButtonDown(MouseButton::LeftButton))
     {
-        if(pos.x < x)Buy();
+        if(pos.x < mousePos.x)Buy();
         else Sale();
     }
+}
+
+void Item::Initialize()
+{
+    GetOwner()->AddComponent(new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/ShopButton.png"));
+    GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(initPos.x, initPos.y, 0));
 }
 
 void Item::Buy()

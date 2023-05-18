@@ -27,7 +27,7 @@ public:
 
     BaseFriend* FindFriendComponentFromOwner(GameObject* wFriend) const;
 
-    bool battleFlag{ false };
+    static bool battleFlag;
 
 public:
     Argent::Scene::BaseScene* scene;

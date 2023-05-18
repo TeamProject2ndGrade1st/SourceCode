@@ -171,24 +171,7 @@ void Camera::DrawDebug()
 	{
 		if(ImGui::Button("Use Scene Camera"))
 		{
-			isSceneCamera = true;
-			std::vector<GameObject*> gameObject;
-			GameObject::FindByTag(GameObject::Tag::MainCamera, gameObject);
-			for(auto& g : gameObject)
-			{
-				auto* c = g->GetComponent<Camera>();
-				if(c)
-				{
-					if(c != this)
-					{
-						c->isSceneCamera = false;
-					}
-					else
-					{
-						c->isSceneCamera = true;
-					}
-				}
-			}
+			UseSceneCamera();
 		}
 
 
@@ -251,6 +234,28 @@ DirectX::XMMATRIX Camera::GetViewMatrix() const
 DirectX::XMMATRIX Camera::GetProjectionMatrix() const
 {
 	return DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(fov), width / height, nearZ, farZ);
+}
+
+void Camera::UseSceneCamera()
+{
+	isSceneCamera = true;
+	std::vector<GameObject*> gameObject;
+	GameObject::FindByTag(GameObject::Tag::MainCamera, gameObject);
+	for (auto& g : gameObject)
+	{
+		auto* c = g->GetComponent<Camera>();
+		if (c)
+		{
+			if (c != this)
+			{
+				c->isSceneCamera = false;
+			}
+			else
+			{
+				c->isSceneCamera = true;
+			}
+		}
+	}
 }
 
 CameraController::CameraController():

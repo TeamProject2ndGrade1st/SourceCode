@@ -39,7 +39,7 @@ namespace Argent::Component::Renderer
 		};
 		static constexpr int MaxBoneInfluences{ 4 };
 		
-		struct Vertex			
+		struct Vertex
 		{
 			DirectX::XMFLOAT3 position;
 			DirectX::XMFLOAT3 normal;

@@ -95,4 +95,5 @@ void FriendCreature::DrawDebug()
 void FriendCreature::OnDead()
 {
     stateMachine.get()->ChangeState(static_cast<int>(State::Die));
+    num--;
 }

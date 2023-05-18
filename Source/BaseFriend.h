@@ -6,11 +6,15 @@
 #include "StateMachine.h"
 #include "FriendManager.h"
 #include "BaseEnemy.h"
-#include "EnemyManager.h"
+//#include "EnemyManager.h"
+
+class EnemyManager;
 
 class BaseFriend : public Character
 {
 public:
+    static int num;
+
     enum Route
     {
         left,

@@ -1,5 +1,6 @@
 #pragma once
 #include "Argent/Scene/BaseScene.h"
+#include "BaseFriend.h"
 
 class BaseEnemy;
 
@@ -14,7 +15,11 @@ public:
     };
 
     EnemyManager(Argent::Scene::BaseScene* currentScene) :
-        BaseActor("EnemyManager"), scene(currentScene) {}
+        BaseActor("EnemyManager"), scene(currentScene) 
+    {
+        BaseEnemy::num = 0;
+        battleFlag = false;
+    }
     ~EnemyManager() {}
 
     void Initialize()override;
@@ -23,7 +28,11 @@ public:
 
     void AddEnemy(BaseEnemy* _enemy);
 
+    void SetEnemyOnStage();
+
     BaseEnemy* FindEnemyComponentFromOwner(GameObject* wEnemy)const;
+
+    static bool battleFlag;
 
 private:
     std::vector<BaseEnemy*> enemyArray;

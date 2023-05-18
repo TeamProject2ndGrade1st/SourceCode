@@ -44,6 +44,9 @@ public:
 	DirectX::XMFLOAT4 GetMinRotation() const { return minRotation; }
 	void SetMinRotation(const DirectX::XMFLOAT4& mRot) { minRotation = mRot;  useMinRotation = true; }
 
+
+	void UseSceneCamera();
+
 private:
 	float width;
 	float height;

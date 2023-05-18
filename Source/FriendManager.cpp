@@ -3,9 +3,12 @@
 #include "FriendDrone.h"
 #include "Argent/Graphic/Graphics.h"
 
+bool FriendManager::battleFlag = false;
+
 FriendManager::FriendManager(Argent::Scene::BaseScene* currentScene) :
     BaseActor("FriendManager"), scene(currentScene)
 {
+    BaseFriend::num = 0;
     battleFlag = false;
 }
 

@@ -25,6 +25,8 @@ public:
         ElectricAmo,
         BloodGrenade,
         ElectricGrenade,
+        ChangeEdit,
+        ChangeFight,
     };
 
     void Initialize()override;
@@ -45,7 +47,7 @@ public:
     }*/
 
     int money;
-    std::vector<Item> items;
+    std::vector<Item*> items;
 
     typedef float (*EasingP)(float, float, float, float);
     EasingP easeFunc;
@@ -96,16 +98,17 @@ private:
 };
 
 
-class Item
+class Item : Argent::Component::BaseActor
 {
 public:
-    Item(const Shop::ItemType type,int price, float priceIncreasePersent, const DirectX::XMFLOAT2 pos, const RECT button = { -65, 30, 65, -30 })
-        : price(price), type(type),  priceIncreasePersent(priceIncreasePersent), pos(pos), button(button) 
+    Item(const Shop::ItemType type,int price, float priceIncreasePersent,const DirectX::XMFLOAT2 pos,const RECT button = { -65, 30, 65, -30 })
+        :BaseActor("Item"), price(price), type(type), priceIncreasePersent(priceIncreasePersent), button(button),initPos(pos)
     {
     }
     ~Item() {}
 
-    void Update(float x, float y);
+    void Initialize()override;
+    void Update()override;
 
     void Buy();//w“ü
     void Sale();//”„‹p
@@ -115,7 +118,7 @@ public:
     int num;//w“ü”
     float priceIncreasePersent;//‚Pw“ü‚²‚Æ‚Ì’lã‚°”{—¦
 
-    DirectX::XMFLOAT2 pos;//’†S
     RECT button;//w“üA”„‹pƒ{ƒ^ƒ“‚Ì“–‚½‚è”»’è—p‹éŒ`
 
+    DirectX::XMFLOAT2 initPos;
 };

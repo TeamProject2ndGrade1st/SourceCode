@@ -72,8 +72,8 @@ void Game::Initialize()
 	GameObject::Instantiate("Barricade", new Barricade("./Resources/Model/Stage/barike-do_0419_1.fbx"));
 	//GameObject::Instantiate("Tutorial Stage", new TutorialStage("./Resources/Model/Stage/map_1_0426_5.fbx"));
 
-	GameObject::Instantiate("Shop", new Shop);
 	GameObject::Instantiate("Mode", new ChangeMode);
+	GameObject::Instantiate("Shop", new Shop);
 	
 	std::vector<GameObject*> lightArray;
 	GameObject::FindByTag(GameObject::Tag::Light, lightArray);
@@ -129,6 +129,7 @@ void Game::Update()
 #else
 	ShowCursor(false);
 #endif
+
 	if(Argent::Input::GetKeyUp(KeyCode::F2))
 	{
 		Argent::Scene::SceneManager::SetNextScene("Result");

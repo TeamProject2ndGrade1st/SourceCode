@@ -11,6 +11,9 @@
 class BaseEnemy : public Character
 {
 public:
+
+    static int num;
+
     BaseEnemy(const char* name, DirectX::XMFLOAT3 pos);
 
     virtual ~BaseEnemy() {}

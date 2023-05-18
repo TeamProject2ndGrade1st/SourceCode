@@ -1,10 +1,13 @@
 #include "BaseEnemy.h"
 #include "EnemyStateDerivad.h"
 
+int BaseEnemy::num = 0;
+
 // コンストラクタ
 BaseEnemy::BaseEnemy(const char* name, DirectX::XMFLOAT3 pos) :
     Character(name, pos)
 {
+    num++;
 }
 
 void BaseEnemy::Initialize()
@@ -43,6 +46,8 @@ void BaseEnemy::Begin()
 
 void BaseEnemy::Update()
 {
+    if (!FriendManager::battleFlag)return;
+
     stateMachine.get()->Update();
 
     

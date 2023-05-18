@@ -14,7 +14,6 @@ class GameObject
 public:
 	enum class Tag : unsigned int
 	{
-
 		UnTagged = 0x01 << 1,	//default 
 		MainCamera = 0x01 << 2,	//ƒJƒƒ‰‚ªŽ‚Á‚Ä‚é
 
