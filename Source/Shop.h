@@ -47,7 +47,7 @@ public:
     }*/
 
     int money;
-    std::vector<Item*> items;
+    std::vector<GameObject*> items;
 
     typedef float (*EasingP)(float, float, float, float);
     EasingP easeFunc;
@@ -60,8 +60,16 @@ public:
     //イージング終わってるか
     bool easeEnd{true};
 
+    //ショップ専用に別のマウスカーソルを作る
+    DirectX::XMFLOAT2 mousePos;
+
+    GameObject* mouse;
 private:
     void SetItem();
+
+    int width = GetSystemMetrics(SM_CXSCREEN);
+    int height = GetSystemMetrics(SM_CYSCREEN);
+
 
 #ifdef _DEBUG
     std::string currentEase;
@@ -98,7 +106,7 @@ private:
 };
 
 
-class Item : Argent::Component::BaseActor
+class Item : public Argent::Component::BaseActor
 {
 public:
     Item(const Shop::ItemType type,int price, float priceIncreasePersent,const DirectX::XMFLOAT2 pos,const RECT button = { -65, 30, 65, -30 })
@@ -121,4 +129,6 @@ public:
     RECT button;//購入、売却ボタンの当たり判定用矩形
 
     DirectX::XMFLOAT2 initPos;
+
+    Shop* shop;
 };
