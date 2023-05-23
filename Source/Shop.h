@@ -26,7 +26,7 @@ public:
         BloodGrenade,
         ElectricGrenade,
         ChangeEdit,
-        ChangeFight,
+        ChangeBattle,
     };
 
     void Initialize()override;
@@ -37,6 +37,9 @@ public:
     void CloseUpdate();
 
     void DrawDebug()override;
+
+    void OpenShop();
+    void CloseShop();
 
     /*Item& GetItem(ItemType t) 
     {
@@ -109,7 +112,7 @@ private:
 class Item : public Argent::Component::BaseActor
 {
 public:
-    Item(const Shop::ItemType type,int price, float priceIncreasePersent,const DirectX::XMFLOAT2 pos,const RECT button = { -65, 30, 65, -30 })
+    Item(const Shop::ItemType type,int price, float priceIncreasePersent,const DirectX::XMFLOAT2 pos,const RECT button = { -32, 32, 32, -32 })
         :BaseActor("Item"), price(price), type(type), priceIncreasePersent(priceIncreasePersent), button(button),initPos(pos)
     {
     }
@@ -118,8 +121,8 @@ public:
     void Initialize()override;
     void Update()override;
 
-    void Buy();//çwì¸
-    void Sale();//îÑãp
+    virtual void Buy();//çwì¸
+    virtual void Sale();//îÑãp
 
     int price;//ã‡äz
     Shop::ItemType type;
@@ -132,3 +135,102 @@ public:
 
     Shop* shop;
 };
+
+class ItemCreature : public Item
+{
+public:
+    ItemCreature(const Shop::ItemType type, int price, float priceIncreasePersent, const DirectX::XMFLOAT2 pos, const RECT button = { -32, 32, 32, -32 })
+        :Item(type,price,priceIncreasePersent,pos,button){}
+    ~ItemCreature() {}
+
+    void Buy()override;
+    void Sale()override;
+};
+
+class ItemDrone : public Item
+{
+public:
+    ItemDrone(const Shop::ItemType type, int price, float priceIncreasePersent, const DirectX::XMFLOAT2 pos, const RECT button = { -32, 32, 32, -32 })
+        :Item(type, price, priceIncreasePersent, pos, button) {}
+    ~ItemDrone() {}
+
+
+    void Buy()override;
+    void Sale()override;
+
+};
+
+class ItemBloodAmo : public Item
+{
+public:
+    ItemBloodAmo(const Shop::ItemType type, int price, float priceIncreasePersent, const DirectX::XMFLOAT2 pos, const RECT button = { -32, 32, 32, -32 })
+        :Item(type, price, priceIncreasePersent, pos, button) {}
+    ~ItemBloodAmo() {}
+
+
+    void Buy()override;
+    void Sale()override;
+
+};
+
+class ItemElectricAmo : public Item
+{
+public:
+    ItemElectricAmo(const Shop::ItemType type, int price, float priceIncreasePersent, const DirectX::XMFLOAT2 pos, const RECT button = { -32, 32, 32, -32 })
+        :Item(type, price, priceIncreasePersent, pos, button) {}
+    ~ItemElectricAmo() {}
+
+
+    void Buy()override;
+    void Sale()override;
+
+};
+
+class ItemBloodGrenade : public Item
+{
+public:
+    ItemBloodGrenade(const Shop::ItemType type, int price, float priceIncreasePersent, const DirectX::XMFLOAT2 pos, const RECT button = { -32, 32, 32, -32 })
+        :Item(type, price, priceIncreasePersent, pos, button) {}
+    ~ItemBloodGrenade() {}
+
+
+    void Buy()override;
+    void Sale()override;
+
+};
+
+class ItemElectricGrenade : public Item
+{
+public:
+    ItemElectricGrenade(const Shop::ItemType type, int price, float priceIncreasePersent, const DirectX::XMFLOAT2 pos, const RECT button = { -32, 32, 32, -32 })
+        :Item(type, price, priceIncreasePersent, pos, button) {}
+    ~ItemElectricGrenade() {}
+
+
+    void Buy()override;
+    void Sale()override;
+
+};
+
+class ItemChangeEdit : public Item
+{
+public:
+    ItemChangeEdit(const Shop::ItemType type, int price, float priceIncreasePersent, const DirectX::XMFLOAT2 pos, const RECT button = { -32, 32, 32, -32 })
+        :Item(type, price, priceIncreasePersent, pos, button) {}
+    ~ItemChangeEdit() {}
+
+
+    void Buy()override;
+};
+
+class ItemChangeBattle : public Item
+{
+public:
+    ItemChangeBattle(const Shop::ItemType type, int price, float priceIncreasePersent, const DirectX::XMFLOAT2 pos, const RECT button = { -32, 32, 32, -32 })
+        :Item(type, price, priceIncreasePersent, pos, button) {}
+    ~ItemChangeBattle() {}
+
+
+    void Buy()override;
+};
+

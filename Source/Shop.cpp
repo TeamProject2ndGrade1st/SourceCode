@@ -81,12 +81,8 @@ void Shop::Update()
     {
         if (Argent::Input::GetKeyDown(KeyCode::B))
         {
-            timer = 0;
-            if (mode->openShop)mode->CloseShop();
-            else mode->OpenShop();
-            easeEnd = false;
-            mode->canChange = false;
-            mouse->GetTransform()->SetPosition(DirectX::XMFLOAT3(Argent::Graphics::GetWindowWidth(),Argent::Graphics::GetWindowHeight(), 0.0f));
+            if (mode->openShop)CloseShop();
+            else OpenShop();
         }
     }
     
@@ -128,7 +124,7 @@ void Shop::CloseUpdate()
     DirectX::XMFLOAT4& mouseColor = mouse->GetComponent<Argent::Component::Renderer::SpriteRenderer>()->GetMaterial()->color.color;
     mouseColor.w = 0;
 
-    if (mode->battleFlag)return;
+    //if (mode->battleFlag)return;
     if (!easeEnd)
     {
         GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(
@@ -156,26 +152,50 @@ void Shop::DrawDebug()
     
 }
 
+void Shop::OpenShop()
+{
+    timer = 0;
+    mode->OpenShop();
+    easeEnd = false;
+    mode->canChange = false;
+    mouse->GetTransform()->SetPosition(DirectX::XMFLOAT3(Argent::Graphics::GetWindowWidth(), Argent::Graphics::GetWindowHeight(), 0.0f));
+}
+
+void Shop::CloseShop()
+{
+    timer = 0;
+    mode->CloseShop();
+    easeEnd = false;
+    mode->canChange = false;
+    mouse->GetTransform()->SetPosition(DirectX::XMFLOAT3(Argent::Graphics::GetWindowWidth(), Argent::Graphics::GetWindowHeight(), 0.0f));
+}
+
 void Shop::SetItem()
 {
-    items.emplace_back(new GameObject("Item Creature",new Item(ItemType::Creature, 100, 2.0f, { 220,645 })));
-    items.emplace_back(new GameObject("Item Drone",new Item(ItemType::Drone, 20, 1.5f, { 478,645 })));
-    items.emplace_back(new GameObject("Item BloodAmo",new Item(ItemType::BloodAmo, 20, 1.5f, { 700,380 })));
-    items.emplace_back(new GameObject("Item ElectricAmo",new Item(ItemType::ElectricAmo, 20, 1.5f, { 875,380 })));
-    items.emplace_back(new GameObject("Item BloodGre",new Item(ItemType::BloodGrenade, 20, 1.5f, { 1210,475 })));
-    items.emplace_back(new GameObject("Item ElectricGre",new Item(ItemType::ElectricGrenade, 20, 1.5f, { 1053,475 })));
-    items.emplace_back(new GameObject("Item ChangeFight",new Item(ItemType::ChangeFight, 0, 1.5f, { 890,680 })));
-    items.emplace_back(new GameObject("Item ChangeEdit",new Item(ItemType::ChangeEdit, 0, 1.5f, { 1150,680 })));
+    items.emplace_back(new GameObject("Item Creature", new ItemCreature(ItemType::Creature, 100, 2.0f, { 188,613 }, {-66,34,66,-34})));
+    items.emplace_back(new GameObject("Item Drone",new ItemDrone(ItemType::Drone, 20, 1.5f, { 450,613 }, { -66,34,66,-34 })));
+    items.emplace_back(new GameObject("Item BloodAmo", new ItemBloodAmo(ItemType::BloodAmo, 20, 1.5f, { 668,348 }, {-45,19,45,-19})));
+    items.emplace_back(new GameObject("Item ElectricAmo",new ItemElectricAmo(ItemType::ElectricAmo, 20, 1.5f, { 843,348 }, { -45,19,45,-19 })));
+    items.emplace_back(new GameObject("Item BloodGre",new ItemBloodGrenade(ItemType::BloodGrenade, 20, 1.5f, { 1181,443 }, { -40,37,40,-37 })));
+    items.emplace_back(new GameObject("Item ElectricGre",new ItemElectricGrenade(ItemType::ElectricGrenade, 20, 1.5f, { 1021,443 }, { -40,37,40,-37 })));
+    items.emplace_back(new GameObject("Item ChangeBattle",new ItemChangeBattle(ItemType::ChangeBattle, 0, 1.5f, { 858,648 },{-122,32,122,-32})));
+    items.emplace_back(new GameObject("Item ChangeEdit",new ItemChangeEdit(ItemType::ChangeEdit, 0, 1.5f, { 1118,648 }, { -122,32,122,-32 })));
 
     for (auto& item : items)
     {
-        item->GetComponent<Item>()->shop = this;
         GetOwner()->AddChild(item);
     }
 }
 
 void Item::Update()
 {
+    if (shop == nullptr)
+    {
+        std::vector<GameObject*> s;
+        GameObject::FindByTag(GameObject::Tag::Shop, s);
+        shop = s.at(0)->GetComponent<Shop>();
+    }
+
     auto pos = GetOwner()->GetTransform()->GetPosition();
 
     float left = pos.x + button.left;
@@ -202,7 +222,14 @@ void Item::Initialize()
 {
     BaseActor::Initialize();
     GetOwner()->AddComponent(new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/ShopButton.png"));
+    GetOwner()->GetComponent<Argent::Component::Renderer::SpriteRenderer>()->GetMaterial()->color.color = DirectX::XMFLOAT4(1, 1, 1, 0.5f);
     GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(initPos.x, initPos.y, 0));
+
+    DirectX::XMFLOAT2 scale = {
+        (static_cast<float>(button.right) - static_cast<float>(button.left)) / 64,
+        (static_cast<float>(button.top) - static_cast<float>(button.bottom)) / 64
+    };
+    GetOwner()->GetTransform()->SetScale(DirectX::XMFLOAT3(scale.x, scale.y, 1));
 }
 
 void Item::Buy()
@@ -210,5 +237,66 @@ void Item::Buy()
 }
 
 void Item::Sale()
+{
+    //この関数をオーバーロードしないクラスは売却操作がないので購入と同じ処理をする
+    Buy();
+}
+
+void ItemCreature::Buy()
+{
+}
+
+void ItemCreature::Sale()
+{
+}
+
+void ItemDrone::Buy()
+{
+}
+
+void ItemDrone::Sale()
+{
+}
+
+void ItemChangeEdit::Buy()
+{
+    shop->mode->ChangeEditMode();
+    shop->CloseShop();
+}
+
+void ItemChangeBattle::Buy()
+{
+    shop->mode->ChangeBattleMode();
+}
+
+void ItemBloodAmo::Buy()
+{
+}
+
+void ItemBloodAmo::Sale()
+{
+}
+
+void ItemElectricAmo::Buy()
+{
+}
+
+void ItemElectricAmo::Sale()
+{
+}
+
+void ItemBloodGrenade::Buy()
+{
+}
+
+void ItemBloodGrenade::Sale()
+{
+}
+
+void ItemElectricGrenade::Buy()
+{
+}
+
+void ItemElectricGrenade::Sale()
 {
 }
