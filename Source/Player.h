@@ -31,6 +31,8 @@ public:
 
 	BaseGun* GetGun() { return gun; }
 
+	//Ž‹“_ˆÚ“®
+	bool use = true;
 private:
 	int state = 0;
 
@@ -71,4 +73,5 @@ protected:
 	float maxFlyEnergy{ 1 };
 
 	FriendCreater* friendCreater{ nullptr };
+
 };

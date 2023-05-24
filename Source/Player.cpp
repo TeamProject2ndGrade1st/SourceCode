@@ -168,7 +168,9 @@ void Player::Turn()
     if (setRotation.y > 360)setRotation.y -= 360;
     if (setRotation.y < 0)setRotation.y += 360;
     
-    static bool use = true;
+    
+
+   
 
 #ifdef _DEBUG
     if (Argent::Input::GetKeyUp(KeyCode::U))

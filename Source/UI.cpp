@@ -4,13 +4,17 @@ void UI::Initialize()
 {
     GameObject::Instantiate("Reticle", reticle = new Reticle("./Resources/Image/ReticleYellow.png"));
 
-    GetOwner()->AddComponent(huel       = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/UI_fuel.png"));
-    GetOwner()->AddComponent(base       = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/sentou_0516_1.png"));
-    GetOwner()->AddComponent(hp         = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/sentou_0516_2.png"));
-    GetOwner()->AddComponent(lifeGure   = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/sentou_0516_5.png"));
-    GetOwner()->AddComponent(elecGure   = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/sentou_0516_6.png"));
-    GetOwner()->AddComponent(lifeAmo    = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/sentou_0516_7.png"));
-    GetOwner()->AddComponent(elecAmo    = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/sentou_0516_8.png"));
+    GetOwner()->AddComponent(huel = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/UI_fuel.png"));
+    GetOwner()->AddComponent(base = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/sentou_0516_1.png"));
+    GetOwner()->AddComponent(hp = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/sentou_0516_2.png"));
+    GetOwner()->AddComponent(lifeGure = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/sentou_0516_5.png"));
+    GetOwner()->AddComponent(elecGure = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/sentou_0516_6.png"));
+    GetOwner()->AddComponent(lifeAmo = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/sentou_0516_7.png"));
+    GetOwner()->AddComponent(elecAmo = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/sentou_0516_8.png"));
+
+    GetOwner()->AddComponent(edit = new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/EditMode.png"));
+    edit->GetMaterial()->color.color = { 1,1,1,0 };
+
     elecGure->SetScale(DirectX::XMFLOAT3(0, 0, 0));
     elecAmo->SetScale(DirectX::XMFLOAT3(0, 0, 0));
     huel->SetOffset(DirectX::XMFLOAT3(1183.85f, 48.45f, 0));
@@ -70,4 +74,27 @@ void UI::Update()
     DirectX::XMFLOAT3 pos = DirectX::XMFLOAT3(Argent::Graphics::GetWindowWidth()/2, Argent::Graphics::GetWindowHeight()/2,0);
     pos.x += GetOwner()->GetTransform()->GetPosition().x;
     reticle->GetOwner()->GetTransform()->SetPosition(pos);
+
+    if (mode->currentMode == ChangeMode::Mode::Edit)
+    {
+        edit->GetMaterial()->color.color = { 1,1,1,1 };
+        base->GetMaterial()->color.color = { 1,1,1,0 };
+        hp->GetMaterial()->color.color = { 1,1,1,0 };
+        lifeGure->GetMaterial()->color.color = { 1,1,1,0 };
+        elecGure->GetMaterial()->color.color = { 1,1,1,0 };
+        lifeAmo->GetMaterial()->color.color = { 1,1,1,0 };
+        elecAmo->GetMaterial()->color.color = { 1,1,1,0 };
+        huel->GetMaterial()->color.color = { 1,1,1,0 };
+    }
+    else
+    {
+        edit->GetMaterial()->color.color = { 1,1,1,0 };
+        base->GetMaterial()->color.color = { 1,1,1,1 };
+        hp->GetMaterial()->color.color = { 1,1,1,1 };
+        lifeGure->GetMaterial()->color.color = { 1,1,1,1 };
+        elecGure->GetMaterial()->color.color = { 1,1,1,1 };
+        lifeAmo->GetMaterial()->color.color = { 1,1,1,1 };
+        elecAmo->GetMaterial()->color.color = { 1,1,1,1 };
+        huel->GetMaterial()->color.color = { 1,1,1,1 };
+    }
 }

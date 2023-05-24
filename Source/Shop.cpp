@@ -1,4 +1,5 @@
 #include "Shop.h"
+#include "Player.h"
 
 
 void Shop::Initialize()
@@ -86,9 +87,18 @@ void Shop::Update()
         }
     }
     
-
-    if (mode->openShop)OpenUpdate();
-    else CloseUpdate();
+    std::vector<GameObject*> p;
+    GameObject::FindByTag(GameObject::Tag::Player, p);
+    if (mode->openShop)
+    {
+        OpenUpdate();
+        p.at(0)->GetComponent<Player>()->use = false;
+    }
+    else
+    {
+        CloseUpdate();
+        p.at(0)->GetComponent<Player>()->use = true;
+    }
 
     
 }

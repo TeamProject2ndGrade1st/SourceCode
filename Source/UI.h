@@ -22,6 +22,8 @@ private:
     Argent::Component::Renderer::SpriteRenderer* elecAmo;
     Argent::Component::Renderer::SpriteRenderer* huel;
 
+    Argent::Component::Renderer::SpriteRenderer* edit;
+
     Player* player;
     BaseGun* gun;
     int* friendNum;
