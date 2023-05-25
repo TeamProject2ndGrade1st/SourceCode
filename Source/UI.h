@@ -24,6 +24,13 @@ private:
 
     Argent::Component::Renderer::SpriteRenderer* edit;
 
+    Argent::Component::Renderer::SpriteRenderer* tutorial_shopOpen;
+    Argent::Component::Renderer::SpriteRenderer* tutorial_move;
+    Argent::Component::Renderer::SpriteRenderer* tutorial_unit;
+    Argent::Component::Renderer::SpriteRenderer* tutorial_shop;
+    Argent::Component::Renderer::SpriteRenderer* tutorial_friend;
+    Argent::Component::Renderer::SpriteRenderer* tutorial_setFriend;
+
     Player* player;
     BaseGun* gun;
     int* friendNum;

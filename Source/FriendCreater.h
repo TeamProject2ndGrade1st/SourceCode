@@ -19,6 +19,8 @@ public:
 
     void CanCreate(DirectX::XMFLOAT3 pos);
 
+    int canCreateNumber[2]{ 0,0 };
+
 private:
     FriendManager* friendManager{ nullptr };
     GameObject* dragTarget{ nullptr };

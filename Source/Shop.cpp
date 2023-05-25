@@ -54,6 +54,10 @@ void Shop::Initialize()
     mode = m.at(0)->GetComponent<ChangeMode>();
 
     SetItem();
+
+    std::vector<GameObject*> fCreater;
+    GameObject::FindByTag(GameObject::Tag::FriendCreatar, fCreater);
+    friendCreater = fCreater.at(0)->GetComponent<FriendCreater>();
 }
 
 void Shop::Begin()
@@ -66,9 +70,9 @@ void Shop::Begin()
     mousePos.x += disMousePos.x;
     mousePos.y += disMousePos.y;
 
-    if (mousePos.x > Argent::Graphics::GetWindowWidth())mousePos.x = Argent::Graphics::GetWindowWidth();
+    if (mousePos.x > Argent::Graphics::GetWindowWidth()-40)mousePos.x = Argent::Graphics::GetWindowWidth()-40;
     if (mousePos.x < 0)mousePos.x = 0;
-    if (mousePos.y > Argent::Graphics::GetWindowHeight())mousePos.y = Argent::Graphics::GetWindowHeight();
+    if (mousePos.y > Argent::Graphics::GetWindowHeight()-40)mousePos.y = Argent::Graphics::GetWindowHeight()-40;
     if (mousePos.y < 0)mousePos.y = 0;
 
     mouse->GetTransform()->SetPosition(DirectX::XMFLOAT3(mousePos.x,mousePos.y,0));
@@ -199,6 +203,11 @@ void Shop::SetItem()
 
 void Item::Update()
 {
+    if (timer > 0)
+    {
+        timer -= Argent::Timer::GetDeltaTime(); return;
+    }
+
     if (shop == nullptr)
     {
         std::vector<GameObject*> s;
@@ -223,16 +232,24 @@ void Item::Update()
 
     if (Argent::Input::GetButtonDown(MouseButton::LeftButton))
     {
-        if(pos.y > shop->mousePos.y)Buy();
-        else Sale();
+        if (pos.y > shop->mousePos.y)
+        {
+            Buy();
+            timer = 0.1f;
+        }
+        else
+        {
+            Sale();
+            timer = 0.1f;
+        }
     }
 }
 
 void Item::Initialize()
 {
     BaseActor::Initialize();
-    GetOwner()->AddComponent(new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/ShopButton.png"));
-    GetOwner()->GetComponent<Argent::Component::Renderer::SpriteRenderer>()->GetMaterial()->color.color = DirectX::XMFLOAT4(1, 1, 1, 0.5f);
+    /*GetOwner()->AddComponent(new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/ShopButton.png"));
+    GetOwner()->GetComponent<Argent::Component::Renderer::SpriteRenderer>()->GetMaterial()->color.color = DirectX::XMFLOAT4(1, 1, 1, 0.5f);*/
     GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(initPos.x, initPos.y, 0));
 
     DirectX::XMFLOAT2 scale = {
@@ -254,18 +271,22 @@ void Item::Sale()
 
 void ItemCreature::Buy()
 {
+    shop->friendCreater->canCreateNumber[static_cast<int>(FriendManager::Type::Creature)]++;
 }
 
 void ItemCreature::Sale()
 {
+    shop->friendCreater->canCreateNumber[static_cast<int>(FriendManager::Type::Creature)]--;
 }
 
 void ItemDrone::Buy()
 {
+    shop->friendCreater->canCreateNumber[static_cast<int>(FriendManager::Type::Drone)]++;
 }
 
 void ItemDrone::Sale()
 {
+    shop->friendCreater->canCreateNumber[static_cast<int>(FriendManager::Type::Drone)]--;
 }
 
 void ItemChangeEdit::Buy()

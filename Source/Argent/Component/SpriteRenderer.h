@@ -37,6 +37,8 @@ namespace Argent::Component::Renderer
 
 		Material::SpriteMaterial* GetMaterial() { return material.get(); }
 
+		//テクスチャの幅高さ
+		DirectX::XMFLOAT2 texWH{};
 	private:
 		std::unique_ptr<Resource::Sprite::Sprite> sprite;
 		std::shared_ptr<Material::SpriteMaterial> material;
@@ -44,5 +46,6 @@ namespace Argent::Component::Renderer
 		DirectX::XMFLOAT3 offset;
 		DirectX::XMFLOAT3 scale{ 1, 1, 1 };
 		DirectX::XMFLOAT2 texPos{};
+
 	};
 }

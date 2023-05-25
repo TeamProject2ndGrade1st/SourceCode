@@ -5,6 +5,7 @@
 #include "Easing.h"
 
 #include "ChangeMode.h"
+#include "FriendCreater.h"
 
 class Item;
 class Shop : public Argent::Component::BaseComponent
@@ -67,6 +68,9 @@ public:
     DirectX::XMFLOAT2 mousePos;
 
     GameObject* mouse;
+
+    FriendCreater* friendCreater;
+
 private:
     void SetItem();
 
@@ -134,6 +138,8 @@ public:
     DirectX::XMFLOAT2 initPos;
 
     Shop* shop;
+
+    float timer;
 };
 
 class ItemCreature : public Item

@@ -24,6 +24,8 @@ namespace Argent::Component::Renderer
 	void SpriteRenderer::Initialize()
 	{
 		BaseRenderer::Initialize();
+
+		
 	}
 
 	void SpriteRenderer::Finalize()
@@ -45,11 +47,17 @@ namespace Argent::Component::Renderer
 	{
 		const Transform* transform = GetOwner()->GetTransform();
 
+		if (texWH.x == 0)
+		{
+			texWH.x = material->texture->GetWidth();
+			texWH.y = material->texture->GetHeight();
+		}
+
 		//todo Center‚Ì’l‚ð‚Ç‚Á‚©‚Å’è‹`‚·‚é‚±‚Æ
 		sprite->UpdateVertexMap(transform->GetPosition() + offset, 
 			transform->GetScale() * scale,
 			texPos, transform->GetRotation().z, 
-			material->texture->GetWidth(), material->texture->GetHeight(),
+			texWH.x, texWH.y,
 			material->color.color);
 	}
 

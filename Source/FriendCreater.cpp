@@ -11,6 +11,8 @@ void FriendCreater::Initialize()
 
     imageFriend[0] = new GameObject("ImageCreature", Argent::Loader::Fbx::LoadFbx("./Resources/Model/enemy_001Ver9.fbx", false));
     imageFriend[1] = new GameObject("ImageDrone", Argent::Loader::Fbx::LoadFbx("./Resources/Model/ene_1_0516_2.fbx", false));
+    imageFriend[1]->GetTransform()->SetScaleFactor(1.8f);
+   
     GetOwner()->AddChild(imageFriend[0]);
     GetOwner()->AddChild(imageFriend[1]);
 
@@ -35,12 +37,11 @@ void FriendCreater::Update()
     for (auto& fr : f )
     {
         //ふっとばす
-        fr->GetTransform()->SetPosition(DirectX::XMFLOAT3(1000000, 0, 0));
-
-        
+        fr->GetTransform()->AddPosition(DirectX::XMFLOAT3(1000000, 0, 0));
     }
     //片方もどす
-    f.at(createType)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0,0,0));
+    float fPosY = f.at(createType)->GetTransform()->GetPosition().y;
+    f.at(createType)->GetTransform()->SetPosition(DirectX::XMFLOAT3(0,fPosY,0));
 
     //色変更
     //スキンドメッシュレンダラーとメッシュレンダラー用の処理を作る
@@ -108,6 +109,9 @@ void FriendCreater::SetFriendByClick()
             friendManager->AddFriend(new FriendDrone(pos));
             break;
         }
+
+        //生成可能数の減少
+        canCreateNumber[createType]--;
     }
 }
 
@@ -157,7 +161,12 @@ void FriendCreater::ImagineFriendUpdate()
         CanCreate(pos);
         if (canCreate)
         {
+            if (createType == static_cast<int>(FriendManager::Type::Drone))
+            {
+                pos.y = 30;
+            }
             GetTransform()->SetPosition(pos);
+            
             color = { 0,0.3f,0.8f,0.5f };
         }
         else
@@ -205,6 +214,9 @@ bool FriendCreater::DragFriend()
 void FriendCreater::CanCreate(DirectX::XMFLOAT3 pos)
 {
     canCreate = false;
+
+    //生成可能数が０以下
+    if (canCreateNumber[createType] <= 0)return;
 
     float left = createRange.left + createPos.x;
     float right = createRange.right + createPos.x;

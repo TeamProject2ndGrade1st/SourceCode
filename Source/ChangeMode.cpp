@@ -22,7 +22,7 @@ void ChangeMode::Update()
         openShop = false;
     }
 
-    if (Argent::Input::GetKeyDown(KeyCode::F))
+    /*if (Argent::Input::GetKeyDown(KeyCode::F))
     {
         if (currentMode == ChangeMode::Mode::Ready)
         {
@@ -37,7 +37,7 @@ void ChangeMode::Update()
     if (Argent::Input::GetKeyDown(KeyCode::R))
     {
         ChangeBattleMode();
-    }
+    }*/
 
     static bool endFlag;
     if (!endFlag)
