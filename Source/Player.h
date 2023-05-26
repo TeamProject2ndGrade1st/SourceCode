@@ -3,6 +3,7 @@
 #include "BaseGun.h"
 #include "Character.h"
 #include "FriendCreater.h"
+#include "Grenade.h"
 
 class Player: public Argent::Component::BaseActor
 {
@@ -18,6 +19,8 @@ public:
 
 	void Turn();
 
+	void ThrowGrenade();
+
 	void UpdateVerticalMove();
 
 	void Jump(float power);
@@ -30,6 +33,8 @@ public:
 	}
 
 	BaseGun* GetGun() { return gun; }
+
+	Grenade::Mode grenadeMode{Grenade::Mode::Creature};
 
 	//Ž‹“_ˆÚ“®
 	bool use = true;
@@ -73,5 +78,6 @@ protected:
 	float maxFlyEnergy{ 1 };
 
 	FriendCreater* friendCreater{ nullptr };
+
 
 };

@@ -4,6 +4,7 @@
 #include "Argent/Input/Mouse.h"
 #include "Shadow.h"
 
+
 Player::Player() :BaseActor("player")
 {
     movement = 10;
@@ -84,6 +85,7 @@ void Player::Begin()
 void Player::Update()
 {
     Turn();
+    ThrowGrenade();
 
     //味方設置モードの時は移動関連の更新を止める
     if (camera == GameObject::FindByName("SecondCamera"))return;
@@ -181,6 +183,26 @@ void Player::Turn()
     if (use)
     {
         t->SetRotation(setRotation);
+    }
+}
+
+void Player::ThrowGrenade()
+{
+    if (Argent::Input::GetKeyDown(KeyCode::F))
+    {
+        if (grenadeMode == Grenade::Mode::Creature) 
+        {
+            grenadeMode = Grenade::Mode::Machine;
+        }
+        else if (grenadeMode == Grenade::Mode::Machine)
+        {
+            grenadeMode = Grenade::Mode::Creature;
+        }
+    }
+
+    if(Argent::Input::GetKeyDown(KeyCode::G))
+    {
+		GameObject::Instantiate("Grenade", new Grenade(grenadeMode, GetOwner()->GetTransform()->GetPosition(), GetOwner()->GetTransform()->CalcForward()));
     }
 }
 
@@ -324,43 +346,43 @@ void Player::MoveCamera()
     auto pos = t->GetPosition();
 
 
-    ray->SetRayData(pos, p);
-    HitResult hitResult{};
-    if (Argent::Collision::RayCollisionDetection(ray, hitResult/*, GameObject::Tag::Stage*/))
-    {
-        // hitResult.position.y = GetTransform()->GetPosition().y;
-        hitResult.position.y = pos.y;
-        p = hitResult.position;
-    }
-    else
-    {
-        const DirectX::XMVECTOR UP = DirectX::XMVectorSet(0, 1, 0, 0);
-        DirectX::XMVECTOR RIGHT = DirectX::XMVector3Cross(UP, DirectX::XMLoadFloat3(&direction));
+    //ray->SetRayData(pos, p);
+    //HitResult hitResult{};
+    //if (Argent::Collision::RayCollisionDetection(ray, hitResult/*, GameObject::Tag::Stage*/))
+    //{
+    //    // hitResult.position.y = GetTransform()->GetPosition().y;
+    //    hitResult.position.y = pos.y;
+    //    p = hitResult.position;
+    //}
+    //else
+    //{
+    //    const DirectX::XMVECTOR UP = DirectX::XMVectorSet(0, 1, 0, 0);
+    //    DirectX::XMVECTOR RIGHT = DirectX::XMVector3Cross(UP, DirectX::XMLoadFloat3(&direction));
 
-        //進行方向に対して垂直方向に少しずらす
-        DirectX::XMFLOAT3 offset;
-        DirectX::XMStoreFloat3(&offset, DirectX::XMVectorScale(RIGHT, 1.f));
+    //    //進行方向に対して垂直方向に少しずらす
+    //    DirectX::XMFLOAT3 offset;
+    //    DirectX::XMStoreFloat3(&offset, DirectX::XMVectorScale(RIGHT, 1.f));
 
-        //少し後ろに下げる
-        pos = pos - direction * 3.0f;
-        ray->SetRayData(pos + offset, p);
-        if (Argent::Collision::RayCollisionDetection(ray, hitResult, GameObject::Tag::Stage))
-        {
-            hitResult.position.y = pos.y;
-            p = hitResult.position;
-        }
-        else
-        {
-            //さっきとは判定方向にずらして判定を取る
-            offset = offset * -1.0f;
-            ray->SetRayData(pos + offset, p);
-            if (Argent::Collision::RayCollisionDetection(ray, hitResult, GameObject::Tag::Stage))
-            {
-                hitResult.position.y = pos.y;
-                p = hitResult.position;
-            }
-        }
-    }
+    //    //少し後ろに下げる
+    //    pos = pos - direction * 3.0f;
+    //    ray->SetRayData(pos + offset, p);
+    //    if (Argent::Collision::RayCollisionDetection(ray, hitResult, GameObject::Tag::Stage))
+    //    {
+    //        hitResult.position.y = pos.y;
+    //        p = hitResult.position;
+    //    }
+    //    else
+    //    {
+    //        //さっきとは判定方向にずらして判定を取る
+    //        offset = offset * -1.0f;
+    //        ray->SetRayData(pos + offset, p);
+    //        if (Argent::Collision::RayCollisionDetection(ray, hitResult, GameObject::Tag::Stage))
+    //        {
+    //            hitResult.position.y = pos.y;
+    //            p = hitResult.position;
+    //        }
+    //    }
+    //}
 
     t->SetPosition(p);
 }

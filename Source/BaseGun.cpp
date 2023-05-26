@@ -18,7 +18,7 @@ void BaseGun::Initialize()
 	GetOwner()->AddChild(lmg);
 }
 
-void BaseGun::EarlyUpdate()
+void BaseGun::Update()
 {
 	RecoilUpdate();
 	TremorUpdate();

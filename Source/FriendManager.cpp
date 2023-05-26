@@ -107,8 +107,6 @@ void FriendManager::AddFriend(BaseFriend* _friend)
 
     //タグ登録はそれぞれのフレンド本体で行っている
     friendArray.emplace_back(_friend);
-
-    //これまでに消されてしまったフレンドの分配列を調整する
     
     
 }
