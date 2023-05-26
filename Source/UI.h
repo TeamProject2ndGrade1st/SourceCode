@@ -42,3 +42,26 @@ private:
     Reticle* reticle;
 };
 
+class Number : public Argent::Component::BaseComponent
+{
+public:
+    Number(int* num) : BaseComponent("Number"), num(num) {}
+    ~Number() {}
+
+    void Initialize()override;
+    void Update()override;
+
+    //‘ã“ü
+    void Assign(int num);
+
+    void Add(int num);
+
+    void Sub(int num);
+
+private:
+    int* num;
+
+    //Œ…”‚É‰‚¶‚½”z—ñ
+    std::vector<Argent::Component::Renderer::SkinnedMeshRenderer*> digits;
+};
+

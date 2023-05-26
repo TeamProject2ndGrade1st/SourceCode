@@ -98,3 +98,17 @@ void UI::Update()
         huel->GetMaterial()->color.color = { 1,1,1,1 };
     }
 }
+
+
+//”šƒtƒHƒ“ƒg‚Ìˆ—
+
+void Number::Initialize()
+{
+    /*for (int i = *num; i < 0; i /= 10)
+    {
+        auto* font = new Argent::Component::Renderer::SpriteRenderer("./Resources/Images/font.png");
+        font->texWidth = 64;
+        font->GetOwner();
+        digits.emplace_back(new Argent::Component::Renderer::SpriteRenderer("./Resources/Images/font.png"));
+    }*/
+}

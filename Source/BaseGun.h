@@ -10,7 +10,7 @@ public:
 	virtual ~BaseGun() override = default;
 
 	void Initialize() override;
-	void Update() final;
+	void EarlyUpdate() final;
 	void Finalize() override;
 
 	void DrawDebug() override;

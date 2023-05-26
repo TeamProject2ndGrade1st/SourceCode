@@ -47,17 +47,15 @@ namespace Argent::Component::Renderer
 	{
 		const Transform* transform = GetOwner()->GetTransform();
 
-		if (texWH.x == 0)
-		{
-			texWH.x = material->texture->GetWidth();
-			texWH.y = material->texture->GetHeight();
-		}
+		if (texWidth == 0)texWidth = material->texture->GetWidth();
+		if (texHeight == 0)texHeight = material->texture->GetHeight();
+		
 
 		//todo Center‚Ì’l‚ð‚Ç‚Á‚©‚Å’è‹`‚·‚é‚±‚Æ
 		sprite->UpdateVertexMap(transform->GetPosition() + offset, 
 			transform->GetScale() * scale,
 			texPos, transform->GetRotation().z, 
-			texWH.x, texWH.y,
+			texWidth, texHeight,
 			material->color.color);
 	}
 
