@@ -1,5 +1,4 @@
 #include "Shop.h"
-#include "Player.h"
 
 
 void Shop::Initialize()
@@ -19,6 +18,10 @@ void Shop::Initialize()
     GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(Argent::Graphics::GetWindowWidth(), 0, 0));
 
     easeFunc = &Easing::OutBounce;
+
+    std::vector<GameObject*> p;
+    GameObject::FindByTag(GameObject::Tag::Player, p);
+    player = p.at(0)->GetComponent<Player>();
 
 #ifdef _DEBUG
     currentEase = "OutBounce";
@@ -58,6 +61,12 @@ void Shop::Initialize()
     std::vector<GameObject*> fCreater;
     GameObject::FindByTag(GameObject::Tag::FriendCreatar, fCreater);
     friendCreater = fCreater.at(0)->GetComponent<FriendCreater>();
+
+   
+    //auto* Money = GameObject::Instantiate("Money", money = new Number(&player->moneyInPoss, 4));
+    auto* Money = new GameObject("Money", money = new Number(&player->moneyInPoss, 4));
+    GetOwner()->AddChild(Money);
+    //GetOwner()->AddComponent(money = new Number(&player->moneyInPoss, 4));
 }
 
 void Shop::Begin()
@@ -213,6 +222,11 @@ void Item::Update()
         std::vector<GameObject*> s;
         GameObject::FindByTag(GameObject::Tag::Shop, s);
         shop = s.at(0)->GetComponent<Shop>();
+    }
+
+    if (!shop->mode->openShop)
+    {
+        return;
     }
 
     auto pos = GetOwner()->GetTransform()->GetPosition();

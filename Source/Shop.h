@@ -7,6 +7,9 @@
 #include "ChangeMode.h"
 #include "FriendCreater.h"
 
+#include "Numbers.h"
+#include "Player.h"
+
 class Item;
 class Shop : public Argent::Component::BaseComponent
 {
@@ -50,7 +53,6 @@ public:
         }
     }*/
 
-    int money;
     std::vector<GameObject*> items;
 
     typedef float (*EasingP)(float, float, float, float);
@@ -70,6 +72,10 @@ public:
     GameObject* mouse;
 
     FriendCreater* friendCreater;
+
+    Number* money;
+
+    Player* player;
 
 private:
     void SetItem();

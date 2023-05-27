@@ -388,6 +388,9 @@
     <ClCompile Include="Source\UI.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Numbers.cpp">
+      <Filter>Game\善晃</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -704,6 +707,9 @@
       <Filter>Game\善晃</Filter>
     </ClInclude>
     <ClInclude Include="Source\UI.h" />
+    <ClInclude Include="Source\Numbers.h">
+      <Filter>Game\善晃</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\SpritePrimitivePixel.hlsl">

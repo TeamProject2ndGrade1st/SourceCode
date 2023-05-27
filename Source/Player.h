@@ -38,6 +38,10 @@ public:
 
 	//‹“_ˆÚ“®
 	bool use = true;
+
+	//Š‹à
+	int moneyInPoss;
+
 private:
 	int state = 0;
 
