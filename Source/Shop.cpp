@@ -69,13 +69,12 @@ void Shop::Initialize()
     money->offset = { 1180,555 };
 
     //GetOwner()->AddComponent(money = new Number(&player->moneyInPoss, 4));
+    
 }
 
 void Shop::Begin()
 {
     //イニシャライザに入れても動かんかったからしゃーなしこっち
-    auto posU = GetOwner()->GetTransform()->GetPosition();
-    //money->GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(1180 + posU.x, 555 + posU.y, 0));
     money->GetOwner()->GetTransform()->SetScale(DirectX::XMFLOAT3(1.5f, 1.5f, 1));
 
     //マウスカーソル座標更新
@@ -98,6 +97,8 @@ void Shop::Begin()
 
 void Shop::Update()
 {
+
+
     if (easeEnd && !mode->battleFlag)
     {
         if (Argent::Input::GetKeyDown(KeyCode::B))
@@ -204,8 +205,8 @@ void Shop::SetItem()
 {
     items.emplace_back(new GameObject("Item Creature", new ItemCreature(ItemType::Creature, 100, 2.0f, { 188,613 }, {-66,34,66,-34})));
     items.emplace_back(new GameObject("Item Drone",new ItemDrone(ItemType::Drone, 20, 1.5f, { 450,613 }, { -66,34,66,-34 })));
-    items.emplace_back(new GameObject("Item BloodAmo", new ItemBloodAmo(ItemType::BloodAmo, 20, 1.5f, { 668,348 }, {-45,19,45,-19})));
-    items.emplace_back(new GameObject("Item ElectricAmo",new ItemElectricAmo(ItemType::ElectricAmo, 20, 1.5f, { 843,348 }, { -45,19,45,-19 })));
+    /*items.emplace_back(new GameObject("Item BloodAmo", new ItemBloodAmo(ItemType::BloodAmo, 20, 1.5f, { 668,348 }, {-45,19,45,-19})));
+    items.emplace_back(new GameObject("Item ElectricAmo",new ItemElectricAmo(ItemType::ElectricAmo, 20, 1.5f, { 843,348 }, { -45,19,45,-19 })));*/
     items.emplace_back(new GameObject("Item BloodGre",new ItemBloodGrenade(ItemType::BloodGrenade, 20, 1.5f, { 1181,443 }, { -40,37,40,-37 })));
     items.emplace_back(new GameObject("Item ElectricGre",new ItemElectricGrenade(ItemType::ElectricGrenade, 20, 1.5f, { 1021,443 }, { -40,37,40,-37 })));
     items.emplace_back(new GameObject("Item ChangeBattle",new ItemChangeBattle(ItemType::ChangeBattle, 0, 1.5f, { 858,648 },{-122,32,122,-32})));
@@ -219,6 +220,8 @@ void Shop::SetItem()
 
 void Item::Update()
 {
+    if(priceNum)priceNum->GetOwner()->GetTransform()->SetScale(priceScale);
+
     if (timer > 0)
     {
         timer -= Argent::Timer::GetDeltaTime(); return;
@@ -255,13 +258,23 @@ void Item::Update()
     {
         if (pos.y > shop->mousePos.y)
         {
+            if (shop->player->moneyInPoss - price < 0)return;
+
+            //共通の処理
+            BuyCommon();
+
+            //アイテムによって変わる処理
             Buy();
-            timer = 0.1f;
         }
         else
         {
+            //購入数が０なら無効
+            if (num <= 0)return;
+
+            SaleCommon();
+
+
             Sale();
-            timer = 0.1f;
         }
     }
 }
@@ -278,16 +291,45 @@ void Item::Initialize()
         (static_cast<float>(button.top) - static_cast<float>(button.bottom)) / 64
     };
     GetOwner()->GetTransform()->SetScale(DirectX::XMFLOAT3(scale.x, scale.y, 1));
+
+    auto* Price = new GameObject("Money", priceNum = new Number(&price, 4));
+    GetOwner()->AddChild(Price);
 }
 
 void Item::Buy()
 {
 }
 
+void Item::BuyCommon()
+{
+    shop->player->moneyInPoss -= price;
+
+    timer = 0.1f;
+    price *= priceIncreasePersent;
+    num++;
+
+}
+
 void Item::Sale()
 {
     //この関数をオーバーロードしないクラスは売却操作がないので購入と同じ処理をする
     Buy();
+}
+
+void Item::SaleCommon()
+{
+    timer = 0.1f;
+    price /= priceIncreasePersent;
+    num--;
+
+    shop->player->moneyInPoss += price;
+}
+
+void ItemCreature::Initialize()
+{
+    Item::Initialize();
+    priceNum->offset = { -90,-273 };
+    priceScale = DirectX::XMFLOAT3(0.6f, 0.8f, 1);
 }
 
 void ItemCreature::Buy()
@@ -300,6 +342,13 @@ void ItemCreature::Sale()
     shop->friendCreater->canCreateNumber[static_cast<int>(FriendManager::Type::Creature)]--;
 }
 
+void ItemDrone::Initialize()
+{
+    Item::Initialize();
+    priceNum->offset = { -90,-273 };
+    priceScale = DirectX::XMFLOAT3(0.6f, 0.8f, 1);
+}
+
 void ItemDrone::Buy()
 {
     shop->friendCreater->canCreateNumber[static_cast<int>(FriendManager::Type::Drone)]++;
@@ -310,10 +359,36 @@ void ItemDrone::Sale()
     shop->friendCreater->canCreateNumber[static_cast<int>(FriendManager::Type::Drone)]--;
 }
 
+void ItemChangeEdit::Initialize()
+{
+    BaseActor::Initialize();
+    
+    GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(initPos.x, initPos.y, 0));
+
+    DirectX::XMFLOAT2 scale = {
+        (static_cast<float>(button.right) - static_cast<float>(button.left)) / 64,
+        (static_cast<float>(button.top) - static_cast<float>(button.bottom)) / 64
+    };
+    GetOwner()->GetTransform()->SetScale(DirectX::XMFLOAT3(scale.x, scale.y, 1));
+}
+
 void ItemChangeEdit::Buy()
 {
     shop->mode->ChangeEditMode();
     shop->CloseShop();
+}
+
+void ItemChangeBattle::Initialize()
+{
+    BaseActor::Initialize();
+
+    GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(initPos.x, initPos.y, 0));
+
+    DirectX::XMFLOAT2 scale = {
+        (static_cast<float>(button.right) - static_cast<float>(button.left)) / 64,
+        (static_cast<float>(button.top) - static_cast<float>(button.bottom)) / 64
+    };
+    GetOwner()->GetTransform()->SetScale(DirectX::XMFLOAT3(scale.x, scale.y, 1));
 }
 
 void ItemChangeBattle::Buy()
@@ -337,12 +412,26 @@ void ItemElectricAmo::Sale()
 {
 }
 
+void ItemBloodGrenade::Initialize()
+{
+    Item::Initialize();
+    priceNum->offset = { -30,11 };
+    priceScale = DirectX::XMFLOAT3(0.5f, 0.5f, 1);
+}
+
 void ItemBloodGrenade::Buy()
 {
 }
 
 void ItemBloodGrenade::Sale()
 {
+}
+
+void ItemElectricGrenade::Initialize()
+{
+    Item::Initialize();
+    priceNum->offset = { -30,11 };
+    priceScale = DirectX::XMFLOAT3(0.5f, 0.5f, 1);
 }
 
 void ItemElectricGrenade::Buy()

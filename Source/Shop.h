@@ -132,7 +132,9 @@ public:
     void Update()override;
 
     virtual void Buy();//çwì¸
+    virtual void BuyCommon();//çwì¸ÅAã§í ÇÃèàóù
     virtual void Sale();//îÑãp
+    virtual void SaleCommon();//îÑãpÅAã§í ÇÃèàóù
 
     int price;//ã‡äz
     Shop::ItemType type;
@@ -143,7 +145,11 @@ public:
 
     DirectX::XMFLOAT2 initPos;
 
+    DirectX::XMFLOAT3 priceScale{1,1,1};
+
     Shop* shop;
+
+    Number* priceNum;
 
     float timer;
 };
@@ -155,6 +161,7 @@ public:
         :Item(type,price,priceIncreasePersent,pos,button){}
     ~ItemCreature() {}
 
+    void Initialize()override;
     void Buy()override;
     void Sale()override;
 };
@@ -167,6 +174,7 @@ public:
     ~ItemDrone() {}
 
 
+    void Initialize()override;
     void Buy()override;
     void Sale()override;
 
@@ -205,7 +213,7 @@ public:
         :Item(type, price, priceIncreasePersent, pos, button) {}
     ~ItemBloodGrenade() {}
 
-
+    void Initialize()override;
     void Buy()override;
     void Sale()override;
 
@@ -218,7 +226,7 @@ public:
         :Item(type, price, priceIncreasePersent, pos, button) {}
     ~ItemElectricGrenade() {}
 
-
+    void Initialize()override;
     void Buy()override;
     void Sale()override;
 
@@ -231,8 +239,11 @@ public:
         :Item(type, price, priceIncreasePersent, pos, button) {}
     ~ItemChangeEdit() {}
 
-
+    void Initialize()override;
     void Buy()override;
+
+    void BuyCommon()override {}
+    void SaleCommon()override {}
 };
 
 class ItemChangeBattle : public Item
@@ -242,7 +253,10 @@ public:
         :Item(type, price, priceIncreasePersent, pos, button) {}
     ~ItemChangeBattle() {}
 
-
+    void Initialize()override;
     void Buy()override;
+
+    void BuyCommon()override {}
+    void SaleCommon()override {}
 };
 
