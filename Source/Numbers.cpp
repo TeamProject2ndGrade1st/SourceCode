@@ -85,11 +85,11 @@ void Number::Initialize()
 
 void Number::Update()
 {
-    auto pos = GetOwner()->GetTransform()->GetPosition();
+    auto pos = GetOwner()->GetTransform()->GetPosition() + GetOwner()->GetParent()->GetTransform()->GetPosition();
     auto scale = GetOwner()->GetTransform()->GetScale();
     for (auto& num : numbers)
     {
-        num->GetOwner()->GetTransform()->SetPosition(pos);
+        num->GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(pos.x + offset.x,pos.y + offset.y,pos.z));
         num->GetOwner()->GetTransform()->SetScale(scale);
     }
 

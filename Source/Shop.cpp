@@ -66,7 +66,8 @@ void Shop::Initialize()
     //auto* Money = GameObject::Instantiate("Money", money = new Number(&player->moneyInPoss, 4));
     auto* Money = new GameObject("Money", money = new Number(&player->moneyInPoss, 5));
     GetOwner()->AddChild(Money);
-    
+    money->offset = { 1180,555 };
+
     //GetOwner()->AddComponent(money = new Number(&player->moneyInPoss, 4));
 }
 
@@ -74,7 +75,7 @@ void Shop::Begin()
 {
     //イニシャライザに入れても動かんかったからしゃーなしこっち
     auto posU = GetOwner()->GetTransform()->GetPosition();
-    money->GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(1180 + posU.x, 555 + posU.y, 0));
+    //money->GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(1180 + posU.x, 555 + posU.y, 0));
     money->GetOwner()->GetTransform()->SetScale(DirectX::XMFLOAT3(1.5f, 1.5f, 1));
 
     //マウスカーソル座標更新

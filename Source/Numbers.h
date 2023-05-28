@@ -41,6 +41,8 @@ public:
 
     void Assign(int num);
 
+    DirectX::XMFLOAT2 offset;
+
 private:
     int* number;
 
@@ -48,6 +50,8 @@ private:
 
     //Œ…”‚ğŒÅ’è‚·‚é
     const int digits;
+
+
 
     std::vector<OneDigit*> numbers;
 };
