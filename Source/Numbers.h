@@ -32,7 +32,7 @@ private:
 class Number : public Argent::Component::BaseActor
 {
 public:
-    Number(int* num, int digit/*Œ…”*/) : BaseActor("Number"), number(num), digits(digit) {}
+    Number(int* num, int digit/*Œ…”*/) : BaseActor("Number"), number(num),currentNum(*num), digits(digit) {}
     ~Number() {}
 
     void Initialize()override;
@@ -43,6 +43,8 @@ public:
 
 private:
     int* number;
+
+    int currentNum;
 
     //Œ…”‚ğŒÅ’è‚·‚é
     const int digits;

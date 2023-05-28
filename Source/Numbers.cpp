@@ -79,6 +79,8 @@ void Number::Initialize()
         auto* num = new GameObject("number",n);
         GetOwner()->AddChild(num);
     }
+
+    Assign(currentNum);
 }
 
 void Number::Update()
@@ -89,6 +91,13 @@ void Number::Update()
     {
         num->GetOwner()->GetTransform()->SetPosition(pos);
         num->GetOwner()->GetTransform()->SetScale(scale);
+    }
+
+    //”’l‚ª•Ï‚í‚Á‚½‚Æ‚«©“®“I‚ÉŒ©‚½–Ú‚É”½‰f‚³‚¹‚é
+    if (currentNum != *number)
+    {
+        currentNum = *number;
+        Assign(currentNum);
     }
 }
 
