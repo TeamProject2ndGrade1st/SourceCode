@@ -120,8 +120,6 @@ void Shop::Update()
         CloseUpdate();
         p.at(0)->GetComponent<Player>()->use = true;
     }
-
-    
 }
 
 void Shop::OpenUpdate()
@@ -203,14 +201,14 @@ void Shop::CloseShop()
 
 void Shop::SetItem()
 {
-    items.emplace_back(new GameObject("Item Creature", new ItemCreature(ItemType::Creature, 100, 2.0f, { 188,613 }, {-66,34,66,-34})));
-    items.emplace_back(new GameObject("Item Drone",new ItemDrone(ItemType::Drone, 20, 1.5f, { 450,613 }, { -66,34,66,-34 })));
+    items.emplace_back(new GameObject("Item Creature", new ItemCreature(ItemType::Creature, 250, 2.0f, { 188,613 }, {-66,34,66,-34})));
+    items.emplace_back(new GameObject("Item Drone",new ItemDrone(ItemType::Drone, 100, 2.0f, { 450,613 }, { -66,34,66,-34 })));
     /*items.emplace_back(new GameObject("Item BloodAmo", new ItemBloodAmo(ItemType::BloodAmo, 20, 1.5f, { 668,348 }, {-45,19,45,-19})));
     items.emplace_back(new GameObject("Item ElectricAmo",new ItemElectricAmo(ItemType::ElectricAmo, 20, 1.5f, { 843,348 }, { -45,19,45,-19 })));*/
-    items.emplace_back(new GameObject("Item BloodGre",new ItemBloodGrenade(ItemType::BloodGrenade, 20, 1.5f, { 1181,443 }, { -40,37,40,-37 })));
-    items.emplace_back(new GameObject("Item ElectricGre",new ItemElectricGrenade(ItemType::ElectricGrenade, 20, 1.5f, { 1021,443 }, { -40,37,40,-37 })));
-    items.emplace_back(new GameObject("Item ChangeBattle",new ItemChangeBattle(ItemType::ChangeBattle, 0, 1.5f, { 858,648 },{-122,32,122,-32})));
-    items.emplace_back(new GameObject("Item ChangeEdit",new ItemChangeEdit(ItemType::ChangeEdit, 0, 1.5f, { 1118,648 }, { -122,32,122,-32 })));
+    items.emplace_back(new GameObject("Item BloodGre",new ItemBloodGrenade(ItemType::BloodGrenade, 20, 2.0f, { 1181,443 }, { -40,37,40,-37 })));
+    items.emplace_back(new GameObject("Item ElectricGre",new ItemElectricGrenade(ItemType::ElectricGrenade, 20, 2.0f, { 1021,443 }, { -40,37,40,-37 })));
+    items.emplace_back(new GameObject("Item ChangeBattle",new ItemChangeBattle(ItemType::ChangeBattle, 0, 0.0f, { 858,648 },{-122,32,122,-32})));
+    items.emplace_back(new GameObject("Item ChangeEdit",new ItemChangeEdit(ItemType::ChangeEdit, 0, 0.0f, { 1118,648 }, { -122,32,122,-32 })));
 
     for (auto& item : items)
     {
@@ -220,7 +218,23 @@ void Shop::SetItem()
 
 void Item::Update()
 {
-    if(priceNum)priceNum->GetOwner()->GetTransform()->SetScale(priceScale);
+    if (!shop)
+    {
+        std::vector<GameObject*> obj;
+        GameObject::FindByTag(GameObject::Tag::Shop, obj);
+        shop = obj.at(0)->GetComponent<Shop>();
+    }
+    auto posN = shop->GetOwner()->GetTransform()->GetPosition();
+    if (priceNum)
+    {
+        priceNum->GetOwner()->GetTransform()->SetScale(priceScale);
+        priceNum->GetOwner()->GetTransform()->SetPosition(posN);
+    }
+    if (_num)
+    {
+        _num->GetOwner()->GetTransform()->SetScale(numScale);
+        _num->GetOwner()->GetTransform()->SetPosition(posN);
+    }
 
     if (timer > 0)
     {
@@ -292,8 +306,18 @@ void Item::Initialize()
     };
     GetOwner()->GetTransform()->SetScale(DirectX::XMFLOAT3(scale.x, scale.y, 1));
 
-    auto* Price = new GameObject("Money", priceNum = new Number(&price, 4));
+    auto* Price = new GameObject("Money", priceNum = new Number(&price, 5));
     GetOwner()->AddChild(Price);
+
+    auto* Num = new GameObject("Number", _num = new Number(&num, 1));
+    GetOwner()->AddChild(Num);
+}
+
+void Item::Finalize()
+{
+    std::vector<GameObject*> p;
+    GameObject::FindByTag(GameObject::Tag::Player, p);
+    if(p.at(0)->GetComponent<Player>())p.at(0)->GetComponent<Player>()->use = true;
 }
 
 void Item::Buy()
@@ -328,8 +352,10 @@ void Item::SaleCommon()
 void ItemCreature::Initialize()
 {
     Item::Initialize();
-    priceNum->offset = { -90,-273 };
-    priceScale = DirectX::XMFLOAT3(0.6f, 0.8f, 1);
+    priceNum->offset = { 66,-41 };
+    //priceScale = DirectX::XMFLOAT3(0.6f, 0.8f, 1);
+
+    _num->offset = {-88,17};
 }
 
 void ItemCreature::Buy()
@@ -345,8 +371,10 @@ void ItemCreature::Sale()
 void ItemDrone::Initialize()
 {
     Item::Initialize();
-    priceNum->offset = { -90,-273 };
-    priceScale = DirectX::XMFLOAT3(0.6f, 0.8f, 1);
+    priceNum->offset = { 66,-41 };
+    //priceScale = DirectX::XMFLOAT3(0.6f, 0.8f, 1);
+
+    _num->offset = { -88,17 };
 }
 
 void ItemDrone::Buy()
@@ -415,8 +443,11 @@ void ItemElectricAmo::Sale()
 void ItemBloodGrenade::Initialize()
 {
     Item::Initialize();
-    priceNum->offset = { -30,11 };
+    priceNum->offset = { -25,13 };
     priceScale = DirectX::XMFLOAT3(0.5f, 0.5f, 1);
+
+    _num->offset = { -47,40 };
+    numScale = DirectX::XMFLOAT3(0.7f, 0.7f, 1);
 }
 
 void ItemBloodGrenade::Buy()
@@ -430,8 +461,11 @@ void ItemBloodGrenade::Sale()
 void ItemElectricGrenade::Initialize()
 {
     Item::Initialize();
-    priceNum->offset = { -30,11 };
+    priceNum->offset = { -22,13 };
     priceScale = DirectX::XMFLOAT3(0.5f, 0.5f, 1);
+
+    _num->offset = { -47,40 };
+    numScale = DirectX::XMFLOAT3(0.7f, 0.7f, 1);
 }
 
 void ItemElectricGrenade::Buy()

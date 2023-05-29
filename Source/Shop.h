@@ -129,6 +129,7 @@ public:
     ~Item() {}
 
     void Initialize()override;
+    void Finalize()override;
     void Update()override;
 
     virtual void Buy();//çwì¸
@@ -146,10 +147,12 @@ public:
     DirectX::XMFLOAT2 initPos;
 
     DirectX::XMFLOAT3 priceScale{1,1,1};
+    DirectX::XMFLOAT3 numScale{1,1,1};
 
     Shop* shop;
 
     Number* priceNum;
+    Number* _num;
 
     float timer;
 };

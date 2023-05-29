@@ -85,6 +85,7 @@ void ChangeMode::ChangeBattleMode()
         obj.clear();
         GameObject::FindByTag(GameObject::Tag::Shop, obj);
         obj.at(0)->GetComponent<Shop>()->easeEnd = false;
+        GameObject::Destroy(obj.at(0));
     }
 }
 
