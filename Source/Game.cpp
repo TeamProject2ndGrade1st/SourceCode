@@ -26,6 +26,7 @@
 
 #include "Shop.h"
 #include "UI.h"
+#include "Tutorial.h"
 
 
 void Game::Initialize()
@@ -90,6 +91,8 @@ void Game::Initialize()
 	GameObject::Instantiate("Effect", new Argent::Component::Renderer::EffekseerEmitter("./Resources/Effects/shield_bash.efk", "./Resources/Effects/"));
 
 	GameObject::Instantiate("UI",new UI());
+
+	GameObject::Instantiate("Tutorial", new Tutorial);
 
 	auto l = GameObject::Instantiate("PointLight", new PointLight(0));
 	l->GetTransform()->SetPosition(DirectX::XMFLOAT3());

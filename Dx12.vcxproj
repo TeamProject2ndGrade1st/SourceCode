@@ -117,6 +117,7 @@
     <ClCompile Include="Source\StageSelect.cpp" />
     <ClCompile Include="Source\StateMachine.cpp" />
     <ClCompile Include="Source\Title.cpp" />
+    <ClCompile Include="Source\Tutorial.cpp" />
     <ClCompile Include="Source\UI.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
@@ -232,6 +233,7 @@
     <ClInclude Include="Source\StageSelect.h" />
     <ClInclude Include="Source\StateMachine.h" />
     <ClInclude Include="Source\Title.h" />
+    <ClInclude Include="Source\Tutorial.h" />
     <ClInclude Include="Source\UI.h" />
   </ItemGroup>
   <ItemGroup>
