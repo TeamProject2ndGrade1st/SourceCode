@@ -1,6 +1,7 @@
 #pragma once
 #include "Argent/Argent.h"
 #include "StateMachine.h"
+#include "ChangeMode.h"
 
 class Tutorial : public Argent::Component::BaseActor
 {
@@ -8,12 +9,12 @@ public:
 
     enum State
     {
-        tutorial_0,
-        tutorial_1,
-        tutorial_2,
-        tutorial_3,
-        tutorial_4,
-        tutorial_5,
+        Move,
+        OpenShop,
+        Shop1,
+        Shop2,
+        ChangeEdit,
+        Edit,
         tutorial_6,
         end,
     };
@@ -32,5 +33,7 @@ private:
     int state;
 
     bool init[end];
+
+    ChangeMode* mode;
 };
 

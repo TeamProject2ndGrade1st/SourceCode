@@ -169,24 +169,12 @@ bool BaseFriend::SearchEnemy()
     }
 
     target = eManager->FindEnemyComponentFromOwner((enemyArray.at(0)));
-    ////’Ê‰ßƒ|ƒCƒ“ƒg‚Ü‚Å‚Ì‹——£‚ð•ÛŽ‚µ‚Ä‚¨‚­
-    //float length0 = FLT_MAX;
-    //if (relayPoint.size() > 0)
-    //{
-    //    for (auto it = relayPoint.begin(); it != relayPoint.end(); ++it)
-    //    {
-    //        if ((*it).passage)continue;
-    //        float vxR = (*it).pos.x - GetOwner()->GetTransform()->GetPosition().x;
-    //        float vzR = (*it).pos.z - GetOwner()->GetTransform()->GetPosition().z;
-    //        length0 = sqrtf(vxR * vxR + vzR * vzR);
-    //        break;
-    //    }
-    //}
 
     //’Ê‰ßƒ|ƒCƒ“ƒg‚Æ“G‚Ü‚Å‚Ì‹——£‚ð”äŠr
     //“G‚Ì•û‚ª‹ß‚¢‚È‚çƒŒƒCƒLƒƒƒXƒg‚ÅáŠQ•¨ŒŸõ
     float length0 = FLT_MAX;
-    for (auto enemy = enemyArray.begin(); enemy != enemyArray.end(); ++enemy)
+    int i = 1;
+    for (auto enemy = enemyArray.begin()+1; enemy != enemyArray.end(); ++enemy,++i)
     {
         DirectX::XMFLOAT3 enemyPos = (*enemy)->GetTransform()->GetPosition();
         DirectX::XMFLOAT3 pos = GetTransform()->GetPosition();
@@ -201,28 +189,8 @@ bool BaseFriend::SearchEnemy()
 
         if (length1 < length0)
         {
-            //Ž©•ª‚©‚ç–Ú•W‚Ü‚Å‚ÌŠÔ‚ÉáŠQ•¨‚ª‚È‚¢‚©
-            /*std::vector<GameObject*> stage;
-            GetOwner()->FindByTag(GameObject::Tag::Stage, stage);*/
-            //auto stage = GetOwner()->FindByName("Main Stage");
-            //DirectX::XMFLOAT4X4 world = GetTransform()->GetWorld();
-            //DirectX::XMMATRIX World = DirectX::XMLoadFloat4x4(&world);
-            //Argent::Component::Collision::HitResult result;
-
-            ////’n–Ê‚·‚ê‚·‚ê•|‚¢‚©‚çã‚°‚Æ‚­
-            //pos.y = 10;
-            //enemyPos.y = 10;
-
-            //if (!Argent::Helper::Collision::IntersectRayVsModel(
-            //    pos, enemyPos,
-            //    stage->GetComponent<Argent::Component::Renderer::MeshRenderer>()->GetMesh()->meshResource,
-            //    World,result
-            //))
-            // {
-            //      áŠQ•¨‚ª‚È‚©‚Á‚½
-            // }
-
-            target = eManager->FindEnemyComponentFromOwner((*enemy));
+            target = eManager->FindEnemyComponentFromOwner(enemyArray.at(i));
+            length0 = length1;
         }
     }
     return true;

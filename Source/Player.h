@@ -40,7 +40,7 @@ public:
 	bool use = true;
 
 	//Š‹à
-	int moneyInPoss{20000};
+	int moneyInPoss{30000};
 
 private:
 	int state = 0;

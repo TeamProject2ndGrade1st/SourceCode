@@ -57,7 +57,7 @@ void Game::Initialize()
 	
 	AddObject(new GameObject("EnemyManager", new EnemyManager(this)));
 	//AddObject(new GameObject("spikebot", new EnemySpikeBot()));
-	AddObject(new GameObject("turret", new EnemyTurret()));
+	//AddObject(new GameObject("turret", new EnemyTurret()));
 
 	//AddObject(new GameObject("friend", new FriendCreature()));
 	
