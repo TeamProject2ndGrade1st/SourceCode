@@ -42,6 +42,7 @@ public:
     void Assign(int num);
 
     DirectX::XMFLOAT2 offset;
+    DirectX::XMFLOAT3 scale{1,1,1};
 
 private:
     int* number;

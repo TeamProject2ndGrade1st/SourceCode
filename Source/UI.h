@@ -31,6 +31,9 @@ private:
     Argent::Component::Renderer::SpriteRenderer* tutorial_friend;
     Argent::Component::Renderer::SpriteRenderer* tutorial_setFriend;
 
+    Number* creatureNum;
+    Number* droneNum;
+
     Player* player;
     BaseGun* gun;
     int* friendNum;

@@ -159,7 +159,7 @@ bool Character::ApplyDamage(float damage)
     health -= damage;
     if (health <= 0)
     {
-        OnDead();
+       OnDead();
     }
     else
     {

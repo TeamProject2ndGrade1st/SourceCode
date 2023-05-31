@@ -9,6 +9,10 @@ FriendManager::FriendManager(Argent::Scene::BaseScene* currentScene) :
     BaseActor("FriendManager"), scene(currentScene)
 {
     BaseFriend::num = 0;
+
+    FriendCreature::num = 0;
+    FriendDrone::num = 0;
+
     battleFlag = false;
 }
 

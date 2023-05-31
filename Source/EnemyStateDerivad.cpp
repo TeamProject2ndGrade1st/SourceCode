@@ -160,7 +160,7 @@ namespace Enemy::Turret
                 int i = 0;
                 for (auto it = Friend.begin(); it != Friend.end(); ++it,++i)
                 {
-                    if ((*it)->GetIsActive())continue;
+                    if (!(*it)->GetIsActive())continue;
                     DirectX::XMFLOAT3 friendPos = (*it)->GetTransform()->GetPosition();
                     //DirectX::XMFLOAT3 friendPos = owner->_friend->GetTargetPosition();
                     DirectX::XMFLOAT3 turretPos = owner->GetOwner()->GetTransform()->GetPosition();

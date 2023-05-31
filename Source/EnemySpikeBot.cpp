@@ -27,9 +27,7 @@ void EnemySpikeBot::Initialize()
     stateMachine.get()->RegisterState(new Enemy::SpikeBot::AttackState(this));
 
     stateMachine.get()->SetState(static_cast<int>(State::Idle));
-
-    // ƒ^ƒO‚ðÝ’è‚·‚é
-    GetOwner()->ReplaceTag(GameObject::Tag::Enemy);
+    
 
     SetAccelaration(0);
     

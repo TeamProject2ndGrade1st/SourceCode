@@ -69,7 +69,10 @@ void ChangeMode::DrawDebug()
 
 void ChangeMode::ChangeBattleMode()
 {
+    if (BaseFriend::num <= 0)return;
+
     if (!canChange)return;
+
     currentMode = Mode::Battle;
     GameObject::FindByName("Camera")->GetComponent<Camera>()->UseSceneCamera();
     battleFlag = true;

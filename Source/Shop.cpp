@@ -274,6 +274,8 @@ void Item::Update()
         {
             if (shop->player->moneyInPoss - price < 0)return;
 
+            if (num >= 9)return;
+
             //‹¤’Ê‚Ìˆ—
             BuyCommon();
 
@@ -402,7 +404,8 @@ void ItemChangeEdit::Initialize()
 
 void ItemChangeEdit::Buy()
 {
-    shop->mode->ChangeEditMode();
+    if(shop->mode->currentMode == ChangeMode::Mode::Ready)shop->mode->ChangeEditMode();
+    else if(shop->mode->currentMode == ChangeMode::Mode::Edit)shop->mode->ChangeReadyMode();
     shop->CloseShop();
 }
 

@@ -2,6 +2,8 @@
 #include "FriendStateDerived.h"
 #include "StateMachine.h"
 
+int FriendDrone::num{0};
+
 void FriendDrone::Initialize()
 {
 

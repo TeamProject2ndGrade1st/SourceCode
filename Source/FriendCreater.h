@@ -26,11 +26,12 @@ private:
     GameObject* dragTarget{ nullptr };
 
     //¶¬‰Â”\‚È”ÍˆÍ
-    RECT createRange{ -200,100,200,-100 };
+    RECT createRange{ -200,150,200,-150 };
     //‚»‚Ì”ÍˆÍ‚Ì’†S“_
-    DirectX::XMFLOAT3 createPos{ 0,0,-100 };
+    DirectX::XMFLOAT3 createPos{ 0,0,-200 };
 
     bool canCreate{ nullptr };
+    bool canDrag{ nullptr };
     DirectX::XMFLOAT4 color{1,0,0,1};
 
     Camera* camera{ nullptr };

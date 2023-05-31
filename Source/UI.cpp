@@ -1,5 +1,7 @@
 #include "UI.h"
 #include "Grenade.h"
+#include "FriendCreature.h"
+#include "FriendDrone.h"
 
 void UI::Initialize()
 {
@@ -22,6 +24,14 @@ void UI::Initialize()
     huel->SetScale(DirectX::XMFLOAT3(0.96f, 0.99f, 1));
     huel->SetTexPos(DirectX::XMFLOAT2(0, -463.2f));
 
+    GetOwner()->AddComponent(creatureNum = new Number(&FriendCreature::num, 1));
+    GetOwner()->AddComponent(droneNum = new Number(&FriendDrone::num, 1));
+    creatureNum->offset = { 257,683 };
+    droneNum->offset = { 365,683 };
+    creatureNum->scale = DirectX::XMFLOAT3(0.7f,0.7f,1);
+    droneNum->scale = DirectX::XMFLOAT3(0.7f,0.7f,1);
+
+
     std::vector<GameObject*> obj;
     GameObject::FindByTag(GameObject::Tag::Player,obj);
     player = obj.at(0)->GetComponent<Player>();
@@ -41,7 +51,7 @@ void UI::Initialize()
 
 void UI::Update()
 {
-    if (mode->openShop || !shop->easeEnd)
+    if ((mode->openShop || !shop->easeEnd) && shop->GetOwner())
     {
         float posX = shop->GetOwner()->GetTransform()->GetPosition().x;
         GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(posX - Argent::Graphics::GetWindowWidth(), 0, 0));
@@ -98,6 +108,8 @@ void UI::Update()
         lifeAmo->GetMaterial()->color.color = { 1,1,1,0 };
         elecAmo->GetMaterial()->color.color = { 1,1,1,0 };
         huel->GetMaterial()->color.color = { 1,1,1,0 };
+        creatureNum->scale = DirectX::XMFLOAT3(0, 0, 0);
+        droneNum->scale = DirectX::XMFLOAT3(0, 0, 0);
     }
     else
     {
@@ -109,6 +121,8 @@ void UI::Update()
         lifeAmo->GetMaterial()->color.color = { 1,1,1,1 };
         elecAmo->GetMaterial()->color.color = { 1,1,1,1 };
         huel->GetMaterial()->color.color = { 1,1,1,1 };
+        creatureNum->scale = DirectX::XMFLOAT3(0.7f, 0.7f, 1);
+        droneNum->scale = DirectX::XMFLOAT3(0.7f, 0.7f, 1);
     }
 
     

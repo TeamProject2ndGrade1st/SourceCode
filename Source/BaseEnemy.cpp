@@ -30,7 +30,7 @@ void BaseEnemy::Initialize()
     //};
     
 
-
+    GetOwner()->ReplaceTag(GameObject::Tag::Enemy);
 }
 
 void BaseEnemy::Begin()
@@ -122,7 +122,7 @@ BaseFriend* BaseEnemy::SearchFriend()
 
     for (auto f : Friend)
     {
-
+        if (!f->GetIsActive())continue;
 
          //Friend ‚Ì position‚ðŽæ‚é
         DirectX::XMFLOAT3 friendPos = f->GetTransform()->GetPosition();

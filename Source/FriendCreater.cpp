@@ -72,6 +72,15 @@ void FriendCreater::Update()
         if (Argent::Input::Mouse::Instance().GetButtonUp(Argent::Input::Mouse::Button::LeftButton))
         {
             dragTarget->Destroy(dragTarget);
+
+            if (dragTarget->GetComponent<FriendCreature>())
+            {
+                canCreateNumber[static_cast<int>(FriendManager::Type::Creature)]++;
+            }
+            if (dragTarget->GetComponent<FriendDrone>())
+            {
+                canCreateNumber[static_cast<int>(FriendManager::Type::Drone)]++;
+            }
         }
 
         return;
@@ -98,6 +107,7 @@ void FriendCreater::SetFriendByClick()
     //エネミー配置処理
     if (Argent::Input::Mouse::Instance().GetButtonDown(Argent::Input::Mouse::Button::RightButton))
     {
+        if (canCreateNumber[createType] <= 0)return;
         DirectX::XMFLOAT3 pos = { GetTransform()->GetPosition() };
         pos.y = 0;
         switch (createType)
@@ -216,7 +226,7 @@ void FriendCreater::CanCreate(DirectX::XMFLOAT3 pos)
     canCreate = false;
 
     //生成可能数が０以下
-    if (canCreateNumber[createType] <= 0)return;
+    /*if (canCreateNumber[createType] <= 0)return;*/
 
     float left = createRange.left + createPos.x;
     float right = createRange.right + createPos.x;

@@ -17,9 +17,13 @@ class FriendCreature :
     public BaseFriend
 {
 public:
+    static int num;
+
     FriendCreature(DirectX::XMFLOAT3 pos = {0.0f,0.0f,0.0f},int route = 0) 
-        : BaseFriend("Creature", pos,static_cast<Route>(route)) {}
-    ~FriendCreature() {}
+        : BaseFriend("Creature", pos, static_cast<Route>(route)) {
+        num++;
+    }
+    ~FriendCreature() { num--; }
     
     void Initialize() override;
     void Update() override;

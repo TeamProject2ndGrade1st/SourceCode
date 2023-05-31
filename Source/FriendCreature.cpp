@@ -1,6 +1,8 @@
 #include "FriendCreature.h"
 #include "FriendStateDerived.h"
 
+int FriendCreature::num{0};
+
 void FriendCreature::Initialize()
 {
     BaseFriend::Initialize();

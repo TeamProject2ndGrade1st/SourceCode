@@ -2,10 +2,16 @@
 #include "BaseFriend.h"
 class FriendDrone : public BaseFriend
 {
+
 public:
+    static int num;
+
+
     FriendDrone(DirectX::XMFLOAT3 pos = { 0.0f,0.0f,0.0f },int route = 0)
-        : BaseFriend("Creature", pos,static_cast<Route>(route)) {}
-    ~FriendDrone() {}
+        : BaseFriend("Creature", pos, static_cast<Route>(route)) {
+        num++;
+    }
+    ~FriendDrone() { num--; }
 
     void Initialize() override;
     void Update() override;
