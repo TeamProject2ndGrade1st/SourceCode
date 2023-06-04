@@ -85,6 +85,7 @@ void Grenade::Update()
 			GameObject* targetOwner = friendManager->friendArray.at(i)->GetOwner();
 
 			//ゲームオブジェクトがアクティブが確認
+			if (!targetOwner)continue;
 			if(!targetOwner->GetIsActive()) continue;
 
 			 

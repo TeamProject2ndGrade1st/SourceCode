@@ -16,6 +16,7 @@ public:
         ChangeEdit,
         Edit,
         tutorial_6,
+        tutorial_7,
         end,
     };
 

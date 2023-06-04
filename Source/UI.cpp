@@ -51,7 +51,7 @@ void UI::Initialize()
 
 void UI::Update()
 {
-    if ((mode->openShop || !shop->easeEnd) && shop->GetOwner())
+    if ((mode->openShop || !shop->easeEnd) && shop->GetOwner() && mode->currentMode != ChangeMode::Mode::Battle)
     {
         float posX = shop->GetOwner()->GetTransform()->GetPosition().x;
         GetOwner()->GetTransform()->SetPosition(DirectX::XMFLOAT3(posX - Argent::Graphics::GetWindowWidth(), 0, 0));

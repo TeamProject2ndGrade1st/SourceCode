@@ -1,4 +1,6 @@
 #include "Shop.h"
+#include "FriendCreature.h"
+#include "FriendDrone.h"
 
 
 void Shop::Initialize()
@@ -274,7 +276,7 @@ void Item::Update()
         {
             if (shop->player->moneyInPoss - price < 0)return;
 
-            if (num >= 9)return;
+            if (!BuyConditions())return;
 
             //‹¤’Ê‚Ìˆ—
             BuyCommon();
@@ -285,7 +287,7 @@ void Item::Update()
         else
         {
             //w“ü”‚ª‚O‚È‚ç–³Œø
-            if (num <= 0)return;
+            if (!SaleConditions())return;
 
             SaleCommon();
 
@@ -322,6 +324,11 @@ void Item::Finalize()
     if(p.at(0)->GetComponent<Player>())p.at(0)->GetComponent<Player>()->use = true;
 }
 
+bool Item::BuyConditions()
+{
+    return num < 10;
+}
+
 void Item::Buy()
 {
 }
@@ -334,6 +341,11 @@ void Item::BuyCommon()
     price *= priceIncreasePersent;
     num++;
 
+}
+
+bool Item::SaleConditions()
+{
+    return num > 0;
 }
 
 void Item::Sale()
@@ -370,6 +382,11 @@ void ItemCreature::Sale()
     shop->friendCreater->canCreateNumber[static_cast<int>(FriendManager::Type::Creature)]--;
 }
 
+bool ItemCreature::SaleConditions()
+{
+    return num > FriendCreature::num;
+}
+
 void ItemDrone::Initialize()
 {
     Item::Initialize();
@@ -389,6 +406,11 @@ void ItemDrone::Sale()
     shop->friendCreater->canCreateNumber[static_cast<int>(FriendManager::Type::Drone)]--;
 }
 
+bool ItemDrone::SaleConditions()
+{
+    return num > FriendDrone::num;;
+}
+
 void ItemChangeEdit::Initialize()
 {
     BaseActor::Initialize();
@@ -400,12 +422,13 @@ void ItemChangeEdit::Initialize()
         (static_cast<float>(button.top) - static_cast<float>(button.bottom)) / 64
     };
     GetOwner()->GetTransform()->SetScale(DirectX::XMFLOAT3(scale.x, scale.y, 1));
+
+    num = 5;//”„‹p§ŒÀ‚Éˆø‚Á‚©‚©‚ç‚È‚¢‚æ‚¤‚É‚·‚é
 }
 
 void ItemChangeEdit::Buy()
 {
-    if(shop->mode->currentMode == ChangeMode::Mode::Ready)shop->mode->ChangeEditMode();
-    else if(shop->mode->currentMode == ChangeMode::Mode::Edit)shop->mode->ChangeReadyMode();
+    shop->mode->ChangeEditMode();
     shop->CloseShop();
 }
 
@@ -420,6 +443,8 @@ void ItemChangeBattle::Initialize()
         (static_cast<float>(button.top) - static_cast<float>(button.bottom)) / 64
     };
     GetOwner()->GetTransform()->SetScale(DirectX::XMFLOAT3(scale.x, scale.y, 1));
+
+    num = 5;//”„‹p§ŒÀ‚Éˆø‚Á‚©‚©‚ç‚È‚¢‚æ‚¤‚É‚·‚é
 }
 
 void ItemChangeBattle::Buy()

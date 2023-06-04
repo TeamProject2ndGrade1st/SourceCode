@@ -132,8 +132,10 @@ public:
     void Finalize()override;
     void Update()override;
 
+    virtual bool BuyConditions();//w“üğŒ
     virtual void Buy();//w“ü
     virtual void BuyCommon();//w“üA‹¤’Ê‚Ìˆ—
+    virtual bool SaleConditions();//”„‹pğŒ
     virtual void Sale();//”„‹p
     virtual void SaleCommon();//”„‹pA‹¤’Ê‚Ìˆ—
 
@@ -167,6 +169,8 @@ public:
     void Initialize()override;
     void Buy()override;
     void Sale()override;
+
+    bool SaleConditions()override;//w“üğŒ
 };
 
 class ItemDrone : public Item
@@ -181,6 +185,7 @@ public:
     void Buy()override;
     void Sale()override;
 
+    bool SaleConditions()override;//w“üğŒ
 };
 
 class ItemBloodAmo : public Item

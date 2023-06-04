@@ -20,6 +20,7 @@ void Tutorial::StateUpdate()
         if (!init[state])
         {
             explanation[state] = GameObject::Instantiate("exp1", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Explanation/UI_E_1.png"));
+            explanation[state]->AddChild(new GameObject("Enter", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Explanation/Enter.png")));
             init[state] = true;
         }
 
@@ -58,6 +59,7 @@ void Tutorial::StateUpdate()
         {
             GameObject::Destroy(explanation[state - 1]);
             explanation[state] = GameObject::Instantiate("exp3", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Explanation/UI_E_3.png"));
+            explanation[state]->AddChild(new GameObject("Enter", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Explanation/Enter.png")));
             init[state] = true;
         }
 
@@ -73,6 +75,7 @@ void Tutorial::StateUpdate()
         {
             GameObject::Destroy(explanation[state - 1]);
             explanation[state] = GameObject::Instantiate("exp4", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Explanation/UI_E_4.png"));
+            explanation[state]->AddChild(new GameObject("Enter", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Explanation/Enter.png")));
             init[state] = true;
         }
 
@@ -110,15 +113,11 @@ void Tutorial::StateUpdate()
         {
             GameObject::Destroy(explanation[state - 1]);
             explanation[state] = GameObject::Instantiate("exp6", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Explanation/UI_E_6.png"));
+            explanation[state]->AddChild(new GameObject("Enter", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Explanation/Enter.png")));
             init[state] = true;
         }
 
         if (Argent::Input::GetKeyDown(KeyCode::Enter))
-        {
-            state++;
-        }
-
-        if (mode->currentMode == ChangeMode::Mode::Battle)
         {
             state++;
         }
@@ -129,9 +128,35 @@ void Tutorial::StateUpdate()
         if (!init[state])
         {
             GameObject::Destroy(explanation[state - 1]);
-            //explanation[state] = GameObject::Instantiate("exp1", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Explanation/UI_E_7"));
+            explanation[state] = GameObject::Instantiate("exp7", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Explanation/UI_E_7.png"));
             init[state] = true;
         }
+
+        if (Argent::Input::GetKeyDown(KeyCode::B))
+        {
+            state++;
+        }
+        if (Argent::Input::GetKeyDown(KeyCode::Enter))
+        {
+            state++;
+        }
+        break;
+
+    case Tutorial::tutorial_7:
+        if (!init[state])
+        {
+            GameObject::Destroy(explanation[state - 1]);
+            explanation[state] = GameObject::Instantiate("exp8", new Argent::Component::Renderer::SpriteRenderer("./Resources/Image/Explanation/UI_E_8.png"));
+            init[state] = true;
+        }
+
+        if (mode->currentMode == ChangeMode::Mode::Battle || Argent::Input::GetKeyDown(KeyCode::Enter))
+        {
+            GameObject::Destroy(explanation[state]);
+            state = end;
+        }
+        
+
         break;
 
 
