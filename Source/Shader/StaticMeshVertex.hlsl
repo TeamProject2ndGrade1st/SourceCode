@@ -4,6 +4,7 @@ VS_OUT main(VSIN vin)
 {
 	VS_OUT vout;
     float sigma = vin.tangent.w;
+    vin.normal.w = 0;
     vin.tangent.w = 0;
 	row_major float4x4 viewProjection = mul(view, projection);
 	vout.position = mul(vin.position, mul(world, viewProjection));

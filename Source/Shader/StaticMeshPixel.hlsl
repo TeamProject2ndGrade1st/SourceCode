@@ -13,21 +13,22 @@ float4 main(VS_OUT pin) : SV_TARGET
 {
     float4 color = albedoTex.Sample(smpPoint, pin.texcoord);
     float3 dLightColor = directionalLight.color.rgb * directionalLight.color.a;
-    float3 texNormal = normalTex.Sample(smpPoint, pin.texcoord);
-    float3 N = GetNormal(pin.worldNormal, texNormal, pin.worldTangent);
+    float3 texNormal = normalTex.Sample(smpPoint, pin.texcoord).rgb;
+    float3 N = GetNormal(pin.worldNormal.rgb, texNormal, pin.worldTangent);
 
-    const float3 L = normalize(directionalLight.direction);
+    const float3 L = normalize(directionalLight.direction.rgb);
 
     const float3 E = normalize(float3(cameraPosition.xyz - pin.worldPosition.xyz));
 
-    const float3 specular = CalcPhongSpecular(N, L, dLightColor, E, shininess, ks);
+    const float3 specular = CalcPhongSpecular(N, L, dLightColor, E, shininess, ks.rgb);
 
-    const float3 diffuse = CalcDiffuseColor(N, L, dLightColor, kd, color.rgb * pin.color);
+    const float3 diffuse = CalcDiffuseColor(N, L, dLightColor, kd.rgb, color.rgb * materialColor.rgb);
 
     //ポイントライトの処理
     float3 diffusePoint = 0;
     float3 specularPoint = 0;
 
+#if 0 
     for (int i = 0; i < NumPointLight; ++i)
     {
         float3 pLColor = pointLight[i].color.rgb * pointLight[i].color.a;
@@ -51,6 +52,7 @@ float4 main(VS_OUT pin) : SV_TARGET
         diffusePoint += dPoint;
         specularPoint += sPoint;
     }
+#endif
     float4 ret = float4(diffuse + specular + diffusePoint + specularPoint, materialColor.a);
 
     float3 emissive = emissiveColor.rgb * emissiveColor.a * color.rgb;
