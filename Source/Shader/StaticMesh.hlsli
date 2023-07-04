@@ -3,7 +3,7 @@
 struct VSIN
 {
 	float4 position : POSITION;
-	float3 normal : NORMAL;
+	float4 normal : NORMAL;
     float4 tangent : TANGENT;
 	float2 texcoord : TEXCOORD;
 };
